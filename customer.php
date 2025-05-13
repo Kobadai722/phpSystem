@@ -7,6 +7,6 @@
     <title>顧客管理</title>
 </head>
 <body>
-    
+    <h1>顧客管理</h1>
 </body>
 </html>
