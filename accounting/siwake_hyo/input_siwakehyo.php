@@ -44,7 +44,7 @@
   <?php
     session_start();
     // DB接続
-    $PDO = new PDO('mysql:host=chandou.ltt.jp; dbname=utiraku0428; charset=utf8', 'utiraku', '4sp3Yukt');
+    require_once 'config.php';
     //仕訳ヘッダーの登録
     $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
     $sql->execute([$_POST['entry_date'], $_POST['description']]);

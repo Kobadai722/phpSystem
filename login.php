@@ -3,7 +3,7 @@ session_start();
 
 
 unset($_SESSION['id']);
-$PDO = new PDO('mysql:host=chandou.ltt.jp; dbname=utiraku0428; charset=utf8', 'utiraku', '4sp3Yukt');
+require_once 'config.php';
 $sql = $PDO->prepare('select*from USERS where u_name=? and u_pass=?');
 $sql->execute([$_POST['user'], $_POST['pass']]);
 echo htmlspecialchars($_POST['user']);

@@ -13,7 +13,7 @@
     <table  border="1">
     <tr><th>商品番号</th><th>商品名</th><th>価格</th></tr>
     <?php
-        $PDO = new PDO('mysql:host=chandou.ltt.jp; dbname=utiraku0428; charset=utf8', 'utiraku', '4sp3Yukt');
+        require_once 'config.php';
         foreach($pdo->query('select * from CUSTOMER') as $row){
     ?>
         <tr>
