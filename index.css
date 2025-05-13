@@ -1,0 +1,58 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background-image: url(./images/free2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: sans-serif;
+}
+
+.center {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ロゴのサイズ調整
+#loginLogo {
+  width: 50%;
+}
+.amasonLogo {
+  width: 10%;
+}
+  */
+
+#login {
+  background-color: rgb(61, 61, 61);
+  color: white;
+  margin: auto;
+  /*
+    justify-content: center;  横中央
+    align-items: center;  縦中央
+    padding: 0%;
+  */
+  border-spacing: 0;
+  font-size: large;
+  text-align: center;
+}
+input[type="text"],
+input[type="password"] {
+  width: 200px;
+  font-size: 16px;
+  padding: 4px;
+  margin-left: 0px;
+}
+#login td {
+  border-bottom: solid 2px;
+  border-color: orange;
+  padding: 25px;
+}
+#login th {
+  font-size: x-large;
+  border-bottom: solid 2px;
+  border-color: lightskyblue;
+  padding: 25px;
+  font-weight: bold;
+}
