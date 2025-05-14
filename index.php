@@ -35,8 +35,7 @@
         </form>
     </div>
 
-    <div class="container">
-    <div class="row justify-content-center">
+    <div class="container row justify-content-center">
         <div class="col-md-6">
             <form class="form-signin">
                 <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300">
@@ -50,7 +49,6 @@
             </form>
         </div>
     </div>
-</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
