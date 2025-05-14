@@ -8,7 +8,7 @@
 
 <body>
     <div class="header">
-        <!-- <a href="main.php"><img src="./amason_img/amason.jpg" class="amasonLogo"></a> -->
+
         <ul>
             <li>
                 <a href="./logout.php">ログアウト</a>
