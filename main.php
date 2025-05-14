@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    <?php include 'inc/header.php'; ?>
     <div class="header">
 
         <ul>
@@ -17,7 +18,7 @@
                 <a>お知らせ</a>
             </li>
             <li>
-                
+
 
         </ul>
     </div>
