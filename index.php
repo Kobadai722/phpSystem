@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>卒業用サーバ：ログイン</title>
     <link rel="stylesheet" href="index.css" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 
 <body>
@@ -33,6 +34,17 @@
             </table>
         </form>
     </div>
+    <form class="form-signin">
+        <img class="mb-4" src="/images/logo-type2.png" alt="" width="72" height="72">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="inputEmail" class="sr-only">社員コード</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" name="user">
+        <label for="inputPassword" class="sr-only">パスワード</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="pass">
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <p class="mt-5 mb-3 text-muted">©2025</p>
+    </form>
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </html>
