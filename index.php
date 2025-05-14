@@ -35,17 +35,21 @@
         </form>
     </div>
 
-    <div class="text-center">
-        <form class="form-signin">
-            <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300">
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputCode" class="sr-only">社員コード</label>
-            <input type="email" id="inputCode" class="form-control" placeholder="Employee Code" required="" autofocus="" name="user">
-            <label for="inputPassword" class="sr-only">パスワード</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="pass">
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-            <p class="mt-5 mb-3 text-muted">©2025</p>
-        </form>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form class="form-signin">
+                    <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300">
+                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <label for="inputCode" class="sr-only">社員コード</label>
+                    <input type="email" id="inputCode" class="form-control" placeholder="Employee Code" required="" autofocus="" name="user">
+                    <label for="inputPassword" class="sr-only">パスワード</label>
+                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="pass">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    <p class="mt-5 mb-3 text-muted">©2025</p>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 
