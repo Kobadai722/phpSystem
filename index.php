@@ -35,7 +35,7 @@
         </form>
     </div>
 
-    <div class="text-center">
+    <div class="text-center" style="max-width: 500px;">
         <form class="form-signin">
             <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300">
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
