@@ -50,6 +50,9 @@
     $sql->execute([$_POST['entry_date'], $_POST['description']]);
     //仕訳明細の登録
     //ヘッダーIDの取得
+    $sql = $PDO->prepare('SELECT ID FROM JOURNAL_HEADERS WHERE ENTRY_DATE = ? AND DESCRIPTION = ?');
+    $sql->execute([$_POST['entry_date'], $_POST['description']]);
+    $header_id = $sql->fetchColumn();
 
 
 

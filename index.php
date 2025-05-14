@@ -21,7 +21,7 @@
                     <td colspan="2">ユーザー名とパスワードを入力してください</td>
                 </tr>
                 <tr>
-                    <td>ユーザー名:<input type="text" name="user" ></td>
+                    <td>ユーザー名:<input type="text" name="user" value="Employee Code"></td>
                 </tr>
                 <tr>
                     <td>パスワード:<input type="password" name="pass"></td>
