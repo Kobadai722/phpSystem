@@ -10,27 +10,20 @@
 
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
   <main class="form-signin w-100 m-auto">
-    <form class="text-center">
-      <img class="mb-4" src="../images/bootstrap-logo.svg" alt="" width="72" height="57" loading="lazy">
+    <form class="text-center" action="login.php" method="post">
+      <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300" loading="lazy">
       <h1 class="h3 mb-3 fw-normal">サインインして下さい</h1>
       
       <div class="form-floating">
-        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-        <label for="floatingInput">Emailアドレス</label>
+        <input type="text" class="form-control" id="floatingInput" placeholder="250000" name="user">
+        <label for="floatingInput">社員コード</label>
       </div>
       <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="パスワード">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="パスワード" name="pass">
         <label for="floatingPassword">パスワード</label>
       </div>
-
-      <div class="form-check text-start my-3">
-        <input class="form-check-input" type="checkbox" value="remember-me" id="checkDefault">
-        <label class="form-check-label" for="checkDefault">
-          状態を記憶する
-        </label>
-      </div>
       <button class="btn btn-primary w-100 py-2" type="submit">サインイン</button>
-      <p class="mt-5 mb-3 text-body-secondary">&copy; 2017-2025</p>
+      <p class="mt-5 mb-3 text-body-secondary">&copy; 2025</p>
    </form>
   </main>
 
