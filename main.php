@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <?php include 'inc/header.php'; ?>
+    <?php include 'header.php'; ?>
     <div class="header">
 
         <ul>
