@@ -11,12 +11,12 @@
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
   <main class="form-signin w-100 m-auto">
     <form class="text-center" action="login.php" method="post">
-      <img class="mb-4" src="/images/logo-type2.png" alt="" width="200" height="200" loading="lazy">
+      <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy">
       <h1 class="h3 mb-3 fw-normal">サインインして下さい</h1>
       
       <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="250000" name="user">
-        <label for="floatingInput">社員コード</label>
+        <input type="text" class="form-control" id="floatingInput" placeholder="250000" name="employeeId">
+        <label for="floatingInput">社員ID</label>
       </div>
       <div class="form-floating">
         <input type="password" class="form-control" id="floatingPassword" placeholder="パスワード" name="pass">
