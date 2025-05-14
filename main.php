@@ -11,21 +11,6 @@
 
 <body>
     <?php include 'header.php'; ?>
-    <div class="header">
-
-        <ul>
-            <li>
-                <a href="./logout.php">ログアウト</a>
-            </li>
-            <li>
-                <a>お知らせ</a>
-            </li>
-            <li>
-
-
-        </ul>
-    </div>
-
     <h2>ようこそ
         <?php
                 session_start();
