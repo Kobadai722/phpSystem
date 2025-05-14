@@ -51,6 +51,9 @@
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./logout.php">サインアウト</a>
+                    </li>
                 </ul>
             </div>
         </div>
