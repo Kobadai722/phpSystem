@@ -6,11 +6,9 @@ unset($_SESSION['id']);
 require_once 'config.php';
 $sql = $PDO->prepare('select*from EMPLOYEE where EMPLOYEE_ID=? and PASSWORD=?');
 $sql->execute([$_POST['employeeId'], $_POST['pass']]);
-echo htmlspecialchars($_POST['employeeId']);
-echo htmlspecialchars($_POST['pass']);
 
 foreach ($sql as $row) {
-    $_SESSION['id'] = $row['u_id'];
+    $_SESSION['id'] = $row['EMPLOYEE_ID'];
     $_SESSION['dname'] = $row['NAME'];
 }
 if (isset($_SESSION['id'])) {
