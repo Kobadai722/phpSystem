@@ -13,6 +13,12 @@
             <li>
                 <a href="./logout.php">ログアウト</a>
             </li>
+            <li>
+                <a>お知らせ</a>
+            </li>
+            <li>
+                
+
         </ul>
     </div>
 
@@ -21,4 +27,4 @@
                 session_start();
                 echo $_SESSION['dname'];
             ?> さん</h2>
-    <p> <a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</p>
+    <h1><a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</h1>

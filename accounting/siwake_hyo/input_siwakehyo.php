@@ -52,9 +52,8 @@
     //ヘッダーIDの取得
     $sql = $PDO->prepare('SELECT ID FROM JOURNAL_HEADERS WHERE ENTRY_DATE = ? AND DESCRIPTION = ?');
     $sql->execute([$_POST['entry_date'], $_POST['description']]);
-    $header_id = $sql->fetchColumn();
-
-
-
-    $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, 借方)');
+    $header_id = $pdo->lastInsertId();
+    
+    //借方の登録
+    $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 借方)');
     $sql->execute([$_POST['debit_account'], $_POST['debit_amount']]);
