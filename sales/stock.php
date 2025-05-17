@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,27 +7,33 @@
         rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
         crossorigin="anonymous">
         <title>在庫管理システム</title>
+        <link rel="stylesheet" href="stock_styles.css">
     </head>
     <body>
         <header>
-            <h1>在庫管理システム</hi>
+            <h1>在庫管理システム</h1>
         </header>
 
+
         <nav> 
-            <ul> <!-- 順序無しリスト -->
-                <li>home</li><!-- ナビゲーション　パンくずリスト的な-->
-                <li>在庫一覧</li>
-                <li>入出庫管理</li>
-                <li>発注管理</li>
-            </ul>
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
+</ul>
         </nav>
+
         <main>
             <section class="search"><!-- コンテンツをグループ化 -->
-                <input type="text" placeholder="商品名または商品IDで検索">
-                <button type="submit">検索</button>
+                <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="商品名または商品IDで検索">
+                <button class="btn btn-primary" type="submit">検索</button>
+                </div>
             </section>
+
             <section>
-                <table>
+                <table class="table table-striped table-bordered">
                     <thead><!-- 表の ヘッダー部分 を表す要素 -->
                         <tr>
                             <th>商品名</th>
