@@ -7,7 +7,9 @@ body {
 }
 
 header {
-    background-image: url(/images/logo-type3.png);
+    background-image: url(../images/logo-type3.png);
+    background-size: cover;
+    background-repeat: no-repeat;
     color: white;
     padding: 1rem;
     text-align: center;
