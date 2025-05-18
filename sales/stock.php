@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="stock_styles.css">
     </head>
     <body>
-        <header>
+        <header class="header">
             <h1>在庫管理システム</h1>
         </header>
 
