@@ -51,5 +51,6 @@
                 </table>
             </section>
         </main>
+        <a href="./../main.php">メインに戻る
     </body>
 </html>
