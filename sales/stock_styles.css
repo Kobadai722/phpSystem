@@ -31,7 +31,7 @@ header {
 }
 
 .content{
-    
+    flex: auto;
     background-color: #eee;
     text-align: center;
     margin-right: 10px;
