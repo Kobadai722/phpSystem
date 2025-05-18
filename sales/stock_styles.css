@@ -47,9 +47,10 @@ nav ul {
 nav li {
     margin: 0.5rem 0;
 }
-
+/*main に display: flex; をつけたら、
+中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
 main {
-    display: flex;
+    display: flex;    
     min-height: 100vh;
     margin: 10px 0 10px 0;
     padding: 1rem;

@@ -19,18 +19,15 @@
             <p>グローバルナビゲーション</p>
         </div>
 
-
-        
-
         <main>
-            <nav> 
-            <ul class="localNavigation">
-                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
-            </ul>
-        </nav>
+            <nav class="localNavigation"> 
+                <ul>
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
+                </ul>
+            </nav>
 
             <section class="content">
                 <section class="search"><!-- コンテンツをグループ化 -->
@@ -62,4 +59,6 @@
         <foote>  
         
     </body>
+
+
 </html>
