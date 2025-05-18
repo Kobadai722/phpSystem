@@ -21,7 +21,7 @@
                 <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
-</ul>
+            </ul>
         </nav>
 
         <main>
