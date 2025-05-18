@@ -13,10 +13,15 @@
         <header class="header">
             <h1>在庫管理システム</h1>
         </header>
+        
+        
+        <div class="glovalNavigation"><!-- ここにグローバルナビゲーションを創る -->
+            <p>グローバルナビゲーション</p>
+        </div>
 
 
         <nav> 
-            <ul class="nav flex-column">
+            <ul class="localNavigation">
                 <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
@@ -32,7 +37,7 @@
                 </div>
             </section>
 
-            <section>
+            <section class="content">
                 <table class="table table-striped table-bordered">
                     <thead><!-- 表の ヘッダー部分 を表す要素 -->
                         <tr>
