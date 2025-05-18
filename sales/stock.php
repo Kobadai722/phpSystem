@@ -55,6 +55,9 @@
                     </table>
             </section>
         </main>
-        <a href="./../main.php">メインに戻る
+        <footer class="footer">
+            <a href="./../main.php">メインに戻る
+        <foote>  
+        
     </body>
 </html>
