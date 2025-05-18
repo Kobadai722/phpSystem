@@ -15,7 +15,7 @@
         </header>
         
         
-        <div class="glovalNavigation"><!-- ここにグローバルナビゲーションを創る -->
+        <div class="globalNavigation"><!-- ここにグローバルナビゲーションを創る -->
             <p>グローバルナビゲーション</p>
         </div>
 

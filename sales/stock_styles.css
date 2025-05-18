@@ -9,14 +9,14 @@ body {
 header {
     height: 70px;
     background-image: url(../images/logo-type3.png);
-    background-size: 100%;
+    background-size: contain;;
     background-repeat: no-repeat;
     color: white;
     padding: 1rem;
     text-align: center;
 }
 
-.glovalNavigation{
+.globalNavigation{
     height: 70px;
     text-align: center;
     background-color: #888;
@@ -50,7 +50,6 @@ nav li {
 
 main {
     display: flex;
-    min-height: 100vh;
     margin: 10px 0 10px 0;
     padding: 1rem;
 }
