@@ -20,7 +20,10 @@
         </div>
 
 
-        <nav> 
+        
+
+        <main>
+            <nav> 
             <ul class="localNavigation">
                 <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">在庫一覧</a></li>
@@ -29,7 +32,6 @@
             </ul>
         </nav>
 
-        <main>
             <section class="content">
                 <section class="search"><!-- コンテンツをグループ化 -->
                     <div class="input-group mb-3">
