@@ -30,30 +30,29 @@
         </nav>
 
         <main>
-            <section class="search"><!-- コンテンツをグループ化 -->
-                <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="商品名または商品IDで検索">
-                <button class="btn btn-primary" type="submit">検索</button>
-                </div>
-            </section>
-
             <section class="content">
-                <table class="table table-striped table-bordered">
-                    <thead><!-- 表の ヘッダー部分 を表す要素 -->
-                        <tr>
-                            <th>商品名</th>
-                            <th>単価</th>
-                            <th>在庫数</th>
-                            <th>商品ID</th>
-                            <th>商品区分</th>
-                        </tr>
-                    </thead>
+                <section class="search"><!-- コンテンツをグループ化 -->
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="商品名または商品IDで検索">
+                        <button class="btn btn-primary" type="submit">検索</button>
+                    </div>
+                </section>
+                    <table class="table table-striped table-bordered">
+                        <thead><!-- 表の ヘッダー部分 を表す要素 -->
+                            <tr>
+                                <th>商品名</th>
+                                <th>単価</th>
+                                <th>在庫数</th>
+                                <th>商品ID</th>
+                                <th>商品区分</th>
+                            </tr>
+                        </thead>
                             <!-- theadタグとtbodyタグについてですね。 これは表の見出し部分と本体部分を区別するためのタグなんだよ。例えば、テーブルに複数の行がある場合、
                                 theadタグによって表の上端の1行目を見出し部分として指定することができる。それに対して、tbodyタグはその下に続く行を本体部分として指定するためのタグだよ。 -->
-                    <tbody><!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
+                        <tbody><!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
                             <!-- 在庫データの表をここに表示 -->
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
             </section>
         </main>
         <a href="./../main.php">メインに戻る
