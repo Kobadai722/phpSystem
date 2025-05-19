@@ -19,7 +19,6 @@
             ?> さん</h2>
     <p><a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</a></p>
     <p><a href="./../accounting/siwake_hyo/input_siwakehyo.php">仕訳機能Demo</a></p>
-    <p><a href="./../sales/stock.php">在庫管理システムDemo</a></p>
     <p><a href="./../customer/customer.php">顧客一覧</a></p>
 </body>
 
