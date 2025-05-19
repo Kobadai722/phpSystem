@@ -10,7 +10,7 @@
   <?php
   session_start();
   // DB接続
-  require_once '../config.php';
+  require_once '../../config.php';
   ?>
   <!-- 入力フォーム-->
   <form method="post">
