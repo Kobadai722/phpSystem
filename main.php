@@ -17,11 +17,12 @@
                 session_start();
                 echo $_SESSION['dname'];
             ?> さん</h2>
-    <h1><a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</h1>
-    <a href="./../sales/stock.php">在庫管理システムDemo
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
+    <a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</a>
+    <a href="./../sales/stock.php">在庫管理システムDemo</a>
+    <a href="./../customer/customer.php">顧客一覧</a>
 </body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+</script>
 </html>
