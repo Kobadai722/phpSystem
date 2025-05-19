@@ -1,57 +1,37 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    <title>卒業用サーバ：ログイン</title>
-    <link rel="stylesheet" href="index.css" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>サインインページ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 
-<body>
-    <div class="center">
-        <form action="login.php" method="post">
-            <table border="0" id="login">
-                <tr>
-                    <td colspan="2">
-                        <h1>卒論用サーバー：ログイン</h1>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">ユーザー名とパスワードを入力してください</td>
-                </tr>
-                <tr>
-                    <td>社員コード:<input type="text" name="user" placeholder="Employee Code"></td>
-                </tr>
-                <tr>
-                    <td>パスワード:<input type="password" name="pass"></td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="text-align: center;">
-                        <input type="submit" value="ログイン">
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </div>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signin w-100 m-auto">
+        <form class="text-center" action="login.php" method="post">
+            <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy">
+            <h1 class="h3 mb-3 fw-normal">サインイン</h1>
 
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <form class="form-signin">
-                    <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="300">
-                    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                    <label for="inputCode" class="sr-only">社員コード</label>
-                    <input type="email" id="inputCode" class="form-control" placeholder="Employee Code" required="" autofocus="" name="user">
-                    <label for="inputPassword" class="sr-only">パスワード</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" name="pass">
-                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <p class="mt-5 mb-3 text-muted">©2025</p>
-                </form>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="250000" name="employeeId">
+                <label for="floatingInput">社員ID</label>
             </div>
-        </div>
-    </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="パスワード" name="pass">
+                <label for="floatingPassword">パスワード</label>
+            </div>
+            <button class="btn btn-primary w-100 py-2" type="submit">サインイン</button>
+            <p class="mt-5 mb-3 text-body-secondary">&copy; 2025</p>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </html>

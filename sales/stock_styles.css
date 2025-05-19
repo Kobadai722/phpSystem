@@ -1,0 +1,62 @@
+/* stock_styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    height: 70px;
+    background-image: url(../images/logo-type3.png);
+    background-size: contain;;
+    background-repeat: no-repeat;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+.globalNavigation{
+    height: 70px;
+    text-align: center;
+    background-color: #888;
+    color: #fff;
+}
+
+.localNavigation{
+    text-align: center;
+    background-color: #888;
+    color: #fff;
+    width: 250px;
+}
+
+.content{
+    flex: auto;
+    background-color: #eee;
+    text-align: center;
+    margin-right: 10px;
+} 
+
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+}
+
+nav li {
+    margin: 0.5rem 0;
+}
+/*main に display: flex; をつけたら、
+中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
+main {
+    display: flex;    
+    min-height: 100vh;
+    margin: 10px 0 10px 0;
+    padding: 1rem;
+}
+
+.search {
+    margin-bottom: 1rem;
+}
+
