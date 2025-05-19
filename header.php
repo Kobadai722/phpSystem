@@ -17,8 +17,9 @@
                             販売管理
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="/../sales/stock.php">在庫管理システム</a></li>
+                            <li><a class="dropdown-item" href="#">売上管理システム</a></li>
+                            <li><a class="dropdown-item" href="#">仕入管理システム</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
