@@ -47,7 +47,7 @@
             </section>
         </main>
         <footer class="footer">
-            <a href="./../main.php">メインに戻る
+            
         <foote>  
         
     </body>
