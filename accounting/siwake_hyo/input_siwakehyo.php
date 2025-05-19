@@ -64,10 +64,12 @@
     <button type="submit">確定</button>
     </table>
   </form>
+
   <?php
   //仕訳ヘッダーの登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
   $sql->execute([$_POST['entry_date'], $_POST['description']]);
+
   //仕訳明細の登録
   //ヘッダーIDの取得
   $sql = $PDO->prepare('SELECT ID FROM JOURNAL_HEADERS WHERE ENTRY_DATE = ? AND DESCRIPTION = ?');
@@ -77,3 +79,8 @@
   //借方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 借方)');
   $sql->execute([$_POST['debit_account'], $_POST['debit_amount']]);
+
+  //貸方の登録
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 貸方)');
+  $sql->execute([$_POST['credit_account'], $_POST['credit_amount']]);
+  ?>
