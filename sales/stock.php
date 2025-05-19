@@ -10,9 +10,7 @@
         <link rel="stylesheet" href="stock_styles.css">
     </head>
     <body>
-        <?php include 'header.php'; ?>
-
-
+        <?php include '../header.php'; ?>
         <main>
             <nav class="localNavigation"> 
                 <ul>
