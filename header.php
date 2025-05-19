@@ -53,7 +53,7 @@
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./logout.php">サインアウト</a>
+                        <a class="nav-link" href="/logout.php">サインアウト</a>
                     </li>
                 </ul>
             </div>
