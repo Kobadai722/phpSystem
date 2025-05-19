@@ -17,9 +17,9 @@
                 session_start();
                 echo $_SESSION['dname'];
             ?> さん</h2>
-    <a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</a>
-    <a href="./../sales/stock.php">在庫管理システムDemo</a>
-    <a href="./../customer/customer.php">顧客一覧</a>
+    <p><a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</a></p>
+    <p><a href="./../sales/stock.php">在庫管理システムDemo</a></p>
+    <p><a href="./../customer/customer.php">顧客一覧</a></p>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
