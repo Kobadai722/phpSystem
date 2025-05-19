@@ -14,7 +14,7 @@
     <tr><th>商品番号</th><th>商品名</th><th>価格</th></tr>
     <?php
         require_once '../config.php';
-        foreach($pdo->query('select * from CUSTOMER') as $row){
+        foreach($PDO->query('select * from CUSTOMER') as $row){
     ?>
         <tr>
         <td><?=$row['CUSTOMER_ID']?></td>
