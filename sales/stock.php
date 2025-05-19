@@ -10,15 +10,7 @@
         <link rel="stylesheet" href="stock_styles.css">
     </head>
     <body>
-        <header class="header">
-            <h1>在庫管理システム</h1>
-        </header>
-        
-        
-        <div class="globalNavigation"><!-- ここにグローバルナビゲーションを創る -->
-            <p>グローバルナビゲーション</p>
-        </div>
-
+        <?php include '../header.php'; ?>
         <main>
             <nav class="localNavigation"> 
                 <ul>
