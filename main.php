@@ -10,9 +10,8 @@
     <link href="style.css" rel="stylesheet" />
 </head>
 
-
+<?php include 'header.php'; ?>
 <body>
-    <?php include 'header.php'; ?>
     <h2>ようこそ
         <?php
                 session_start();
