@@ -48,7 +48,7 @@
                             顧客管理
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="/../customer/customer.php">Action</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                         </ul>
                     </li>
