@@ -34,7 +34,9 @@
         <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-              echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
+              //echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
+              echo $row['NAME'];
+              echo $row['ID'];
             }
             ?>
           </select>
@@ -59,7 +61,7 @@
       </tr>
     </table>
     <br>
-    <button type="submit">確定</button>
+    <p><button type="submit">確定</button></p>
     </table>
   </form>
 
