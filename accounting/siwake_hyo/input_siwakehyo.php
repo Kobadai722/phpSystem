@@ -39,9 +39,9 @@
             // 勘定科目の取得
             $sql = $PDO->prepare('SELECT ID, NAME FROM ACCOUNTS');
             $sql->execute();
-            $accounts = $sql->fetch(PDO::FETCH_ASSOC);
-            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-              echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
+
+            while ($accounts = $sql->fetch(PDO::FETCH_ASSOC)) {
+              echo '<option value="' . $accounts['ID'] . '">' . $accounts['NAME'] . '</option>';
             }
             ?>
           </select>

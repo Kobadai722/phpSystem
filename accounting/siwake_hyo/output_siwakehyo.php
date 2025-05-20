@@ -8,6 +8,12 @@
 </head>
 
 <body>
+  <?php
+  // DB接続
+  require_once '../../config.php';
+  // セッション開始
+  session_start();
+  ?>;
     <table>
         <caption>📘 仕訳帳（デモ）</caption>
         <thead>
@@ -22,8 +28,26 @@
         </thead>
         <tbody>
           <tr>
-            <td>2025/04/22</td>
-            <td class="left">商品販売</td>
+            <td>
+              <?php
+              // 日付の取得
+                $sql = $PDO->prepare('SELECT ENTRY_DATE FROM JOURNAL_HEADERS');
+                $sql->execute();
+                foreach ($sql as $entry_date) {
+                  echo $row['ENTRY_DATE'];
+                }
+              ?>
+            </td>
+            <td class="left">
+              <?php
+              // 摘要の取得
+                $sql = $PDO->prepare('SELECT DESCRIPTION FROM JOURNAL_HEADERS');
+                $sql->execute();
+                foreach ($sql as $description) {
+                  echo $row['DESCRIPTION'];
+                }
+              ?>
+            </td>
             <td>現金</td>
             <td>¥100,000</td>
             <td>売上高</td>
@@ -73,4 +97,3 @@
 
 </body>
 </html>
-
