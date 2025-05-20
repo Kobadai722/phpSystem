@@ -31,12 +31,10 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td>
-        <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
+         <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-              //echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
-              echo $row['NAME'];
-              echo $row['ID'];
+              echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
             }
             ?>
           </select>
@@ -62,7 +60,6 @@
     </table>
     <br>
     <p><button type="submit">確定</button></p>
-    </table>
   </form>
 
   <?php
@@ -77,10 +74,10 @@
   $header_id = $pdo->lastInsertId();
 
   //借方の登録
-  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 借方)');
-  $sql->execute([$_POST['debit_account'], $_POST['debit_amount']]);
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, 借方)');
+  $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount']]);
 
   //貸方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 貸方)');
-  $sql->execute([$_POST['credit_account'], $_POST['credit_amount']]);
+  $sql->execute($header_id, [$_POST['credit_account'], $_POST['credit_amount']]);
   ?>
