@@ -20,10 +20,10 @@
         <td>日付</td>
         <td>摘要</td>
         <!-- 仕訳明細-->
-        <td>貸方科目</td>
-        <td>貸方金額</td>
         <td>借方科目</td>
         <td>借方金額</td>
+        <td>貸方科目</td>
+        <td>貸方金額</td>
       </tr>
       <tr>
         <td><input type="date" name="entry_date"></td><!-- 日付 -->
@@ -31,15 +31,13 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td>
-          <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
+        <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
-            // 勘定科目の取得
-            $sql = $PDO->prepare('SELECT * FROM ACCOUNT');
-            $sql->execute();
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
               echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
             }
             ?>
+          </select>
         </td>
 
         <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
