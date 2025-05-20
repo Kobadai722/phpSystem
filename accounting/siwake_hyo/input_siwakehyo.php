@@ -48,10 +48,6 @@
 
         <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
 
-        <td><input type="date" name="entry_date"></td><!-- 日付 -->
-
-        <td><input type="text" name="description"></td> <!-- 摘要 -->
-
         <td>
           <select name="勘定科目"><!-- 貸方科目 -->
             <?php
