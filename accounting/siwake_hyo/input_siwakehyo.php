@@ -11,6 +11,8 @@
   session_start();
   // DB接続
   require_once '../../config.php';
+
+
   ?>
   <!-- 入力フォーム-->
   <form method="post">
@@ -31,8 +33,12 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td>
-         <select name="勘定科目"><!-- 借方科目 -->
+          <select name="勘定科目"><!-- 借方科目 -->
             <?php
+            // 勘定科目の取得
+            $sql = $PDO->prepare('SELECT ID, NAME FROM ACCOUNTS');
+            $sql->execute();
+            $accounts = $sql->fetch(PDO::FETCH_ASSOC);
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
               echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
             }
@@ -78,6 +84,6 @@
   $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount']]);
 
   //貸方の登録
-  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES($header_id, ?, 貸方)');
-  $sql->execute($header_id, [$_POST['credit_account'], $_POST['credit_amount']]);
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
+  $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
