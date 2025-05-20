@@ -14,6 +14,11 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
+        <p>商品検索</p>
+        <form action="search-output.php" method="post">
+            <p><input type="text" name="keyword"></p>
+            <p><input type="submit" value="検索"></p>
+        </form>
         <table class="table table-hover">
             <tr><th scope="col">顧客ID</th><th scope="col">氏名</th><th scope="col">電話番号</th><th scope="col">メールアドレス</th><th scope="col">郵便番号</th><th scope="col">住所</th></tr>
             <?php
