@@ -8,8 +8,8 @@
         <title>在庫管理システム</title>
         <link rel="stylesheet" href="stock_styles.css">
     </head>
+    <?php include '../header.php'; ?>
     <body>
-        <?php include '../header.php'; ?>
         <main>
             <nav class="localNavigation"> 
                 <ul>
