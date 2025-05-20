@@ -38,8 +38,8 @@
                             会計管理
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="/../accounting/siwake_hyo/output_siwakehyo">Action</a></li>
+                            <li><a class="dropdown-item" href="/../accounting/siwake_hyo/input_siwakehyo.php">仕訳入力フォーム</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
