@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="siwakehyo.css" type="text/css">
+  <title>仕訳入力</title>
 </head>
 
 <body>
@@ -63,3 +64,9 @@
     <br>
     <p><button type="submit">確定</button></p>
   </form>
+  <p><a href="../../main.php">トップページに戻る</a></p>
+  <p><a href="input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../../index.php">ログアウト</a></p>
+</body>
+
+</html>

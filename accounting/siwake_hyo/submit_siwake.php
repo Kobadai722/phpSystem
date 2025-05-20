@@ -1,4 +1,16 @@
-<?php
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>仕訳登録完了</title>
+</head>
+
+<body>
+
+
+  <?php
   //仕訳ヘッダーの登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
   $sql->execute([$_POST['entry_date'], $_POST['description']]);
@@ -17,3 +29,9 @@
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
+
+  <p>仕訳が登録されました。</p>
+  <p><a href="input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../../main.php">トップページに戻る</a></p>
+</body>
+</html>
