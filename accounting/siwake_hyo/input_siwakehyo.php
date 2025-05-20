@@ -31,7 +31,7 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td>
-         <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
+         <select name="勘定科目"><!-- 借方科目 -->
             <?php
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
               echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
@@ -47,7 +47,7 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td>
-          <select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
+          <select name="勘定科目"><!-- 貸方科目 -->
             <?php
             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
               echo '<option value="' . $row['ID'] . '">' . $row['NAME'] . '</option>';
@@ -71,7 +71,7 @@
   //ヘッダーIDの取得
   $sql = $PDO->prepare('SELECT ID FROM JOURNAL_HEADERS WHERE ENTRY_DATE = ? AND DESCRIPTION = ?');
   $sql->execute([$_POST['entry_date'], $_POST['description']]);
-  $header_id = $pdo->lastInsertId();
+  $header_id = $PDO->lastInsertId();
 
   //借方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, 借方)');
