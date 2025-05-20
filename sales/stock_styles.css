@@ -7,13 +7,6 @@ body {
     flex-direction: column;
 }
 
-.globalNavigation{
-    height: 70px;
-    text-align: center;
-    background-color: #888;
-    color: #fff;
-}
-
 .localNavigation{
     text-align: center;
     background-color: #888;
@@ -27,8 +20,6 @@ body {
     text-align: center;
     margin-right: 10px;
 } 
-
-
 
 nav ul {
     list-style: none;
