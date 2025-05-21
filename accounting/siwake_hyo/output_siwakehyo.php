@@ -15,9 +15,10 @@
   session_start();
   ?>;
     <table>
-        <caption>📘 仕訳帳（デモ）</caption>
+      <caption>📘 仕訳帳（デモ）</caption>
         <thead>
           <tr>
+            <th>仕訳番号</th>
             <th>日付</th>
             <th>摘要</th>
             <th>借方科目</th>
@@ -26,74 +27,33 @@
             <th>貸方金額</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>
-              <?php
-              // 日付の取得
-                $sql = $PDO->prepare('SELECT ENTRY_DATE FROM JOURNAL_HEADERS');
-                $sql->execute();
-                foreach ($sql as $entry_date) {
-                  echo $row['ENTRY_DATE'];
-                }
-              ?>
-            </td>
-            <td class="left">
-              <?php
-              // 摘要の取得
-                $sql = $PDO->prepare('SELECT DESCRIPTION FROM JOURNAL_HEADERS');
-                $sql->execute();
-                foreach ($sql as $description) {
-                  echo $row['DESCRIPTION'];
-                }
-              ?>
-            </td>
-            <td>現金</td>
-            <td>¥100,000</td>
-            <td>売上高</td>
-            <td>¥100,000</td>
-          </tr>
-          <tr>
-            <td>2025/04/22</td>
-            <td class="left">事務用品購入</td>
-            <td>消耗品費</td>
-            <td>¥5,000</td>
-            <td>現金</td>
-            <td>¥5,000</td>
-          </tr>
-          <tr>
-            <td>2025/04/22</td>
-            <td class="left">給与支払</td>
-            <td>給与手当</td>
-            <td>¥200,000</td>
-            <td>普通預金</td>
-            <td>¥200,000</td>
-          </tr>
-        </tbody>
-      </table>
-<!--      <?php
-  // ダミーデータ（将来DBから取得される想定）
-  $entries = [
-    ['date' => '2025/04/22', 'desc' => '商品販売', 'debit' => '現金', 'debit_amt' => '100000', 'credit' => '売上高', 'credit_amt' => '100000'],
-    ['date' => '2025/04/22', 'desc' => '事務用品購入', 'debit' => '消耗品費', 'debit_amt' => '5000', 'credit' => '現金', 'credit_amt' => '5000'],
-    ['date' => '2025/04/22', 'desc' => '給与支払', 'debit' => '給与手当', 'debit_amt' => '200000', 'credit' => '普通預金', 'credit_amt' => '200000']
-  ];
-
-  foreach ($entries as $entry) {
-    echo "<tr>
-            <td>{$entry['date']}</td>
-            <td>{$entry['debit']}</td>
-            <td>¥" . number_format($entry['debit_amt']) . "</td>
-            <td>{$entry['credit']}</td>
-            <td>¥" . number_format($entry['credit_amt']) . "</td>
-            <td class='left'>{$entry['desc']}</td>
-          </tr>";
+        <!-- 一覧表示のためのデータ取得 -->
+        <?php
+        // DB接続
+        require_once '../../config.php';
+        // セッション開始
+        session_start();
+        //一覧表示のための事前準備
+        //仕訳ヘッダー表と仕訳明細表を結合
+        $sql = $PDO->prepare('SELECT * FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRY ON JOURNAL_HEADERS.ID = JOURNAL_ENTRY.HEADER_ID');
+        $sql->execute();
+        // 取得したデータを配列に格納
+        $entries = $sql->fetchAll(PDO::FETCH_ASSOC);
+        // 取得したデータを表示
+        foreach ($entries as $entry) {
+            echo '<tbody>';
+              echo '<tr>';
+                echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
+                echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
+                echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
+                echo '<td>' . $entry['DEBIT_ACCOUNT'] . '</td>'; // 借方科目
+                echo '<td>' . $entry['DEBIT_AMOUNT'] . '</td>'; // 借方金額
+                echo '<td>' . $entry['CREDIT_ACCOUNT'] . '</td>'; // 貸方科目
+                echo '<td>' . $entry['CREDIT_AMOUNT'] . '</td>'; // 貸方金額
+              echo '</tr>';
+            echo '</tbody>';
         }
-    ?>
--->
-
-    </tbody>
-  </table>
-
+        ?>
+    </table>
 </body>
 </html>
