@@ -9,11 +9,16 @@
     <link>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../style.css" rel="stylesheet" />
+    <link href="customer.css" rel="stylesheet" />
 </head>
 <?php include '../header.php'; ?>
 <body>
     <main>
+        <div class="gray-box">
+            <h3>検索</h3>
+        </div>
         <p>商品検索</p>
         <form action="search-output.php" method="post">
             <p><input type="text" name="keyword"></p>
