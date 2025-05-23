@@ -42,6 +42,7 @@
             $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
             $sql->execute();
             $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+
             // 取得したデータを表示
             foreach ($accounts as $account) {
               echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
@@ -56,11 +57,6 @@
 
         <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
-            //勘定科目の取得
-            $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
-            $sql->execute();
-            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-            // 取得したデータを表示
             foreach ($accounts as $account) {
               echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
             }
