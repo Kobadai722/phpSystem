@@ -50,7 +50,7 @@
             ?>
         </td>
 
-        <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
+        <td><input type="Intl.NumberFormat" name="debit_amount"></td> <!-- 借方金額 -->
 
         <!--貸方部分-->
         <td><input type="date" name="entry_date"></td><!-- 日付 -->
