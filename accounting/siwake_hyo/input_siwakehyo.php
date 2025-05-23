@@ -31,12 +31,12 @@
       <!-- 仕訳明細 -->
       <!--借方部分-->
       <tr>
-        <td><input type="date" name="entry_date"></td><!-- 日付 -->
+        <td><input type="date" name="entry_date" require></td><!-- 日付 -->
 
-        <td><input type="text" name="description"></td> <!-- 摘要 -->
+        <td><input type="text" name="description" require></td> <!-- 摘要 -->
 
         <td>
-          <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
+          <select name="勘定科目" name="debit_account" require> <!-- 借方科目 -->
             <?php
             //勘定科目の取得
             $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
@@ -45,30 +45,31 @@
 
             // 取得したデータを表示
             foreach ($accounts as $account) {
-              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
+              echo '<option value="' . $account['NAME'] . '" require>' . $account['NAME'] . '</option>';
             }
             ?>
         </td>
 
-        <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
+        <td><input type="number" name="debit_amount" require></td> <!-- 借方金額 -->
 
         <!--貸方部分-->
-        <td><input type="date" name="entry_date"></td><!-- 日付 -->
+        <td><input type="date" name="entry_date" require></td><!-- 日付 -->
 
-        <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
+        <td><select name="勘定科目" name="credit_account require"><!-- 貸方科目 -->
             <?php
             foreach ($accounts as $account) {
-              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
+              echo '<option value="' . $account['NAME'] . '" require>' . $account['NAME'] . '</option>';
             }
             ?>
         </td>
 
-        <td><input type="number" name="credit_amount"></td> <!-- 貸方金額 -->
+        <td><input type="number" name="credit_amount" require></td> <!-- 貸方金額 -->
 
       </tr>
     </table>
     <br>
     <button type="submit">登録</button>
+
   </form>
 </body>
 </html>
