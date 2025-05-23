@@ -15,7 +15,7 @@
   session_start();
   ?>
 
-  <form action="submit_siwakehyo.php" method="post">
+  <form action="submit_siwake.php" method="post">
     <table>
       <tr>
         <!-- 仕訳ヘッダー-->
