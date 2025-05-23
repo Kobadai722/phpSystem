@@ -40,6 +40,7 @@
         <td>
           <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
             <?php
+            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
             // 取得したデータを表示
             foreach ($accounts as $account) {
               echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
