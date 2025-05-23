@@ -31,7 +31,7 @@
         <td>貸方金額</td>
       </tr>
       <!-- 仕訳明細 -->
-      <!--借方科目-->
+      <!--借方部分-->
       <tr>
         <td><input type="date" name="entry_date"></td><!-- 日付 -->
 
@@ -49,7 +49,7 @@
 
         <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
 
-        <!--貸方科目-->
+        <!--貸方部分-->
         <td><input type="date" name="entry_date"></td><!-- 日付 -->
 
         <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
@@ -64,6 +64,7 @@
         </td>
 
         <td><input type="number" name="credit_amount"></td> <!-- 貸方金額 -->
+
       </tr>
     </table>
     <br>
