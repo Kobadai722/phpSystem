@@ -13,7 +13,7 @@
   require_once '../../config.php';
   // セッション開始
   session_start();
-  ?>;
+  ?>
     <table>
       <caption>📘 仕訳帳（デモ）</caption>
         <thead>

@@ -9,12 +9,12 @@
 
 <body>
   <?php
-    // DB接続
+  // DB接続
   require_once '../../config.php';
   // セッション開始
   session_start();
-
   ?>
+
   <form action="submit_siwakehyo.php" method="post">
     <table>
       <tr>
