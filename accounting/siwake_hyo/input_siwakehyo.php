@@ -13,9 +13,7 @@
   require_once '../../config.php';
   // セッション開始
   session_start();
-  //勘定科目の取得
-  $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
-  $sql->execute();
+
   ?>
   <form action="submit_siwakehyo.php" method="post">
     <table>
@@ -40,6 +38,9 @@
         <td>
           <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
             <?php
+            //勘定科目の取得
+            $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
+            $sql->execute();
             $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
             // 取得したデータを表示
             foreach ($accounts as $account) {
@@ -55,7 +56,9 @@
 
         <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
-            // 取得したデータを配列に格納
+            //勘定科目の取得
+            $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
+            $sql->execute();
             $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
             // 取得したデータを表示
             foreach ($accounts as $account) {
