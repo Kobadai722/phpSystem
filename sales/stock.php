@@ -27,14 +27,33 @@
                         <button class="btn btn-primary" type="submit">検索</button>
                     </div>
                 </section>
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered stable table-hover">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
                             <tr>
-                                <th>商品名</th>
-                                <th>単価</th>
-                                <th>在庫数</th>
-                                <th>商品ID</th>
-                                <th>商品区分</th>
+                                <th scope="col">商品ID</th>
+                                <th scope="col">商品名</th>
+                                <th scope="col">単価</th>
+                                <th scope="col">在庫数</th>
+                                <th scope="col">商品区分</th>
+                                <?php
+                                    require_once '../config.php';
+                                    $sql = " SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.UNIT_SELLING_PRICE,S.STOCK_QUANTITY,K.PRODUCT_KUBUN_NAME
+                                    FROM PRODUCT P
+                                    LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
+                                    LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
+                                    foreach($PDO->query($sql) as $row){
+                                ?>
+                                
+                                <tr>
+                                <td scope="row"><?=$row['PRODUCT_ID']?></td>
+                                <td><?=$row['PRODUCT_NAME']?></td>
+                                <td><?=$row['UNIT_SELLING_PRICE']?></td>
+                                <td><?=$row['STOCK_QUANTITY']?></td>
+                                <td><?=$row['PRODUCT_KUBUN_NAME']?></td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
                             </tr>
                         </thead>
                             <!-- theadタグとtbodyタグについてですね。 これは表の見出し部分と本体部分を区別するためのタグなんだよ。例えば、テーブルに複数の行がある場合、
