@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+<h3>以下の内容で仕訳が登録されました</h3>
 
   <?php
   //仕訳ヘッダーの登録
@@ -22,16 +22,17 @@
   $header_id = $PDO->lastInsertId();
 
   //借方の登録
-  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, 借方)');
-  $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount']]);
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
+  $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount'], '借方']);
 
   //貸方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
 
-  <p>仕訳が登録されました。</p>
   <p><a href="input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="output_siwakehyo.php">仕訳一覧表示</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
+
 </html>
