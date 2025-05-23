@@ -8,6 +8,15 @@
 </head>
 
 <body>
+  <?php
+    // DB接続
+  require_once '../../config.php';
+  // セッション開始
+  session_start();
+  //勘定科目の取得
+  $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
+  $sql->execute();
+  ?>
   <form action="submit_siwakehyo.php" method="post">
     <table>
       <tr>
@@ -29,7 +38,14 @@
 
         <td>
           <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
-            <option value="">売掛金</option>
+            <?php
+            // 取得したデータを配列に格納
+            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+            // 取得したデータを表示
+            foreach ($accounts as $account) {
+              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
+            }
+            ?>
         </td>
 
         <td><input type="number" name="debit_amount"></td> <!-- 借方金額 -->
@@ -40,7 +56,14 @@
         <td><input type="text" name="description"></td> <!-- 摘要 -->
 
         <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
-            <option value="">売掛金</option>
+            <?php
+            // 取得したデータを配列に格納
+            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+            // 取得したデータを表示
+            foreach ($accounts as $account) {
+              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
+            }
+            ?>
         </td>
 
         <td><input type="number" name="credit_amount"></td> <!-- 貸方金額 -->
