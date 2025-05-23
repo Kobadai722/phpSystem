@@ -45,7 +45,7 @@
 
             // 取得したデータを表示
             foreach ($accounts as $account) {
-              echo '<option value="' . $account['NAME'] . '" required>' . $account['NAME'] . '</option>';
+              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
             }
             ?>
         </td>
@@ -58,7 +58,7 @@
         <td><select name="勘定科目" required><!-- 貸方科目 -->
             <?php
             foreach ($accounts as $account) {
-              echo '<option value="' . $account['NAME'] . '" required>' . $account['NAME'] . '</option>';
+              echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
             }
             ?>
         </td>

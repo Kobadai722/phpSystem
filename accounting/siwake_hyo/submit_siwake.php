@@ -9,6 +9,10 @@
 <h3>以下の内容で仕訳が登録されました</h3>
 
   <?php
+  // DB接続
+  require_once '../../config.php';
+  // セッション開始
+  session_start();
   //仕訳ヘッダーの登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
   $sql->execute([$_POST['entry_date'], $_POST['description']]);
