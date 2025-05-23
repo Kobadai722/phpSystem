@@ -52,8 +52,6 @@
         <!--貸方科目-->
         <td><input type="date" name="entry_date"></td><!-- 日付 -->
 
-        <td><input type="text" name="description"></td> <!-- 摘要 -->
-
         <td><select name="勘定科目" name="credit_account"><!-- 貸方科目 -->
             <?php
             // 取得したデータを配列に格納
