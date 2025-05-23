@@ -24,7 +24,7 @@
         <td>日付</td>
         <td>摘要</td>
         <!-- 仕訳明細-->
-         <td>借方科目</td>
+        <td>借方科目</td>
         <td>借方金額</td>
         <td>貸方科目</td>
         <td>貸方金額</td>
@@ -39,8 +39,6 @@
         <td>
           <select name="勘定科目" name="debit_account"> <!-- 借方科目 -->
             <?php
-            // 取得したデータを配列に格納
-            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
             // 取得したデータを表示
             foreach ($accounts as $account) {
               echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
