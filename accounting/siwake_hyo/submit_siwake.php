@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
 
   <title>仕訳登録完了</title>
 </head>
-
 <body>
 <h3>以下の内容で仕訳が登録されました</h3>
 
@@ -34,5 +32,4 @@
   <p><a href="output_siwakehyo.php">仕訳一覧表示</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
-
 </html>
