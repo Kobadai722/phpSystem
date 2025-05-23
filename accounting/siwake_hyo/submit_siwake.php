@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ja">
 <head>
   <meta charset="UTF-8">
 
   <title>仕訳登録完了</title>
 </head>
-
 <body>
 <h3>以下の内容で仕訳が登録されました</h3>
 
   <?php
+  // DB接続
+  require_once '../../config.php';
+  // セッション開始
+  session_start();
   //仕訳ヘッダーの登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
   $sql->execute([$_POST['entry_date'], $_POST['description']]);
@@ -34,5 +36,4 @@
   <p><a href="output_siwakehyo.php">仕訳一覧表示</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
-
 </html>
