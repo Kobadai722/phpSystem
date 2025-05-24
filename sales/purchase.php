@@ -7,7 +7,6 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <title>仕入管理</title>
     <link rel="stylesheet" href="styles.css">
-    
 </head>
 <?php include '../header.php'; ?>
 <main>
