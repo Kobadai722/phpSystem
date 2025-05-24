@@ -8,6 +8,7 @@
     <title>売上管理</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+<?php include '../header.php'; ?>
 <body>
     <main>
             <nav class="localNavigation"> 
