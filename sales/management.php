@@ -8,17 +8,18 @@
     <title>売上管理</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<?php include '../header.php'; ?>
-<nav class="localNavigation"> 
-                <ul>
-                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">在庫管理</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
-                </ul>
-            </nav>
 <body>
-    おほほ
+    <main>
+    <?php include '../header.php'; ?>
+        <nav class="localNavigation"> 
+            <ul>
+                <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">在庫管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
+            </ul>
+        </nav>
+    </main>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
