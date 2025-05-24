@@ -10,6 +10,18 @@
     
 </head>
 <?php include '../header.php'; ?>
+<main>
+    <nav class="localNavigation"> 
+                <ul>
+                    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">在庫管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">入出庫管理</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">発注管理</a></li>
+                </ul>
+            </nav>
+
+</main>
+
 <body>
     おほほ
 </body>
