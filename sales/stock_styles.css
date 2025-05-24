@@ -1,24 +1,5 @@
 /* stock_styles.css */
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-.content{
-    flex: auto;
-    background-color: #eee;
-    text-align: center;
-    margin-right: 10px;
-} 
-
-nav ul {
-    list-style: none;
-    padding: 0;
-}
-
 
 /*main に display: flex; をつけたら、
 中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
