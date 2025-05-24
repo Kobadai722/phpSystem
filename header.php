@@ -18,7 +18,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/../sales/stock.php">在庫管理システム</a></li>
-                            <li><a class="dropdown-item" href="/../ales/management.php">売上管理システム</a></li>
+                            <li><a class="dropdown-item" href="/../sales/management.php">売上管理システム</a></li>
                             <li><a class="dropdown-item" href="/../sales/purchase.php">仕入管理システム</a></li>
                         </ul>
                     </li>
