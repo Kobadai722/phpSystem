@@ -7,13 +7,6 @@ body {
     flex-direction: column;
 }
 
-.localNavigation{
-    text-align: center;
-    background-color: #888;
-    color: #fff;
-    width: 250px;
-}
-
 .content{
     flex: auto;
     background-color: #eee;

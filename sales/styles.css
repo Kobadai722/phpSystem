@@ -2,3 +2,10 @@ main {
     max-width: 1300px;
     margin: 3.5rem auto;
 }
+
+.localNavigation{
+    text-align: center;
+    background-color: #888;
+    color: #fff;
+    width: 250px;
+}

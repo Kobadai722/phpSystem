@@ -7,6 +7,7 @@
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <title>在庫管理システム</title>
         <link rel="stylesheet" href="stock_styles.css">
+        <link rel="stylesheet" href="styles.css">
     </head>
     <?php include '../header.php'; ?>
     <body>
