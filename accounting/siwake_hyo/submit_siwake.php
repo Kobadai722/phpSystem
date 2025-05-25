@@ -7,6 +7,25 @@
 </head>
 <body>
 <h3>以下の内容で仕訳が登録されました</h3>
+<table border="1">
+  <tr>
+    <th>日付</th>
+    <th>摘要</th>
+    <th>借方科目</th>
+    <th>借方金額</th>
+    <th>貸方科目</th>
+    <th>貸方金額</th>
+  </tr>
+  <tr>
+      <td><?php $_POST['entry_date'] ?></td>
+      <td><?php $_POST['description'] ?></td>
+      <td><?php $_POST['debit_account'] ?></td>
+      <td><?php $_POST['debit_amount'] ?></td>
+      <td><?php $_POST['credit_account'] ?></td>
+      <td><?php $_POST['credit_amount'] ?></td>
+
+
+
   <?php
     // 入力チェック
     if (

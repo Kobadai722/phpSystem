@@ -28,32 +28,40 @@
           </tr>
         </thead>
         <!-- 一覧表示のためのデータ取得 -->
-        <?php
-        // DB接続
-        require_once '../../config.php';
-        // セッション開始
-        session_start();
-        //一覧表示のための事前準備
-        //仕訳ヘッダー表と仕訳明細表を結合
-        $sql = $PDO->prepare('SELECT * FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
-        $sql->execute();
-        // 取得したデータを配列に格納
-        $entries = $sql->fetchAll(PDO::FETCH_ASSOC);
-        // 取得したデータを表示
-        foreach ($entries as $entry) {
-            echo '<tbody>';
-              echo '<tr>';
-                echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
-                echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
-                echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
-                echo '<td>' . $entry['DEBIT_ACCOUNT'] . '</td>'; // 借方科目
-                echo '<td>' . $entry['DEBIT_AMOUNT'] . '</td>'; // 借方金額
-                echo '<td>' . $entry['CREDIT_ACCOUNT'] . '</td>'; // 貸方科目
-                echo '<td>' . $entry['CREDIT_AMOUNT'] . '</td>'; // 貸方金額
-              echo '</tr>';
-            echo '</tbody>';
-        }
-        ?>
+        <tbody>
+          <tr>
+            <?php
+            //一覧表示のための事前準備
+            //仕訳ヘッダー表と仕訳明細表を結合
+            $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID AS SIWAKEHYO' );
+            $sql->execute();
+            // 取得したデータを配列に格納
+            $entry = $sql->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($entries as $entry) {
+                    echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
+                    echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
+                    echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
+            }
+            $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM SIWAKEHYO INNER JOIN ACCOUNTS ON JOURNAL_HEADERS.ACCOUNT_ID = ACCOUNTS.ID AS SIWAKEHYO_FULL WHERE TYPE = "借方"');
+            $sql->execute();
+
+            // 取得したデータを表示
+            $debit_entry = $sql->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($entries as $debit_entry) {
+                echo '<td>' . $entries['DEBIT_ACCOUNT'] . '</td>'; // 借方科目
+                echo '<td>' . $entries['DEBIT_AMOUNT'] . '</td>'; // 借方金額
+              }
+            $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM SIWAKEHYO_FULL WHERE TYPE = "貸方"');
+            $sql->execute();
+
+            // 取得したデータを表示
+            foreach ($entries as $credit_entry) {
+                    echo '<td>' . $entries['CREDIT_ACCOUNT'] . '</td>'; // 貸方科目
+                    echo '<td>' . $entries['CREDIT_AMOUNT'] . '</td>'; // 貸方金額
+            }
+            ?>
+          </tr>
+        </tbody>';
     </table>
 </body>
 </html>
