@@ -20,11 +20,11 @@
   // 勘定科目のIDを取得するためのSQL
   $header_id = $PDO->lastInsertId();
   //借方の登録
-  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount'], '借方']);
 
   //貸方の登録
-  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRY (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
+  $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
 

@@ -36,7 +36,7 @@
         <td><input type="text" name="description" required></td> <!-- 摘要 -->
 
         <td>
-          <select name="勘定科目" required> <!-- 借方科目 -->
+          <select name="'debit_account" required> <!-- 借方科目 -->
             <?php
             //勘定科目の取得
             $sql = $PDO->prepare('SELECT NAME FROM ACCOUNTS');
@@ -55,7 +55,7 @@
         <!--貸方部分-->
         <td><input type="date" name="entry_date" required></td><!-- 日付 -->
 
-        <td><select name="勘定科目" required><!-- 貸方科目 -->
+        <td><select name="credit_account" required><!-- 貸方科目 -->
             <?php
             foreach ($accounts as $account) {
               echo '<option value="' . $account['NAME'] . '">' . $account['NAME'] . '</option>';
