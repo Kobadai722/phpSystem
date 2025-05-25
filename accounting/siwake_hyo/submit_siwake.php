@@ -7,8 +7,20 @@
 </head>
 <body>
 <h3>以下の内容で仕訳が登録されました</h3>
-
   <?php
+    // 入力チェック
+    if (
+      empty($_POST['entry_date']) ||
+      empty($_POST['description']) ||
+      empty($_POST['debit_account']) ||
+      empty($_POST['debit_amount']) ||
+      empty($_POST['credit_account']) ||
+      empty($_POST['credit_amount'])
+  ) {
+      echo 'すべての項目を入力してください。<a href="../siwake_hyo/input_siwakehyo.php">戻る</a>';
+      exit;
+  }
+
   // DB接続
   require_once '../../config.php';
   // セッション開始
