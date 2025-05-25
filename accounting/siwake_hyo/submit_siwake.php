@@ -32,8 +32,8 @@
   $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
 
-  <p><a href="input_siwakehyo.php">仕訳入力画面に戻る</a></p>
-  <p><a href="output_siwakehyo.php">仕訳一覧表示</a></p>
+  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
 </html>
