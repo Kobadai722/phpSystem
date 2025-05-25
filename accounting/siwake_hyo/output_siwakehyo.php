@@ -36,7 +36,7 @@
             $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID AS SIWAKEHYO' );
             $sql->execute();
             // 取得したデータを配列に格納
-            $entry = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $entry = $sql->fetch(PDO::FETCH_ASSOC);
             foreach ($entries as $entry) {
                     echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
                     echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
@@ -46,7 +46,7 @@
             $sql->execute();
 
             // 取得したデータを表示
-            $debit_entry = $sql->fetchAll(PDO::FETCH_ASSOC);
+            $debit_entry = $sql->fetch(PDO::FETCH_ASSOC);
             foreach ($entries as $debit_entry) {
                 echo '<td>' . $entries['DEBIT_ACCOUNT'] . '</td>'; // 借方科目
                 echo '<td>' . $entries['DEBIT_AMOUNT'] . '</td>'; // 借方金額
