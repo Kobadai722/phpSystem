@@ -36,7 +36,7 @@
                         JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
                         ) as $row)
             */
-            foreach ($pdo->query(
+            foreach ($PDO->query(
                 'SELECT e.*,
                         d.DIVISION_ID,
                         j.JOB_POSITION
