@@ -33,7 +33,7 @@
         <?php
         //一覧表示のための事前準備
         //仕訳ヘッダー表と仕訳明細表を結合
-        $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
+        $sql = $PDO->prepare('SELECT JOURNAL_HEADERS.ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
         // 取得したデータを配列に格納
         $entries = $sql->fetchALL(PDO::FETCH_ASSOC);
@@ -42,7 +42,7 @@
           echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
           echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "借方"');
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = "借方"');
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
@@ -51,7 +51,7 @@
           echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
           echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "貸方"');
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = "貸方"');
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
@@ -71,5 +71,4 @@
     <p>© 2025 <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy"></p>
 
 </body>
-
 </html>
