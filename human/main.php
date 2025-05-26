@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -24,6 +23,7 @@
         <table class="table table-hover">
             <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
+            session_start();
                 foreach($PDO->query(
                     'SELECT e.*, 
                         d.DIVISION_NAME, 
