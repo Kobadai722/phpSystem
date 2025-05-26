@@ -57,34 +57,8 @@
               echo '</tr>';
             }
           }
-        // 借方
-        $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-        $sql2->execute([$entry['ID'], '借方']);
-        $debit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
-        // 貸方
-        $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-        $sql3->execute([$entry['ID'], '貸方']);
-        $credit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
-
-          echo '<tr>';
-          echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
-          echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
-          echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
-          echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
-          echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
-          echo '<td>' . $entry['NAME'] . '</td>'; // 貸方科目
-          echo '<td>' . $entry['AMOUNT'] . '</td>'; // 貸方金額
-          echo '</tr>';
-
-
-
-
-
-
-
-
-
-
+        }
+        ?>
     </tbody>
   </table>
   <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
