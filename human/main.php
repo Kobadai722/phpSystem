@@ -24,7 +24,7 @@
         <table class="table table-hover">
             <tr><th scope="col">社員番号</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">勤怠管理</th><th scope="col">勤怠状況</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-            foreach($PDO->query('SELECT e.*, 
+            foreach($pdo->query('SELECT e.*, 
                         d.DIVISION_ID, 
                         j.JOB_POSITION
                     FROM 
