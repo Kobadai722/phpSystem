@@ -61,6 +61,7 @@
             echo '<td>' . $entry['AMOUNT'] . '</td>'; // 貸方金額
             echo '</tr>';
           }
+        }
         ?>
 
     </tbody>
