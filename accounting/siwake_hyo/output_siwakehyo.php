@@ -43,7 +43,7 @@
           echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
 
           $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-          $sql->execute([$entry['ID'], '借方']);
+          $sql2->execute([$entry['ID'], '借方']);
 
           // 借方
           $debit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
@@ -52,7 +52,7 @@
             echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
           }
           $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-          $sql->execute([$entry['ID'], '貸方']);
+          $sql3->execute([$entry['ID'], '貸方']);
 
           // 貸方
           $credit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
