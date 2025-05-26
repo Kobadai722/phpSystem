@@ -71,5 +71,4 @@
     <p>© 2025 <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy"></p>
 
 </body>
-
 </html>
