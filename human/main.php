@@ -24,17 +24,18 @@
         <table class="table table-hover">
             <tr><th scope="col">社員番号</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">勤怠管理</th><th scope="col">勤怠状況</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-            foreach($pdo->query('SELECT e.*, 
-                        d.DIVISION_ID, 
-                        j.JOB_POSITION
+            foreach($PDO->query(
+                    'SELECT e.*, 
+                        d.DIVISION_NAME, 
+                        j.POSITION_NAME
                     FROM 
-                        MPLOYEE e
+                        EMPLOYEE e
                     LEFT JOIN 
                         DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                     LEFT JOIN 
-                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID;
-        ') as $row)
-
+                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
+                        ) as $row)
+            
             { ?> 
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
