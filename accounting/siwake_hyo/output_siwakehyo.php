@@ -33,7 +33,7 @@
         <?php
         //一覧表示のための事前準備
         //仕訳ヘッダー表と仕訳明細表を結合
-        $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
+        $sql = $PDO->prepare('SELECT JOURNAL_HEADERS.ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
         // 取得したデータを配列に格納
         $entries = $sql->fetchALL(PDO::FETCH_ASSOC);
