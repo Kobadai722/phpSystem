@@ -42,7 +42,7 @@
           echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
           echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "借方"');
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_HEADERS.TYPE = "借方"');
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
@@ -51,7 +51,7 @@
           echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
           echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "貸方"');
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_HEADERS.TYPE = "貸方"');
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
