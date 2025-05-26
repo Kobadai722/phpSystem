@@ -1,4 +1,3 @@
-<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -22,26 +21,27 @@
 
         
         <table class="table table-hover">
-            <tr><th scope="col">社員番号</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">勤怠管理</th><th scope="col">勤怠状況</th></tr>
+            <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-            foreach($PDO->query('SELECT e.*, 
-                        d.DIVISION_ID, 
-                        j.JOB_POSITION
+            session_start();
+                foreach($PDO->query(
+                    'SELECT e.*, 
+                        d.DIVISION_NAME, 
+                        j.POSITION_NAME
                     FROM 
                         EMPLOYEE e
                     LEFT JOIN 
                         DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                     LEFT JOIN 
-                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID
-        ') as $row)
-
+                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
+                        ) as $row)
+            
             { ?> 
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
                     <td><?=$row['NAME']?></td>
-                    <td><?=$row['CELL_NUMBER']?></td>
                     <td><?=$row['DIVISION_ID'] //部署 ?></td>
-                    <td><?=$row['JOB_POSITION_ID'] //部署 ?></td>
+                    <td><?=$row['JOB_POSITION_ID'] //職位 ?></td>
                     <td><?=$row['ADDRESS']?></td> 
                     <td><?=$row['URGENCY_CELL_NUMBER']?></td>
         </tr>
