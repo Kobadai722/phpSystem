@@ -28,11 +28,11 @@
                         d.DIVISION_ID, 
                         j.JOB_POSITION
                     FROM 
-                        MPLOYEE e
+                        EMPLOYEE e
                     LEFT JOIN 
                         DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                     LEFT JOIN 
-                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID;
+                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID
         ') as $row)
 
             { ?> 
