@@ -17,13 +17,35 @@
 <body>
     <main>
         <div class="gray-box">
-            <h3>検索</h3>
+            <form action="search-output.php" method="post" class="mb-4">
+        <div class="mb-2">
+            <label for="customerid" class="form-label">顧客ID</label>
+            <input type="text" name="customerid" id="customerid" class="form-control">
         </div>
-        <p>商品検索</p>
-        <form action="search-output.php" method="post">
-            <p><input type="text" name="keyword"></p>
-            <p><input type="submit" value="検索"></p>
-        </form>
+        <div class="mb-2">
+            <label for="name" class="form-label">氏名</label>
+            <input type="text" name="name" id="name" class="form-control">
+        </div>
+        <div class="mb-2">
+            <label for="cell_number" class="form-label">電話番号</label>
+            <input type="text" name="cell_number" id="cell_number" class="form-control">
+        </div>
+        <div class="mb-2">
+            <label for="mail" class="form-label">メールアドレス</label>
+            <input type="text" name="mail" id="mail" class="form-control">
+        </div>
+        <div class="mb-2">
+            <label for="post_code" class="form-label">郵便番号</label>
+            <input type="text" name="post_code" id="post_code" class="form-control">
+        </div>
+        <div class="mb-3">
+            <label for="address" class="form-label">住所</label>
+            <input type="text" name="address" id="address" class="form-control">
+        </div>
+        <input type="submit" value="検索" class="btn btn-primary">
+</form>
+
+        </div>
         <table class="table table-hover">
             <tr><th scope="col">顧客ID</th><th scope="col">氏名</th><th scope="col">電話番号</th><th scope="col">メールアドレス</th><th scope="col">郵便番号</th><th scope="col">住所</th></tr>
             <?php
