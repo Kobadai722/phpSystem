@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>仕訳帳（デモ）</title>
+  <title>仕訳帳</title>
   <link rel="stylesheet" href="siwakehyo.css" type="text/css">
 </head>
 
@@ -33,17 +33,17 @@
         <?php
         //一覧表示のための事前準備
         //仕訳ヘッダー表と仕訳明細表を結合
-        $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM (JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID) AS SIWAKEHYO');
+        $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
         // 取得したデータを配列に格納
-        $entry = $sql->fetch(PDO::FETCH_ASSOC);
+        $entries = $sql->fetch(PDO::FETCH_ASSOC);
         foreach ($entries as $entry) {
           echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
           echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
           echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM SIWAKEHYO INNER JOIN ACCOUNTS ON JOURNAL_HEADERS.ACCOUNT_ID = ACCOUNTS.ID AS SIWAKEHYO_FULL WHERE TYPE = "借方"');
-        $sql->execute();
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "借方"');
+        $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
         $debit_entry = $sql->fetch(PDO::FETCH_ASSOC);
@@ -51,8 +51,8 @@
           echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
           echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
         }
-        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM SIWAKEHYO_FULL WHERE TYPE = "貸方"');
-        $sql->execute();
+        $sql = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND TYPE = "貸方"');
+        $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
         foreach ($credit_entry as $entry) {
@@ -61,8 +61,14 @@
         }
         ?>
       </tr>
-    </tbody>';
+    </tbody>;
   </table>
+  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../../main.php">トップページに戻る</a></p>
+
+  <footer>
+    <p>© 2025 <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy"></p>
+
 </body>
 
 </html>
