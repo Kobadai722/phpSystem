@@ -32,37 +32,58 @@
         <?php
         //一覧表示のための事前準備
         //仕訳ヘッダー表と仕訳明細表を結合
+
+        // 仕訳ヘッダー
         $sql = $PDO->prepare('SELECT JOURNAL_HEADERS.ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
-        // 取得したデータを配列に格納
         $entries = $sql->fetchALL(PDO::FETCH_ASSOC);
         foreach ($entries as $entry) {
+          echo '<tr>';
+          $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
+          $sql2->execute([$entry['ID'], '借方']);
+          $debit_entry = $sql2->fetchALL(PDO::FETCH_ASSOC);
+          $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
+          $sql3->execute([$entry['ID'], '貸方']);
+          $credit_entry = $sql3->fetchALL(PDO::FETCH_ASSOC);
+          foreach ($debit_entry as $debit) {
+            foreach ($credit_entry as $credit) {
+              echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
+              echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
+              echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
+              echo '<td>' . $debit['NAME'] . '</td>'; // 借方科目
+              echo '<td>' . $debit['AMOUNT'] . '</td>'; // 借方金額
+              echo '<td>' . $credit['NAME'] . '</td>'; // 貸方科目
+              echo '<td>' . $credit['AMOUNT'] . '</td>'; // 貸方金額
+              echo '</tr>';
+            }
+          }
+        // 借方
+        $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
+        $sql2->execute([$entry['ID'], '借方']);
+        $debit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
+        // 貸方
+        $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
+        $sql3->execute([$entry['ID'], '貸方']);
+        $credit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
+
           echo '<tr>';
           echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
           echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
           echo '<td>' . $entry['DESCRIPTION'] . '</td>'; // 摘要
+          echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
+          echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
+          echo '<td>' . $entry['NAME'] . '</td>'; // 貸方科目
+          echo '<td>' . $entry['AMOUNT'] . '</td>'; // 貸方金額
+          echo '</tr>';
 
-          $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-          $sql2->execute([$entry['ID'], '借方']);
 
-          // 借方
-          $debit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
-          foreach ($debit_entry as $entry) {
-            echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
-            echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
-          }
-          $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
-          $sql3->execute([$entry['ID'], '貸方']);
 
-          // 貸方
-          $credit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
-          foreach ($credit_entry as $entry) {
-            echo '<td>' . $entry['NAME'] . '</td>'; // 貸方科目
-            echo '<td>' . $entry['AMOUNT'] . '</td>'; // 貸方金額
-            echo '</tr>';
-          }
-        }
-        ?>
+
+
+
+
+
+
 
     </tbody>
   </table>
