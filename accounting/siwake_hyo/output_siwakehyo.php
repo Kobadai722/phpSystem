@@ -36,7 +36,7 @@
         $sql = $PDO->prepare('SELECT ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
         // 取得したデータを配列に格納
-        $entries = $sql->fetch(PDO::FETCH_ASSOC);
+        $entries = $sql->fetchALL(PDO::FETCH_ASSOC);
         foreach ($entries as $entry) {
           echo '<td>' . $entry['ID'] . '</td>'; // 仕訳番号
           echo '<td>' . $entry['ENTRY_DATE'] . '</td>'; // 日付
@@ -46,7 +46,7 @@
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
-        $debit_entry = $sql->fetch(PDO::FETCH_ASSOC);
+        $debit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
         foreach ($debit_entry as $entry) {
           echo '<td>' . $entry['NAME'] . '</td>'; // 借方科目
           echo '<td>' . $entry['AMOUNT'] . '</td>'; // 借方金額
@@ -55,13 +55,14 @@
         $sql->execute([$entry['ID']]);
 
         // 取得したデータを表示
+        $credit_entry = $sql->fetchALL(PDO::FETCH_ASSOC);
         foreach ($credit_entry as $entry) {
           echo '<td>' . $entry['NAME'] . '</td>'; // 貸方科目
           echo '<td>' . $entry['AMOUNT'] . '</td>'; // 貸方金額
         }
         ?>
       </tr>
-    </tbody>;
+    </tbody>
   </table>
   <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
