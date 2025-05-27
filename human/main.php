@@ -40,12 +40,12 @@
                 $row=$sql->fetchALL($PDO::FETCH_ASSOC);
                 foreach($sql as $row){
                 echo '<tr>';
-                    echo '<td scope="row"><?=$row['EMPLOYEE_ID']?></td>';
-                    echo '<td><?=$row['NAME']?></td>';
-                    echo '<td><?=$row['DIVISION_ID'] //部署 ?></td>';
-                    echo '<td><?=$row['JOB_POSITION_ID'] //職位 ?></td>';
-                    echo '<td><?=$row['ADDRESS']?></td>';
-                    echo '<td><?=$row['URGENCY_CELL_NUMBER']?></td>';
+                    echo '<td scope="row">$row['EMPLOYEE_ID']</td>';
+                    echo '<td>'$row['NAME'] '</td>';
+                    echo '<td>'$row['DIVISION_ID']'</td>';//部署
+                    echo '<td>'$row['JOB_POSITION_ID']'</td>';//職位
+                    echo '<td>'$row['ADDRESS']'</td>';
+                    echo '<td>'$row['URGENCY_CELL_NUMBER']'</td>';
                 echo '</tr>';
                 }
             ?>
