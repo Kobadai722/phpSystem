@@ -11,6 +11,7 @@
 </head>
 
 <?php include 'header.php'; ?>
+
 <body>
     <h2>ようこそ
         <?php
@@ -19,11 +20,11 @@
             ?> さん</h2>
     <p><a href="./../accounting/siwake_hyo/output_siwakehyo.php">仕訳機能プロトタイプ</a></p>
     <p><a href="./../accounting/siwake_hyo/input_siwakehyo.php">仕訳機能Demo</a></p>
-    <p><a href="./../customer/customer.php">顧客一覧</a></p>
-    <p><a href="./../human/main.php">oppai</a></p>
+    ｓ ｓ <p><a href="./../customer/customer.php">顧客一覧</a></p>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 </script>
+
 </html>
