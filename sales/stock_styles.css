@@ -29,12 +29,13 @@ main {
 }
 
 .search {
+    text-align: left;
     display: flex; /*要素の横並び*/
-    gap: 5rem; /*要素間の間隔*/
+    gap: 4rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     width: 100%;
-    max-width: 800px; /* 好みのサイズに調整可能 */
-    margin-left: 20%;
+    max-width: 900px; /* 好みのサイズに調整可能 */
+    margin-left: auto;
 }
 
 
