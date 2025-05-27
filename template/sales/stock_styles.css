@@ -29,7 +29,8 @@ main {
 }
 
 .search {
-    text-align: center;
+    text-align: right;
+    margin-right: 2%;
     display: flex; /*要素の横並び*/
     gap: 6rem; /*要素間の間隔*/
     margin-bottom: 1rem;
