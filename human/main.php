@@ -24,7 +24,7 @@
             <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
             session_start();
-                foreach($PDO->query(
+                $sql=$PDO->prepare(
                     'SELECT e.*, 
                         d.DIVISION_NAME, 
                         j.POSITION_NAME
@@ -34,19 +34,22 @@
                         DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                     LEFT JOIN 
                         JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
-                        ) as $row)
-            
-            { ?> 
-                <tr>
-                    <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
-                    <td><?=$row['NAME']?></td>
-                    <td><?=$row['DIVISION_ID'] //部署 ?></td>
-                    <td><?=$row['JOB_POSITION_ID'] //職位 ?></td>
-                    <td><?=$row['ADDRESS']?></td> 
-                    <td><?=$row['URGENCY_CELL_NUMBER']?></td>
-        </tr>
-            <?php   }
+                        );
+                $sql->execute();
+
+                $row=$sql->fetchALL($PDO::FETCH_ASSOC);
+                foreach($sql as $row){
+                echo '<tr>';
+                    echo '<td scope="row">'$row['EMPLOYEE_ID']'</td>';
+                    echo '<td>'$row['NAME'] '</td>';
+                    echo '<td>'$row['DIVISION_ID']'</td>';//部署
+                    echo '<td>'$row['JOB_POSITION_ID']'</td>';//職位
+                    echo '<td>'$row['ADDRESS']'</td>';
+                    echo '<td>'$row['URGENCY_CELL_NUMBER']'</td>';
+                echo '</tr>';
+                }
             ?>
+
         </table>
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"

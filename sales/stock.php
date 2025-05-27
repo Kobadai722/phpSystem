@@ -23,10 +23,8 @@
 
             <section class="content">
                 <section class="search"><!-- コンテンツをグループ化 -->
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="商品名または商品IDで検索">
-                        <button class="btn btn-primary" type="submit">検索</button>
-                    </div>
+                        <input type="text" class="form-control bt-3" placeholder="商品名または商品IDで検索">
+                        <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
                     <table class="table table-striped table-bordered stable table-hover">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->

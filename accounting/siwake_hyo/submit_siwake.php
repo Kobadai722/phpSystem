@@ -6,25 +6,29 @@
   <title>仕訳登録完了</title>
 </head>
 <body>
-<h3>以下の内容で仕訳が登録されました</h3>
-<table border="1">
-  <tr>
-    <th>日付</th>
-    <th>摘要</th>
-    <th>借方科目</th>
-    <th>借方金額</th>
-    <th>貸方科目</th>
-    <th>貸方金額</th>
-  </tr>
-  <tr>
-      <td><?php $_POST['entry_date'] ?></td>
-      <td><?php $_POST['description'] ?></td>
-      <td><?php $_POST['debit_account'] ?></td>
-      <td><?php $_POST['debit_amount'] ?></td>
-      <td><?php $_POST['credit_account'] ?></td>
-      <td><?php $_POST['credit_amount'] ?></td>
+  <h3>以下の内容で仕訳が登録されました</h3>
+  <table border="1">
+    <tr>
+      <th>日付</th>
+      <th>摘要</th>
+      <th>借方科目</th>
+      <th>借方金額</th>
+      <th>貸方科目</th>
+      <th>貸方金額</th>
+    </tr>
+    <tr>
+        <td><?php echo $_POST['entry_date']; ?></td>
+        <td><?php echo $_POST['description']; ?></td>
+        <td><?php echo $_POST['debit_account']; ?></td>
+        <td><?php echo $_POST['debit_amount']; ?></td>
+        <td><?php echo $_POST['credit_account']; ?></td>
+        <td><?php echo $_POST['credit_amount']; ?></td>
+    </tr>
+  </table>
 
-
+  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
+  <p><a href="../../main.php">トップページに戻る</a></p>
 
   <?php
     // 入力チェック
@@ -58,9 +62,5 @@
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
   ?>
-
-  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
-  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
-  <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
 </html>
