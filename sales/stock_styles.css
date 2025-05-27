@@ -30,11 +30,10 @@ main {
 
 .search {
     display: flex; /*要素の横並び*/
-    gap: 1rem; /*要素間の間隔*/
+    gap: 2rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     width: 100%;
-    max-width: 600px; /* 好みのサイズに調整可能 */
-    margin-left: 5%;
+    max-width: 800px; /* 好みのサイズに調整可能 */
 }
 
 
