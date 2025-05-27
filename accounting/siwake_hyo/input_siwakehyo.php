@@ -41,7 +41,6 @@
             $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
             $sql->execute();
             $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-
             // 取得したデータを表示
             foreach ($accounts as $account) {
               echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
@@ -49,9 +48,7 @@
             ?>
           </select>
         </td>
-
         <td><input type="number" name="debit_amount" required></td> <!-- 借方金額 -->
-
         <td><select name="credit_account" required><!-- 貸方科目 -->
             <?php
             foreach ($accounts as $account) {
@@ -60,9 +57,7 @@
             ?>
           </select>
         </td>
-
         <td><input type="number" name="credit_amount" required></td> <!-- 貸方金額 -->
-
       </tr>
     </table>
     <br>
