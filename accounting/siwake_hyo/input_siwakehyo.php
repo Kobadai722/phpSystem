@@ -63,6 +63,8 @@
     <br>
     <button type="submit">登録</button>
 
+    <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
+    <p><a href="../../main.php">トップページに戻る</a></p>
   </form>
 </body>
 </html>
