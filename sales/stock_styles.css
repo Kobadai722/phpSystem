@@ -35,7 +35,7 @@ main {
     margin-bottom: 1rem;
     width: 100%;
     max-width: 900px; /* 好みのサイズに調整可能 */
-    margin-left: auto;
+    margin-left: 10%;
 }
 
 
