@@ -34,9 +34,10 @@
                         DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                     LEFT JOIN 
                         JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
-                        )
+                        );
                 $sql->execute();
-                $sql->fetchALL($PDO::FETCH_ASSOC);
+
+                $row=$sql->fetchALL($PDO::FETCH_ASSOC);
                 foreach($sql as $row){
                 echo '<tr>';
                     echo '<td scope="row"><?=$row['EMPLOYEE_ID']?></td>';
