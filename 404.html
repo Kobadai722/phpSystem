@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 Not Found</title>
+    <style>
+      body {
+        background: #000;
+        color: #fff;
+        font-family: serif;
+        text-align: center;
+        padding: 20px;
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      .title-display {
+        width: 80%;
+        max-width: 800px;
+        height: 300px;
+        margin: 50px auto;
+        background: #000;
+        color: #fff;
+        text-align: center;
+        font-size: 200px;
+        padding: 30px;
+        font-family: serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .subtitle {
+        font-size: 1.5em;
+        margin: 20px 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .subtitle.show {
+        opacity: 1;
+      }
+
+      .video-container {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s ease-out;
+      }
+
+      .video-container.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      iframe {
+        width: 80%;
+        height: 450px;
+        max-width: 800px;
+        border: none;
+      }
+
+      .restart-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 12px 20px;
+        border-radius: 25px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .restart-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+      }
+
+      @media (max-width: 768px) {
+        .title-display {
+          width: 95%;
+          height: 200px;
+          font-size: 100px;
+          padding: 20px;
+        }
+
+        iframe {
+          height: 250px;
+          width: 95%;
+        }
+
+        .restart-button {
+          bottom: 10px;
+          right: 10px;
+          padding: 10px 16px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="title-display" id="titleDisplay"></div>
+
+    <p class="subtitle" id="subtitle">ルパンに盗まれたかもしれません…</p>
+
+    <div class="video-container" id="videoContainer">
+      <iframe
+        width="560"
+        height="315"
+        src="https://www.youtube.com/embed/dvaosZlQqrY?autoplay=1&mute=1&loop=1&playlist=dvaosZlQqrY"
+        title="YouTube video player"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+      >
+      </iframe>
+    </div>
+
+    <button class="restart-button" onclick="startAnimation()">もう一度</button>
+
+    <script>
+      // 表示するテキスト
+      const titleText = "ルパン三世404Error！消えたページの行方";
+
+      // 200ミリ秒待つ
+      const sleep = () => {
+        return new Promise((resolve) => setTimeout(resolve, 200));
+      };
+
+      // 参考コードを基にした文字表示関数
+      const showString = async () => {
+        const elm = document.getElementById("titleDisplay");
+        const str = titleText;
+
+        elm.style.textAlign = "center";
+        elm.style.fontSize = "200px";
+
+        // 音とともに一文字ずつ表示
+        for (let i = 0; i < str.length; i++) {
+          elm.innerHTML = "";
+          elm.innerHTML = str[i];
+
+          // 200ミリ秒待つ
+          await sleep();
+        }
+
+        // 全文表示
+        elm.innerHTML = str;
+        elm.style.textAlign = "center";
+        elm.style.fontSize = "50px";
+
+        // サブタイトルとビデオを表示
+        setTimeout(() => {
+          document.getElementById("subtitle").classList.add("show");
+        }, 500);
+
+        setTimeout(() => {
+          document.getElementById("videoContainer").classList.add("show");
+        }, 1000);
+      };
+
+      // アニメーション実行
+      const startAnimation = async () => {
+        // リセット
+        document.getElementById("titleDisplay").innerHTML = "";
+        document.getElementById("subtitle").classList.remove("show");
+        document.getElementById("videoContainer").classList.remove("show");
+
+        // 少し待ってから開始
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // タイトルアニメーション実行
+        await showString();
+      };
+
+      // ページ読み込み後にアニメーション開始
+      window.addEventListener("load", () => {
+        setTimeout(startAnimation, 1000);
+      });
+    </script>
+  </body>
+</html>
