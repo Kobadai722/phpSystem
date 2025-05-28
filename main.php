@@ -20,7 +20,8 @@
             ?> さん</h2>
     <p><a href="./../accounting/siwake_hyo/output_siwakehyo.php">仕訳機能プロトタイプ</a></p>
     <p><a href="./../accounting/siwake_hyo/input_siwakehyo.php">仕訳機能Demo</a></p>
-    ｓ ｓ <p><a href="./../customer/customer.php">顧客一覧</a></p>
+    
+    <p><a href="./../customer/customer.php">顧客一覧</a></p>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
