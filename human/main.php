@@ -12,10 +12,10 @@
         <h1>人事管理表</h1>
 <!-- 所属社員の検索欄 -->
         <form>
-        氏名：  <input type="text"  name="keyword">
-                <input type="submit" value="検索">
-        従業員番号： <input type="text"  name="keyword">
-                    <input type="submit" value="検索">
+        <p>氏名：  <input type="text"  name="keyword">
+                <input type="submit" value="検索"></p>
+        <p>従業員番号： <input type="text"  name="keyword">
+                    <input type="submit" value="検索"></p>
         </form>
 <!-- 所属社員の表示欄 -->
 
