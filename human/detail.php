@@ -16,11 +16,9 @@
         <table class="table table-hover">
             <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-                $sql="SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
-                        FROM EMPLOYEE e
-                        LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
+                $sql = "SELECT * FROM EMPLOYEE where NAME=?";
 
+                //
                 foreach($PDO->query($sql) as $row){ ?>
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
