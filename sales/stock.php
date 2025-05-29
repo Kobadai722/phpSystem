@@ -22,11 +22,11 @@
             </nav>
 
             <section class="content">
-                <section class="search mt-3 mx-3"><!-- コンテンツをグループ化 -->
+                <section class="search mt-3"><!-- コンテンツをグループ化 -->
                         <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
-                    <table class="table table-striped mx-3 table-bordered stable table-hover ">
+                    <table class="table table-striped table-bordered stable table-hover ">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
                             <tr>
                                 <th scope="col">商品ID</th>
