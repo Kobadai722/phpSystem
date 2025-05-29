@@ -34,7 +34,6 @@
                     <td><a href="detail.php?id=<?= $row['EMPLOYEE_ID']?>"><?= $row['NAME']?></a></td>
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
-                    <td><?= $row['ADDRESS']?></td>
                     <td><?= $row['URGENCY_CELL_NUMBER']?></td>
                 </tr>
                 <?php
