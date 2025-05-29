@@ -23,30 +23,21 @@
         <table class="table table-hover">
             <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-            session_start();
-                $sql=$PDO->prepare(
-                    'SELECT e.*, 
-                        d.DIVISION_NAME, 
-                        j.POSITION_NAME
-                    FROM 
-                        EMPLOYEE e
-                    LEFT JOIN 
-                        DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                    LEFT JOIN 
-                        JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID'
-                        );
-                $sql->execute();
+                $sql="SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
+                        FROM EMPLOYEE e
+                        LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
+                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
 
-                $results = $sql->fetchALL($PDO::FETCH_ASSOC);// fetchAllの結果を$resultsに格納
-                foreach($results as $row){ // $results 配列ループ処理
-                echo '<tr>';
-                    echo '<td scope="row">'.$row['EMPLOYEE_ID'].'</td>';
-                    echo '<td>'.$row['NAME']. '</td>';
-                    echo '<td>'.$row['DIVISION_NAME'].'</td>';//部署
-                    echo '<td>'.$row['JOB_POSITION_NAME'].'</td>';//職位
-                    echo '<td>'.$row['ADDRESS'].'</td>';
-                    echo '<td>'.$row['URGENCY_CELL_NUMBER'].'</td>';
-                echo '</tr>';
+                foreach($PDO->query($sql) as $row){ ?>
+                <tr>
+                    <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
+                    <td><?=$row['NAME']?></td>
+                    <td><?=$row['DIVISION_NAME']?></td><!--部署-->
+                    <td><?=$row['JOB_POSITION_NAME']?></td><!--職位-->
+                    <td><?=$row['ADDRESS']?></td>
+                    <td><?=$row['URGENCY_CELL_NUMBER']?></td>
+                </tr>
+                <?php
                 }
             ?>
 
