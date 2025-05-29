@@ -31,11 +31,11 @@
                 foreach($PDO->query($sql) as $row){ ?>
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
-                    <td><?=$row['NAME']?></td>
-                    <td><?=$row['DIVISION_NAME']?></td><!--部署-->
-                    <td><?=$row['JOB_POSITION_NAME']?></td><!--職位-->
-                    <td><?=$row['ADDRESS']?></td>
-                    <td><?=$row['URGENCY_CELL_NUMBER']?></td>
+                    <td><?=echo $row['NAME'];?></td>
+                    <td><?=echo $row['DIVISION_NAME'];?></td><!--部署-->
+                    <td><?=echo $row['JOB_POSITION_NAME'];?></td><!--職位-->
+                    <td><?=echo $row['ADDRESS'];?></td>
+                    <td><?=echo $row['URGENCY_CELL_NUMBER'];?></td>
                 </tr>
                 <?php
                 }
