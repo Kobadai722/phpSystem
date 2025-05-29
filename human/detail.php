@@ -1,3 +1,4 @@
+<?php session_start();?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -9,7 +10,7 @@
     </head>
 
     <body>
-        <h1>人事管理表-個人ページ</h1>
+        <h1><?php echo $_GET['NAME']; ?>-詳細</h1>
 
 <!-- 所属社員の表示欄 -->
         <table class="table table-hover">
