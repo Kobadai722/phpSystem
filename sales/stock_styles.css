@@ -29,7 +29,6 @@ main {
 }
 
 .search {
-    margin-left: 1%;
     justify-content: flex-end; /* ← これを追加/修正 */ 
     display: flex; /*要素の横並び*/
     gap: 1rem; /*要素間の間隔*/
