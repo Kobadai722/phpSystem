@@ -1,42 +1,90 @@
-/* stock_styles.css */
-
 body {
     font-family: Arial, sans-serif;
     margin: 0;
+    background-color: #f4f4f4;
     display: flex;
     flex-direction: column;
 }
 
-.content{
+.content {
     flex: auto;
-    background-color: #eee;
+    background-color: #ffffff;
+    margin: 0 10px;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     text-align: center;
-    margin-right: 10px;
-} 
+}
 
 nav ul {
     list-style: none;
     padding: 0;
+    margin: 0;
 }
 
-/*main に display: flex; をつけたら、
-中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
 main {
     display: flex;    
     min-height: 100vh;
-    margin: 10px 0 10px 0;
+    margin: 10px 0;
     padding: 1rem;
+    gap: 1rem;
 }
 
 .search {
-    margin-left: 1%;
-    justify-content: flex-end; /* ← これを追加/修正 */ 
-    display: flex; /*要素の横並び*/
-    gap: 1rem; /*要素間の間隔*/
-    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
     width: 100%;
-    max-width: 1000px; /* 好みのサイズに調整可能 */
-    
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
+.search input {
+    flex: 1;
+    max-width: 300px;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
 
+.search-btn {
+    padding: 0.5rem 1.2rem;
+    white-space: nowrap;
+}
+
+/* テーブルデザイン */
+.table {
+    background-color: #fff;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.table thead {
+    background-color: #f5f5f5;
+}
+
+.table th {
+    text-align: center;
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+}
+
+.table td {
+    text-align: center;
+    padding: 0.8rem;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+}
+
+.table tbody tr:hover {
+    background-color: #f9f9f9;
+}
