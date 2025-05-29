@@ -37,15 +37,15 @@
                         );
                 $sql->execute();
 
-                $row=$sql->fetchALL($PDO::FETCH_ASSOC);
-                foreach($sql as $row){
+                $results = $sql->fetchALL($PDO::FETCH_ASSOC);// fetchAllの結果を$resultsに格納
+                foreach($results as $row){ // $results 配列ループ処理
                 echo '<tr>';
                     echo '<td scope="row">'$row['EMPLOYEE_ID']'</td>';
-                    echo '<td>'$row['NAME'] '</td>';
-                    echo '<td>'$row['DIVISION_ID']'</td>';//部署
-                    echo '<td>'$row['JOB_POSITION_ID']'</td>';//職位
-                    echo '<td>'$row['ADDRESS']'</td>';
-                    echo '<td>'$row['URGENCY_CELL_NUMBER']'</td>';
+                    echo '<td>'.$row['NAME']. '</td>';
+                    echo '<td>'.$row['DIVISION_NAME'].'</td>';//部署
+                    echo '<td>'.$row['JOB_POSITION_NAME'].'</td>';//職位
+                    echo '<td>'.$row['ADDRESS'].'</td>';
+                    echo '<td>'.$row['URGENCY_CELL_NUMBER'].'</td>';
                 echo '</tr>';
                 }
             ?>
