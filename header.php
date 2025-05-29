@@ -28,7 +28,7 @@
                             人事管理
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="/../human/main.php">人事管理システム-社員一覧</a></li>
                             <li><a class="dropdown-item" href="#">Another action</a></li>
                         </ul>
                     </li>
