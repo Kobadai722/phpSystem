@@ -31,7 +31,7 @@
                 foreach($PDO->query($sql) as $row){ ?>
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
-                    <td><?=echo $row['NAME'];?></td>
+                    <td><a><?=echo $row['NAME'];?></td>
                     <td><?=echo $row['DIVISION_NAME'];?></td><!--部署-->
                     <td><?=echo $row['JOB_POSITION_NAME'];?></td><!--職位-->
                     <td><?=echo $row['ADDRESS'];?></td>
