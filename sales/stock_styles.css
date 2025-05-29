@@ -29,9 +29,9 @@ main {
 }
 
 .search {
-    text-align: right;
+    justify-content: flex-end; /* ← これを追加/修正 */ 
     display: flex; /*要素の横並び*/
-    gap: 10rem; /*要素間の間隔*/
+    gap: 1rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     width: 100%;
     max-width: 1000px; /* 好みのサイズに調整可能 */
