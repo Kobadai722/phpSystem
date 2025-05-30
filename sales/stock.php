@@ -26,9 +26,9 @@
                         <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
-                    <table class="table table-striped table-bordered table-hover mx-3">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
-                            <tr>
+                    <table class="table table-striped table-bordered table-hover ">
+                            <tr class="mx-3">
                                 <th scope="col">商品ID</th>
                                 <th scope="col">商品名</th>
                                 <th scope="col">単価</th>

@@ -21,10 +21,7 @@ body {
     margin-right: 10px;
 } 
 
-nav ul {
-    list-style: none;
-    padding: 0;
-}
+
 
 /*main に display: flex; をつけたら、
 中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
@@ -35,13 +32,5 @@ main {
     padding: 1rem;
 }
 
-thead {
-  background-color: #e5e7eb;
-}
 
-th, td {
-  padding: 0.75rem;
-  border-bottom: 1px solid #d1d5db;
-  text-align: left;
-}
 
