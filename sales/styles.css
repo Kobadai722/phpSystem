@@ -3,6 +3,8 @@
 .localNavigation {
     background-color: #1c2a39; /* ダークネイビー */
     padding-top: 2rem;
+    border-radius: 10px;
+    width: 10%;
 }
 
 .localNavigation ul {
