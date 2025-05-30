@@ -5,7 +5,7 @@
         padding: 0.5rem;
     }
 
-    .localNavigation {
+    main.localNavigation {
         width: 100%;
         flex-direction: row; /* ナビゲーションの中身を横並びに */
         padding: 1rem;
