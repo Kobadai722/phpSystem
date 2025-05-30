@@ -19,8 +19,8 @@ nav ul {
     padding: 0;
 }
 .table-smaller {
-    width: 90%;              /* 全体を少し縮める */
-    margin: 0 auto;          /* 中央寄せ */
+    margin-left: 1rem;
+    margin-right: 1rem;         
 }
 
 .table-smaller th,.table-smaller td {
