@@ -27,7 +27,7 @@
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
-                    <table class="table  table-bordered table-hover ">
+                    <table class="table  table-bordered table-hover table-smaller">
                             <tr class="#">
                                 <th scope="col">商品ID</th>
                                 <th scope="col">商品名</th>
