@@ -12,7 +12,6 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
-        <nav class="localNavigation"> 
           <nav class="localNavigation"> 
                 <ul>
                     <li class="nav-item">
