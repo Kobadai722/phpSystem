@@ -1,15 +1,17 @@
 
 @media screen and (max-width: 1000px) {
     main {
-        flex-direction: row;
+        flex-direction: column;/*ここで縦並び*/
         padding: 0.5rem;
     }
 
     .localNavigation {
         width: 100%;
-        flex-direction: row;
+        display: flex; /* 横並びにするため追加 */
+        flex-direction: row; /* ナビゲーションの中身を横並びに */
         padding: 1rem;
         border-radius: 0;
+        align-items: center; /* 垂直方向中央揃え */
     }
 
     .localNavigation ul {
