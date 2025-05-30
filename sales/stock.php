@@ -28,7 +28,7 @@
                 </section>
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
                     <table class="table  table-bordered table-hover ">
-                            <tr class="mx-3">
+                            <tr class="#">
                                 <th scope="col">商品ID</th>
                                 <th scope="col">商品名</th>
                                 <th scope="col">単価</th>
