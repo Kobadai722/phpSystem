@@ -7,7 +7,6 @@
 
     .localNavigation {
         width: 100%;
-        display: flex; /* 横並びにするため追加 */
         flex-direction: row; /* ナビゲーションの中身を横並びに */
         padding: 1rem;
         border-radius: 0;
@@ -15,6 +14,7 @@
     }
 
     .localNavigation ul {
+        display: flex;/* 横並びにするため追加 */
         flex-direction: row;
         justify-content: space-around;
     }
