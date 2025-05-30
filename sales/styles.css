@@ -1,4 +1,33 @@
 
+@media screen and (max-width: 768px) {
+    main {
+        flex-direction: column; /* 縦並びに切り替える */
+    }
+
+    .localNavigation {
+        width: 100%; /* 横いっぱいに */
+        display: flex; /* 横並び */
+        justify-content: space-around;
+        padding-top: 1rem;
+    }
+
+    .localNavigation ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        width: 100%;
+        padding: 0;
+    }
+
+    .localNavigation .nav-item {
+        margin-bottom: 0; /* 上下の余白をなくす */
+    }
+
+    .content {
+        width: 100%; /* コンテンツも横幅いっぱいに */
+    }
+}
+
 
 .localNavigation {
     background-color: #1c2a39; /* ダークネイビー */
