@@ -90,7 +90,6 @@ body {
 .content {
     flex: 1;
     background-color: #eee;
-    overflow-x: auto; /* 横はみ出し対策 */
     padding: 1rem;
     box-sizing: border-box;
     padding-right: 2rem;
