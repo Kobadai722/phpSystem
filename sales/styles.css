@@ -3,7 +3,6 @@
 .localNavigation {
     width: 200px;
     background-color: #1c2a39; /* ダークネイビー */
-    height: 100vh;
     padding-top: 2rem;
     position: fixed;
     top: 0;
