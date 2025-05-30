@@ -6,7 +6,7 @@
 }
 
 .localNavigation ul {
-    
+    list-style: none;
 }
 
 .localNavigation .nav-item {
