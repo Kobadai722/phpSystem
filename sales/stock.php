@@ -36,6 +36,7 @@
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
+                <div class="table-responsive">
                     <table class="table  table-bordered table-hover table-smaller">
                             <tr class="#">
                                 <th scope="col">商品ID</th>
@@ -70,11 +71,12 @@
                             <!-- 在庫データの表をここに表示 -->
                         </tbody>
                     </table>
+                </div>
             </section>
         </main>
         <footer class="footer">
             
-        <foote>  
+        <footer>  
         
     </body>
 
