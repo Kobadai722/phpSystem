@@ -31,6 +31,9 @@
     background-color: #2e3b4e;
     border-radius: 8px;
 }
+.nav-link i {
+    margin-right: 0.5rem; /* アイコンと文字の間に少し余白を追加 */
+}
 
 body {
     font-family: Arial, sans-serif;
