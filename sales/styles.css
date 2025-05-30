@@ -1,10 +1,40 @@
 
 
-.localNavigation{
+.localNavigation {
+    width: 200px;
+    background-color: #1c2a39; /* ダークネイビー */
+    height: 100vh;
+    padding-top: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.localNavigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.localNavigation .nav-item {
+    margin-bottom: 1.5rem;
     text-align: center;
-    background-color: #888;
+}
+
+.localNavigation .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #fff;
-    width: 250px;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.localNavigation .nav-link:hover {
+    background-color: #2e3b4e;
+    border-radius: 8px;
 }
 
 body {
