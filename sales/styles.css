@@ -1,103 +1,116 @@
-
+/* 画面幅が1000px以下のときのスタイル（レスポンシブ対応） */
 @media screen and (max-width: 1000px) {
     main {
-        flex-direction: column;/*ここで縦並び*/
+        flex-direction: column; /* ナビゲーションとコンテンツを縦に並べる */
         padding: 0.5rem;
     }
 
     main.localNavigation {
-        width: 100%;
-        flex-direction: row; /* ナビゲーションの中身を横並びに */
+        /* ⚠️セレクタの誤り：main要素に.localNavigationというクラスは存在しないので、正しくは `.localNavigation` のはず */
+        width: 100%; /* 幅を全体に広げる */
+        flex-direction: row; /* ナビゲーション内のアイテムを横並びに */
         padding: 1rem;
-        border-radius: 0;
-        align-items: center; /* 垂直方向中央揃え */
+        border-radius: 0; /* 角丸をなくす */
+        align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
     }
 
     .localNavigation ul {
-        display: flex;/* 横並びにするため追加 */
+        display: flex; /* 横並びにするため追加 */
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-around; /* 要素間に均等なスペースをとる */
     }
 
     .content {
-        width: 100%;
+        width: 100%; /* コンテンツを全幅に */
         padding: 1rem;
     }
 }
 
 
+/* テーブルの横スクロール対応 */
 .table-responsive {
-    overflow-x: auto;
-    width: 100%;
+    overflow-x: auto; /* 横スクロール可能に */
+    width: 100%; /* 幅いっぱいに広げる */
 }
 
 
-
-
+/* ナビゲーション全体のスタイル */
 .localNavigation {
-    background-color: #1c2a39; /* ダークネイビー */
-    padding-top: 2rem;
-    border-radius: 10px;
-    width: 10%;
+    background-color: #1c2a39; /* 背景色：ダークネイビー */
+    padding-top: 2rem; /* 上部の余白 */
+    border-radius: 10px; /* 角丸 */
+    width: 10%; /* 横幅を10%に（デフォルト表示時） */
 }
 
+
+/* ナビゲーションのリスト（ul）の初期化 */
 .localNavigation ul {
-    list-style: none;
+    list-style: none; /* リストマーカーを消す（●など） */
 }
 
+
+/* 各ナビゲーション項目（li）のスタイル */
 .localNavigation .nav-item {
-    margin-bottom: 1.5rem;
-    text-align: center;
+    margin-bottom: 1.5rem; /* 下に余白を設ける */
+    text-align: center; /* テキストを中央揃えに */
 }
 
+
+/* ナビゲーションリンクのスタイル */
 .localNavigation .nav-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    text-decoration: none;
-    padding: 0.75rem 1rem;
-    transition: background-color 0.3s ease
+    display: flex; /* フレックスで中身を並べる */
+    align-items: center; /* アイコンとテキストを縦中央に */
+    justify-content: center; /* 横中央に揃える */
+    color: #fff; /* テキストカラー：白 */
+    font-weight: bold; /* 太字にする */
+    text-decoration: none; /* 下線をなくす */
+    padding: 0.75rem 1rem; /* 内側余白 */
+    transition: background-color 0.3s ease; /* 背景色変化をなめらかに */
 }
 
+
+/* ナビゲーションリンクにホバーしたときのスタイル */
 .localNavigation .nav-link:hover {
-    background-color: #2e3b4e;
-    border-radius: 8px;
+    background-color: #2e3b4e; /* ホバー時の背景色 */
+    border-radius: 8px; /* ホバー時に角丸を追加 */
 }
+
+
+/* アイコンとテキストの間に余白を設ける */
 .nav-link i {
-    margin-right: 0.5rem; /* アイコンと文字の間に少し余白を追加 */
+    margin-right: 0.5rem;
 }
+
+
+/* nav内ulの初期化（念のため） */
 nav ul {
     list-style: none;
     padding: 0;
 }
 
+
+/* 全体のフォントと基本レイアウト */
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
+    font-family: Arial, sans-serif; /* 使用するフォント */
+    margin: 0; /* デフォルトのマージンを削除 */
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* コンテンツを縦に並べる */
 }
 
+
+/* コンテンツ部分のスタイル */
 .content {
-    flex: 1;
-    background-color: #eee;
-    padding: 1rem;
-    padding-right: 2rem;
+    flex: 1; /* 残りのスペースを占める */
+    background-color: #eee; /* 背景色：薄グレー */
+    padding: 1rem; /* 内側余白 */
+    padding-right: 2rem; /* 右側の余白だけ少し広めに */
 }
 
 
-
-
-/*main に display: flex; をつけたら、
-中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
+/* mainタグの基本レイアウト */
 main {
-    display: flex;    
-    min-height: 100vh;
-    margin: 10px 0 10px 0;
-    padding: 1rem;
+    display: flex; /* 子要素（navやsection）を横に並べる */
+    min-height: 100vh; /* 最小の高さを画面いっぱいにする */
+    margin: 10px 0; /* 上下の外側余白 */
+    padding: 1rem; /* 内側余白 */
 }
-
-
-
