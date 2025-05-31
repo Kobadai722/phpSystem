@@ -5,7 +5,7 @@
         padding: 0.5rem;
     }
 
-    main.localNavigation {
+    .localNavigation {
         /* ⚠️セレクタの誤り：main要素に.localNavigationというクラスは存在しないので、正しくは `.localNavigation` のはず */
         width: 100%; /* 幅を全体に広げる */
         flex-direction: row; /* ナビゲーション内のアイテムを横並びに */
