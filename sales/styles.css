@@ -1,5 +1,5 @@
 /* 画面幅が1000px以下のときのスタイル（レスポンシブ対応） */
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1240px) {
     main {
         flex-direction: column; /* ナビゲーションとコンテンツを縦に並べる */
         padding: 0.5rem;
