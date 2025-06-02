@@ -63,9 +63,9 @@
   </table>
   <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>
-
-  <footer>
-    <p>© 2025 <img class="mb-4" src="/images/logo-type2.png" alt="" width="300" height="auto" loading="lazy"></p>
-
 </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
+
 </html>
