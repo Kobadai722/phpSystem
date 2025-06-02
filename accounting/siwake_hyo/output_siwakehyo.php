@@ -7,15 +7,6 @@
   
   <link rel="stylesheet" href="../css/siwakehyo.css" type="text/css">
 </head>
-
-  <?php
-  // DB接続
-  require_once '../../config.php';
-  // セッション開始
-  session_start();
-  include '../../header.php'; // ヘッダーの読み込み
-  ?>
-
 <body>
 <?php
   // DB接続
