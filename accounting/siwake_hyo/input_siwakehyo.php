@@ -17,6 +17,8 @@
   require_once '../../config.php';
   // セッション開始
   session_start();
+
+  include '../../header.php'; // ヘッダーの読み込み
   ?>
 
   <form action="submit_siwake.php" method="post">

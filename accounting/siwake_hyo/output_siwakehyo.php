@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <title>仕訳帳</title>
   <link rel="stylesheet" href="../css/siwakehyo.css" type="text/css">
+  <link href="../../style.css" rel="stylesheet" />
 </head>
 
 <body>
