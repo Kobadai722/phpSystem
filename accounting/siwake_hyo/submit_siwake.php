@@ -9,9 +9,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
-<?= include '../../header.php';?> // ヘッダーの読み込み
-<body>
 
+<body>
+<?= include '../../header.php';?> // ヘッダーの読み込み
   <h3>以下の内容で仕訳が登録されました</h3>
   <table border="1">
     <tr>
