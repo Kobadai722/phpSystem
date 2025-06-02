@@ -27,8 +27,8 @@
                         FROM EMPLOYEE e
                         LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                         LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
-
-                foreach($PDO->query($sql) as $row){ ?>
+                $sql -> execute();
+                foreach($sql as $row){ ?>
                 <tr>
                     <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
                     <td><a href="detail.php?id=<?= $row['EMPLOYEE_ID']?>"><?= $row['NAME']?></a></td>
