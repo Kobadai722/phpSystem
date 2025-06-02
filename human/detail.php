@@ -25,6 +25,7 @@
             <?php require_once '../config.php'; //DBサーバーと接続
                 $sql = $PDO -> prepare('SELECT * FROM EMPLOYEE WHERE EMPLOYEE_ID=?');
                 $sql -> execute([$_GET['id']])
+                $SYOUSAI = $sql-> fetchAll(PDO::FETCH_ASSOC); 
                 foreach($sql as $row){ 
                 ?>
                 <tr>
