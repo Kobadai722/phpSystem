@@ -6,6 +6,7 @@
   <title>仕訳登録完了</title>
 </head>
 <body>
+<?= include '../../header.php';?> // ヘッダーの読み込み
   <h3>以下の内容で仕訳が登録されました</h3>
   <table border="1">
     <tr>

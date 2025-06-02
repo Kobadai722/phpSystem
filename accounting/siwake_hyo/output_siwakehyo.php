@@ -14,6 +14,7 @@
   require_once '../../config.php';
   // セッション開始
   session_start();
+  include '../../header.php'; // ヘッダーの読み込み
   ?>
   <table>
     <caption>📘 仕訳帳（デモ）</caption>
