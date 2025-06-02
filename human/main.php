@@ -35,6 +35,9 @@
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
                     <td><?= $row['URGENCY_CELL_NUMBER']?></td>
+                    <td><?= $row['JOINING_DATE']?></td>
+                    <td><?= $row['POST_CODE']?></td>
+                    <td><?= $row['ADDRESS']?></td>
                 </tr>
                 <?php
                 }
