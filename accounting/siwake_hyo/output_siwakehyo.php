@@ -5,10 +5,8 @@
   <meta charset="UTF-8">
   <title>仕訳帳</title>
   <link rel="stylesheet" href="../css/siwakehyo.css" type="text/css">
-  <link href="../../style.css" rel="stylesheet" />
 </head>
 
-<body>
   <?php
   // DB接続
   require_once '../../config.php';
@@ -16,6 +14,9 @@
   session_start();
   include '../../header.php'; // ヘッダーの読み込み
   ?>
+
+<body>
+
   <table>
     <caption>📘 仕訳帳（デモ）</caption>
     <thead>
