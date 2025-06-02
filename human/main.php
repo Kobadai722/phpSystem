@@ -21,7 +21,14 @@
 
         
         <table class="table table-hover">
-            <tr><th scope="col">社員番号</th><th scope="col">氏名</th><th scope="col">所属部署</th><th scope="col">職位</th><th scope="col">メールアドレス</th><th scope="col">緊急連絡先</th></tr>
+            <tr>
+                <th scope="col">社員番号</th>
+                <th scope="col">氏名</th>
+                <th scope="col">所属部署</th>
+                <th scope="col">職位</th>
+                <th scope="col">メールアドレス</th>
+                <th scope="col">緊急連絡先</th>
+            </tr>
             <?php require_once '../config.php'; //DBサーバーと接続
                 $sql="SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
                         FROM EMPLOYEE e
@@ -40,7 +47,7 @@
                     <td><?= $row['ADDRESS']?></td>
                 </tr>
                 <?php
-                }
+                };
             ?>
 
         </table>
