@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>仕訳帳</title>
-  <link rel="stylesheet" href="siwakehyo.css" type="text/css">
+  <link rel="stylesheet" href="../css/siwakehyo.css" type="text/css">
 </head>
 
 <body>
