@@ -13,6 +13,7 @@
         padding: 1rem;
         border-radius: 0; /* 角丸をなくす */
         align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
+         position: relative;
     }
 
     .localNavigation ul {
@@ -45,6 +46,7 @@
     padding-top: 2rem; /* 上部の余白 */
     border-radius: 10px; /* 角丸 */
     width: 10%; /* 横幅を10%に（デフォルト表示時） */
+     position: relative;
 }
 
 
