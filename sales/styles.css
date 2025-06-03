@@ -149,12 +149,10 @@ main {
 
 /* ドロップダウンメニューのスタイル */
 .localNavigation .dropdown-menu {
-    background-color: #1c2a39; /* ローカルナビと同じ背景色 */
     border: none; /* 枠線をなくす */
     border-radius: 8px; /* 少し角丸 */
     padding: 0.5rem 0;
     box-shadow: none; /* シャドウなし */
-    min-width: 180px; /* 幅を少し広めに */
 }
 
 /* ドロップダウン内のリンク */
