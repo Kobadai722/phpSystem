@@ -18,12 +18,12 @@
     <main>
         <div class="accordion" id="accordionExample">
         <div class="accordion-item">
-            <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                検索
+        <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            検索
             </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse" data-bs-parent="#accordionExample">
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="gray-box">
                     <form action="search-output.php" method="post" class="mb-4">
@@ -51,9 +51,9 @@
                             <label for="address" class="form-label">住所</label>
                             <input type="text" name="address" id="address" class="form-control">
                         </div>
-                        <input type="submit" value="検索" class="btn btn-primary">
-                    </form>  
-            </div>
+                            <input type="submit" value="検索" class="btn btn-primary">
+                    </form> 
+                </div>
             </div>
         </div>
         </div>
