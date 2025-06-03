@@ -14,19 +14,28 @@
     <body>
         <main>
             <nav class="localNavigation"> 
-                <ul>
+                <ul >
                     <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
                     </li>
+                         <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-box-seam"></i> 在庫管理
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="stockDropdown">
+                            <li><a class="dropdown-item" href="#">商品一覧</a></li>
+                            <li><a class="dropdown-item" href="#">在庫追加</a></li>
+                            <li><a class="dropdown-item" href="#">在庫履歴</a></li>
+                            </ul>
+                        </li>
+
+
                         <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
-                    </li>
+                            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
+                        </li>
                         <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
-                    </li>
+                            <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
+                            </li>
                 </ul>
             </nav>
 
@@ -35,9 +44,10 @@
                         <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
-                        <thead><!-- 表の ヘッダー部分 を表す要素 -->
+                        
                 <div class="table-responsive">
                     <table class="table  table-bordered table-hover table-smaller">
+                        <thead><!-- 表の ヘッダー部分 を表す要素 -->
                             <tr class="#">
                                 <th scope="col">商品ID</th>
                                 <th scope="col">商品名</th>
@@ -76,7 +86,7 @@
         </main>
         <footer class="footer">
             
-        <footer>  
+        </footer>  
         
     </body>
 

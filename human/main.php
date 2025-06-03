@@ -26,14 +26,14 @@
                 <th scope="col">氏名</th>
                 <th scope="col">所属部署</th>
                 <th scope="col">職位</th>
-                <th scope="col">メールアドレス</th>
+                <th scope="col">入社日</th>
                 <th scope="col">緊急連絡先</th>
             </tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-                $sql="SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
+                $sql = $PDO ->prepare("SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
                         FROM EMPLOYEE e
                         LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
+                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID");
                 $sql -> execute();
                 foreach($sql as $row){ ?>
                 <tr>
@@ -41,10 +41,8 @@
                     <td><a href="detail.php?id=<?= $row['EMPLOYEE_ID']?>"><?= $row['NAME']?></a></td>
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
-                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--サンプルデータ未入力のためエラー発生-->
-                    <td><?= $row['JOINING_DATE']?></td>
-                    <td><?= $row['POST_CODE']?></td>
-                    <td><?= $row['ADDRESS']?></td>
+                    <td><?= $row['JOINING_DATE']?></td><!--入社日-->
+                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--今後データ入力予定-->
                 </tr>
                 <?php
                 };
