@@ -47,7 +47,7 @@
                 </section>
                         
                 <div class="table-responsive">
-                    <table class="table  table-bordered table-hover table-smaller">
+                    <table class="table  table-border table-hover table-smaller">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
                             <tr class="#">
                                 <th scope="col">商品ID</th>
