@@ -55,6 +55,9 @@
                                 <th scope="col">単価</th>
                                 <th scope="col">在庫数</th>
                                 <th scope="col">商品区分</th>
+                                </tr>
+                        </thead>
+                        <tbody>
                                 <?php
                                     require_once '../config.php';
                                     $sql = " SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.UNIT_SELLING_PRICE,S.STOCK_QUANTITY,K.PRODUCT_KUBUN_NAME
@@ -74,11 +77,10 @@
                             <?php
                                 }
                             ?>
-                            </tr>
-                        </thead>
+                            
                             <!-- theadタグとtbodyタグについてですね。 これは表の見出し部分と本体部分を区別するためのタグなんだよ。例えば、テーブルに複数の行がある場合、
                                 theadタグによって表の上端の1行目を見出し部分として指定することができる。それに対して、tbodyタグはその下に続く行を本体部分として指定するためのタグだよ。 -->
-                        <tbody><!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
+                        <!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
                             <!-- 在庫データの表をここに表示 -->
                         </tbody>
                     </table>
