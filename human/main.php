@@ -30,10 +30,10 @@
                 <th scope="col">緊急連絡先</th>
             </tr>
             <?php require_once '../config.php'; //DBサーバーと接続
-                $sql="SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
+                $sql = $PDO ->prepare("SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
                         FROM EMPLOYEE e
                         LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
+                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID");
                 $sql -> execute();
                 foreach($sql as $row){ ?>
                 <tr>
