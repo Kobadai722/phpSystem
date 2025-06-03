@@ -137,7 +137,6 @@ main {
     border-radius: 8px; /* 少し角丸 */
     padding: 0.5rem 0;
     box-shadow: none; /* シャドウなし */
-    background-color: transparent !important; 
 }
 
 /* ドロップダウン内のリンク */
