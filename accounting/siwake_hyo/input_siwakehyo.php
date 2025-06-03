@@ -44,6 +44,9 @@
             $sql->execute();
             $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
             // 取得したデータを表示
+            //簿記は一件につき2行
+
+            //１行目
             foreach ($accounts as $account) {
               echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
             }

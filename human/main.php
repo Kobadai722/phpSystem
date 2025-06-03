@@ -18,7 +18,10 @@
                     <input type="submit" value="検索"></p>
         </form>
 <!-- 所属社員の表示欄 -->
-
+        <select name="edit">
+            <option value="edit">編集者画面に切り替える</option>
+            <option value="nomal">一般画面に切り替える</option>
+        </select>
         
         <table class="table table-hover">
             <tr>
