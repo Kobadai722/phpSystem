@@ -13,7 +13,7 @@
         padding: 1rem;
         border-radius: 0; /* 角丸をなくす */
         align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
-         position: relative;
+        position: relative;
     }
 
     .localNavigation ul {

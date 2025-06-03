@@ -18,7 +18,7 @@
                     <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
                     </li>
-                         <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-box-seam"></i> 在庫管理
                         </a>
@@ -41,7 +41,7 @@
 
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
-                        <form method="GET" action="search.php" class="d-flex gap-2 mt-3">
+                        <form method="GET" action="search.php" class="d-flex">
                         <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
