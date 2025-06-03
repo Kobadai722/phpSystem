@@ -5,13 +5,11 @@
 
 .search {
     justify-content: flex-end; /* ← これを追加/修正 */ 
-    display: flex; /*要素の横並び*/
     gap: 1rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     margin-left: 1rem;
-    margin-right: 1rem;
     width: 100%;
-    max-width: 1000px; /* 好みのサイズに調整可能 */
+    max-width: 900px; /* 好みのサイズに調整可能 */
 }
 
 
