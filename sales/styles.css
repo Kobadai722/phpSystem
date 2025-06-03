@@ -40,17 +40,11 @@
     min-width: 180px; /* 幅を少し広めに */
     
 }
-.dropdown.show .dropdown-menu {
-    display: block ;
-    }
-
 
 /* ドロップダウン内のリンク */
 .localNavigation .dropdown-item {
     color: #fff;
-    font-weight: bold;
     padding: 0.5rem 1rem;
-    text-align: center;
     transition: background-color 0.3s ease;
 }
 
