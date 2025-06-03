@@ -21,9 +21,7 @@
         flex-direction: row;
         justify-content: space-around; /* 要素間に均等なスペースをとる */
     }
-    .localNavigation .nav-item {
-        margin-bottom: 0; /* 横並びなので下マージン不要 */
-    }
+    
     
 
     .content {
