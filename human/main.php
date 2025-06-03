@@ -26,7 +26,7 @@
                 <th scope="col">氏名</th>
                 <th scope="col">所属部署</th>
                 <th scope="col">職位</th>
-                <th scope="col">メールアドレス</th>
+                <th scope="col">入社日</th>
                 <th scope="col">緊急連絡先</th>
             </tr>
             <?php require_once '../config.php'; //DBサーバーと接続
@@ -43,8 +43,6 @@
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
                     <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--サンプルデータ未入力のためエラー発生-->
                     <td><?= $row['JOINING_DATE']?></td>
-                    <td><?= $row['POST_CODE']?></td>
-                    <td><?= $row['ADDRESS']?></td>
                 </tr>
                 <?php
                 };

@@ -34,9 +34,9 @@
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
                     <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--サンプルデータ未入力のためエラー発生-->
-                    <td><?= $row['JOINING_DATE']?></td>
-                    <td><?= $row['POST_CODE']?></td>
-                    <td><?= $row['ADDRESS']?></td>
+                    <td><?= $row['JOINING_DATE']?></td><!--入社日-->
+                    <td><?= $row['POST_CODE']?></td><!--郵便番号-->
+                    <td><?= $row['ADDRESS']?></td><!--住所-->
                 </tr>
                 <?php
                 }
