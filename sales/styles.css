@@ -71,7 +71,7 @@
     padding-top: 2rem; /* 上部の余白 */
     border-radius: 10px; /* 角丸 */
     width: 10%; /* 横幅を10%に（デフォルト表示時） */
-     position: relative;
+    position: relative;
 }
 
 
@@ -155,6 +155,7 @@ main {
     padding: 0.5rem 0;
     box-shadow: none; /* シャドウなし */
     min-width: 180px; /* 幅を少し広めに */
+    position: static; /* ← 追加：親がrelativeだとabsoluteな子が重なるのでstaticにしておく */
 }
 
 /* ドロップダウン内のリンク */
