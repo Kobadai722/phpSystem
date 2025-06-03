@@ -14,7 +14,7 @@
     <body>
         <main>
             <nav class="localNavigation"> 
-                <ul class="#">
+                <ul >
                     <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
                     </li>
