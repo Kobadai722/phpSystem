@@ -42,7 +42,7 @@
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
                     <td><?= $row['JOINING_DATE']?></td><!--入社日-->
-                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--今後データ入力予定-->
+                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--緊急連絡先-->
                 </tr>
                 <?php
                 };
