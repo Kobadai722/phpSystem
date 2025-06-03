@@ -27,7 +27,7 @@
                 FROM EMPLOYEE e
                 LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
                 LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID 
-                WHERE EMPLOYEE_ID=?");
+                WHERE e.EMPLOYEE_ID = ?");
                 $sql -> execute([$_GET['id']])
                 $SYOUSAI = $sql-> fetchAll(PDO::FETCH_ASSOC);
                 foreach($SYOUSAI as $row){ 
