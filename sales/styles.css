@@ -38,10 +38,10 @@
     padding: 0.5rem 0;
     box-shadow: none; /* シャドウなし */
     min-width: 180px; /* 幅を少し広めに */
-    display: none !important;
+    display: none ;
 }
 .dropdown.show .dropdown-menu {
-    display: block !important;
+    display: block ;
     }
 
 
