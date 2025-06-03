@@ -16,7 +16,7 @@
         position: relative;
     }
 
-    .localNavigation ul {
+    .localNavigation > ul {
         display: flex; /* 横並びにするため追加 */
         flex-direction: row;
         justify-content: space-around; /* 要素間に均等なスペースをとる */
@@ -38,7 +38,6 @@
     box-shadow: none; /* シャドウなし */
     min-width: 180px; /* 幅を少し広めに */
 
-    display: none;/*これにより強制的に非表示*/
     
 }
 
