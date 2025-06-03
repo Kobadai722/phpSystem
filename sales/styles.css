@@ -13,7 +13,7 @@
         padding: 1rem;
         border-radius: 0; /* 角丸をなくす */
         align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
-         position: relative;
+        position: relative;
     }
 
     .localNavigation ul {
@@ -54,6 +54,13 @@
     background-color: #2e3b4e;
     color: #fff;
 }
+.dropdown-menu {
+    display: none !important;
+  }
+
+  .dropdown.show .dropdown-menu {
+    display: block !important;
+  }
 
 }
 

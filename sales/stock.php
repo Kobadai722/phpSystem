@@ -41,6 +41,7 @@
 
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
+                        <form method="GET" action="search.php" class="d-flex gap-2 mt-3">
                         <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
