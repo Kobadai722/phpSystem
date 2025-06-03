@@ -37,12 +37,12 @@
                 $sql -> execute();
                 foreach($sql as $row){ ?>
                 <tr>
-                    <td scope="row"><?=$row['EMPLOYEE_ID']?></td>
-                    <td><a href="detail.php?id=<?= $row['EMPLOYEE_ID']?>"><?= $row['NAME']?></a></td>
-                    <td><?= $row['DIVISION_NAME']?></td><!--部署-->
-                    <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
-                    <td><?= $row['JOINING_DATE']?></td><!--入社日-->
-                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--緊急連絡先-->
+                    <td scope="row"><?= htmlspecialchars($row['EMPLOYEE_ID'])?></td>
+                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID'])?>"><?= htmlspecialchars($row['NAME'])?></a></td>
+                    <td><?= htmlspecialchars($row['DIVISION_NAME'])?></td><!--部署-->
+                    <td><?= htmlspecialchars($row['JOB_POSITION_NAME'])?></td><!--職位-->
+                    <td><?= htmlspecialchars($row['JOINING_DATE'])?></td><!--入社日-->
+                    <td><?= htmlspecialchars($row['URGENCY_CELL_NUMBER'])?></td><!--緊急連絡先-->
                 </tr>
                 <?php
                 };
