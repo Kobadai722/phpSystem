@@ -41,8 +41,8 @@
                     <td><a href="detail.php?id=<?= $row['EMPLOYEE_ID']?>"><?= $row['NAME']?></a></td>
                     <td><?= $row['DIVISION_NAME']?></td><!--部署-->
                     <td><?= $row['JOB_POSITION_NAME']?></td><!--職位-->
-                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--サンプルデータ未入力のためエラー発生-->
                     <td><?= $row['JOINING_DATE']?></td>
+                    <td><?= $row['URGENCY_CELL_NUMBER']?></td><!--サンプルデータ未入力のためエラー発生-->
                 </tr>
                 <?php
                 };
