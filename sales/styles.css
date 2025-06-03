@@ -13,6 +13,7 @@
         padding: 1rem;
         border-radius: 0; /* 角丸をなくす */
         align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
+         position: relative;
     }
 
     .localNavigation ul {
@@ -29,6 +30,31 @@
         width: 100%; /* コンテンツを全幅に */
         padding: 1rem;
     }
+    /* ドロップダウンメニューのスタイル */
+.localNavigation .dropdown-menu {
+    background-color: #1c2a39; /* ローカルナビと同じ背景色 */
+    border: none; /* 枠線をなくす */
+    border-radius: 8px; /* 少し角丸 */
+    padding: 0.5rem 0;
+    box-shadow: none; /* シャドウなし */
+    min-width: 180px; /* 幅を少し広めに */
+}
+
+/* ドロップダウン内のリンク */
+.localNavigation .dropdown-item {
+    color: #fff;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+/* ホバー時 */
+.localNavigation .dropdown-item:hover {
+    background-color: #2e3b4e;
+    color: #fff;
+}
+
 }
 
 
@@ -45,6 +71,7 @@
     padding-top: 2rem; /* 上部の余白 */
     border-radius: 10px; /* 角丸 */
     width: 10%; /* 横幅を10%に（デフォルト表示時） */
+     position: relative;
 }
 
 
