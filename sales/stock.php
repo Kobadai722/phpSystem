@@ -18,16 +18,15 @@
                     <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
                     </li>
-                        <li class="nav-item">
-                        <a class="nav-link" data-bs-toggle="collapse" href="#stockMenu" role="button" aria-expanded="stockMenu">
+                        <li class="nav-item dropdown-center">
+                        <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-box-seam"></i> 在庫管理
                         </a>
-                        <div class="collapse" aria-labelledby="stockMenu">
-                            <ul class="list-unstyled ps-3">
+                        <ul class="dropdown-menu" aria-labelledby="stockDropdown">
                             <li><a class="dropdown-item" href="#">商品一覧</a></li>
                             <li><a class="dropdown-item" href="#">在庫追加</a></li>
                             <li><a class="dropdown-item" href="#">在庫履歴</a></li>
-                            </div>
+                            </ul>
                         </li>
 
 
@@ -37,9 +36,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
                             </li>
-                    </ul>
-                </div>
-                    
+                </ul>
             </nav>
 
             <section class="content">
