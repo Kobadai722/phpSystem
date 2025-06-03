@@ -120,6 +120,11 @@ main {
     background-color: #2e3b4e; /* ホバー時の背景色 */
     border-radius: 8px; /* ホバー時に角丸を追加 */
 }
+.localNavigation ul {
+        display: flex; /* 横並びにするため追加 */
+        flex-direction: row;
+        justify-content: space-around; /* 要素間に均等なスペースをとる */
+    }
 
 /* ドロップダウンメニューのスタイル */
 .localNavigation .dropdown-menu {
