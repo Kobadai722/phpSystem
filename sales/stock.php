@@ -42,7 +42,7 @@
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
                         <form method="GET" action="search.php" class="d-flex">
-                        <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
+                        <input type="text" name="keyword" class="form-control" placeholder="商品名または商品IDで検索" value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                 </section>
                         
@@ -64,6 +64,16 @@
                                     FROM PRODUCT P
                                     LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
                                     LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
+                                    if (!empty($keyword)) {
+                                        $sql .= " WHERE P.PRODUCT_ID LIKE :keyword OR P.PRODUCT_NAME LIKE :keyword";
+                                        }
+
+                                    $stmt = $PDO->prepare($sql);
+
+                                    if (!empty($keyword)) {
+                                    $stmt->bindValue(':keyword', '%' . $keyword . '%');
+                                    }
+                                    $stmt->execute();
                                     foreach($PDO->query($sql) as $row){
                                 ?>
                                 
