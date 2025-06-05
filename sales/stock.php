@@ -43,7 +43,7 @@
 
         <section class="content">
             <section class="search mt-3">
-                    <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索">
+                    <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索" style="writing-mode: horizontal-tb;">
                     <button class="btn btn-primary search-btn" type="button" onclick="search()">検索</button>
             </section>
 
