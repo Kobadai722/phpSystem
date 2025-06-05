@@ -4,13 +4,14 @@
 中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
 
 .search {
-    display: flex; 
+    justify-content: flex-end; /* ← これを追加/修正 */ 
     gap: 1rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     margin-left: 1rem;
     width: 100%;
     max-width: 900px; /* 好みのサイズに調整可能 */
 }
+
 
 .table-smaller {
     margin-left: 1rem;
