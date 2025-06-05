@@ -14,10 +14,6 @@
     max-width: 900px; /* 好みのサイズに調整可能 */
     height:5%;
 }
-.search-btn {
-    writing-mode: horizontal-tb !important;
-    text-orientation: mixed !important;
-}
 
 .table-smaller {
     margin-left: 1rem;
