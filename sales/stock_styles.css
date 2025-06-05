@@ -11,7 +11,11 @@
     width: 100%;
     max-width: 900px; /* 好みのサイズに調整可能 */
 }
-
+#searchInput {
+    flex-grow: 1;         /* 残りの幅を自動で取る */
+    min-width: 300px;     /* 最小幅を設定 */
+    max-width: 600px;     /* 最大幅の調整（必要なら） */
+}
 
 .table-smaller {
     margin-left: 1rem;
