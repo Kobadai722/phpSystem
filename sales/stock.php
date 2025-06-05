@@ -42,7 +42,7 @@
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
                         <form method="POST" action="search.php" class="d-flex">
-                        <input type="text" name="keyword" class="form-control" placeholder="商品名または商品IDで検索" value="<?= htmlspecialchars($_POST['keyword'] ?? '') ?>">
+                        <input type="text" name="keyword" class="form-control" placeholder="商品名または商品IDで検索" value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
                         </form>
                 </section>
@@ -62,27 +62,36 @@
                                 <?php
                                     require_once '../config.php';
 
-                                    // 🔧 ここでキーワードをPOSTから受け取る
-                                    $keyword = $_POST['keyword'] ?? '';
-                                    // SQL文組み立て
-                                    $sql = " SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.UNIT_SELLING_PRICE,S.STOCK_QUANTITY,K.PRODUCT_KUBUN_NAME
-                                    FROM PRODUCT P
-                                    LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
-                                    LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
-
+                                // 🔧 ここでキーワードをPOSTから受け取る
+                                $keyword = $_POST['keyword'] ?? '';
+                                // SQL文組み立て
+                                $sql = " SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.UNIT_SELLING_PRICE,S.STOCK_QUANTITY,K.PRODUCT_KUBUN_NAME
+                                FROM PRODUCT P
+                                LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
+                                LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
                                     if (!empty($keyword)) {
-                                    $sql .= " WHERE P.PRODUCT_ID LIKE :keyword OR P.PRODUCT_NAME LIKE :keyword";
+                                        $sql .= " WHERE P.PRODUCT_ID LIKE :keyword OR P.PRODUCT_NAME LIKE :keyword";
                                     }
-
                                     $stmt = $PDO->prepare($sql);
 
                                     if (!empty($keyword)) {
-                                    $stmt->bindValue(':keyword', '%' . $keyword . '%');
+                                        $stmt->bindValue(':keyword', '%' . $keyword . '%');
                                     }
 
                                     $stmt->execute();
                                     $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     ?>
+                                
+                                <tr>
+                                <td scope="row"><?=$row['PRODUCT_ID']?></td>
+                                <td><?=$row['PRODUCT_NAME']?></td>
+                                <td><?=$row['UNIT_SELLING_PRICE']?></td>
+                                <td><?=$row['STOCK_QUANTITY']?></td>
+                                <td><?=$row['PRODUCT_KUBUN_NAME']?></td>
+                                </tr>
+                            <?php
+                                }
+                            ?>
                             
                             <!-- theadタグとtbodyタグについてですね。 これは表の見出し部分と本体部分を区別するためのタグなんだよ。例えば、テーブルに複数の行がある場合、
                                 theadタグによって表の上端の1行目を見出し部分として指定することができる。それに対して、tbodyタグはその下に続く行を本体部分として指定するためのタグだよ。 -->
