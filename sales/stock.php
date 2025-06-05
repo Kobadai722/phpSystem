@@ -18,7 +18,7 @@
                     <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
                     </li>
-                         <li class="nav-item dropdown">
+                        <li class="nav-item dropdown dropdown-center">
                         <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="bi bi-box-seam"></i> 在庫管理
                         </a>
@@ -41,12 +41,14 @@
 
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
-                        <input type="text" class="form-control " placeholder="商品名または商品IDで検索">
+                        <form method="POST" action="search.php" class="d-flex">
+                        <input type="text" name="keyword" class="form-control" placeholder="商品名または商品IDで検索" value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
+                        </form>
                 </section>
                         
                 <div class="table-responsive">
-                    <table class="table  table-bordered table-hover table-smaller">
+                    <table class="table  table-border table-hover table-smaller">
                         <thead><!-- 表の ヘッダー部分 を表す要素 -->
                             <tr class="#">
                                 <th scope="col">商品ID</th>
@@ -54,13 +56,28 @@
                                 <th scope="col">単価</th>
                                 <th scope="col">在庫数</th>
                                 <th scope="col">商品区分</th>
+                                </tr>
+                        </thead>
+                        <tbody>
                                 <?php
                                     require_once '../config.php';
                                     $sql = " SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.UNIT_SELLING_PRICE,S.STOCK_QUANTITY,K.PRODUCT_KUBUN_NAME
                                     FROM PRODUCT P
                                     LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
                                     LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
-                                    foreach($PDO->query($sql) as $row){
+                                    if (!empty($keyword)) {
+                                        $sql .= " WHERE P.PRODUCT_ID LIKE :keyword OR P.PRODUCT_NAME LIKE :keyword";
+                                        }
+
+                                    $stmt = $PDO->prepare($sql);
+
+                                    if (!empty($keyword)) {
+                                        $stmt->bindValue(':keyword', '%' . $keyword . '%');
+                                        }
+                                        $stmt->execute();
+
+                                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($results as $row) {
                                 ?>
                                 
                                 <tr>
@@ -73,11 +90,10 @@
                             <?php
                                 }
                             ?>
-                            </tr>
-                        </thead>
+                            
                             <!-- theadタグとtbodyタグについてですね。 これは表の見出し部分と本体部分を区別するためのタグなんだよ。例えば、テーブルに複数の行がある場合、
                                 theadタグによって表の上端の1行目を見出し部分として指定することができる。それに対して、tbodyタグはその下に続く行を本体部分として指定するためのタグだよ。 -->
-                        <tbody><!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
+                        <!-- 表の一連の行（ <tr> 要素）を内包し、その部分が表（ <table> ）の本体部分を構成することを表します -->
                             <!-- 在庫データの表をここに表示 -->
                         </tbody>
                     </table>

@@ -5,13 +5,11 @@
 
 .search {
     justify-content: flex-end; /* ← これを追加/修正 */ 
-    display: flex; /*要素の横並び*/
     gap: 1rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     margin-left: 1rem;
-    margin-right: 1rem;
     width: 100%;
-    max-width: 1000px; /* 好みのサイズに調整可能 */
+    max-width: 900px; /* 好みのサイズに調整可能 */
 }
 
 
@@ -20,9 +18,18 @@
     margin-right: 1rem;    
 }
 
-.table-smaller th,.table-smaller td {
-  padding: 0.75rem;
-  border-bottom: 1px solid #d1d5db;
-  text-align: left;
+/* 枠線の制御：上下のみ残す */
+.table-smaller td, .table-smaller th {
+    padding: 0.75rem;
+    text-align: left;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    border-left: none;
+    border-right: none;
 }
 
+/* ホバー時の行に背景色 */
+.table-hover tbody tr:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}

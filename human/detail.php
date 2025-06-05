@@ -9,6 +9,7 @@
 <body>
     <h1>人事詳細</h1>
 
+
     <table class="table table-bordered">
         <tr>
             <th>社員番号</th>
