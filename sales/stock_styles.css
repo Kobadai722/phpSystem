@@ -4,7 +4,8 @@
 中にある「**直下の子要素（nav や sectionなど）」**が横並びになる*/
 
 .search {
-    display: flex; /* ← これを追加/修正 */ 
+    flex-direction: row;
+    justify-content: flex-end; /* ← これを追加/修正 */ 
     gap: 1rem; /*要素間の間隔*/
     margin-bottom: 1rem;
     margin-left: 1rem;
