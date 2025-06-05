@@ -10,6 +10,7 @@
     margin-left: 1rem;
     width: 100%;
     max-width: 900px; /* 好みのサイズに調整可能 */
+    display: flex;/*要素の横並び*/
 }
 
 
