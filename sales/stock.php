@@ -44,7 +44,7 @@
         <section class="content">
             <section class="search mt-3">
                     <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索">
-                    <button class="btn btn-primary search-btn" type="button" onclick="search()"><i class="bi bi-search"></i>検索</button>
+                    <button class="btn btn-primary search-btn" type="button" onclick="search()"><i class="bi bi-search me-2"></i>検索</button>
             </section>
 
             <div class="table-responsive">
