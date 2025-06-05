@@ -41,9 +41,10 @@
 
             <section class="content">
                 <section class="search mt-3"><!-- コンテンツをグループ化 -->
-                        <form method="GET" action="search.php" class="d-flex">
+                        <form method="POST" action="search.php" class="d-flex">
                         <input type="text" name="keyword" class="form-control" placeholder="商品名または商品IDで検索" value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>">
                         <button class="btn btn-primary search-btn" type="submit" style="white-space: nowrap;">検索</button>
+                        </form>
                 </section>
                         
                 <div class="table-responsive">
@@ -71,10 +72,12 @@
                                     $stmt = $PDO->prepare($sql);
 
                                     if (!empty($keyword)) {
-                                    $stmt->bindValue(':keyword', '%' . $keyword . '%');
-                                    }
-                                    $stmt->execute();
-                                    foreach($PDO->query($sql) as $row){
+                                        $stmt->bindValue(':keyword', '%' . $keyword . '%');
+                                        }
+                                        $stmt->execute();
+
+                                        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                    foreach ($results as $row) {
                                 ?>
                                 
                                 <tr>
