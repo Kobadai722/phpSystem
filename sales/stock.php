@@ -62,41 +62,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                require_once '../config.php';
-
-                $keyword = $_POST['keyword'] ?? '';
-
-                $sql = "SELECT P.PRODUCT_ID, P.PRODUCT_NAME, P.UNIT_SELLING_PRICE, S.STOCK_QUANTITY, K.PRODUCT_KUBUN_NAME
-                                FROM PRODUCT P
-                                LEFT JOIN STOCK S ON P.PRODUCT_ID = S.PRODUCT_ID
-                                LEFT JOIN PRODUCT_KUBUN K ON P.PRODUCT_KUBUN_ID = K.PRODUCT_KUBUN_ID";
-
-                if (!empty($keyword)) {
-                    $sql .= " WHERE P.PRODUCT_ID LIKE :keyword OR P.PRODUCT_NAME LIKE :keyword";
-                }
-
-                $stmt = $PDO->prepare($sql);
-
-                if (!empty($keyword)) {
-                    $stmt->bindValue(':keyword', '%' . $keyword . '%');
-                }
-
-                $stmt->execute();
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                foreach ($results as $row) {
-                ?>
-                    <tr>
-                        <td scope="row"><?= $row['PRODUCT_ID'] ?></td>
-                        <td><?= $row['PRODUCT_NAME'] ?></td>
-                        <td><?= $row['UNIT_SELLING_PRICE'] ?></td>
-                        <td><?= $row['STOCK_QUANTITY'] ?></td>
-                        <td><?= $row['PRODUCT_KUBUN_NAME'] ?></td>
-                    </tr>
-                <?php
-                }
-                ?>
+                <body onload="search()">
             </tbody>
         </table>
     </div>

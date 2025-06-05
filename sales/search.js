@@ -1,4 +1,4 @@
-function search() {
+
 function search() {
     const keyword = document.getElementById("searchInput").value;
 
@@ -33,5 +33,4 @@ function search() {
             tbody.insertAdjacentHTML("beforeend", tr);
         });
     });
-}
 }
