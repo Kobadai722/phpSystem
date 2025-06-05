@@ -23,11 +23,11 @@ function search() {
         data.forEach(row => {
             const tr = `
                 <tr>
-                    <td>${row.PRODUCT_ID}</td>
-                    <td>${row.PRODUCT_NAME}</td>
-                    <td>${row.UNIT_SELLING_PRICE}</td>
-                    <td>${row.STOCK_QUANTITY}</td>
-                    <td>${row.PRODUCT_KUBUN_NAME}</td>
+                    <td>${row.PRODUCT_ID  ?? ''}</td>
+                    <td>${row.PRODUCT_NAME  ?? ''}</td>
+                    <td>${row.UNIT_SELLING_PRICE  ?? ''}</td>
+                    <td>${row.STOCK_QUANTITY  ?? ''}</td>
+                    <td>${row.PRODUCT_KUBUN_NAME  ?? ''}</td>  // ?? '' は、null または undefined のときだけ ''（空文字）を表示する構文です。
                 </tr>
             `;
             tbody.insertAdjacentHTML("beforeend", tr);
