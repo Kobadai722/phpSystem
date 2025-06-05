@@ -16,6 +16,7 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
+        <a href="customer-register" type="button" class="btn">Base class</a>
         <div class="accordion mb-4" id="accordionExample">
         <div class="accordion-item">
         <h2 class="accordion-header">
@@ -26,7 +27,7 @@
         <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
                 <div class="gray-box">
-                    <form action="search-output.php" method="post" class="mb-4">
+                    <form action="customer-output.php" method="post" class="mb-4">
                         <div class="mb-2">
                             <label for="customerid" class="form-label">顧客ID</label>
                             <input type="text" name="customerid" id="customerid" class="form-control">
