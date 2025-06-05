@@ -16,7 +16,9 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
-        <button type="button" class="btn btn-primary mb-4 pull-right" onclick="customer-register.php"><i class="bi bi-plus-lg"></i>追加</button>
+        <div class="text-end">
+            <button type="button" class="btn btn-primary mb-4" onclick="location.href='customer-register.php'"><i class="bi bi-plus-lg"></i>追加</button>
+        </div>
         <div class="accordion mb-4" id="accordionExample">
         <div class="accordion-item">
         <h2 class="accordion-header">
