@@ -43,7 +43,7 @@
 
         <section class="content">
             <div class="search mt-3">
-                <div class="row g-2 align-items-center w-100">
+                <div class="row g-2  w-100">
                     <div class="col-md-auto">
                         <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索">
                     </div>
