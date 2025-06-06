@@ -11,6 +11,7 @@ $sql->execute([$_SESSION['id']]);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
     <script src="js/ajaxzip3.js" charset="UTF-8"></script>
+    <link href="../style.css" rel="stylesheet" />
 </head>
 <?php include '../header.php'; ?>
 <body>
