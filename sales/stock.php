@@ -43,7 +43,7 @@
 
         <section class="content">
             <div class="search mt-3">
-                <div class="row g-2  w-100">
+                <div class="row g-2 w-100 align-items-center"><!-- ここ変更 -->
                     <div class="col-md-auto">
                         <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索">
                     </div>
@@ -52,9 +52,12 @@
                             <i class="bi bi-search me-2"></i>検索
                         </button>
                     </div>
-                    <div class="col-md-2 text-end">
+                    <div class="col"><!-- 空のカラムで余白を作る：ここ追加 -->
+                        <!-- ここに空のカラムを追加して、右寄せ空間を確保 -->
+                    </div>
+                    <div class="col-md-auto text-end"><!-- ここ変更 -->
                         <button class="btn btn-outline-secondary btn-sm">詳細検索</button>
-                </div>
+                    </div>
                 </div>
             </div>
 
