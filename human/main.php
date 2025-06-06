@@ -20,8 +20,8 @@
 
 <!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
     <select name="edit">
-        <option value="edit"><a href="editer.php">編集者画面に切り替える</a></option>
-        <option value="nomal"><a href="main.php">一般画面に切り替える</a></option>
+        <option value="editer.php">編集者画面に切り替える</option>
+        <option value="main.php">一般画面に切り替える</option>
     </select>
 
 <!-- 所属社員の表示欄 -->        
