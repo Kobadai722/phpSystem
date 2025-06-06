@@ -9,7 +9,11 @@
 <body>
     <h1>人事詳細</h1>
 
-
+<!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
+    <select name="edit">
+        <option value="edit">編集者画面に切り替える</option>
+        <option value="nomal">一般画面に切り替える</option>
+    </select>
     <table class="table table-bordered">
         <tr>
             <th>社員番号</th>
