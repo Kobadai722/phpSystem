@@ -17,12 +17,14 @@
         <p>従業員番号： <input type="text"  name="keyword">
                     <input type="submit" value="検索"></p>
         </form>
-<!-- 所属社員の表示欄 -->
-        <select name="edit">
-            <option value="edit">編集者画面に切り替える</option>
-            <option value="nomal">一般画面に切り替える</option>
-        </select>
-        
+
+<!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
+    <select name="edit">
+        <option value="edit"><a href="editer.php">編集者画面に切り替える</a></option>
+        <option value="nomal"><a href="main.php">一般画面に切り替える</a></option>
+    </select>
+
+<!-- 所属社員の表示欄 -->        
         <table class="table table-hover">
             <tr>
                 <th scope="col">社員番号</th>
@@ -52,6 +54,9 @@
             ?>
 
         </table>
+
+
+
     </body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
