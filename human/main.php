@@ -11,6 +11,15 @@
     <?php include '../header.php'; ?>
     <body>
         <h1>人事管理表</h1>
+<!-- 編集者ページの切り替え -->
+<div class="editer">
+    <form method="get" action="">
+        <select name="edit">
+            <option value="editer.php">編集者画面に切り替える</option>
+            <option value="main.php">一般画面に切り替える</option>
+        </select>
+    </form>
+</div>
 <!-- 所属社員の検索欄 -->
 <div>
     <form>
@@ -20,13 +29,7 @@
                     <input type="submit" value="検索"></p>
     </form>
 </div>
-<!-- 編集者ページの切り替え -->
-<div class="editer">
-    <select name="edit">
-        <option value="editer.php">編集者画面に切り替える</option>
-        <option value="main.php">一般画面に切り替える</option>
-    </select>
-</div>
+
 <!-- 所属社員の表示欄 -->        
         <table class="table table-hover">
             <tr>
