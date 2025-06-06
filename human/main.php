@@ -18,6 +18,12 @@
                     <input type="submit" value="検索"></p>
         </form>
 
+<!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
+    <select name="edit">
+        <option value="edit"><a href="editer.php">編集者画面に切り替える</a></option>
+        <option value="nomal"><a href="main.php">一般画面に切り替える</a></option>
+    </select>
+
 <!-- 所属社員の表示欄 -->        
         <table class="table table-hover">
             <tr>
