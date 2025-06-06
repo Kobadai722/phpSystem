@@ -52,9 +52,9 @@
                             <i class="bi bi-search me-2"></i>検索
                         </button>
                     </div>
-                </div>
-                <div class="col-md-2 text-end">
+                    <div class="col-md-2 text-end">
                         <button class="btn btn-outline-secondary btn-sm">詳細検索</button>
+                </div>
                 </div>
             </div>
 
