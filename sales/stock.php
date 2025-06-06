@@ -48,6 +48,9 @@
             <div class="col-md-auto"> <button class="btn btn-primary search-btn" type="button" onclick="search()"><i class="bi bi-search me-2"></i>検索</button>
             </div>
         </div>
+        <div class="col-md-2 text-end">
+          <button class="btn btn-outline-secondary btn-sm">詳細検索</button>
+        </div>
     </div>
 
     <div class="table-responsive">
