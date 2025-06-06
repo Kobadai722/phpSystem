@@ -56,7 +56,7 @@
                         <!-- ここに空のカラムを追加して、右寄せ空間を確保 -->
                     </div>
                     <div class="col-md-auto text-end"><!-- ここ変更 -->
-                        <button class="btn btn-outline-secondary btn-sm">詳細検索</button>
+                        <button class="btn btn-outline-secondary btn-sm me-3">詳細検索</button>
                     </div>
                 </div>
             </div>
