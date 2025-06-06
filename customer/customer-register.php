@@ -1,6 +1,6 @@
 <?php session_start(); 
 require_once '../config.php'; 
-$sql=$pdo->prepare('select adress from products where p_id = ?');
+$sql=$PDO->prepare('select adress from products where p_id = ?');
 $sql->execute([$_SESSION['id']]);
 ?> 
 <!DOCTYPE html>
@@ -39,7 +39,7 @@ $sql->execute([$_SESSION['id']]);
     $sum=0;
     //$_SESSION['cart'][$_POST['pid']] = $_POST['count'];
     require_once '../config.php';
-    $sql=$pdo->prepare('select * from products where p_id = ?');
+    $sql=$PDO->prepare('select * from products where p_id = ?');
     foreach($_SESSION['cart'] as $key=>$value){
         $sql->execute([$key]);
         foreach($sql as $row){
