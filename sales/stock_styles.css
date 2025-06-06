@@ -9,7 +9,7 @@
     margin-bottom: 1rem;
     margin-left: 1rem;
     width: 100%;
-    
+    max-width: 100% /* 好みのサイズに調整可能 */
 }
 #searchInput {
     flex-grow: 1;         /* 残りの幅を自動で取る */
