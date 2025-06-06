@@ -9,7 +9,6 @@
     margin-bottom: 1rem;
     margin-left: 1rem;
     width: 100%;
-    min-width: 40%;
     max-width: 900px; /* 好みのサイズに調整可能 */
 }
 #searchInput {
