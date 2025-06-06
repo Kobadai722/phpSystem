@@ -19,9 +19,9 @@
                     <input type="submit" value="検索"></p>
         </form>
 
-<!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
-    <select name="edit">
-        <option value="editer.php" class=editer>編集者画面に切り替える</option>
+<!-- 編集者ページの切り替え -->
+    <select name="edit" class="editer">
+        <option value="editer.php">編集者画面に切り替える</option>
         <option value="main.php">一般画面に切り替える</option>
     </select>
 
