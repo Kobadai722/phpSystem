@@ -20,11 +20,12 @@
         </form>
 
 <!-- 編集者ページの切り替え -->
-    <select name="edit" class="editer">
+<div class="editer">
+    <select name="edit">
         <option value="editer.php">編集者画面に切り替える</option>
         <option value="main.php">一般画面に切り替える</option>
     </select>
-
+</div>
 <!-- 所属社員の表示欄 -->        
         <table class="table table-hover">
             <tr>
