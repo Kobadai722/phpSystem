@@ -1,4 +1,4 @@
-.editer{
+.editer{/*画面切り替え右寄せ　クラス名は適当*/
     display: flex;
     justify-content: flex-end;
 }
