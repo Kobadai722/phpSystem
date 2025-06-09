@@ -20,7 +20,7 @@
   <div class="card">
     <form action="submit_siwake.php" method="post">
       <table class="table">
-        <tr>
+        <tr border=0>
           <!-- 仕訳ヘッダー-->
           <td class="fw-bold">日付</td>
           <td class="fw-bold">摘要</td>
@@ -43,8 +43,6 @@
               $sql->execute();
               $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
               // 取得したデータを表示
-              //簿記は一件につき2行
-              //１行目
               foreach ($accounts as $account) {
                 echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
               }
