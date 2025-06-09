@@ -11,3 +11,9 @@
     background-color: #e9ecef;
     opacity: 1;
 }
+
+/* モーダル内の確認表示を整えるためのスタイル */
+.modal-body strong {
+    display: inline-block;
+    width: 100px; /* ラベルの幅を固定 */
+}

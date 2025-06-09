@@ -12,16 +12,12 @@ require_once '../config.php';
     <script src="js/ajaxzip3.js" charset="UTF-8"></script>
     <link href="../style.css" rel="stylesheet" />
     <link href="customer.css" rel="stylesheet" />
-    <style>
-
-        
-    </style>
 </head>
 <?php include '../header.php'; ?>
 <body>
     <main class="container">
         <h2 class="my-4">顧客情報登録</h2>
-        <form action="check.php" method="post" class="needs-validation" novalidate>
+        <form id="customerForm" action="check.php" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">氏名 <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" required maxlength="10">
@@ -65,9 +61,33 @@ require_once '../config.php';
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">登録</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal" id="submitButton">登録</button>
         </form>
     </main>
+
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">入力内容の確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>以下の内容で登録します。よろしいですか？</p>
+                    <p><strong>氏名:</strong> <span id="modalName"></span></p>
+                    <p><strong>電話番号:</strong> <span id="modalCellNumber"></span></p>
+                    <p><strong>メールアドレス:</strong> <span id="modalMail"></span></p>
+                    <p><strong>郵便番号:</strong> <span id="modalPostCode"></span></p>
+                    <p><strong>住所:</strong> <span id="modalAddress"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <button type="button" class="btn btn-primary" id="confirmRegister">登録</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -77,20 +97,37 @@ require_once '../config.php';
         'use strict'
 
         // 全てのカスタムバリデーションを適用するフォームを取得
-        var forms = document.querySelectorAll('.needs-validation')
+        var form = document.querySelector('.needs-validation'); // 1つのフォームなのでquerySelectorを使用
+        var submitButton = document.getElementById('submitButton');
+        var confirmRegisterButton = document.getElementById('confirmRegister');
+        var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
 
-        // ループして、各フォームにバリデーションを適用
-        Array.prototype.slice.call(forms)
-            .forEach(function (form) {
-                form.addEventListener('submit', function (event) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault()
-                        event.stopPropagation()
-                    }
+        submitButton.addEventListener('click', function (event) {
+            // フォームのバリデーションを実行
+            if (!form.checkValidity()) {
+                event.preventDefault(); // デフォルトのモーダル表示をキャンセル
+                event.stopPropagation(); // イベントの伝播を停止
+                form.classList.add('was-validated'); // バリデーションエラー表示
+            } else {
+                // バリデーションが成功した場合、モーダルにデータをセットして表示
+                document.getElementById('modalName').textContent = document.getElementById('name').value;
+                document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力'; // 未入力の場合の表示
+                document.getElementById('modalMail').textContent = document.getElementById('mail').value;
+                document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
+                document.getElementById('modalAddress').textContent = document.getElementById('address').value;
 
-                    form.classList.add('was-validated')
-                }, false)
-            })
+                confirmModal.show(); // モーダルを表示
+            }
+        });
+
+        // モーダル内の「登録」ボタンがクリックされたらフォームを送信
+        confirmRegisterButton.addEventListener('click', function () {
+            form.submit(); // フォームを送信
+        });
+
+        // ページロード時にバリデーションクラスをリセット（任意）
+        form.classList.remove('was-validated');
+
     })()
 </script>
 </html>
