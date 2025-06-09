@@ -16,6 +16,7 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
+        <h2>顧客一覧</h2>
         <div class="text-end">
             <button type="button" class="btn btn-primary mb-4" onclick="location.href='customer-register.php'"><i class="bi bi-plus-lg"></i>追加</button>
         </div>
