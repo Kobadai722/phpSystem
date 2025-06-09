@@ -15,13 +15,13 @@
     <?php
     require_once '../config.php'; //DBサーバーと接続
 
-    
+    // 社員が所属する部署のみを重複なく取得する
     $stmt_divisions = $PDO->query(
         "SELECT DISTINCT d.DIVISION_ID, d.DIVISION_NAME
-        FROM EMPLOYEE e
-        INNER JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-        WHERE d.DIVISION_NAME IS NOT NULL AND d.DIVISION_NAME != ''
-        ORDER BY d.DIVISION_ID"
+         FROM EMPLOYEE e
+         INNER JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
+         WHERE d.DIVISION_NAME IS NOT NULL AND d.DIVISION_NAME != ''
+         ORDER BY d.DIVISION_ID"
     );
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
@@ -130,7 +130,7 @@
             foreach ($sql as $row) { ?>
                 <tr>
                     <td scope="row"><?= htmlspecialchars($row['EMPLOYEE_ID']) ?></td>
-                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
+                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
                     <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td>
                     <td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td>
                     <td><?= htmlspecialchars($row['JOINING_DATE']) ?></td>
