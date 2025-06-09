@@ -42,7 +42,7 @@
               $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
               $sql->execute();
               $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-              // 取得したデータを表示
+              // 取得したデータを表示6uytg 
               foreach ($accounts as $account) {
                 echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
               }
