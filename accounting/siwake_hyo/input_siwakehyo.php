@@ -10,67 +10,65 @@
   <link rel="stylesheet" href="../../../phpSystem/style.css" type="text/css"/>
 </head>
 <body>
-    <?php
+  <?php
   // DB接続
   require_once '../../config.php';
   // セッション開始
   session_start();
   include '../../header.php'; // ヘッダーの読み込み
   ?>
-  <form action="submit_siwake.php" method="post" class="form-control">
-    <table>
-      <tr>
-        <!-- 仕訳ヘッダー-->
-        <td>日付</td>
-        <td>摘要</td>
-        <!-- 仕訳明細-->
-        <td>借方科目</td>
-        <td>借方金額</td>
-        <td>貸方科目</td>
-        <td>貸方金額</td>
-      </tr>
-      <!-- 仕訳明細 -->
-      <!--借方部分-->
-      <tr>
-        <td><input type="date" name="entry_date" required></td><!-- 日付 -->
-
-        <td><input type="text" name="description" required></td> <!-- 摘要 -->
-
-        <td>
-          <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
-            <?php
-            //勘定科目の取得
-            $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
-            $sql->execute();
-            $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-            // 取得したデータを表示
-            //簿記は一件につき2行
-
-            //１行目
-            foreach ($accounts as $account) {
-              echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-            }
-            ?>
-          </select>
-        </td>
-        <td><input type="number" name="debit_amount" required></td> <!-- 借方金額 -->
-        <td><select name="credit_account" class="form-select" required><!-- 貸方科目 -->
-            <?php
-            foreach ($accounts as $account) {
-              echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-            }
-            ?>
-          </select>
-        </td>
-        <td><input type="number" name="credit_amount" required></td> <!-- 貸方金額 -->
-      </tr>
-    </table>
-    <br>
-    <button type="submit">登録</button>
-
-    <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
-    <p><a href="../../main.php">トップページに戻る</a></p>
-  </form>
+  <div class="card">
+    <form action="submit_siwake.php" method="post">
+      <table class="table">
+        <tr>
+          <!-- 仕訳ヘッダー-->
+          <td>日付</td>
+          <td>摘要</td>
+          <!-- 仕訳明細-->
+          <td>借方科目</td>
+          <td>借方金額</td>
+          <td>貸方科目</td>
+          <td>貸方金額</td>
+        </tr>
+        <!-- 仕訳明細 -->
+        <!--借方部分-->
+        <tr>
+          <td><input type="date" name="entry_date" class="form-control" required></td><!-- 日付 -->
+          <td><input type="text" name="description" class="form-control" required></td> <!-- 摘要 -->
+          <td>
+            <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
+              <?php
+              //勘定科目の取得
+              $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
+              $sql->execute();
+              $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+              // 取得したデータを表示
+              //簿記は一件につき2行
+              //１行目
+              foreach ($accounts as $account) {
+                echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+              }
+              ?>
+            </select>
+          </td>
+          <td><input type="number" name="debit_amount" class="form-control" required></td> <!-- 借方金額 -->
+          <td><select name="credit_account" class="form-select" class="form-control" required><!-- 貸方科目 -->
+              <?php
+              foreach ($accounts as $account) {
+                echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+              }
+              ?>
+            </select>
+          </td>
+          <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
+        </tr>
+      </table>
+      <br>
+      <button type="submit">登録</button>
+    </form>
+  </div>
+  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
+  <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
