@@ -17,7 +17,7 @@
   session_start();
   include '../../header.php'; // ヘッダーの読み込み
   ?>
-  <form action="submit_siwake.php" method="post">
+  <form action="submit_siwake.php" method="post" class="form-control">
     <table>
       <tr>
         <!-- 仕訳ヘッダー-->
@@ -37,7 +37,7 @@
         <td><input type="text" name="description" required></td> <!-- 摘要 -->
 
         <td>
-          <select name="debit_account" required> <!-- 借方科目 -->
+          <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
             <?php
             //勘定科目の取得
             $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
@@ -54,7 +54,7 @@
           </select>
         </td>
         <td><input type="number" name="debit_amount" required></td> <!-- 借方金額 -->
-        <td><select name="credit_account" required><!-- 貸方科目 -->
+        <td><select name="credit_account" class="form-select" required><!-- 貸方科目 -->
             <?php
             foreach ($accounts as $account) {
               echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
