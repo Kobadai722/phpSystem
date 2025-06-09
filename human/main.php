@@ -15,8 +15,14 @@
     <?php
     require_once '../config.php'; //DBサーバーと接続
 
-    // ドロップダウン用に部署の一覧を取得
-    $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
+    
+    $stmt_divisions = $PDO->query(
+        "SELECT DISTINCT d.DIVISION_ID, d.DIVISION_NAME
+        FROM EMPLOYEE e
+        INNER JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
+        WHERE d.DIVISION_NAME IS NOT NULL AND d.DIVISION_NAME != ''
+        ORDER BY d.DIVISION_ID"
+    );
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
@@ -83,7 +89,7 @@
             // 検索キーワードの受け取り
             $name_keyword = $_GET['name_keyword'] ?? null;
             $id_keyword = $_GET['id_keyword'] ?? null;
-            $division_id = $_GET['division_id'] ?? null; // 部署IDの受け取り
+            $division_id = $_GET['division_id'] ?? null; 
 
             // ベースとなるSQLクエリ
             $sql_query = "SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
@@ -106,7 +112,7 @@
                 $params[] = '%' . $id_keyword . '%';
             }
 
-            // ★部署での絞り込み条件を追加
+            // 部署での絞り込み条件
             if (!empty($division_id)) {
                 $conditions[] = "e.DIVISION_ID = ?";
                 $params[] = $division_id;
@@ -124,8 +130,12 @@
             foreach ($sql as $row) { ?>
                 <tr>
                     <td scope="row"><?= htmlspecialchars($row['EMPLOYEE_ID']) ?></td>
-                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
-                    <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td><td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td><td><?= htmlspecialchars($row['JOINING_DATE']) ?></td><td><?= htmlspecialchars($row['URGENCY_CELL_NUMBER']) ?></td></tr>
+                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
+                    <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td>
+                    <td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td>
+                    <td><?= htmlspecialchars($row['JOINING_DATE']) ?></td>
+                    <td><?= htmlspecialchars($row['URGENCY_CELL_NUMBER']) ?></td>
+                </tr>
             <?php
             };
             ?>
