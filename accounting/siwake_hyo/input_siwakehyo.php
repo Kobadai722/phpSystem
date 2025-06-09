@@ -22,13 +22,13 @@
       <table class="table">
         <tr>
           <!-- 仕訳ヘッダー-->
-          <td>日付</td>
-          <td>摘要</td>
+          <td class="fw-bold">日付</td>
+          <td class="fw-bold">摘要</td>
           <!-- 仕訳明細-->
-          <td>借方科目</td>
-          <td>借方金額</td>
-          <td>貸方科目</td>
-          <td>貸方金額</td>
+          <td class="fw-bold">借方科目</td>
+          <td class="fw-bold">借方金額</td>
+          <td class="fw-bold">貸方科目</td>
+          <td class="fw-bold">貸方金額</td>
         </tr>
         <!-- 仕訳明細 -->
         <!--借方部分-->
