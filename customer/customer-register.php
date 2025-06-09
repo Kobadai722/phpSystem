@@ -11,15 +11,10 @@ require_once '../config.php';
     <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
     <script src="js/ajaxzip3.js" charset="UTF-8"></script>
     <link href="../style.css" rel="stylesheet" />
+    <link href="customer.css" rel="stylesheet" />
     <style>
 
-        .form-label {
-            font-weight: bold;
-        }
-        .form-control[readonly] {
-            background-color: #e9ecef;
-            opacity: 1;
-        }
+        
     </style>
 </head>
 <?php include '../header.php'; ?>
