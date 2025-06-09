@@ -11,7 +11,7 @@
 <?php include '../header.php'; ?>
 
 <body>
-    <h1>人事管理表</h1>
+    <h1>人事管理表-編集者モード</h1>
     <?php
     require_once '../config.php'; //DBサーバーと接続
 
