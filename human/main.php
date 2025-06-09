@@ -25,13 +25,20 @@
     );
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
-
-    <div class="editer">
-        <form method="get" action="">
-            <select name="edit" onchange="location = this.value;">
-                <option value="main.php">一般画面</option>
-                <option value="editer.php">編集者画面に切り替える</option>
-            </select>
+    <!--編集切り替え画面-->
+    <div class="mb-3 p-3 border rounded">
+        <form>
+            <div class="row g-3 aligh-items-center">
+                <div class="col-auto">
+                    <label for="display_mode_select" class="col-form-label">表示モード：</label>
+                </div>
+                <div class="col-auto">
+                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
+                        <option value="main.php">一般画面</option>
+                        <option value="editer.php">編集者画面</option>
+                </select>
+                </div>
+            </div>
         </form>
     </div>
 
