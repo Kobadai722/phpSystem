@@ -1,0 +1,47 @@
+#テーブル関係
+
+-- 勘定科目テーブル
+CREATE TABLE ACCOUNTS (
+  ID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  -- 勘定科目名
+  NAME VARCHAR(100) NOT NULL,
+  -- 種類（資産、負債など）
+  TYPE ENUM('資産', '負債', '純資産', '収益', '費用') NOT NULL COMMENT 'Consistent ENUM definition for account type',
+  -- 勘定科目コード
+  CODE VARCHAR(100) UNIQUE
+);
+-- 仕訳ヘッダーテーブル（1件の取引全体を表す）
+CREATE TABLE JOURNAL_HEADERS (
+  -- 仕訳ヘッダーID
+  ID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  -- 取引日付
+  ENTRY_DATE DATE NOT NULL,
+  -- 摘要
+  DESCRIPTION TEXT,
+  -- 登録日時
+  CREATE_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+-- 仕訳明細テーブル（借方・貸方それぞれの行を1行として記録）
+CREATE TABLE JOURNAL_ENTRIES (
+  -- 仕訳明細ID
+  ID INTEGER AUTO_INCREMENT PRIMARY KEY,
+  -- 仕訳ヘッダーの外部キー（どの取引に属するか 借方に貸方が二つある場合など）
+  HEADER_ID INTEGER NOT NULL,
+  FOREIGN KEY (HEADER_ID) REFERENCES JOURNAL_HEADERS(ID),
+  -- 勘定科目
+  ACCOUNT_ID INTEGER NOT NULL,
+  FOREIGN KEY (ACCOUNT_ID) REFERENCES ACCOUNTS(ID),
+  -- 金額
+  AMOUNT INTEGER NOT NULL,
+  -- 借方 or 貸方
+TYPE ENUM('借方', '貸方') NOT NULL
+);
+
+
+-- USERSテーブルの作成
+#CREATE TABLE USERS (
+  u_id INT AUTO_INCREMENT PRIMARY KEY,
+  u_name VARCHAR(100) NOT NULL,
+  u_pass VARCHAR(100) NOT NULL,
+  u_dname VARCHAR(100) NOT NULL
+);
