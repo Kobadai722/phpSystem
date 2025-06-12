@@ -25,7 +25,6 @@
     );
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    <!--編集切り替え画面-->
     <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 aligh-items-center">
@@ -34,7 +33,7 @@
                 </div>
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php">一般画面</option>
+                        <option value="main.php" selected>一般画面</option>
                         <option value="editer.php">編集者画面</option>
                 </select>
                 </div>
@@ -100,9 +99,9 @@
 
             // ベースとなるSQLクエリ
             $sql_query = "SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
-                        FROM EMPLOYEE e
-                        LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
+                            FROM EMPLOYEE e
+                            LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
+                            LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
 
             $conditions = [];
             $params = [];
@@ -141,7 +140,7 @@
                     <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td>
                     <td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td>
                     <td><?= htmlspecialchars($row['JOINING_DATE']) ?></td>
-                    <td><?= htmlspecialchars($row['URGENCY_CELL_NUMBER']) ?></td>
+                    <td><?= htmlspecialchars($row['EMERGENCY_CELL_NUMBER']) ?></td>
                 </tr>
             <?php
             };
