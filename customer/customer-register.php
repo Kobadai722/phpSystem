@@ -34,17 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         echo json_encode($response);
         exit;
     }
-    if (!preg_match('/^[0-9]{7}$/', $post_code)) {
-        $response['message'] = '郵便番号は7桁の数字で入力してください。';
-        echo json_encode($response);
-        exit;
-    }
-    if (mb_strlen($address) > 64) { // Assuming max length is 64, adjust if different
-        $response['message'] = '住所は64文字以内で入力してください。';
-        echo json_encode($response);
-        exit;
-    }
-
+    // Add more validation for post_code, address lengths if needed
 
     try {
         $sql = "INSERT INTO CUSTOMER (NAME, CELL_NUMBER, MAIL, POST_CODE, ADDRESS) VALUES (:name, :cell_number, :mail, :post_code, :address)";
@@ -147,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirmRegisterButtonInModal">登録</button> <!-- IDを変更またはこのボタン自体をJSで生成 -->
+                    <button type="button" class="btn btn-primary" id="confirmRegister">登録</button>
                 </div>
             </div>
         </div>
@@ -166,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         var submitButton = document.getElementById('submitButton');
         var confirmModalElement = document.getElementById('confirmModal');
         var confirmModalInstance = new bootstrap.Modal(confirmModalElement);
-        // var confirmRegisterButton = document.getElementById('confirmRegisterButtonInModal'); // HTMLから初期ボタンを取得する場合
+        var confirmRegisterButton = document.getElementById('confirmRegister');
         var modalTitle = confirmModalElement.querySelector('.modal-title');
         var modalBody = confirmModalElement.querySelector('.modal-body');
         var modalFooter = confirmModalElement.querySelector('.modal-footer');
@@ -180,25 +170,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 form.classList.add('was-validated'); // バリデーションエラー表示
             } else {
                 // バリデーションが成功した場合、モーダルにデータをセットして表示
-                // モーダルを常に確認状態にリセット
+                document.getElementById('modalName').textContent = document.getElementById('name').value;
+                document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力'; // 未入力の場合の表示
+                document.getElementById('modalMail').textContent = document.getElementById('mail').value;
+                document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
+                document.getElementById('modalAddress').textContent = document.getElementById('address').value;
+
+                // Reset modal to confirmation state if it was previously a success/error message
                 modalTitle.textContent = '入力内容の確認';
-
-                // HTML内のspan ID (modalNameなど) を直接更新する場合
-                // document.getElementById('modalName').textContent = document.getElementById('name').value;
-                // document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力';
-                // document.getElementById('modalMail').textContent = document.getElementById('mail').value;
-                // document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
-                // document.getElementById('modalAddress').textContent = document.getElementById('address').value;
-
-                // または、modalBody.innerHTML で内容を完全に再構築する場合 (現在のコードに近い)
                 modalBody.innerHTML = `
                     <p>以下の内容で登録します。よろしいですか？</p>
-                    <p><strong>企業名:</strong> ${document.getElementById('name').value}</p>
-                    <p><strong>電話番号:</strong> ${document.getElementById('cell_number').value || '未入力'}</p>
-                    <p><strong>メールアドレス:</strong> ${document.getElementById('mail').value}</p>
-                    <p><strong>郵便番号:</strong> ${document.getElementById('post_code').value}</p>
-                    <p><strong>住所:</strong> ${document.getElementById('address').value}</p>
+                    <p><strong>企業名:</strong> <span id="modalNameConfirm">${document.getElementById('name').value}</span></p>
+                    <p><strong>電話番号:</strong> <span id="modalCellNumberConfirm">${document.getElementById('cell_number').value || '未入力'}</span></p>
+                    <p><strong>メールアドレス:</strong> <span id="modalMailConfirm">${document.getElementById('mail').value}</span></p>
+                    <p><strong>郵便番号:</strong> <span id="modalPostCodeConfirm">${document.getElementById('post_code').value}</span></p>
+                    <p><strong>住所:</strong> <span id="modalAddressConfirm">${document.getElementById('address').value}</span></p>
                 `;
+                 // Ensure correct spans are updated if they differ from the ones in the static HTML
+                document.getElementById('modalName').textContent = document.getElementById('name').value;
+                document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力';
+                document.getElementById('modalMail').textContent = document.getElementById('mail').value;
+                document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
+                document.getElementById('modalAddress').textContent = document.getElementById('address').value;
+
                 modalFooter.innerHTML = `
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirmRegisterInternal">登録</button>
@@ -241,6 +235,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 alert('通信エラー: 登録処理中に問題が発生しました。');
                 confirmModalInstance.hide();
             });
+        }
+
+        // Initial attachment if the button is always present (it is)
+        if (confirmRegisterButton) {
+             confirmRegisterButton.addEventListener('click', handleConfirmRegister);
         }
 
         // ページロード時にバリデーションクラスをリセット（任意）
