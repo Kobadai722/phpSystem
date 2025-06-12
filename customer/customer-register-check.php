@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // プリペアドステートメントでSQLインジェクション対策
-        $stmt = $PDO->prepare("INSERT INTO CUSTOMER (name, cell_number, mail, post_code, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt = $PDO->prepare("INSERT INTO CUSTOMER (NAME, CELL_NUMBER, MAIL, POST_CODE, ADDRESS) VALUES (?, ?, ?, ?, ?)");
+        // executeに渡す配列の要素数もSQL文のプレースホルダの数に合わせます。
         $stmt->execute([$name, $cell_number, $mail, $post_code, $address]);
 
         $response['success'] = true;
