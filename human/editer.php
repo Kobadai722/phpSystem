@@ -25,7 +25,6 @@
     );
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    <!--編集切り替え画面-->
     <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 aligh-items-center">
@@ -35,7 +34,7 @@
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
                         <option value="main.php">一般画面</option>
-                        <option value="editer.php">編集者画面</option>
+                        <option value="editer.php" selected>編集者画面</option>
                 </select>
                 </div>
             </div>
@@ -43,7 +42,7 @@
     </div>
 
     <div>
-        <form action="main.php" method="get" class="mb-3 p-3 border rounded">
+        <form action="editer.php" method="get" class="mb-3 p-3 border rounded">
             <div class="row g-3 align-items-center">
                 <div class="col-auto">
                     <label for="name_keyword" class="col-form-label">氏名：</label>
@@ -98,9 +97,9 @@
 
             // ベースとなるSQLクエリ
             $sql_query = "SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
-                        FROM EMPLOYEE e
-                        LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
+                            FROM EMPLOYEE e
+                            LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
+                            LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
 
             $conditions = [];
             $params = [];
