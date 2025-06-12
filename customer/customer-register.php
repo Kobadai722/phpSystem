@@ -74,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         <h2 class="my-4">顧客情報登録</h2>
         <form id="customerForm" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
-                <label for="name" class="form-label">企業名 <span class="text-danger">*</span></label>
+                <label for="name" class="form-label">氏名 <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" required maxlength="10">
                 <div class="invalid-feedback">
-                    企業名を入力してください。
+                    氏名を入力してください。
                 </div>
             </div>
 
@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
                 </div>
                 <div class="modal-body">
                     <p>以下の内容で登録します。よろしいですか？</p>
-                    <p><strong>企業名:</strong> <span id="modalName"></span></p>
+                    <p><strong>氏名:</strong> <span id="modalName"></span></p>
                     <p><strong>電話番号:</strong> <span id="modalCellNumber"></span></p>
                     <p><strong>メールアドレス:</strong> <span id="modalMail"></span></p>
                     <p><strong>郵便番号:</strong> <span id="modalPostCode"></span></p>
