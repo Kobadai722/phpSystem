@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php';
+require_once '../config.php'; // データベース接続情報
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -17,7 +17,7 @@ require_once '../config.php';
 <body>
     <main class="container">
         <h2 class="my-4">顧客情報登録</h2>
-        <form id="customerForm" action="check.php" method="post" class="needs-validation" novalidate>
+        <form id="customerForm" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">企業名 <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" required maxlength="10">
@@ -88,6 +88,22 @@ require_once '../config.php';
         </div>
     </div>
 
+    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultModalLabel">登録結果</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="resultModalBody">
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">閉じる</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
@@ -96,36 +112,59 @@ require_once '../config.php';
     (function () {
         'use strict'
 
-        // 全てのカスタムバリデーションを適用するフォームを取得
-        var form = document.querySelector('.needs-validation'); // 1つのフォームなのでquerySelectorを使用
+        var form = document.querySelector('.needs-validation');
         var submitButton = document.getElementById('submitButton');
         var confirmRegisterButton = document.getElementById('confirmRegister');
         var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+        var resultModal = new bootstrap.Modal(document.getElementById('resultModal')); // 追加
 
         submitButton.addEventListener('click', function (event) {
-            // フォームのバリデーションを実行
             if (!form.checkValidity()) {
-                event.preventDefault(); // デフォルトのモーダル表示をキャンセル
-                event.stopPropagation(); // イベントの伝播を停止
-                form.classList.add('was-validated'); // バリデーションエラー表示
+                event.preventDefault();
+                event.stopPropagation();
+                form.classList.add('was-validated');
             } else {
-                // バリデーションが成功した場合、モーダルにデータをセットして表示
                 document.getElementById('modalName').textContent = document.getElementById('name').value;
-                document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力'; // 未入力の場合の表示
+                document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力';
                 document.getElementById('modalMail').textContent = document.getElementById('mail').value;
                 document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
                 document.getElementById('modalAddress').textContent = document.getElementById('address').value;
 
-                confirmModal.show(); // モーダルを表示
+                confirmModal.show();
             }
         });
 
-        // モーダル内の「登録」ボタンがクリックされたらフォームを送信
         confirmRegisterButton.addEventListener('click', function () {
-            form.submit(); // フォームを送信
+            // FormDataオブジェクトを作成してフォームデータを取得
+            const formData = new FormData(form);
+
+            // 送信先を customer-register-check.php に変更
+            fetch('customer-register-check.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json()) // JSONレスポンスをパース
+            .then(data => {
+                confirmModal.hide(); // 確認モーダルを閉じる
+                const resultModalBody = document.getElementById('resultModalBody');
+                if (data.success) {
+                    resultModalBody.innerHTML = '<p class="text-success">' + data.message + '</p>';
+                    form.reset(); // フォームをリセット
+                    form.classList.remove('was-validated'); // バリデーション状態をリセット
+                } else {
+                    resultModalBody.innerHTML = '<p class="text-danger">' + data.message + '</p>';
+                }
+                resultModal.show(); // 結果モーダルを表示
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                confirmModal.hide();
+                const resultModalBody = document.getElementById('resultModalBody');
+                resultModalBody.innerHTML = '<p class="text-danger">登録中にエラーが発生しました。</p>';
+                resultModal.show();
+            });
         });
 
-        // ページロード時にバリデーションクラスをリセット（任意）
         form.classList.remove('was-validated');
 
     })()
