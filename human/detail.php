@@ -50,7 +50,7 @@
                 echo "<td>" . htmlspecialchars($row['DIVISION_NAME'] ?? '未登録') . "</td>";
                 echo "<td>" . htmlspecialchars($row['JOB_POSITION_NAME'] ?? '未登録') . "</td>";
                 echo "<td>" . htmlspecialchars($row['EMAIL'] ?? '未入力') . "</td>";
-                echo "<td>" . htmlspecialchars($row['URGENCY_CELL_NUMBER'] ?? '未入力') . "</td>";
+                echo "<td>" . htmlspecialchars($row['EMERGENCY_CELL_NUMBER'] ?? '未入力') . "</td>";
                 echo "<td>" . htmlspecialchars($row['JOINING_DATE'] ?? '未入力') . "</td>";
                 echo "<td>" . htmlspecialchars($row['POST_CODE'] ?? '未入力') . "</td>";
                 echo "<td>" . htmlspecialchars($row['ADDRESS'] ?? '未入力') . "</td>";
