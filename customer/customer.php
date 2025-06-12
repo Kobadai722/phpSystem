@@ -36,7 +36,7 @@
                             <input type="text" name="customerid" id="customerid" class="form-control">
                         </div>
                         <div class="mb-2">
-                            <label for="name" class="form-label">企業名</label>
+                            <label for="name" class="form-label">氏名</label>
                             <input type="text" name="name" id="name" class="form-control">
                         </div>
                         <div class="mb-2">
@@ -64,7 +64,7 @@
 
         </div>
         <table class="table table-hover">
-            <tr><th scope="col">顧客ID</th><th scope="col">企業名</th><th scope="col">電話番号</th><th scope="col">メールアドレス</th><th scope="col">郵便番号</th><th scope="col">住所</th></tr>
+            <tr><th scope="col">顧客ID</th><th scope="col">氏名</th><th scope="col">電話番号</th><th scope="col">メールアドレス</th><th scope="col">郵便番号</th><th scope="col">住所</th></tr>
             <?php
                 require_once '../config.php';
                 foreach($PDO->query('select * from CUSTOMER') as $row){
