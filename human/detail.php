@@ -25,23 +25,27 @@
             </div>
         </form>
     </div>
-        <tr class="col-auto">
-            <th>社員番号</th>
-            <th>氏名</th>
-            <th>所属部署</th>
-            <th>職位</th>
-            <th>メールアドレス</th>
-            <th>緊急連絡先</th>
-            <th>入社日</th>
-            <th>郵便番号</th>
-            <th>住所</th>
-        </tr>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>社員番号</th>
+                <th>氏名</th>
+                <th>所属部署</th>
+                <th>職位</th>
+                <th>メールアドレス</th>
+                <th>緊急連絡先</th>
+                <th>入社日</th>
+                <th>郵便番号</th>
+                <th>住所</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php
         require_once '../config.php';
 
         // GETパラメータ確認
         if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-            echo "<tr><td colspan='9'>不正なリクエストです。</td></tr>";
+            echo "<tr><td colspan=\"9\"不正なリクエストです。</td></tr>";
         } else {
             $stmt = $PDO->prepare("
                 SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
@@ -66,10 +70,11 @@
                 echo "<td>" . htmlspecialchars($row['ADDRESS'] ?? '未入力') . "</td>";
                 echo "</tr>";
             } else {
-                echo "<tr><td colspan='9'>該当社員が見つかりません。</td></tr>";
+                echo "<tr><td colspan=\"9\">該当社員が見つかりません。</td></tr>";
             }
         }
         ?>
+        </tbody>
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
