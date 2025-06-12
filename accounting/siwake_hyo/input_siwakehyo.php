@@ -59,9 +59,10 @@
             </select>
           </td>
           <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
+          <button type="submit">登録</button>
         </tr>
       </table>
-      <button type="submit">登録</button>
+
     </form>
   </div>
   <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
