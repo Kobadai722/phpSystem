@@ -1,6 +1,7 @@
 <?php
 session_start();
-require_once '../config.php';
+// config.php を読み込むことで、その中の $PDO 変数が利用可能になります。
+require_once '../config.php'; // データベース接続情報
 
 header('Content-Type: application/json'); // JSON形式でレスポンスを返すことを宣言
 
@@ -29,12 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // データベース接続
-        $pdo = new PDO(DSN, DB_USER, DB_PASS, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-        $pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // プリペアドステートメントを有効にする
-
         // プリペアドステートメントでSQLインジェクション対策
-        $stmt = $pdo->prepare("INSERT INTO customers (name, cell_number, mail, post_code, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt = $PDO->prepare("INSERT INTO customers (name, cell_number, mail, post_code, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
         $stmt->execute([$name, $cell_number, $mail, $post_code, $address]);
 
         $response['success'] = true;
@@ -42,8 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     } catch (PDOException $e) {
         $response['message'] = 'データベースエラー: ' . $e->getMessage();
-        // エラーログの記録（本番環境では詳細なエラーメッセージをユーザーに見せないようにしましょう）
+        // エラーログの記録
         error_log('Customer registration error: ' . $e->getMessage());
+    } catch (Exception $e) { // その他のPHPエラーをキャッチ
+        $response['message'] = '予期せぬエラー: ' . $e->getMessage();
+        error_log('Unexpected error: ' . $e->getMessage());
     }
 } else {
     $response['message'] = '無効なリクエストです。';
