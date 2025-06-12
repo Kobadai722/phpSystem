@@ -39,6 +39,8 @@
                 </div>
             </div>
         </form>
+
+        <p><a href = "main.php">メインページへ戻る</a></p>
     </div>
 
     <div>

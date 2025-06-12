@@ -58,6 +58,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 </div>
             </div>
         </form>
+
+        <p><a href = "main.php">メインページへ戻る</a></p>
     </div>
     <table class="table table-bordered">
         <thead>
