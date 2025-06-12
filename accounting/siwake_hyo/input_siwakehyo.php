@@ -19,7 +19,7 @@
   ?>
   <div class="card">
     <form action="submit_siwake.php" method="post">
-      <table class="table">
+      <table class="table text-center">
         <tr border=0>
           <!-- 仕訳ヘッダー-->
           <td class="fw-bold">日付</td>
