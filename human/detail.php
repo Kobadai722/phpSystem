@@ -25,7 +25,6 @@
             </div>
         </form>
     </div>
-    <div class="mb-3 p-3 border rounded">
         <tr class="col-auto">
             <th>社員番号</th>
             <th>氏名</th>
@@ -37,7 +36,6 @@
             <th>郵便番号</th>
             <th>住所</th>
         </tr>
-    </div>
         <?php
         require_once '../config.php';
 
