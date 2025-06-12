@@ -26,9 +26,7 @@
         </form>
     </div>
     <div class="mb-3 p-3 border rounded">
-        <div class="row g-3 align-items-center">
-                <div class="col-auto">
-        <tr>
+        <tr class="col-auto">
             <th>社員番号</th>
             <th>氏名</th>
             <th>所属部署</th>
@@ -40,7 +38,6 @@
             <th>住所</th>
         </tr>
     </div>
-</div>
         <?php
         require_once '../config.php';
 
