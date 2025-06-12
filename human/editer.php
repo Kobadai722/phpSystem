@@ -39,8 +39,9 @@
                 </div>
             </div>
         </form>
-
-        <p><a href = "main.php">メインページへ戻る</a></p>
+        <div class="text-end mt-2">
+            <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
+        </div>
     </div>
 
     <div>
