@@ -9,11 +9,22 @@
 <body>
     <h1>人事詳細</h1>
 
-<!-- 編集者ページの切り替え 後々CSSで右寄せ予定 -->
-    <select name="edit">
-        <option value="edit">編集者画面に切り替える</option>
-        <option value="nomal">一般画面に切り替える</option>
-    </select>
+<!-- 編集者ページの切り替え -->
+<div class="mb-3 p-3 border rounded">
+        <form>
+            <div class="row g-3 aligh-items-center">
+                <div class="col-auto">
+                    <label for="display_mode_select" class="col-form-label">表示モード：</label>
+                </div>
+                <div class="col-auto">
+                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
+                        <option value="main.php">一般画面</option>
+                        <option value="editer.php" selected>編集者画面</option>
+                </select>
+                </div>
+            </div>
+        </form>
+    </div>
     <table class="table table-bordered">
         <tr>
             <th>社員番号</th>
