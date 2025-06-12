@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // プリペアドステートメントでSQLインジェクション対策
-        $stmt = $PDO->prepare("INSERT INTO customers (name, cell_number, mail, post_code, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+        $stmt = $PDO->prepare("INSERT INTO CUSTOMER (name, cell_number, mail, post_code, address, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
         $stmt->execute([$name, $cell_number, $mail, $post_code, $address]);
 
         $response['success'] = true;
