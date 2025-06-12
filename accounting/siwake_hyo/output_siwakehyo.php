@@ -17,8 +17,9 @@
   session_start();
   include '../../header.php'; // ヘッダーの読み込み
   ?>
+  <h1>📘 仕訳帳</h1>
   <table class="table">
-    <caption>📘 仕訳帳（デモ）</caption>
+
     <thead>
       <tr>
         <th>仕訳番号</th>
