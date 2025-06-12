@@ -1,8 +1,8 @@
-#インサートとかデリートとか
+-- インサートとかデリートとか
 
 -- ユーザーの登録（u_name: admin, u_pass: admin）
-INSERT INTO USERS (u_name, u_pass, u_dname)
-VALUES ('admin', 'admin', '管理者');
+-- INSERT INTO USERS (u_name, u_pass, u_dname)
+-- VALUES ('admin', 'admin', '管理者');
 
 -- 勘定科目　データ挿入
 INSERT INTO ACCOUNTS (NAME, TYPE, CODE) VALUES
