@@ -21,8 +21,8 @@
   ?>
   <div class="card">
     <form action="submit_siwake.php" method="post">
-      <table class="table">
-        <tr border=0>
+      <table class="table text-center">
+        <tr>
           <!-- 仕訳ヘッダー-->
           <td class="fw-bold">日付</td>
           <td class="fw-bold">摘要</td>
@@ -63,8 +63,7 @@
           <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
         </tr>
       </table>
-      <br>
-      <button type="submit">登録</button>
+      <button type="submit" class="btn btn-primary">登録</button>
     </form>
   </div>
   <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>

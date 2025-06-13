@@ -1,4 +1,4 @@
-#テーブル関係
+-- テーブル関係
 
 -- 勘定科目テーブル
 CREATE TABLE ACCOUNTS (
@@ -6,7 +6,7 @@ CREATE TABLE ACCOUNTS (
   -- 勘定科目名
   NAME VARCHAR(100) NOT NULL,
   -- 種類（資産、負債など）
-  TYPE ENUM('資産', '負債', '純資産', '収益', '費用') NOT NULL COMMENT 'Consistent ENUM definition for account type',
+  TYPE ENUM('資産', '負債', '純資産', '収益', '費用') NOT NULL, 
   -- 勘定科目コード
   CODE VARCHAR(100) UNIQUE
 );
@@ -21,27 +21,28 @@ CREATE TABLE JOURNAL_HEADERS (
   -- 登録日時
   CREATE_AT TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
--- 仕訳明細テーブル（借方・貸方それぞれの行を1行として記録）
+-- 仕訳明細テーブル
 CREATE TABLE JOURNAL_ENTRIES (
-  -- 仕訳明細ID
-  ID INTEGER AUTO_INCREMENT PRIMARY KEY,
-  -- 仕訳ヘッダーの外部キー（どの取引に属するか 借方に貸方が二つある場合など）
-  HEADER_ID INTEGER NOT NULL,
-  FOREIGN KEY (HEADER_ID) REFERENCES JOURNAL_HEADERS(ID),
-  -- 勘定科目
-  ACCOUNT_ID INTEGER NOT NULL,
-  FOREIGN KEY (ACCOUNT_ID) REFERENCES ACCOUNTS(ID),
-  -- 金額
-  AMOUNT INTEGER NOT NULL,
-  -- 借方 or 貸方
-TYPE ENUM('借方', '貸方') NOT NULL
+    -- 仕訳明細ID (自動採番)
+    ID INTEGER AUTO_INCREMENT PRIMARY KEY,
+    -- 仕訳ヘッダーの外部キー
+    HEADER_ID INTEGER NOT NULL,
+    -- 勘定科目
+    ACCOUNT_ID INTEGER NOT NULL,
+    -- 金額
+    AMOUNT INTEGER NOT NULL,
+    -- 借方 or 貸方
+    TYPE ENUM('借方', '貸方') NOT NULL,
+    -- 外部キー制約
+    FOREIGN KEY (HEADER_ID) REFERENCES JOURNAL_HEADERS(ID) ON DELETE RESTRICT ON UPDATE CASCADE,
+    FOREIGN KEY (ACCOUNT_ID) REFERENCES ACCOUNTS(ID) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 
 -- USERSテーブルの作成
-#CREATE TABLE USERS (
-  u_id INT AUTO_INCREMENT PRIMARY KEY,
-  u_name VARCHAR(100) NOT NULL,
-  u_pass VARCHAR(100) NOT NULL,
-  u_dname VARCHAR(100) NOT NULL
-);
+-- #CREATE TABLE USERS (
+--   u_id INT AUTO_INCREMENT PRIMARY KEY,
+--   u_name VARCHAR(100) NOT NULL,
+--   u_pass VARCHAR(100) NOT NULL,
+--   u_dname VARCHAR(100) NOT NULL
+-- );
