@@ -12,7 +12,7 @@
 <!-- ヘッダーの読み込み -->
 <?= include '../../header.php';?>
   <h3>以下の内容で仕訳が登録されました</h3>
-  <table border="1">
+  <table class="table">
     <tr>
       <th>日付</th>
       <th>摘要</th>
