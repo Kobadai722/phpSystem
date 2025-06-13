@@ -38,12 +38,14 @@
         // 仕訳ヘッダー
         $sql = $PDO->prepare('SELECT JOURNAL_HEADERS.ID, ENTRY_DATE, DESCRIPTION FROM JOURNAL_HEADERS INNER JOIN JOURNAL_ENTRIES ON JOURNAL_HEADERS.ID = JOURNAL_ENTRIES.HEADER_ID');
         $sql->execute();
+
         $entries = $sql->fetchALL(PDO::FETCH_ASSOC);
         foreach ($entries as $entry) {
           echo '<tr>';
           $sql2 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
           $sql2->execute([$entry['ID'], '借方']);
           $debit_entry = $sql2->fetchALL(PDO::FETCH_ASSOC);
+          
           $sql3 = $PDO->prepare('SELECT ACCOUNTS.NAME, JOURNAL_ENTRIES.AMOUNT FROM JOURNAL_ENTRIES INNER JOIN ACCOUNTS ON JOURNAL_ENTRIES.ACCOUNT_ID = ACCOUNTS.ID WHERE JOURNAL_ENTRIES.HEADER_ID = ? AND JOURNAL_ENTRIES.TYPE = ?');
           $sql3->execute([$entry['ID'], '貸方']);
           $credit_entry = $sql3->fetchALL(PDO::FETCH_ASSOC);
