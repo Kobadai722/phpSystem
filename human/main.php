@@ -48,6 +48,7 @@
                     <label for="name_keyword" class="col-form-label">氏名：</label>
                 </div>
                 <div class="col-auto">
+                    <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
                     <input type="text" id="name_keyword" name="name_keyword" class="form-control" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
                 </div>
 
@@ -55,6 +56,7 @@
                     <label for="id_keyword" class="col-form-label">従業員番号：</label>
                 </div>
                 <div class="col-auto">
+                <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
                     <input type="text" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
                 </div>
 

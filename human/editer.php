@@ -51,14 +51,14 @@
                     <label for="name_keyword" class="col-form-label">氏名：</label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" id="name_keyword" name="name_keyword" class="form-control" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <input type="search" id="name_keyword" name="name_keyword" class="form-control" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
                 </div>
 
                 <div class="col-auto">
                     <label for="id_keyword" class="col-form-label">従業員番号：</label>
                 </div>
                 <div class="col-auto">
-                    <input type="text" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <input type="search" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
                 </div>
 
                 <div class="col-auto">
