@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="stock_styles.css">
 </head>
+<?php include '../header.php'; ?>
 
 <body onload="search()">
-    <?php include '../header.php'; ?>
+    
 
     <main>
         <nav class="localNavigation">
