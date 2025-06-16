@@ -15,7 +15,7 @@
     <?php include '../header.php'; ?>
     <main>
         <?php include 'localNavigation.php'; ?>
-
+        
         <section class="content">
         <div class="table-responsive">
             <table class="table table-border table-hover table-smaller">
@@ -23,8 +23,8 @@
                     <tr>
                         <th scope="col">商品ID</th>
                         <th scope="col">商品名</th>
-                        <th scope="col">単価</th> 
                         <th scope="col">在庫数</th>
+                        <th scope="col">単価</th>
                         <th scope="col">商品区分</th> </tr>
                 </thead>
                 <tbody>
