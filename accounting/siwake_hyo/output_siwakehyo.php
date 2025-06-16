@@ -6,7 +6,7 @@
   <title>仕訳帳</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../css/siwakehyo.css" type="text/css">
+  <link rel="stylesheet" href="../css/shiwake.css" type="text/css">
 </head>
 
 <body>
@@ -31,7 +31,6 @@
         <th>貸方金額</th>
       </tr>
     </thead>
-    <!-- 一覧表示のためのデータ取得 -->
     <tbody>
     <nav class="localNavigation"> 
                 <ul>
@@ -49,6 +48,7 @@
                     </li>
                 </ul>
             </nav>
+      <!-- 一覧表示のためのデータ取得 -->
       <?php
       // 一覧表示のための事前準備
       // 仕訳ヘッダー表と仕訳明細表を結合
