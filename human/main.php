@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="human.css">
 </head>
 <?php include '../header.php'; ?>
+<script src="human.js">
 
 <body>
     <h1>人事管理表</h1>
@@ -50,16 +51,24 @@
                     <label for="name_keyword" class="col-form-label">氏名：</label>
                 </div>
                 <div class="col-auto">
-                    <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
-                    <input type="text" id="name_keyword" name="name_keyword" class="form-control" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <div class="position-relative">
+                        <input type="text" id="name_keyword" name="name_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
+                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
+                            <i class="fas fa-times-circle text-muted"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="col-auto">
                     <label for="id_keyword" class="col-form-label">従業員番号：</label>
                 </div>
                 <div class="col-auto">
-                    <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
-                    <input type="text" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <div class="position-relative">
+                        <input type="text" id="id_keyword" name="id_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
+                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
+                            <i class="fas fa-times-circle text-muted"></i>
+                        </span>
+                    </div>
                 </div>
 
                 <div class="col-auto">
@@ -151,9 +160,8 @@
             ?>
         </tbody>
     </table>
-
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-
+</script>
 </html>
