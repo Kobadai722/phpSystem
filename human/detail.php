@@ -99,6 +99,11 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         ?>
         </tbody>
     </table>
+    <?php if ($employee_data): ?>
+        <button type="button" class="btn btn-danger">
+            <?php echo $employee_name; ?>さんを削除する
+        </button>
+    <?php endif; ?>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
