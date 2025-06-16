@@ -28,7 +28,7 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="stockDropdown">
                         <li><a class="dropdown-item" href="#">商品一覧</a></li>
-                        <li><a class="dropdown-item" href="#">在庫追加</a></li>
+                        <li><a class="dropdown-item" href="/../sales/stock_management.php">在庫追加</a></li>
                         <li><a class="dropdown-item" href="#">在庫履歴</a></li>
                     </ul>
                 </li>
