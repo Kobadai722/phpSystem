@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="human.css">
 </head>
 <?php include '../header.php'; ?>
+<script src="human.js"></script>
 
 <body>
     <h1>人事管理表-編集者モード</h1>
@@ -52,6 +53,9 @@
                 </div>
                 <div class="col-auto">
                     <input type="search" id="name_keyword" name="name_keyword" class="form-control" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
+                        <i class="fas fa-times-circle text-muted"></i>
+                    </span>
                 </div>
 
                 <div class="col-auto">
@@ -59,6 +63,9 @@
                 </div>
                 <div class="col-auto">
                     <input type="search" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
+                    <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
+                        <i class="fas fa-times-circle text-muted"></i>
+                    </span>
                 </div>
 
                 <div class="col-auto">
