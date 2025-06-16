@@ -43,20 +43,20 @@
 
         <section class="content">
             <div class="search mt-3">
-                <div class="row g-2 w-100 align-items-center"><!-- ここ変更 -->
-                    <div class="col-md-auto">
-                        <input type="text" id="searchInput" class="form-control" placeholder="商品名または商品IDで検索">
+                <div class="row g-2 w-100 align-items-center"><div class="col-md-auto position-relative">
+                        <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
+                        <button type="button" class="btn btn-sm btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2"
+                        id="clearButton" onclick="clearSearch()" style="display: none;">
+                        <i class="bi bi-x-lg"></i>
+                        </button>
                     </div>
                     <div class="col-md-auto">
                         <button class="btn btn-primary search-btn" type="button" onclick="search()">
                             <i class="bi bi-search me-2"></i>検索
                         </button>
                     </div>
-                    <div class="col"><!-- 空のカラムで余白を作る：ここ追加 -->
-                        <!-- ここに空のカラムを追加して、右寄せ空間を確保 -->
-                    </div>
-                    <div class="col-md-auto text-end"><!-- ここ変更 -->
-                        <button class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
+                    <div class="col"></div>
+                    <div class="col-md-auto text-end"><button class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
                     </div>
                 </div>
             </div>
@@ -73,18 +73,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- JavaScriptでデータを挿入予定 -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <!-- フッターは必要に応じて -->
-    </footer>
+        </footer>
 
-    <!-- スクリプトはボディの最後で読み込む -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
