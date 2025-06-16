@@ -32,6 +32,7 @@
             </table>
         </div>
         </section>
+        <h1>在庫の追加ボタンをひょうの上部に作成また編集ボタンを表に追加しモーダルで追加を可能にしろ</h1>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
