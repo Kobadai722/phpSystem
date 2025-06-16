@@ -31,23 +31,25 @@
         <th>貸方金額</th>
       </tr>
     </thead>
-    <tbody>
-    <nav class="localNavigation"> 
-                <ul>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
-                    </li>
-                </ul>
-            </nav>
+  <tbody>
+    <div>
+      <nav class="localNavigation"> 
+        <ul>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
       <!-- 一覧表示のためのデータ取得 -->
       <?php
       // 一覧表示のための事前準備
