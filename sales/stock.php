@@ -56,7 +56,7 @@
                         </button>
                     </div>
                     <div class="col"></div>
-                    <div class="col-md-auto text-end"><button onclick="loction.href='/../sales/stock_management.php'" class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
+                        <button onclick="location.href='/sales/stock_management.php'" class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
                     </div>
                 </div>
             </div>
