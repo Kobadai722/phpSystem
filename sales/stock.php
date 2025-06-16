@@ -46,6 +46,7 @@
                             <th scope="col">単価</th>
                             <th scope="col">在庫数</th>
                             <th scope="col">商品区分</th>
+                            <th scope="col"><button onclick="location.href='/sales/stock_management.php'" class="btn btn-outline-secondary">削除</button></th>
                         </tr>
                     </thead>
                     <tbody>
