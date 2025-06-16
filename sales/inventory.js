@@ -34,7 +34,7 @@ function loadInventory() {
                 const productName = item.PRODUCT_NAME ?? '';
                 const stockQuantity = item.STOCK_QUANTITY ?? '';
                 const unitSellingPrice = item.UNIT_SELLING_PRICE ?? '';
-                const lastUpdated = item.LAST_UPDATED ?? '';
+                const productKubunName = item.PRODUCT_KUBUN_NAME ?? ''; // lastUpdated から変更
 
                 const tr = `
                     <tr>
@@ -42,8 +42,7 @@ function loadInventory() {
                         <td>${productName}</td>
                         <td>${stockQuantity}</td>
                         <td>${unitSellingPrice}</td>
-                        <td>${lastUpdated}</td>
-                    </tr>
+                        <td>${productKubunName}</td> </tr>
                 `;
                 tbody.insertAdjacentHTML("beforeend", tr);
             });
