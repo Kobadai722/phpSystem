@@ -4,47 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>在庫管理・追加</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="stock_styles.css">
 </head>
-
 <body>
     <?php include '../header.php'; ?>
-
     <main>
         <?php include 'localNavigation.php'; ?>
-
-        <div class="container mt-4">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover table-sm">
-                    <thead>
-                        <tr>
-                            <th scope="col">商品ID</th>
-                            <th scope="col">商品名</th>
-                            <th scope="col">単価</th>
-                            <th scope="col">在庫数</th>
-                            <th scope="col">商品区分</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>001</td>
-                            <td>サンプル商品</td>
-                            <td>¥1000</td>
-                            <td>50</td>
-                            <td>食品</td>
-                            <td><button class="btn btn-primary btn-sm">編集</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        
+        
+        <div class="table-responsive">
+            <table class="table table-border table-hover table-smaller">
+                <thead>
+                    <tr>
+                        <th scope="col">商品ID</th>
+                        <th scope="col">商品名</th>
+                        <th scope="col">単価</th>
+                        <th scope="col">在庫数</th>
+                        <th scope="col">商品区分</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+            </table>
         </div>
     </main>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
