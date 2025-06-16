@@ -1,3 +1,4 @@
+<localNavigation>
 <nav class="localNavigation">
     <ul>
         <li class="nav-item">
@@ -22,3 +23,4 @@
         </li>
     </ul>
 </nav>
+<localNavigation>
