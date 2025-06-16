@@ -12,22 +12,7 @@
 <?php include '../header.php'; ?>
 <body>
     <main>
-          <nav class="localNavigation"> 
-                <ul>
-                    <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
-                    </li>
-                        <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
-                    </li>
-                </ul>
-            </nav>
+          <?php include '../localNavigation.php'; ?>
             
             <section class="content">
             <!-- フィルター検索 -->
