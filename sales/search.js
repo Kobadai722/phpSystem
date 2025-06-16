@@ -34,6 +34,7 @@ function search() {
                 <td>${row.UNIT_SELLING_PRICE ?? ''}</td>
                 <td>${row.STOCK_QUANTITY ?? ''}</td>
                 <td>${row.PRODUCT_KUBUN_NAME ?? ''}</td> 
+                <td><button onclick="location.href='/sales/stock_management.php'" class="btn btn-outline-secondary">削除</button></td>
             </tr>
         `;
         // テーブルの末尾に追加
