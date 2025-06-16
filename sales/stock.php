@@ -14,8 +14,6 @@
 <?php include '../header.php'; ?>
 
 <body onload="search()">
-    
-
     <main>
         <nav class="localNavigation">
             <ul>
