@@ -16,7 +16,7 @@
     <main>
         <?php include 'localNavigation.php'; ?>
         
-        
+        <section class="content">
         <div class="table-responsive">
             <table class="table table-border table-hover table-smaller">
                 <thead>
@@ -31,6 +31,7 @@
                 </thead>
             </table>
         </div>
+        </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
