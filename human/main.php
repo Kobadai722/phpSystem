@@ -6,6 +6,8 @@
     <title>人事管理表</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Font Awesome CDNを追加 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="human.css">
 </head>
 <?php include '../header.php'; ?>
@@ -27,7 +29,7 @@
     ?>
     <div class="mb-3 p-3 border rounded">
         <form>
-            <div class="row g-3 aligh-items-center">
+            <div class="row g-3 align-items-center">
                 <div class="col-auto">
                     <label for="display_mode_select" class="col-form-label">表示モード：</label>
                 </div>
@@ -56,7 +58,7 @@
                     <label for="id_keyword" class="col-form-label">従業員番号：</label>
                 </div>
                 <div class="col-auto">
-                <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
+                    <span onclick="clearInput(this)"><i class="fas fa-times-circle"></i></span>
                     <input type="text" id="id_keyword" name="id_keyword" class="form-control" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
                 </div>
 
