@@ -31,23 +31,23 @@
       </tr>
     </thead>
     <tbody>
-      <main>
-        <nav class="localNavigation">
-          <ul>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
-            </li>
-          </ul>
-        </nav>
+      <nav class="localNavigation">
+        <ul>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-box-seam"></i> 在庫管理</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 売上管理</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i> 発注管理</a>
+          </li>
+        </ul>
+      </nav>
+      <section class="content">
         <table class="table table-border table-hover table-smaller">
           <?php
           $sql = $PDO->prepare("SELECT
@@ -88,7 +88,7 @@
           }
           ?>
         </table>
-      </main>
+      </section>
     </tbody>
     <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
     <p><a href="../../main.php">トップページに戻る</a></p>
