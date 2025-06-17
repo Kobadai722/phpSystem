@@ -49,13 +49,19 @@
             </div>
             <div class="modal-body">
                 <!-- 追加に関する項目に以下を書き換え -->
-                <p>追加する商品の詳細情報を入力してください。</p>
-                
+                <h2 class="my-4">追加する商品の詳細情報を入力してください。</h2>
+                <div class="mb-3">
+                <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="name" name="name" required maxlength="20">
+                <div class="invalid-feedback">
+                    商品名を入力してください
+                </div>
+            </div>
                 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">追加</button>
+                <button type="button" class="btn btn-primary" id="confirmDeleteButton">追加</button>
                 </div>
             </div>
         </div>
