@@ -42,7 +42,18 @@ function loadInventory() {
                         <td>${productName}</td>
                         <td>${stockQuantity}</td>
                         <td>${unitSellingPrice}</td>
-                        <td>${productKubunName}</td> </tr>
+                        <td>${productKubunName}</td> 
+                        <td>
+                            <button 
+                                class="btn btn-outline-danger btn-sm"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#addConfirmModal"
+                                data-product-id="${productId}"
+                                data-product-name="${productName}">
+                                追加
+                            </button>
+                        </td>
+                     </tr>
                 `;
                 tbody.insertAdjacentHTML("beforeend", tr);
             });
