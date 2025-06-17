@@ -157,3 +157,7 @@ nav ul {
 }
 
 
+.modal {
+  max-width: 600px;
+  width: 100%;
+}
