@@ -108,8 +108,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                     </div>
                     <div class="modal-body">
-                        <a>本当に<?php echo $employee_name; ?>さんの情報を削除しますか？<br>
-                        この操作は元に戻せません。</a>
+                        本当に<?php echo $employee_name; ?>さんの情報を削除しますか？<br>
+                        この操作は元に戻せません。
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
