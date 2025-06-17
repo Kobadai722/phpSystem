@@ -8,7 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="../../../phpSystem/style.css" type="text/css" />
+  <link rel="stylesheet" href="../css/siwake.css">
 </head>
 
 <body>
@@ -19,52 +19,75 @@
   session_start();
   include '../../header.php'; // ヘッダーの読み込み
   ?>
-  <div class="card">
-    <form action="submit_siwake.php" method="post">
-      <table class="table text-center">
-        <tr>
-          <!-- 仕訳ヘッダー-->
-          <td class="fw-bold">日付</td>
-          <td class="fw-bold">摘要</td>
-          <!-- 仕訳明細-->
-          <td class="fw-bold">借方科目</td>
-          <td class="fw-bold">借方金額</td>
-          <td class="fw-bold">貸方科目</td>
-          <td class="fw-bold">貸方金額</td>
-        </tr>
-        <!-- 仕訳明細 -->
-        <!--借方部分-->
-        <tr>
-          <td><input type="date" name="entry_date" class="form-control" required></td><!-- 日付 -->
-          <td><input type="text" name="description" class="form-control" required></td> <!-- 摘要 -->
-          <td>
-            <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
-              <?php
-              //勘定科目の取得
-              $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
-              $sql->execute();
-              $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-              // 取得したデータを表示
-              foreach ($accounts as $account) {
-                echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-              }
-              ?>
-            </select>
-          </td>
-          <td><input type="number" name="debit_amount" class="form-control" required></td> <!-- 借方金額 -->
-          <td><select name="credit_account" class="form-select" class="form-control" required><!-- 貸方科目 -->
-              <?php
-              foreach ($accounts as $account) {
-                echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-              }
-              ?>
-            </select>
-          </td>
-          <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
-        </tr>
-      </table>
-      <button type="submit" class="btn btn-primary">登録</button>
-    </form>
+  <!-- ページ全体を囲むコンテナ -->
+  <div class="page-container">
+    <!-- 左側: サイドバー -->
+    <nav class="sidebar">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-box-seam"></i>仕訳表</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 仕訳入力フォーム</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i>グラフでも作ろうかな</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <!-- 右側: メインコンテンツ -->
+    <main>
+      <form action="submit_siwake.php" method="post">
+        <table class="table text-center">
+          <tr>
+            <!-- 仕訳ヘッダー-->
+            <td class="fw-bold">日付</td>
+            <td class="fw-bold">摘要</td>
+            <!-- 仕訳明細-->
+            <td class="fw-bold">借方科目</td>
+            <td class="fw-bold">借方金額</td>
+            <td class="fw-bold">貸方科目</td>
+            <td class="fw-bold">貸方金額</td>
+          </tr>
+          <!-- 仕訳明細 -->
+          <!--借方部分-->
+          <tr>
+            <td><input type="date" name="entry_date" class="form-control" required></td><!-- 日付 -->
+            <td><input type="text" name="description" class="form-control" required></td> <!-- 摘要 -->
+            <td>
+              <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
+                <?php
+                //勘定科目の取得
+                $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
+                $sql->execute();
+                $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+                // 取得したデータを表示
+                foreach ($accounts as $account) {
+                  echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+                }
+                ?>
+              </select>
+            </td>
+            <td><input type="number" name="debit_amount" class="form-control" required></td> <!-- 借方金額 -->
+            <td><select name="credit_account" class="form-select" class="form-control" required><!-- 貸方科目 -->
+                <?php
+                foreach ($accounts as $account) {
+                  echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+                }
+                ?>
+              </select>
+            </td>
+            <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
+          </tr>
+        </table>
+        <button type="submit" class="btn btn-primary">登録</button>
+      </form>
+    </main>
   </div>
   <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
   <p><a href="../../main.php">トップページに戻る</a></p>

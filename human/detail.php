@@ -117,7 +117,10 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                         
-                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">削除する</button>
+                        <form action="human-delete.php" method="post" style="display: inline;">
+                            <input type="hidden" name="employee_id" value="<?php echo htmlspecialchars($employee_data['EMPLOYEE_ID']); ?>">
+                            <button type="submit" class="btn btn-danger">削除する</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -40,7 +40,7 @@
     </script>
 </body>
 <!-- 追加モーダル -->
-    <div class="modal fade" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
+    <div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -51,12 +51,13 @@
                 <!-- 追加に関する項目に以下を書き換え -->
                 <h5 class="my-4">追加する商品の詳細情報を入力してください。</h5>
                 <div class="mb-3">
-                <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="name" name="name" required maxlength="20">
-                <div class="invalid-feedback">
-                    商品名を入力してください
+                    <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" required maxlength="20">
+                    <div class="invalid-feedback">
+                        商品名を入力してください
+                    </div>
                 </div>
-            </div>
+                <!-- 以下に在庫数及ぶ商品区分などを表示 -->
                 
             </div>
             <div class="modal-footer">
