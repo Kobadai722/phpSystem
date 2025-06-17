@@ -49,9 +49,8 @@
             </div>
             <div class="modal-body">
                 <!-- 追加に関する項目に以下を書き換え -->
-                <p>以下の商品を削除してもよろしいですか？</p>
-                <p><strong>商品ID: </strong><span id="modalProductId"></span></p>
-                <p><strong>商品名: </strong><span id="modalProductName"></span></p>
+                <p>追加する商品の詳細情報を入力してください。</p>
+                
                 
             </div>
             <div class="modal-footer">
