@@ -31,7 +31,7 @@
     </thead>
   <tbody>
     <main>
-        <nav class="localNavigation"> 
+        <nav class="localNavigation">
           <ul>
             <li class="nav-item">
               <a class="nav-link" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
@@ -94,16 +94,16 @@
                                 LEFT JOIN
                                   ACCOUNTS AS debit_acc ON debit_entry.ACCOUNT_ID = debit_acc.ID
                                 LEFT JOIN
-                                  JOURNAL_ENTRIES AS credit_entry 
-                                ON h.ID = credit_entry.HEADER_ID 
+                                  JOURNAL_ENTRIES AS credit_entry
+                                ON h.ID = credit_entry.HEADER_ID
                                 AND credit_entry.TYPE = '貸方'
                                 LEFT JOIN
-                                  ACCOUNTS AS credit_acc 
+                                  ACCOUNTS AS credit_acc
                                 ON credit_entry.ACCOUNT_ID = credit_acc.ID
                                 ORDER BY h.ENTRY_DATE, h.ID;");
                                 $sql->execute();
                                 $results = $sql->fetchAll(PDO::FETCH_ASSOC);
-
+        echo '<table class="table table-border table-hover table-smaller">';
           // 取得した結果をループで表示する
           foreach ($results as $row) {
             echo '<tr>';
@@ -119,7 +119,6 @@
           ?>
         </tbody>
       </table>
-      
     </main>
     <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
     <p><a href="../../main.php">トップページに戻る</a></p>

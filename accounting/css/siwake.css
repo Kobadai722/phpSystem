@@ -1,158 +1,163 @@
 @media screen and (max-width: 1250px) {
-    main {
-        flex-direction: column; /* ナビゲーションとコンテンツを縦に並べる */
-        padding: 0.5rem;
-    }
+  main {
+    flex-direction: column; /* ナビゲーションとコンテンツを縦に並べる */
+    padding: 0.5rem;
+  }
 
-    .localNavigation {
-        /* ⚠️セレクタの誤り：main要素に.localNavigationというクラスは存在しないので、正しくは `.localNavigation` のはず */
-        display: flex;
-        width: 100% !important;  /* 幅を全体に広げる */
-        flex-direction: row; /* ナビゲーション内のアイテムを横並びに */
-        padding: 1rem;
-        border-radius: 0; /* 角丸をなくす */
-        align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
-        position: relative;
-    }
+  .localNavigation {
+    /* ⚠️セレクタの誤り：main要素に.localNavigationというクラスは存在しないので、正しくは `.localNavigation` のはず */
+    display: flex;
+    width: 100% !important; /* 幅を全体に広げる */
+    flex-direction: row; /* ナビゲーション内のアイテムを横並びに */
+    padding: 1rem;
+    border-radius: 0; /* 角丸をなくす */
+    align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
+    position: relative;
+  }
 
-    .localNavigation > ul {
-        display: flex; /* 横並びにするため追加 */
-        flex-direction: row;
-        justify-content: space-around; /* 要素間に均等なスペースをとる */
-        
-    }
-    
-    
+  .localNavigation > ul {
+    display: flex; /* 横並びにするため追加 */
+    flex-direction: row;
+    justify-content: space-around; /* 要素間に均等なスペースをとる */
+  }
 
-    .content {
-        width: 100%; /* コンテンツを全幅に */
-        padding: 1rem;
-    }
-    /* ドロップダウンメニューのスタイル */
-.localNavigation .dropdown-menu {
+  .content {
+    width: 100%; /* コンテンツを全幅に */
+    padding: 1rem;
+  }
+  /* ドロップダウンメニューのスタイル */
+  .localNavigation .dropdown-menu {
     background-color: #1c2a39; /* ローカルナビと同じ背景色 */
     border: none; /* 枠線をなくす */
     border-radius: 8px; /* 少し角丸 */
     padding: 0.5rem 0;
     box-shadow: none; /* シャドウなし */
     min-width: 180px; /* 幅を少し広めに */
+  }
 
-    
-}
-
-/* ドロップダウン内のリンク */
-.localNavigation .dropdown-item {
+  /* ドロップダウン内のリンク */
+  .localNavigation .dropdown-item {
     color: #fff;
     padding: 0.5rem 1rem;
     transition: background-color 0.3s ease;
-}
+  }
 
-/* ホバー時 */
-.localNavigation .dropdown-item:hover {
+  /* ホバー時 */
+  .localNavigation .dropdown-item:hover {
     background-color: #2e3b4e;
     color: #fff;
-}
-
+  }
 }
 
 /* 全体のフォントと基本レイアウト */
 body {
-    font-family: Arial, sans-serif; /* 使用するフォント */
-    margin: 0; /* デフォルトのマージンを削除 */
-    display: flex;
-    flex-direction: column; /* コンテンツを縦に並べる */
+  font-family: Arial, sans-serif; /* 使用するフォント */
+  margin: 0; /* デフォルトのマージンを削除 */
+  display: flex;
+  flex-direction: column; /* コンテンツを縦に並べる */
 }
-
 
 /* コンテンツ部分のスタイル */
 .content {
-    flex: 1; /* 残りのスペースを占める */
-    background-color: #eee; /* 背景色：薄グレー */
-    padding: 1rem; /* 内側余白 */
-    padding-right: 2rem; /* 右側の余白だけ少し広めに */
+  flex: 1; /* 残りのスペースを占める */
+  background-color: #eee; /* 背景色：薄グレー */
+  padding: 1rem; /* 内側余白 */
+  padding-right: 2rem; /* 右側の余白だけ少し広めに */
 }
-
 
 /* mainタグの基本レイアウト */
 main {
-    display: flex; /* 子要素（navやsection）を横に並べる */
-    min-height: 100vh; /* 最小の高さを画面いっぱいにする */
-    margin: 10px 0; /* 上下の外側余白 */
-    padding: 1rem; /* 内側余白 */
+  display: flex; /* 子要素（navやsection）を横に並べる */
+  min-height: 100vh; /* 最小の高さを画面いっぱいにする */
+  margin: 10px 0; /* 上下の外側余白 */
+  padding: 1rem; /* 内側余白 */
 }
 
 /* ナビゲーション全体のスタイル */
 .localNavigation {
-    background-color: #1c2a39; /* 背景色：ダークネイビー */
-    padding-top: 2rem; /* 上部の余白 */
-    border-radius: 10px; /* 角丸 */
-    position: relative;
+  background-color: #1c2a39; /* 背景色：ダークネイビー */
+  padding-top: 2rem; /* 上部の余白 */
+  border-radius: 10px; /* 角丸 */
+  position: relative;
 }
-
 
 /* ナビゲーションのリスト（ul）の初期化 */
 .localNavigation ul {
-    list-style: none; /* リストマーカーを消す（●など） */
+  list-style: none; /* リストマーカーを消す（●など） */
 }
-
 
 /* 各ナビゲーション項目（li）のスタイル */
 .localNavigation .nav-item {
-    margin-bottom: 1.5rem; /* 下に余白を設ける */
-    text-align: center; /* テキストを中央揃えに */
+  margin-bottom: 1.5rem; /* 下に余白を設ける */
+  text-align: center; /* テキストを中央揃えに */
 }
-
 
 /* ナビゲーションリンクのスタイル */
 .localNavigation .nav-link {
-    display: flex; /* フレックスで中身を並べる */
-    align-items: center; /* アイコンとテキストを縦中央に */
-    justify-content: center; /* 横中央に揃える */
-    color: #fff; /* テキストカラー：白 */
-    font-weight: bold; /* 太字にする */
-    text-decoration: none; /* 下線をなくす */
-    padding: 0.75rem 1rem; /* 内側余白 */
-    transition: background-color 0.3s ease; /* 背景色変化をなめらかに */
+  display: flex; /* フレックスで中身を並べる */
+  align-items: center; /* アイコンとテキストを縦中央に */
+  justify-content: center; /* 横中央に揃える */
+  color: #fff; /* テキストカラー：白 */
+  font-weight: bold; /* 太字にする */
+  text-decoration: none; /* 下線をなくす */
+  padding: 0.75rem 1rem; /* 内側余白 */
+  transition: background-color 0.3s ease; /* 背景色変化をなめらかに */
 }
-
 
 /* ナビゲーションリンクにホバーしたときのスタイル */
 .localNavigation .nav-link:hover {
-    background-color: #2e3b4e; /* ホバー時の背景色 */
-    border-radius: 8px; /* ホバー時に角丸を追加 */
+  background-color: #2e3b4e; /* ホバー時の背景色 */
+  border-radius: 8px; /* ホバー時に角丸を追加 */
 }
-
 
 /* ドロップダウンメニューのスタイル */
 .localNavigation .dropdown-menu {
-    border: none; /* 枠線をなくす */
-    border-radius: 8px; /* 少し角丸 */
-    padding: 0.5rem 0;
-    box-shadow: none; /* シャドウなし */
+  border: none; /* 枠線をなくす */
+  border-radius: 8px; /* 少し角丸 */
+  padding: 0.5rem 0;
+  box-shadow: none; /* シャドウなし */
 }
 
 /* ドロップダウン内のリンク */
 .localNavigation .dropdown-item {
-    font-weight: bold;
-    text-align: center;
+  font-weight: bold;
+  text-align: center;
 }
 
 /* ホバー時 */
 .localNavigation .dropdown-item:hover {
-    background-color: #f2f2f2;
+  background-color: #f2f2f2;
 }
-
 
 /* アイコンとテキストの間に余白を設ける */
 .nav-link i {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
-
 
 /* nav内ulの初期化（念のため） */
 nav ul {
-    list-style: none;
-    padding: 0;
+  list-style: none;
+  padding: 0;
 }
 
+.table-smaller {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
 
+/* 枠線の制御：上下のみ残す */
+.table-smaller td,
+.table-smaller th {
+  padding: 0.75rem;
+  text-align: left;
+  border-top: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-left: none;
+  border-right: none;
+}
+
+/* ホバー時の行に背景色 */
+.table-hover tbody tr:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}
