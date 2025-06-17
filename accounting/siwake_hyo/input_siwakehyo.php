@@ -43,7 +43,7 @@
     <!-- 右側: メインコンテンツ -->
     <main>
       <form action="submit_siwake.php" method="post">
-        <table class="table text-center">
+        <table class="table table-bordered table-hover table-sm">
           <tr>
             <!-- 仕訳ヘッダー-->
             <td class="fw-bold">日付</td>
