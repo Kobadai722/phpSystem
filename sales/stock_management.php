@@ -49,7 +49,7 @@
             </div>
             <div class="modal-body">
                 <!-- 追加に関する項目に以下を書き換え -->
-                <h4 class="my-4">追加する商品の詳細情報を入力してください。</h4>
+                <h5 class="my-4">追加する商品の詳細情報を入力してください。</h5>
                 <div class="mb-3">
                 <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="name" name="name" required maxlength="20">
