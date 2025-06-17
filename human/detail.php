@@ -100,6 +100,9 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         </tbody>
     </table>
     <?php if ($employee_data): ?>
+        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+            <?php echo $employee_name; ?>さんを削除する
+        </button>   
         <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
