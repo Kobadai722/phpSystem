@@ -45,7 +45,7 @@ function loadInventory() {
                         <td>${productKubunName}</td> 
                         <td>
                             <button 
-                                class="btn btn-outline-danger btn-sm"
+                                class="btn btn-outline-Info btn-sm"
                                 data-bs-toggle="modal" 
                                 data-bs-target="#addConfirmModal"
                                 data-product-id="${productId}"
