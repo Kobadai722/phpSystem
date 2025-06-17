@@ -40,7 +40,7 @@
     </script>
 </body>
 <!-- 追加モーダル -->
-    <div class="modal fade" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
+    <div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
