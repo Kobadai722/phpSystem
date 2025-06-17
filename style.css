@@ -2,3 +2,28 @@ main {
   max-width: 1300px;
   margin: 3.5rem auto;
 }
+
+.container{
+  margin: 3rem;
+}
+
+.attendance-system{
+  background-color: #f6dd56;
+  border-radius: 10px; 
+}
+
+.current-date{
+  font-weight: 600;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-top: 4rem;
+  margin-bottom: 0%;
+  padding: 0%;
+}
+
+.time-display{
+  font-weight: 800;
+  font-size: 6rem;
+  text-align: center;
+  margin-top: 0%;
+}
