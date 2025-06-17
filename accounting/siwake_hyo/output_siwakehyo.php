@@ -6,7 +6,7 @@
   <title>仕訳帳</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="accounting/css/siwake.css" type="text/css">
+  <link rel="stylesheet" href="/phpSystem/accounting/css/siwake.css">
 </head>
 
 <body>
@@ -49,8 +49,8 @@
           </ul>
         </nav>
         <table class="table table-border table-hover table-smaller">
-        <?php
-          $sql=$PDO->prepare("SELECT
+          <?php
+          $sql = $PDO->prepare("SELECT
           h.ID,
           h.ENTRY_DATE,
           h.DESCRIPTION,
@@ -76,7 +76,7 @@
           $results = $sql->fetchAll(PDO::FETCH_ASSOC);
           // 取得した結果をループで表示する
           foreach ($results as $row) {
-          echo '<tr>';
+            echo '<tr>';
             echo '<td>' . htmlspecialchars($row['ID']) . '</td>';
             echo '<td>' . htmlspecialchars($row['ENTRY_DATE']) . '</td>';
             echo '<td>' . htmlspecialchars($row['DESCRIPTION']) . '</td>';
@@ -87,12 +87,13 @@
             echo '</tr>';
           }
           ?>
-  </table>
-  </main>
-  </tbody>
-  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
-  <p><a href="../../main.php">トップページに戻る</a></p>
+        </table>
+      </main>
+    </tbody>
+    <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+    <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
   integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+
 </html>
