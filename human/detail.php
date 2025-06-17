@@ -100,9 +100,25 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         </tbody>
     </table>
     <?php if ($employee_data): ?>
-        <button type="button" class="btn btn-danger">
-            <?php echo $employee_name; ?>さんを削除する
-        </button>
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">削除確認</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                    </div>
+                    <div class="modal-body">
+                        <a>本当に<?php echo $employee_name; ?>さんの情報を削除しますか？<br>
+                        この操作は元に戻せません。</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                        
+                        <button type="button" class="btn btn-danger" id="confirmDeleteButton">削除する</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     <?php endif; ?>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
