@@ -16,3 +16,19 @@ td span{
 td span i{
     color: #999;
 }
+
+.clear-input-btn i {
+    color: #6c757d; /* デフォルトの色 (Bootstrapの muted より少し濃いめ) */
+    font-size: 1rem; /* アイコンの基本サイズ */
+    transition: color 0.15s ease-in-out, transform 0.1s ease-in-out; /* 色とサイズの変更を滑らかに */
+}
+
+.clear-input-btn:hover i {
+    color: #343a40; /* ホバー時の色 (より濃く) */
+    transform: scale(1.1); /* ホバー時に少し大きくする */
+}
+
+.clear-input-btn:active i {
+    color: #212529; /* クリック時の色 (さらに濃く) */
+    transform: scale(1); /* クリック時に元のサイズに戻す（任意） */
+}
