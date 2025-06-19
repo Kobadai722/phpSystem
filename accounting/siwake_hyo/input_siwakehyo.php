@@ -43,6 +43,7 @@
     <!-- 右側: メインコンテンツ -->
     <main>
       <div class="table-responsive">
+        <h1><i class="bi bi-journal-text"></i> 仕訳入力フォーム</h1>
         <form action="submit_siwake.php" method="post">
           <table class="table table-bordered table-hover table-sm">
             <tr>
