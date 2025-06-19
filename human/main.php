@@ -51,8 +51,8 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="name_keyword" name="name_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['name_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
-                            <i class="fas fa-times-circle text-muted"></i>
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['name_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                            <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
                 </div>
@@ -63,8 +63,8 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="id_keyword" name="id_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['id_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
-                            <i class="fas fa-times-circle text-muted"></i>
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['id_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                            <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
                 </div>
