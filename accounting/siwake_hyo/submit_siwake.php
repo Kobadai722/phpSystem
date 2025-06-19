@@ -10,7 +10,7 @@
 </head>
 <body>
 <!-- ヘッダーの読み込み -->
-<?= include '../../header.php';?>
+<?php require_once '../../header.php'; ?>
   <h3>以下の内容で仕訳が登録されました</h3>
   <table class="table text-center">
     <tr>
@@ -43,27 +43,41 @@
       empty($_POST['debit_account']) ||
       empty($_POST['debit_amount']) ||
       empty($_POST['credit_account']) ||
-      empty($_POST['credit_amount'])
-  ) {
+      empty($_POST['credit_amount']) 
+    ) {
       echo 'すべての項目を入力してください。<a href="../siwake_hyo/input_siwakehyo.php">戻る</a>';
       exit;
-  }
+    }
+    $entry_date = $_POST['entry_date'];
+    $description = $_POST['description'];
+    $debit_account = $_POST['debit_account'];
+    $debit_amount = $_POST['debit_amount'];
+    $credit_account = $_POST['credit_account'];
+    $credit_amount = $_POST['credit_amount'];
+
+    // 金額が等しいかチェック (貸借平均の原理)
+    if ($debit_amount !== $credit_amount) {
+      echo '借方と貸方の金額が一致しません。<a href="../siwake_hyo/input_siwakehyo.php">戻る</a>';
+      exit; // ここで処理を中断
+    }
+
 
   // DB接続
   require_once '../../config.php';
   //仕訳ヘッダーの登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
-  $sql->execute([$_POST['entry_date'], $_POST['description']]);
+  $sql->execute($entry_date, $description);
   //仕訳明細の登録
   // 勘定科目のIDを取得するためのSQL
   $header_id = $PDO->lastInsertId();
   //借方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
-  $sql->execute([$header_id, $_POST['debit_account'], $_POST['debit_amount'], '借方']);
+  $sql->execute([$header_id, $debit_account, $debit_amount, '借方']);
 
   //貸方の登録
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
-  $sql->execute([$header_id, $_POST['credit_account'], $_POST['credit_amount'], '貸方']);
+  $sql->execute([$header_id, $credit_account, $credit_account, '貸方']);
   ?>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </html>
