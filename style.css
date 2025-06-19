@@ -3,17 +3,32 @@ main {
   margin: 3.5rem auto;
 }
 
+.bg-image{
+  background-image: url(/images/hassaan-here-GhUkIOvihpg-unsplash.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .container{
   margin: 3rem;
 }
 
+.container p{
+  font-family: "Noto Sans JP", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
 .attendance-system{
-  background-color: #f6dd56;
-  border-radius: 10px; 
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .current-date{
-  font-weight: 600;
   font-size: 1.8rem;
   text-align: center;
   margin-top: 4rem;
@@ -22,8 +37,12 @@ main {
 }
 
 .time-display{
-  font-weight: 800;
   font-size: 6rem;
   text-align: center;
   margin-top: 0%;
+}
+
+.greeting{
+  text-align: center;
+  font-size: 1.5rem;
 }
