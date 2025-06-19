@@ -44,7 +44,6 @@
             <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
         </div>
     </div>
-
     <div>
         <form action="editer.php" method="get" class="mb-3 p-3 border rounded">
             <div class="row g-3 align-items-center">
@@ -54,8 +53,8 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="name_keyword" name="name_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
-                            <i class="fas fa-times-circle text-muted"></i>
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['name_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                            <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
                 </div>
@@ -66,8 +65,8 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="id_keyword" name="id_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
-                            <i class="fas fa-times-circle text-muted"></i>
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['id_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                            <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
                 </div>
@@ -100,6 +99,7 @@
                 <th scope="col">氏名</th>
                 <th scope="col">所属部署</th>
                 <th scope="col">職位</th>
+                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -151,13 +151,42 @@
                     <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
                     <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td>
                     <td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger delete-employee-btn"
+                                data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+                                data-employee-id="<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"
+                                data-employee-name="<?= htmlspecialchars($row['NAME']) ?>">
+                            削除
+                        </button>
+                    </td>
                 </tr>
             <?php
             };
             ?>
         </tbody>
     </table>
-
+    <!-- 削除確認モーダル (テーブルの外に1つだけ配置) -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmModalLabel">削除確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    本当に <strong id="modalEmployeeName"></strong> さんの情報を削除しますか？<br>
+                    この操作は元に戻せません。
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <form action="human-delete.php" method="post" style="display: inline;">
+                        <input type="hidden" name="employee_id" id="modalEmployeeId" value="">
+                        <button type="submit" class="btn btn-danger">削除する</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>

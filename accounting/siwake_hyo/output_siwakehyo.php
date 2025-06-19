@@ -32,7 +32,7 @@
             <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bookfill"></i>仕訳一覧表示</a>
+            <a class="nav-link" href="#"><i class="bi bi-journals"></i></i>仕訳一覧表示</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>
@@ -91,7 +91,7 @@
           </tbody>
         </table>
       </div>
-
+      <!-- csv出力を予定 -->
       <a href="../siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
       <a href="../../main.php" class="btn btn-secondary mt-3">トップページに戻る</a>
     </main>
