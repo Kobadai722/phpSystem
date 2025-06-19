@@ -41,7 +41,7 @@
       </div>
     </nav>
     <!-- 右側: メインコンテンツ -->
-    <main>
+    <main class="main-content">
       <div class="table-responsive">
         <h1><i class="bi bi-journal-text"></i> 仕訳入力フォーム</h1>
         <form action="submit_siwake.php" method="post">
