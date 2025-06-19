@@ -50,7 +50,7 @@ function loadInventory() {
                                 data-bs-target="#addConfirmModal"
                                 data-product-id="${productId}"
                                 data-product-name="${productName}">
-                                追加
+                                編集
                             </button>
                         </td>
                      </tr>
