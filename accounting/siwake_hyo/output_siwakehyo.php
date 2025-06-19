@@ -32,7 +32,7 @@
             <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bookfill"></i>仕訳一覧表示</a>
+            <a class="nav-link" href="#"><i class="bi book-fill"></i>仕訳一覧表示</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>

@@ -25,17 +25,17 @@
     <nav class="sidebar">
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
-          <li class="nav-item">
+         <li class="nav-item">
             <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-box-seam"></i>仕訳表</a>
+            <a class="nav-link" href="#"><i class="bi book-fill"></i>仕訳一覧表示</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i> 仕訳入力フォーム</a>
+            <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-cart-check-fill"></i>グラフでも作ろうかな</a>
+            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i>グラフでも作ろうかな</a>
           </li>
         </ul>
       </div>
