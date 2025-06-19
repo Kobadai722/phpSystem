@@ -42,51 +42,53 @@
     </nav>
     <!-- 右側: メインコンテンツ -->
     <main>
-      <form action="submit_siwake.php" method="post">
-        <table class="table table-bordered table-hover table-sm">
-          <tr>
-            <!-- 仕訳ヘッダー-->
-            <td class="fw-bold">日付</td>
-            <td class="fw-bold">摘要</td>
-            <!-- 仕訳明細-->
-            <td class="fw-bold">借方科目</td>
-            <td class="fw-bold">借方金額</td>
-            <td class="fw-bold">貸方科目</td>
-            <td class="fw-bold">貸方金額</td>
-          </tr>
-          <!-- 仕訳明細 -->
-          <!--借方部分-->
-          <tr>
-            <td><input type="date" name="entry_date" class="form-control" required></td><!-- 日付 -->
-            <td><input type="text" name="description" class="form-control" required></td> <!-- 摘要 -->
-            <td>
-              <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
-                <?php
-                //勘定科目の取得
-                $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
-                $sql->execute();
-                $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
-                // 取得したデータを表示
-                foreach ($accounts as $account) {
-                  echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-                }
-                ?>
-              </select>
-            </td>
-            <td><input type="number" name="debit_amount" class="form-control" required></td> <!-- 借方金額 -->
-            <td><select name="credit_account" class="form-select" class="form-control" required><!-- 貸方科目 -->
-                <?php
-                foreach ($accounts as $account) {
-                  echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
-                }
-                ?>
-              </select>
-            </td>
-            <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
-          </tr>
-        </table>
-        <button type="submit" class="btn btn-primary">登録</button>
-      </form>
+      <div class="table-responsive">
+        <form action="submit_siwake.php" method="post">
+          <table class="table table-bordered table-hover table-sm">
+            <tr>
+              <!-- 仕訳ヘッダー-->
+              <td class="fw-bold">日付</td>
+              <td class="fw-bold">摘要</td>
+              <!-- 仕訳明細-->
+              <td class="fw-bold">借方科目</td>
+              <td class="fw-bold">借方金額</td>
+              <td class="fw-bold">貸方科目</td>
+              <td class="fw-bold">貸方金額</td>
+            </tr>
+            <!-- 仕訳明細 -->
+            <!--借方部分-->
+            <tr>
+              <td><input type="date" name="entry_date" class="form-control" required></td><!-- 日付 -->
+              <td><input type="text" name="description" class="form-control" required></td> <!-- 摘要 -->
+              <td>
+                <select name="debit_account" class="form-select" required> <!-- 借方科目 -->
+                  <?php
+                  //勘定科目の取得
+                  $sql = $PDO->prepare('SELECT * FROM ACCOUNTS');
+                  $sql->execute();
+                  $accounts = $sql->fetchAll(PDO::FETCH_ASSOC);
+                  // 取得したデータを表示
+                  foreach ($accounts as $account) {
+                    echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+                  }
+                  ?>
+                </select>
+              </td>
+              <td><input type="number" name="debit_amount" class="form-control" required></td> <!-- 借方金額 -->
+              <td><select name="credit_account" class="form-select" class="form-control" required><!-- 貸方科目 -->
+                  <?php
+                  foreach ($accounts as $account) {
+                    echo '<option value="' . $account['ID'] . '">' . $account['NAME'] . '</option>';
+                  }
+                  ?>
+                </select>
+              </td>
+              <td><input type="number" name="credit_amount" class="form-control" required></td> <!-- 貸方金額 -->
+            </tr>
+          </table>
+          <button type="submit" class="btn btn-primary">登録</button>
+        </form>
+      </div>
     </main>
   </div>
   <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
