@@ -29,7 +29,7 @@
             <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi book-fill"></i>仕訳一覧表示</a>
+            <a class="nav-link" href="#"><i class="bi bi-journals"></i>仕訳一覧表示</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>
@@ -43,7 +43,7 @@
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
       <div class="table-responsive">
-        <h1><i class="bi bi-journal-text"></i> 仕訳入力フォーム</h1>
+        <h1><i class="bi bi-journal-text"></i> 仕訳入力</h1>
         <form action="submit_siwake.php" method="post">
           <table class="table table-bordered table-hover table-sm">
             <tr>
