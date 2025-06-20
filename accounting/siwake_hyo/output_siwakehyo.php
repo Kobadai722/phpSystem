@@ -27,6 +27,7 @@ include_once '../a_header.php';
           </thead>
           <tbody>
             <?php
+            //勘定科目テーブル、仕訳ヘッダーテーブル、仕訳明細テーブルの結合
             $sql = $PDO->prepare("SELECT
                             h.ID, h.ENTRY_DATE, h.DESCRIPTION,
                             debit_acc.NAME AS debit_name, debit_entry.AMOUNT AS debit_amount,
