@@ -18,7 +18,7 @@
         
         <section class="content">
             <div class="d-flex justify-content-end mb-3">
-                <a href="#" class="btn btn-primary">
+                <a href="stock-register.php" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-2"></i>商品追加
                 </a>
             </div>
