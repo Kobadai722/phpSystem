@@ -1,12 +1,12 @@
 <?php
 $page_title = '仕訳一覧表示';
-include_once '../../a_header.php';
+include_once '../a_footer.php';
 ?>
   
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-   <?php include_once '../../sideber.php'; ?>
+   <?php include_once '../sideber.php'; ?>
 
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
