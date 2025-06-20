@@ -17,33 +17,33 @@
         <?php include 'localNavigation.php'; ?>
         
         <section class="content">
-        <div class="table-responsive">
-            <a href="#" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>商品追加
-            </a>
-            <table class="table table-border table-hover table-smaller">
-                <thead>
-                    <tr>
-                        <th scope="col">商品ID</th>
-                        <th scope="col">商品名</th>
-                        <th scope="col">在庫数</th>
-                        <th scope="col">単価</th>
-                        <th scope="col">商品区分</th> 
-                        <th scope="col"></th> 
-                    </tr>
-                </thead>
-                <tbody>
-                    </tbody>
-            </table>
-        </div>
+            <div class="d-flex justify-content-end mb-3">
+                <a href="#" class="btn btn-primary">
+                    <i class="bi bi-plus-circle me-2"></i>商品追加
+                </a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table table-border table-hover table-smaller">
+                    <thead>
+                        <tr>
+                            <th scope="col">商品ID</th>
+                            <th scope="col">商品名</th>
+                            <th scope="col">在庫数</th>
+                            <th scope="col">単価</th>
+                            <th scope="col">商品区分</th> 
+                            <th scope="col"></th> 
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
         </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
+    
 </body>
-<!-- 追加モーダル -->
-    <div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
+<div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -51,7 +51,6 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- 追加に関する項目に以下を書き換え -->
                 <h5 class="my-4">追加する商品の詳細情報を入力してください。</h5>
                 <div class="mb-3">
                     <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
@@ -60,9 +59,7 @@
                         商品名を入力してください
                     </div>
                 </div>
-                <!-- 以下に在庫数及ぶ商品区分などを表示 -->
-                
-            </div>
+                </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                 <button type="button" class="btn btn-primary" id="confirmDeleteButton">追加</button>
@@ -70,5 +67,8 @@
             </div>
         </div>
     </div>
-<script src="inventory.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    </script>
+    <script src="inventory.js"></script>
 </html>
