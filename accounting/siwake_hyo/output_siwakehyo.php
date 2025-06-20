@@ -1,6 +1,6 @@
 <?php
 $page_title = '仕訳一覧表示';
-include_once '../a_footer.php';
+include_once '../a_header.php';
 ?>
   
   <!-- ページ全体を囲むコンテナ -->
