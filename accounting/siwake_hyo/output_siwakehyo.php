@@ -1,48 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
-
-<head>
-  <meta charset="UTF-8">
-  <title>仕訳帳</title>
-  <!-- Bootstrap (主にテーブルなどのコンポーネント用) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- 独自のレイアウトCSS -->
-  <link rel="stylesheet" href="../css/siwake.css">
-</head>
-
-<body>
-  <?php
-  // DB接続
-  require_once '../../config.php';
-  // セッション開始
-  session_start();
-  // ヘッダーの読み込み
-  include '../../header.php';
-  ?>
-
+<?php
+$page_title = '仕訳一覧表示';
+include_once '../a_footer.php';
+?>
+  
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-    <nav class="sidebar">
-      <div class="position-sticky pt-3">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-journals"></i></i>仕訳一覧表示</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i>グラフでも作ろうかな</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
+   <?php include_once '../sideber.php'; ?>
 
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
