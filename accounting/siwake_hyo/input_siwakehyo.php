@@ -21,10 +21,25 @@
   ?>
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
-    
-  <!-- 左側: サイドバー -->
-    <?php include_once '../../sidebar.php'; ?>
-
+    <!-- 左側: サイドバー -->
+    <nav class="sidebar">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+         <li class="nav-item">
+            <a class="nav-link active" href="#"><i class="bi bi-house-door-fill"></i> Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-journals"></i>仕訳一覧表示</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-journal-text"></i> 仕訳入力フォーム</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-bar-chart-line-fill"></i>グラフでも作ろうかな</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
       <div class="table-responsive">
