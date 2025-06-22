@@ -42,9 +42,8 @@
                         <select class="form-select" id="product_category" name="product_category" required>
                             <option value="">選択してください</option>
                             <option value="文房具">文房具</option>
-                            <option value="食品">食品</option>
-                            <option value="飲料">飲料</option>
-                            <option value="その他">その他</option>
+                            <option value="食品">衛生用品</option>
+                            <option value="飲料">食品</option>
                             </select>
                     </div>
 
