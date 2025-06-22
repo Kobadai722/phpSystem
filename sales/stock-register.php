@@ -38,12 +38,6 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="category_id" class="form-label">商品区分ID <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="category_id" name="category_id" required min="1" placeholder="例: 1, 2, 3">
-                        <div class="form-text text-muted">対応する商品区分IDを入力してください</div>
-                    </div>
-
-                    <div class="mb-3">
                         <label for="product_category" class="form-label">商品区分 <span class="text-danger">*</span></label>
                         <select class="form-select" id="product_category" name="product_category" required>
                             <option value="">選択してください</option>
