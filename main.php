@@ -30,6 +30,9 @@ session_start();
                     <div class="punch-out-button">
                         <a href="">退勤</a>
                     </div>
+                    <div class="punch-out-button">
+                        <img src="/images/ゴードン.png" alt="ゴードン">
+                    </div>
                 </div>
             </div>
             <div class="col-8">
@@ -42,7 +45,7 @@ session_start();
                 <div id="weather-info">
                     <p>天気情報を読み込み中...</p>
                 </div>
-                <img src="/images/ゴードン.png" alt="ゴードン">
+                
             </div>
         </div>
     </div>
