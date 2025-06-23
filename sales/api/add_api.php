@@ -1,6 +1,6 @@
 <?php
 
-require_once '<div class=""><div class=""><div class="">config.php'; // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。
+require_once '<div class=""><div class=""><div class="">../../config.php'; // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。
 
 header('Content-Type: application/json'); // JSONでレスポンスを返す
 
