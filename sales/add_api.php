@@ -9,7 +9,7 @@ header('Content-Type: application/json'); // JSONでレスポンスを返す
 $productName = $_POST['product_name'] ?? '';
 $unitPrice = $_POST['unit_price'] ?? '';
 $initialStock = $_POST['initial_stock'] ?? '';
-$productCategoryName = $_POST['product_category'] ?? '';
+$productCategoryId = $_POST['product_category'] ?? ''; // 名前からIDに変更
 
 // 入力値のバリデーション
 $errors = [];
@@ -30,8 +30,9 @@ if (filter_var($initialStock, FILTER_VALIDATE_INT) === false || $initialStock < 
     $errors[] = '初期在庫は0以上の整数で入力してください。';
 }
 
-if (empty($productCategoryName)) {
-    $errors[] = '商品区分が指定されていません。';
+// productCategoryIdが数値として正しいか、かつ空でないか
+if (filter_var($productCategoryId, FILTER_VALIDATE_INT) === false || $productCategoryId <= 0) { // 0以下のIDは無効と仮定
+    $errors[] = '商品区分が正しく指定されていません。';
 }
 
 // バリデーションエラーがある場合は、エラーメッセージをまとめて返す
@@ -44,16 +45,13 @@ try {
     // トランザクション開始
     $PDO->beginTransaction();
 
-    // 1. 商品区分名からPRODUCT_KUBUN_IDを取得
-    // データベースからIDを取得することで、柔軟性と整合性を確保
-    $stmtKubun = $PDO->prepare("SELECT PRODUCT_KUBUN_ID FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_NAME = :product_kubun_name");
-    $stmtKubun->bindParam(':product_kubun_name', $productCategoryName, PDO::PARAM_STR);
-    $stmtKubun->execute();
-    $productKubunId = $stmtKubun->fetchColumn(); // 1つのカラムの値を取得
-
-    if ($productKubunId === false) { // 該当する区分名が見つからなかった場合
+    // 1. PRODUCT_KUBUN_IDが実在するか確認 (今回は直接IDを受け取るので、名前からIDへの変換は不要だが、IDの存在チェックは行う)
+    $stmtKubunCheck = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id");
+    $stmtKubunCheck->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
+    $stmtKubunCheck->execute();
+    if ($stmtKubunCheck->fetchColumn() === 0) {
         $PDO->rollBack();
-        echo json_encode(['success' => false, 'message' => '指定された商品区分が見つかりません。']);
+        echo json_encode(['success' => false, 'message' => '指定された商品区分IDは存在しません。']);
         exit;
     }
 
@@ -65,7 +63,7 @@ try {
     );
     $stmtProduct->bindParam(':product_name', $productName, PDO::PARAM_STR);
     $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
-    $stmtProduct->bindParam(':product_kubun_id', $productKubunId, PDO::PARAM_INT);
+    $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT); // IDを直接使用
     $stmtProduct->execute();
 
     // 挿入された商品のPRODUCT_IDを取得
