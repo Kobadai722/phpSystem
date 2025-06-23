@@ -1,5 +1,6 @@
 <?php
 $page_title = '仕訳入力フォーム';
+$current_page = 'input';
 include_once '../a_header.php';
 ?>
   <!-- ページ全体を囲むコンテナ -->
