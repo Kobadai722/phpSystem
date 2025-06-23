@@ -88,14 +88,12 @@
                 <div class="col-auto">
                     <input type="submit" value="検索" class="btn btn-primary">
                 </div>
-
-                <br>
-                <div class="mt-3">
-                    <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
-                </div>
-
             </div>
         </form>
+
+            <div class="col-auto">
+                <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
+            </div>
     </div>
 
     <table class="table table-hover">
