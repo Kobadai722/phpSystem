@@ -89,8 +89,9 @@
                     <input type="submit" value="検索" class="btn btn-primary">
                 </div>
 
+                <br>
                 <div class="col-auto">
-                    <a href = "human-insert.php" class="btn btn-success">登録</a>
+                    <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
                 </div>
 
             </div>
