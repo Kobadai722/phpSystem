@@ -92,7 +92,7 @@
         </form>
         
         <form>
-            <div class="mt-2 text-end">
+            <div class="mt-2">
                 <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
             </div>
         </form>
