@@ -43,8 +43,10 @@ session_start();
                     <p>天気情報を読み込み中...</p>
                 </div>
             </div>
+            <img src="/images/ゴードン.png" alt="ゴードン">
         </div>
     </div>
+    
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
