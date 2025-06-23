@@ -45,10 +45,9 @@ session_start();
             </div>
         </div>
     </div>
-</body>
-
-<script src="https://cdn.jsdelivr.com/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </script>
 <script src="weather.js"></script>
 <script>
@@ -67,4 +66,5 @@ session_start();
     // 1秒ごとに時刻を更新
     setInterval(updateTime, 1000);
 </script>
+</body>
 </html>
