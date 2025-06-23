@@ -4,16 +4,16 @@ require_once '../config.php';
 
 // フォームがPOSTされた場合の処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = $_POST['name'] ?? '';
-    $division_id = $_POST['division_id'] ?? null;
-    $job_position_id = $_POST['job_position_id'] ?? null;
-    $email = $_POST['email'] ?? '';
-    $emergency_cell_number = $_POST['emergency_cell_number'] ?? '';
-    $joining_date = $_POST['joining_date'] ?? '';
-    $post_code = $_POST['post_code'] ?? '';
-    $address = $_POST['address'] ?? '';
+    $NAME = $_POST['NAME'] ?? '';
+    $DIVISION_ID = $_POST['DIVISION_ID'] ?? null;
+    $JOB_POSITION_ID = $_POST['JOB_POSITION_ID'] ?? null;
+    $EMAIL = $_POST['EMAIL'] ?? '';
+    $EMERGENCY_CELL_NUMBER = $_POST['EMERGENCY_CELL_NUMBER'] ?? '';
+    $JOINING_DATE = $_POST['JOINING_DATE'] ?? '';
+    $POST_CODE = $_POST['POST_CODE'] ?? '';
+    $ADDRESS = $_POST['ADDRESS'] ?? '';
 
-    if (empty($name) || empty($division_id) || empty($job_position_id)) {
+    if (empty($NAME) || empty($DIVISION_ID) || empty($JOB_POSITION_ID)) {
         $_SESSION['error_message'] = "氏名、所属部署、職位は必須項目です。";
         header('Location: human-insert.php');
         exit;
@@ -21,20 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMAIL, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS)
-                VALUES (:name, :division_id, :job_position_id, :email, :emergency_cell_number, :joining_date, :post_code, :address)";
+                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMAIL, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS)";
         $stmt = $PDO->prepare($sql);
 
-        $stmt->bindValue(':name', $name, PDO::PARAM_STR);
-        $stmt->bindValue(':division_id', $division_id, PDO::PARAM_INT);
-        $stmt->bindValue(':job_position_id', $job_position_id, PDO::PARAM_INT);
-        $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-        $stmt->bindValue(':emergency_cell_number', $emergency_cell_number, PDO::PARAM_STR);
-        $stmt->bindValue(':joining_date', !empty($joining_date) ? $joining_date : null, PDO::PARAM_STR);
-        $stmt->bindValue(':post_code', $post_code, PDO::PARAM_STR);
-        $stmt->bindValue(':address', $address, PDO::PARAM_STR);
+        $stmt->bindValue(':NAME', $NAME, PDO::PARAM_STR);
+        $stmt->bindValue(':DIVISION_ID', $DIVISION_ID, PDO::PARAM_INT);
+        $stmt->bindValue(':JOB_POSITION_ID', $JOB_POSITION_ID, PDO::PARAM_INT);
+        $stmt->bindValue(':EMAIL', $EMAIL, PDO::PARAM_STR);
+        $stmt->bindValue(':EMERGENCY_CELL_NUMBER', $EMERGENCY_CELL_NUMBER, PDO::PARAM_STR);
+        $stmt->bindValue(':JOINING_DATE', !empty($JOINING_DATE) ? $JOINING_DATE : null, PDO::PARAM_STR);
+        $stmt->bindValue(':POST_CODE', $POST_CODE, PDO::PARAM_STR);
+        $stmt->bindValue(':ADDRESS', $ADDRESS, PDO::PARAM_STR);
 
         if ($stmt->execute()) {
-            $_SESSION['success_message'] = "社員「" . htmlspecialchars($name) . "」さんを登録しました。";
+            $_SESSION['success_message'] = "社員「" . htmlspecialchars($NAME) . "」さんを登録しました。";
             header('Location: editer.php'); 
             exit;
         } else {
@@ -73,8 +73,8 @@ unset($_SESSION['error_message']);
 
         <form action="human-insert.php" method="post" class="needs-validation" novalidate>
             <div class="row g-3">
-                <div class="col-md-6"><label for="name" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="name" name="name" required></div>
-                <div class="col-md-6"><label for="email" class="form-label">メールアドレス</label><input type="email" class="form-control" id="email" name="email"></div>
+                <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required></div>
+                <div class="col-md-6"><label for="EMAIL" class="form-label">メールアドレス</label><input type="email" class="form-control" id="EMAIL" name="EMAIL"></div>
                 <div class="col-md-6">
                     <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
                     <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
@@ -97,10 +97,10 @@ unset($_SESSION['error_message']);
                         <option value="5">一般社員</option>
                     </select>
                 </div>
-                <div class="col-md-6"><label for="joining_date" class="form-label">入社日</label><input type="date" class="form-control" id="joining_date" name="joining_date"></div>
-                <div class="col-md-6"><label for="emergency_cell_number" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="emergency_cell_number" name="emergency_cell_number"></div>
-                <div class="col-md-6"><label for="post_code" class="form-label">郵便番号</label><input type="text" class="form-control" id="post_code" name="post_code" placeholder="例: 123-4567"></div>
-                <div class="col-12"><label for="address" class="form-label">住所</label><input type="text" class="form-control" id="address" name="address" placeholder="例: 東京都千代田区..."></div>
+                <div class="col-md-6"><label for="JOINING_DATE" class="form-label">入社日</label><input type="date" class="form-control" id="JOINING_DATE" name="JOINING_DATE"></div>
+                <div class="col-md-6"><label for="EMERGENCY_CELL_NUMBER" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="EMERGENCY_CELL_NUMBER" name="EMERGENCY_CELL_NUMBER"></div>
+                <div class="col-md-6"><label for="POST_CODE" class="form-label">郵便番号</label><input type="text" class="form-control" id="POST_CODE" name="POST_CODE" placeholder="例: 123-4567"></div>
+                <div class="col-12"><label for="ADDRESS" class="form-label">住所</label><input type="text" class="form-control" id="ADDRESS" name="ADDRESS" placeholder="例: 東京都千代田区..."></div>
             </div>
             <hr class="my-4">
             <button class="btn btn-primary" type="submit">登録する</button>
