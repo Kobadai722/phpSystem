@@ -9,8 +9,8 @@
 /* カードを並べるグリッド */
 .dashboard-grid {
     display: grid;
-    /* 画面幅に応じて列数を自動調整 */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* 列数を3列に固定 */
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem; /* カード間の余白 */
 }
 
@@ -80,7 +80,8 @@
     width: 150px;
     height: 75px; /* 半円なので高さは半分 */
     border-radius: 150px 150px 0 0; /* 上半分を丸める */
-    background: conic-gradient(#e9ecef calc(var(--percentage) * 1%), #dc3545 0);
+    /* 満たされている部分(赤)と、残りの部分(黄色)でグラデーションを作成 */
+    background: conic-gradient(#dc3545 calc(var(--percentage) * 1%), #ffc107 0);
     position: relative;
     overflow: hidden;
 }
@@ -110,4 +111,5 @@
     margin-right: 5px;
 }
 .color-dot.red { background-color: #dc3545; }
-.color-dot.gray { background-color: #e9ecef; }
+/* 未達部分の色を黄色に変更 */
+.color-dot.yellow { background-color: #ffc107; }

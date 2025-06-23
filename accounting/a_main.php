@@ -46,7 +46,8 @@
                         <h3>資産</h3>
                         <a href="#">> 詳しく見る</a>
                     </div>
-                    <div class="card-body">
+                    <!-- 将来的にstyleで半ドーナツをどれくらい満たすか直接決める　style="--percentage: <?php echo $percentage; ?>　という形でかく-->
+                    <div class="card-body" style="--percentage: 52;">
                         <p class="metric-value">
                             <!-- 737 <small>名 [217組]</small> -->
                             //TODO 総資産額を表示
