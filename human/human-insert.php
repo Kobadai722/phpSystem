@@ -2,16 +2,7 @@
 session_start(); 
 require_once '../config.php';
 
-try {
-    $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION WHERE DIVISION_NAME IS NOT NULL AND DIVISION_NAME != '' ORDER BY DIVISION_ID");
-    $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
-
-    $stmt_jobs = $PDO->query("SELECT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION WHERE JOB_POSITION_NAME IS NOT NULL AND JOB_POSITION_NAME != '' ORDER BY JOB_POSITION_ID");
-    $jobs = $stmt_jobs->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("データベースへの接続に失敗しました: " . $e->getMessage());
-}
-
+// フォームがPOSTされた場合の処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'] ?? '';
     $division_id = $_POST['division_id'] ?? null;
@@ -88,14 +79,22 @@ unset($_SESSION['error_message']);
                     <label for="division_id" class="form-label">所属部署 <span class="text-danger">*</span></label>
                     <select class="form-select" id="division_id" name="division_id" required>
                         <option value="" selected disabled>選択してください...</option>
-                        <?php foreach ($divisions as $division): ?><option value="<?= htmlspecialchars($division['DIVISION_ID']) ?>"><?= htmlspecialchars($division['DIVISION_NAME']) ?></option><?php endforeach; ?>
+                        <option value="1">営業部</option>
+                        <option value="2">開発部</option>
+                        <option value="3">人事部</option>
+                        <option value="4">総務部</option>
+                        <option value="5">経理部</option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label for="job_position_id" class="form-label">職位 <span class="text-danger">*</span></label>
                     <select class="form-select" id="job_position_id" name="job_position_id" required>
                         <option value="" selected disabled>選択してください...</option>
-                        <?php foreach ($jobs as $job): ?><option value="<?= htmlspecialchars($job['JOB_POSITION_ID']) ?>"><?= htmlspecialchars($job['JOB_POSITION_NAME']) ?></option><?php endforeach; ?>
+                        <option value="1">部長</option>
+                        <option value="2">課長</option>
+                        <option value="3">係長</option>
+                        <option value="4">主任</option>
+                        <option value="5">一般社員</option>
                     </select>
                 </div>
                 <div class="col-md-6"><label for="joining_date" class="form-label">入社日</label><input type="date" class="form-control" id="joining_date" name="joining_date"></div>
@@ -111,4 +110,3 @@ unset($_SESSION['error_message']);
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
-
