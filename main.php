@@ -42,8 +42,8 @@ session_start();
                 <div id="weather-info">
                     <p>天気情報を読み込み中...</p>
                 </div>
+                <img src="/images/ゴードン.png" alt="ゴードン">
             </div>
-            <img src="/images/ゴードン.png" alt="ゴードン">
         </div>
     </div>
     
