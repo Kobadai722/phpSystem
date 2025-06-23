@@ -27,5 +27,5 @@
   require_once '../../config.php';
   // セッション開始
   session_start();
-  include_once '../../header.php'; // ヘッダーの読み込み
+  require_once '../../header.php'; // ヘッダーの読み込み
   ?>
