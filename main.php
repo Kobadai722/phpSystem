@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     <link href="style.css" rel="stylesheet" />
 </head>
-<?php include '../header.php'; ?>
+<?php include 'header.php'; ?>
 <body class="bg-image">
     <div class="container-main">
         <div class="row">
