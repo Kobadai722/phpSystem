@@ -76,8 +76,8 @@ unset($_SESSION['error_message']);
                 <div class="col-md-6"><label for="name" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="name" name="name" required></div>
                 <div class="col-md-6"><label for="email" class="form-label">メールアドレス</label><input type="email" class="form-control" id="email" name="email"></div>
                 <div class="col-md-6">
-                    <label for="division_id" class="form-label">所属部署 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="division_id" name="division_id" required>
+                    <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
                         <option value="" selected disabled>選択してください...</option>
                         <option value="1">営業部</option>
                         <option value="2">開発部</option>
@@ -87,8 +87,8 @@ unset($_SESSION['error_message']);
                     </select>
                 </div>
                 <div class="col-md-6">
-                    <label for="job_position_id" class="form-label">職位 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="job_position_id" name="job_position_id" required>
+                    <label for="JOB_POSITION_ID" class="form-label">職位 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="JOB_POSITION_ID" name="JOB_POSITION_ID" required>
                         <option value="" selected disabled>選択してください...</option>
                         <option value="1">部長</option>
                         <option value="2">課長</option>
