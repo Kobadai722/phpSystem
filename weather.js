@@ -22,24 +22,18 @@ const SAPPORO_AREA_CODE = '016010';
                     const maxTemp = todayForecast.temperature.max;
                     let maxTempDisplay = '情報なし';
                     if (maxTemp && maxTemp.celsius) {
-                        maxTempDisplay = `${maxTemp.celsius}°C`;
-                    }
-
-                    // 最低気温の表示を調整
-                    const minTemp = todayForecast.temperature.min;
-                    let minTempDisplay = '情報なし';
-                    if (minTemp && minTemp.celsius) {
-                        minTempDisplay = `${minTemp.celsius}°C`;
+                        maxTempDisplay = `${maxTemp.celsius}`;
                     }
 
                     const weatherHtml = `
                         <div class="weather-main">
-                        <p class="weather-telop">${telop}</p>
-                        <img class="weather-img" src="${iconUrl}" alt="${telop}">
-                        </div>
-                        <div class="temp">
-                            <p>最高気温: ${maxTempDisplay}</p>
-                            <p>最低気温: ${minTempDisplay}</p>
+                            <p class="weather-telop">${telop}</p>
+                            <img class="weather-img" src="${iconUrl}" alt="${telop}">
+                            <div class="weather-temperature-info"> <div class="weather-max">最高気温</div>
+                                <div class="weather-temp-value"> <div class="weather-temp">${maxTempDisplay}</div>
+                                    <div class="weather-c">°C</div>
+                                </div>
+                            </div>
                         </div>
                         <p class="weather-note">※ 気温情報が「情報なし」の場合、発表前または観測されていない可能性があります。</p>
                     `;
