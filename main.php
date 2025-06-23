@@ -30,10 +30,8 @@ session_start();
                     <div class="punch-out-button">
                         <a href="">退勤</a>
                     </div>
-                    <div class="punch-out-button">
-                        <img src="/images/ゴードン.png" alt="ゴードン">
-                    </div>
                 </div>
+                    <img src="/images/ゴードン.png" alt="ゴードン">
             </div>
             <div class="col-8">
             Column
