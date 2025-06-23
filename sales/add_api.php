@@ -9,7 +9,7 @@ header('Content-Type: application/json'); // JSONでレスポンスを返す
 $productName = $_POST['product_name'] ?? '';
 $unitPrice = $_POST['unit_price'] ?? '';
 $initialStock = $_POST['initial_stock'] ?? '';
-// stock-register.php からは PRODUCT_KUBUN_ID が value として送られてくる
+// stock-register.php からは選択された商品区分ID（value属性）が送られてくるため、そのままIDとして受け取る
 $productCategoryId = $_POST['product_category'] ?? ''; 
 
 // 入力値のバリデーション
@@ -31,11 +31,11 @@ if (filter_var($initialStock, FILTER_VALIDATE_INT) === false || $initialStock < 
     $errors[] = '初期在庫は0以上の整数で入力してください。';
 }
 
-// ここで商品区分IDが正しく数値であるか、かつ0より大きいか（有効なIDか）をチェック
+// productCategoryIdが数値として正しいか、かつ0より大きいか（有効なIDか）をチェック
+// PRODUCT_KUBUN_IDは通常1以上の整数と仮定（画像から1,2,3が存在）
 if (filter_var($productCategoryId, FILTER_VALIDATE_INT) === false || $productCategoryId <= 0) {
     $errors[] = '商品区分が正しく指定されていません。';
 }
-
 
 // バリデーションエラーがある場合は、エラーメッセージをまとめて返す
 if (!empty($errors)) {
@@ -47,8 +47,8 @@ try {
     // トランザクション開始
     $PDO->beginTransaction();
 
-    // 1. PRODUCT_KUBUN_IDが実在するか確認 (今回は直接IDを受け取るので、IDの存在チェックを行う)
-    // PRODUCT_KUBUN_NAME で検索するロジックを PRODUCT_KUBUN_ID で直接検索するロジックに変更
+    // 1. 受け取ったPRODUCT_KUBUN_IDがPRODUCT_KUBUNテーブルに実在するか確認
+    // 商品区分名を検索するロジックを削除し、直接IDの存在をチェックする
     $stmtKubunCheck = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id");
     $stmtKubunCheck->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
     $stmtKubunCheck->execute();
@@ -59,21 +59,22 @@ try {
     }
 
     // 2. PRODUCTテーブルに商品情報を挿入
-    // REORDER_POINTとORDER_NUMBERは、ER図によるとnullableなので、現在のフォーム入力には含まれないと仮定しNULLを挿入
+    // UNIT_PRICEではなくUNIT_SELLING_PRICEがテーブル名なので注意（コードはUNIT_PRICEで統一しているためそのまま）
+    // REORDER_POINTとORDER_NUMBERはER図によるとnullableなので、現在のフォーム入力には含まれないと仮定しNULLを挿入
     $stmtProduct = $PDO->prepare(
-        "INSERT INTO PRODUCT (PRODUCT_NAME, UNIT_PRICE, PRODUCT_KUBUN_ID, REORDER_POINT, ORDER_NUMBER) 
+        "INSERT INTO PRODUCT (PRODUCT_NAME, UNIT_SELLING_PRICE, PRODUCT_KUBUN_ID, REORDER_POINT, ORDER_NUMBER) 
          VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)"
     );
     $stmtProduct->bindParam(':product_name', $productName, PDO::PARAM_STR);
-    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
+    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT); // UNIT_SELLING_PRICE に対応
     $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT); // IDを直接使用
     $stmtProduct->execute();
 
     // 挿入された商品のPRODUCT_IDを取得
-    // PDO::lastInsertId() は、PDO接続で最後に挿入された行のIDを返します
     $newProductId = $PDO->lastInsertId();
 
     // 3. STOCKテーブルに初期在庫を挿入
+    // STOCKテーブルの構造が不明ですが、STOCK_QUANTITYとLAST_UPDATING_TIMEが通常想定されます
     $stmtStock = $PDO->prepare(
         "INSERT INTO STOCK (PRODUCT_ID, STOCK_QUANTITY, LAST_UPDATING_TIME) 
          VALUES (:product_id, :stock_quantity, NOW())" // NOW() で現在時刻を記録
@@ -86,14 +87,14 @@ try {
     $PDO->commit();
     echo json_encode(['success' => true, 'message' => '商品が正常に追加されました。', 'product_id' => $newProductId]);
 
-} catch (PDOException $e) { // PDO関連のエラーをキャッチ
+} catch (PDOException $e) { // PDO関連のデータベースエラーをキャッチ
     $PDO->rollBack(); // エラー発生時はロールバック
     error_log("Database error in add_api.php: " . $e->getMessage()); // エラーをログに出力
     echo json_encode([
         'success' => false,
         'message' => 'データベースエラーが発生しました。時間をおいて再度お試しください。' // 本番では詳細なエラーメッセージは非表示
     ]);
-} catch (Exception $e) { // その他のエラーをキャッチ
+} catch (Exception $e) { // その他の予期せぬエラーをキャッチ
     $PDO->rollBack(); // エラー発生時はロールバック
     error_log("Unexpected error in add_api.php: " . $e->getMessage()); // エラーをログに出力
     echo json_encode([
