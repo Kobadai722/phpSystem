@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-4 attendance-system">
                 <p class="current-date"><?php echo date('Y年m月d日'); ?></p>
-                <p class="time-display"><?php echo date('H:i'); ?></p>
+                <p class="time-display" id="realtime-time"></p>
                 <p class="greeting">こんにちは<?php echo $_SESSION['dname']; ?>さん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
@@ -44,9 +44,24 @@
     </div>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+<script src="https://cdn.jsdelivr.com/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
 </script>
 <script src="weather.js"></script>
+<script>
+    // リアルタイムで時刻を更新するJavaScript
+    function updateTime() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const timeString = `${hours}:${minutes}`;
+        document.getElementById('realtime-time').textContent = timeString;
+    }
 
+    // ページロード時に一度時刻を設定
+    updateTime();
+
+    // 1秒ごとに時刻を更新
+    setInterval(updateTime, 1000);
+</script>
 </html>
