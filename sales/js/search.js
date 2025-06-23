@@ -28,7 +28,7 @@ function search() {
     const keyword = document.getElementById("searchInput").value;
 
     // PHPのAPIにPOSTリクエストを送信
-    fetch("search_api.php", {
+    fetch("../api/search_api.php", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded" // フォーム形式で送信
@@ -136,7 +136,7 @@ function deleteProduct(productId) {
     console.log(`商品を削除リクエスト: 商品ID - ${productId}`);
 
     // PHPのAPIにPOSTリクエストを送信して商品を削除
-    fetch("delete_api.php", { // 例: delete_api.phpという削除用APIを想定
+    fetch("../api/delete_api.php", { // 例: delete_api.phpという削除用APIを想定
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
