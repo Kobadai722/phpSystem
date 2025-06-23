@@ -71,20 +71,6 @@
                         </div>
                     </div>
                 </section>
-
-                <section class="card">
-                    <div class="card-header">
-                        <h3>目標達成率</h3>
-                        <a href="#">> 詳しく見る</a>
-                    </div>
-                    <div class="card-body">
-                        <!-- <p class="metric-value">97.5<small>%</small></p> -->
-                        //TODO 総負債額を表示
-                        <div class="comparison">
-                            <span class="down">▼ -27名でした。</span>
-                        </div>
-                    </div>
-                </section>
                 <!-- 右 -->
                 <section class="card">
                     <div class="card-header">
