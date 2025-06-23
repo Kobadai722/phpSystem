@@ -27,8 +27,11 @@
     <h1>人事管理表-編集者モード</h1>
     <?php
     require_once '../config.php';
+
     $stmt_divisions = $PDO->query(
-        "SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION
+        "SELECT DISTINCT d.DIVISION_ID, d.DIVISION_NAME
+        FROM EMPLOYEE e
+        INNER JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
         WHERE d.DIVISION_NAME IS NOT NULL AND d.DIVISION_NAME != ''
         ORDER BY d.DIVISION_ID"
     );

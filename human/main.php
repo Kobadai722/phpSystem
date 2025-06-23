@@ -26,9 +26,13 @@
     ?>
     <h1>人事管理表</h1>
     <?php
-    require_once '../config.php';
+    require_once '../config.php'; //DBサーバーと接続
+
+    // 社員が所属する部署のみを重複なく取得する
     $stmt_divisions = $PDO->query(
-        "SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION
+        "SELECT DISTINCT d.DIVISION_ID, d.DIVISION_NAME
+        FROM EMPLOYEE e
+        INNER JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
         WHERE d.DIVISION_NAME IS NOT NULL AND d.DIVISION_NAME != ''
         ORDER BY d.DIVISION_ID"
     );
