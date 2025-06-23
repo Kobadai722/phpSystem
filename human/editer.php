@@ -90,7 +90,7 @@
                 </div>
 
                 <br>
-                <div class="col-auto">
+                <div class="mt-3">
                     <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
                 </div>
 
