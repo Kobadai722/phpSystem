@@ -14,7 +14,7 @@
 <body>
     <?php include '../../header.php'; ?>
     <main>
-        <?php include 'localNavigation.php'; ?>
+        <?php include '../includes/localNavigation.php'; ?>
         
         <section class="content">
             <div class="d-flex justify-content-end mb-3">

@@ -12,7 +12,7 @@
 <body>
     <?php include '../../header.php'; ?>
     <main>
-        <?php include 'localNavigation.php'; ?>
+        <?php include '../includes/localNavigation.php'; ?>
 
         <section class="content">
             <div class="bg-white p-3 shadow-sm rounded mb-3">

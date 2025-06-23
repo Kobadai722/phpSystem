@@ -15,7 +15,7 @@
 
 <body onload="search()">
     <main>
-        <?php include 'localNavigation.php'; ?>
+        <?php include '../includes/localNavigation.php'; ?>
 
         <section class="content">
             <div class="search mt-3">
