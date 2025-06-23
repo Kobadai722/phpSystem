@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-
-  <title>仕訳登録完了</title>
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-</head>
-<body>
 <!-- ヘッダーの読み込み -->
-<?php require_once '../../header.php'; ?>
+<?php 
+  require_once '../../header.php';
+  $page_title = '仕訳登録完了';
+  $current_page = 'submit'; 
+?>
   <h3>以下の内容で仕訳が登録されました</h3>
   <table class="table text-center">
     <tr>

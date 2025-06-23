@@ -1,6 +1,7 @@
 <?php
 $page_title = '仕訳一覧表示';
-include_once '../a_header.php';
+$current_page = 'list';
+require_once '../a_header.php';
 ?>
   
   <!-- ページ全体を囲むコンテナ -->

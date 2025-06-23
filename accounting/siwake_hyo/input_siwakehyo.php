@@ -1,11 +1,12 @@
 <?php
 $page_title = '仕訳入力フォーム';
-include_once '../a_header.php';
+$current_page = 'input';
+require_once '../a_header.php';
 ?>
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-    <?php include_once '../sideber.php' ?>
+    <?php require_once '../sideber.php' ?>
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
       <div class="table-responsive">

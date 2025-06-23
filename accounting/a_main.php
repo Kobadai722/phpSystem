@@ -1,12 +1,31 @@
-<?php
-// ----- このページ固有の情報を定義 -----
-$page_title = 'ダッシュボード';
-$current_page = 'dashboard'; // このページは'dashboard'であると定義
+<!DOCTYPE html>
+<html lang="ja">
 
-// ----- ヘッダー部品を読み込む -----
-require_once '../header.php'; // パスは環境に合わせて調整
-?>
-
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+        <?php
+        // $page_titleにタイトルを入れる。nullの場合 ”私のウェブサイト” を表示
+        if (isset($page_title)) {
+            echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') . ' | 私のウェブサイト';
+        } else {
+            echo '私のウェブサイト';
+        }
+        ?>
+    </title>
+  <!-- Bootstrap (主にテーブルなどのコンポーネント用) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <!-- 独自のレイアウトCSS -->
+  <link rel="stylesheet" href="../css/siwake.css">
+  <link rel="stylesheet" href="/accounting/css/a_mian.css">
+    <?php
+    $page_title = 'home';
+    $current_page = 'home'; 
+    ?>
+</head>
 <body>
     <div class="page-container">
         <!-- メインコンテンツ -->
@@ -27,7 +46,8 @@ require_once '../header.php'; // パスは環境に合わせて調整
                         <h3>資産</h3>
                         <a href="#">> 詳しく見る</a>
                     </div>
-                    <div class="card-body">
+                    <!-- 将来的にstyleで半ドーナツをどれくらい満たすか直接決める　style="--percentage: <?php echo $percentage; ?>　という形でかく-->
+                    <div class="card-body" style="--percentage: 52;">
                         <p class="metric-value">
                             <!-- 737 <small>名 [217組]</small> -->
                             //TODO 総資産額を表示
@@ -49,20 +69,6 @@ require_once '../header.php'; // パスは環境に合わせて調整
                         <div class="comparison">
                             <span class="up">▲ 前月 5.1%</span>
                             <span class="up">▲ 前年 10.5%</span>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="card">
-                    <div class="card-header">
-                        <h3>目標達成率</h3>
-                        <a href="#">> 詳しく見る</a>
-                    </div>
-                    <div class="card-body">
-                        <!-- <p class="metric-value">97.5<small>%</small></p> -->
-                        //TODO 総負債額を表示
-                        <div class="comparison">
-                            <span class="down">▼ -27名でした。</span>
                         </div>
                     </div>
                 </section>
@@ -131,8 +137,7 @@ require_once '../header.php'; // パスは環境に合わせて調整
         </main>
     </div>
     <?php
-    // ----- フッター部品を読み込む -----
-    require_once 'footer.php'; // パスは環境に合わせて調整
+    require_once 'a_footer.php';
     ?>
 </body>
 </html>
