@@ -90,10 +90,12 @@
                 </div>
             </div>
         </form>
-
+        
+        <form>
             <div class="col-auto">
                 <a href = "human-insert.php" class="btn btn-success">社員情報を登録する</a>
             </div>
+        </form>
     </div>
 
     <table class="table table-hover">
