@@ -1,10 +1,9 @@
 <?php
-// ----- このページ固有の情報を定義 -----
-$page_title = 'ダッシュボード';
-$current_page = 'dashboard'; // このページは'dashboard'であると定義
-
+include_once '/accounting/header.php'; // パスは環境に合わせて調整
+$page_title = 'home';
+$current_page = 'home'; 
 // ----- ヘッダー部品を読み込む -----
-require_once '../header.php'; // パスは環境に合わせて調整
+
 ?>
 
 <body>
@@ -131,8 +130,7 @@ require_once '../header.php'; // パスは環境に合わせて調整
         </main>
     </div>
     <?php
-    // ----- フッター部品を読み込む -----
-    require_once 'footer.php'; // パスは環境に合わせて調整
+    require_once '/accounting/footer.php';
     ?>
 </body>
 </html>
