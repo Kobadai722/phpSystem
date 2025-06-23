@@ -234,7 +234,7 @@
 
                 try {
                     // AJAXリクエストは既存のadd_api.phpに対して行います
-                    const response = await fetch('../api/add_api.php', {
+                    const response = await fetch('add_api.php', {
                         method: 'POST',
                         body: formData
                     });
