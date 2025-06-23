@@ -1,3 +1,4 @@
+<?php session_start(); // セッションを開始 ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -10,7 +11,6 @@
     <link rel="stylesheet" href="human.css">
 </head>
 <?php include '../header.php'; ?>
-<?php session_start(); // セッションを開始 ?>
 <body>
     <?php
     // 成功メッセージの表示

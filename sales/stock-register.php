@@ -21,8 +21,8 @@
                     
                     <div class="mb-3">
                         <label for="product_name" class="form-label">商品名 <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="product_name" name="product_name" required maxlength="100">
-                        <div class="form-text text-muted">最大100文字まで</div>
+                        <input type="text" class="form-control" id="product_name" name="product_name" required maxlength="20">
+                        <div class="form-text text-muted">最大20文字まで</div>
                     </div>
                     
                     <div class="mb-3">
@@ -41,9 +41,9 @@
                         <label for="product_category" class="form-label">商品区分 <span class="text-danger">*</span></label>
                         <select class="form-select" id="product_category" name="product_category" required>
                             <option value="">選択してください</option>
-                            <option value="文房具">文房具</option>
-                            <option value="食品">衛生用品</option>
-                            <option value="飲料">食品</option>
+                            <option value="1">文房具</option>
+                            <option value="2">衛生用品</option>
+                            <option value="3">食品</option>
                             </select>
                     </div>
 
