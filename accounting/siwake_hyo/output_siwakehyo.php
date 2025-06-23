@@ -1,5 +1,6 @@
 <?php
 $page_title = '仕訳一覧表示';
+$current_page = 'list';
 include_once '../a_header.php';
 ?>
   

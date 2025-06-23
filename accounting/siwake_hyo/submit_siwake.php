@@ -10,7 +10,11 @@
 </head>
 <body>
 <!-- ヘッダーの読み込み -->
-<?php require_once '../../header.php'; ?>
+<?php 
+  require_once '../../header.php';
+  $page_title = '仕訳登録完了';
+  $current_page = 'submit'; 
+?>
   <h3>以下の内容で仕訳が登録されました</h3>
   <table class="table text-center">
     <tr>
