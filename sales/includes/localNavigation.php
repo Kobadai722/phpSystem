@@ -2,7 +2,7 @@
 <nav class="localNavigation">
     <ul>
         <li class="nav-item">
-            <a class="nav-link" href="/../main.php"><i class="bi bi-house-door-fill"></i> Home</a>
+            <a class="nav-link" href="/main.php"><i class="bi bi-house-door-fill"></i> Home</a>
         </li>
         <li class="nav-item dropdown dropdown-center">
             <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button"
