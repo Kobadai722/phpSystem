@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../config.php'; // 設定ファイルを読み込む
+require_once '../config.php'; // 設定ファイルを読み込む
 
 header('Content-Type: application/json'); // JSON形式でレスポンスを返すことを指定
 

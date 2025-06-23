@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../config.php'; // DB接続設定などを読み込み
+require_once '../config.php'; // DB接続設定などを読み込み
 
 header('Content-Type: application/json'); // JSONでレスポンスを返す
 
