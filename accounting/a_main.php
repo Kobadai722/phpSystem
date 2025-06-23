@@ -1,9 +1,7 @@
 <?php
-include_once '/accounting/header.php'; // パスは環境に合わせて調整
+include_once 'a_header.php';
 $page_title = 'home';
 $current_page = 'home'; 
-// ----- ヘッダー部品を読み込む -----
-
 ?>
 
 <body>
@@ -130,7 +128,7 @@ $current_page = 'home';
         </main>
     </div>
     <?php
-    require_once '/accounting/footer.php';
+    require_once 'a_footer.php';
     ?>
 </body>
 </html>
