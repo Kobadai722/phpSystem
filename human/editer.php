@@ -88,6 +88,11 @@
                 <div class="col-auto">
                     <input type="submit" value="検索" class="btn btn-primary">
                 </div>
+
+                <div class="col-auto">
+                    <a href = "human-insert.php" class="btn btn-success">登録</a>
+                </div>
+
             </div>
         </form>
     </div>
@@ -160,6 +165,7 @@
                         </button>
                     </td>
                 </tr>
+
             <?php
             };
             ?>
