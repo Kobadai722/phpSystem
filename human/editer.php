@@ -26,8 +26,9 @@
     ?>
     <h1>人事管理表-編集者モード</h1>
     <?php
-    require_once '../config.php';
+    require_once '../config.php'; //DBサーバーと接続
 
+    // 社員が所属する部署のみを重複なく取得する
     $stmt_divisions = $PDO->query(
         "SELECT DISTINCT d.DIVISION_ID, d.DIVISION_NAME
         FROM EMPLOYEE e
