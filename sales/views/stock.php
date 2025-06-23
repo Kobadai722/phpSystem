@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/stock_styles.css">
 </head>
-<?php include '../header.php'; ?>
+<?php include '../../header.php'; ?>
 
 <body onload="search()">
     <main>

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <?php include '../header.php'; ?>
+    <?php include '../../header.php'; ?>
     <main>
         <?php include 'localNavigation.php'; ?>
 

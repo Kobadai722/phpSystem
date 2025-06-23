@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../css/stock_styles.css">
 </head>
 <body>
-    <?php include '../header.php'; ?>
+    <?php include '../../header.php'; ?>
     <main>
         <?php include 'localNavigation.php'; ?>
         
