@@ -232,6 +232,7 @@ main {
   padding: 20px; /* 全体のパディング */
   width: 100%; /* 親要素の幅いっぱいにする */
   box-sizing: border-box; /* パディングを幅に含める */
+  margin-bottom: 10px;
 } 
 
 .service-menu a {
@@ -281,4 +282,15 @@ main {
 
 .rocket-icon{
   width: 45px;
+}
+
+.room-ava{
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 1%;
+  margin-bottom: 10px;
 }
