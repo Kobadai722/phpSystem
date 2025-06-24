@@ -25,7 +25,7 @@ $current_page = 'home';
     <div class="page-container">
         <?php
         // a_main.phpと同じ階層にあるので、ファイル名だけでOK
-        require_once '/header.php';
+        require_once '../header.php';
         
         // ----- サイドバー部品を読み込む -----
         require_once 'sidebar.php'; 
