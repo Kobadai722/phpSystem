@@ -278,3 +278,7 @@ main {
     display: block; /* アイコンをブロック要素にして改行させる */
     margin-bottom: 5px; /* アイコンとテキストの間の余白 */
 }
+
+.rocket-icon{
+  width: 45px;
+}
