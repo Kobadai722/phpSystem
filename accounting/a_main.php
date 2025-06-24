@@ -9,8 +9,8 @@
     
     <!-- 独自のCSS (a_main.phpからの相対パスに修正) -->
     <link rel="stylesheet" href="css/siwake.css">
-    <link rel="stylesheet" href="css/a_main.css"> 
-
+    <link rel="stylesheet" href="css/a_main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
     <?php
     $page_title = 'home';
     $current_page = 'home'; 
