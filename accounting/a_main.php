@@ -17,25 +17,14 @@
     ?>
 </head>
 <body>
-    
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php
         // a_main.phpと同じ階層にあるので、ファイル名だけでOK
         require_once '../header.php';
-        
         // ----- サイドバー部品を読み込む -----
         require_once './sideber.php'; 
         ?>
-
-        <!-- ハンバーガーメニューボタン -->
-        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="メニューを開閉">
-            <i class="bi bi-list"></i>
-        </button>
-    
-        <!-- サイドバー表示時に背景を暗くするオーバーレイ -->
-        <div id="overlay" class="overlay"></div>
-
         <!-- メインコンテンツ -->
         <main class="main-content">
             <!-- 1. ヘッダー部分 -->
