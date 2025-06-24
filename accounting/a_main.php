@@ -1,23 +1,20 @@
-<?php
-// ----- このページ固有の情報を定義 -----
-$page_title = 'home';
-$current_page = 'home'; 
-?>
-<!DOCTYPE html>
-<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
+    <title>会計システム --Prototype--</title>
     
-    <!-- Bootstrap (integrity属性を修正) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <!-- Bootstrap Icons -->
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    <!-- 独自のCSS (パスを現在のファイルからの相対パスに変更) -->
-    <link rel="stylesheet" href="/accounting/css/a_main.css">
-    <link rel="stylesheet" href="/style.css">
+    <!-- 独自のCSS (a_main.phpからの相対パスに修正) -->
+    <link rel="stylesheet" href="css/siwake.css">
+    <link rel="stylesheet" href="css/a_main.css"> 
+
+    <?php
+    $page_title = 'home';
+    $current_page = 'home'; 
+    ?>
 </head>
 <body>
     
