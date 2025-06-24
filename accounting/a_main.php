@@ -17,16 +17,32 @@
     ?>
 </head>
 <body>
+    <?php
+    require_once '/header.php';
+    ?>
     <div class="page-container">
+        
+        <!-- 1. ヘッダー部分 -->
+        <header class="dashboard-header">
+            <div class="date-range">
+                <h1>会計システム--Prototype--</h1>
+            </div>
+        </header>
+        
+        <!-- ハンバーガーメニューボタン -->
+        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="メニューを開閉">
+            <i class="bi bi-list"></i>
+        </button>
+    
+        <!-- サイドバー表示時に背景を暗くするオーバーレイ -->
+        <div id="overlay" class="overlay"></div>
+
+        <?php
+        // ----- サイドバー部品を読み込む -----
+        require_once 'sidebar.php'; 
+        ?>
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <!-- 1. ヘッダー部分 -->
-            <header class="dashboard-header">
-                <div class="date-range">
-                    <h1>会計システム--Prototype--</h1>
-                </div>
-            </header>
-
             <!-- 2. ダッシュボードのカード部分 -->
             <div class="dashboard-grid">
                 <!-- 上段のカード (数値中心) 左-->
