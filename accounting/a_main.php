@@ -28,7 +28,7 @@ $current_page = 'home';
         require_once '../header.php';
         
         // ----- サイドバー部品を読み込む -----
-        require_once 'sidebar.php'; 
+        require_once './sideber.php'; 
         ?>
 
         <!-- ハンバーガーメニューボタン -->
