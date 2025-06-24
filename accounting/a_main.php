@@ -2,44 +2,49 @@
 <html lang="ja">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
-        <?php
-        // $page_titleにタイトルを入れる。nullの場合 ”私のウェブサイト” を表示
-        if (isset($page_title)) {
-            echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') . ' | 私のウェブサイト';
-        } else {
-            echo '私のウェブサイト';
-        }
-        ?>
-    </title>
-  <!-- Bootstrap (主にテーブルなどのコンポーネント用) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <!-- 独自のレイアウトCSS -->
-  <link rel="stylesheet" href="../css/siwake.css">
-  <link rel="stylesheet" href="/accounting/css/a_mian.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap (主にテーブルなどのコンポーネント用) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- 独自のレイアウトCSS -->
+    <link rel="stylesheet" href="/accounting/css/siwake.css">
+    <link rel="stylesheet" href="/accounting/css/a_mian.css">
     <?php
     $page_title = 'home';
     $current_page = 'home'; 
     ?>
 </head>
 <body>
+    <?php
+    require_once '/header.php';
+    ?>
     <div class="page-container">
+        
+        <!-- 1. ヘッダー部分 -->
+        <header class="dashboard-header">
+            <div class="date-range">
+                <h1>会計システム--Prototype--</h1>
+            </div>
+        </header>
+        
+        <!-- ハンバーガーメニューボタン -->
+        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="メニューを開閉">
+            <i class="bi bi-list"></i>
+        </button>
+    
+        <!-- サイドバー表示時に背景を暗くするオーバーレイ -->
+        <div id="overlay" class="overlay"></div>
+
+        <?php
+        // ----- サイドバー部品を読み込む -----
+        require_once 'sidebar.php'; 
+        ?>
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <!-- 1. ヘッダー部分 -->
-            <header class="dashboard-header">
-                <div class="date-range">
-                    <h1>会計システム--Prototype--</h1>
-                </div>
-            </header>
-
             <!-- 2. ダッシュボードのカード部分 -->
             <div class="dashboard-grid">
-                
                 <!-- 上段のカード (数値中心) 左-->
                 <section class="card">
                     <div class="card-header">
@@ -89,6 +94,7 @@
                 </section>
 
                 <!-- 下段のカード (グラフ中心) -->
+                <!-- 左 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>売上</h3>
@@ -103,14 +109,14 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- 真ん中 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>収益</h3>
                         <a href="#">> 詳しく見る</a>
                     </div>
                     <div class="card-body chart-card">
-                        <div class="gauge-chart" style="--percentage: 68;"></div>
+                        <div class="gauge-chart" style="--percentage: 80;"></div>
                         <div class="legend">
                             <!-- <div><span class="color-dot red"></span>予約: 737名</div>
                             <div><span class="color-dot gray"></span>直接来店: 336名</div> -->
@@ -118,7 +124,7 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- みぎ -->
                 <section class="card">
                     <div class="card-header">
                         <h3>費用</h3>

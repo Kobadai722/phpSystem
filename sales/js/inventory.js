@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // 在庫情報を取得して表示する関数
 function loadInventory() {
     // PHPのAPIにGETリクエストを送信（POSTでも可）
-    fetch("inventory_api.php")
+    fetch("../api/inventory_api.php")
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -53,7 +53,7 @@ function loadInventory() {
                                 編集
                             </button>
                         </td>
-                     </tr>
+                    </tr>
                 `;
                 tbody.insertAdjacentHTML("beforeend", tr);
             });

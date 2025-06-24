@@ -75,16 +75,27 @@
     gap: 1rem;
 }
 
-/* ゲージグラフの簡易表現 */
+/* === ▼ ゲージグラフのスタイルを修正 ▼ === */
 .gauge-chart {
     width: 150px;
     height: 75px; /* 半円なので高さは半分 */
     border-radius: 150px 150px 0 0; /* 上半分を丸める */
-    /* 満たされている部分(赤)と、残りの部分(黄色)でグラデーションを作成 */
-    background: conic-gradient(#dc3545 calc(var(--percentage) * 1%), #ffc107 0);
     position: relative;
     overflow: hidden;
+
+    /* * グラデーションの開始点を左(-90deg)に設定。
+     * HTMLで指定された変数(--percentage)の値を半円(180deg = 全体の50%)にマッピングして、
+     * 左から右へグラフが満たされるように描画します。
+     */
+    background: conic-gradient(
+        from -90deg, /* グラデーションを左から開始 */
+        #dc3545 0% calc(var(--percentage) * 0.5%),   /* 満たされている部分(赤) */
+        #ffc107 calc(var(--percentage) * 0.5%) 50%, /* 満たされていない部分(黄) */
+        transparent 50% 100%                       /* 表示されない下半分 */
+    );
 }
+/* === ▲ ここまで修正 ▲ === */
+
 /* 中央の白い円でドーナツ状に見せる */
 .gauge-chart::before {
     content: '';
@@ -94,7 +105,8 @@
     height: 160%; /* 高さを大きくして半円をくり抜く */
     border-radius: 50%;
     left: 10%;
-    top: 20%;
+    /* 内側の円を少し上に移動して、下の部分が厚く見えるように調整 */
+    top: 15%;
 }
 
 /* グラフの凡例 */

@@ -8,14 +8,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="stock_styles.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/stock_styles.css">
 </head>
-<?php include '../header.php'; ?>
+<?php include '../../header.php'; ?>
 
 <body onload="search()">
     <main>
-        <?php include 'localNavigation.php'; ?>
+        <?php include '../includes/localNavigation.php'; ?>
 
         <section class="content">
             <div class="search mt-3">
@@ -32,7 +32,7 @@
                         </button>
                     </div>
                     <div class="col"></div>
-                    <div class="col-md-auto text-end"><button onclick="location.href='/sales/stock_management.php'" class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
+                    <div class="col-md-auto text-end"><button onclick="location.href='/sales/views/stock_management.php'" class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous"></script>
-    <script src="search.js"></script>
+    <script src="../js/search.js"></script>
 </body>
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
