@@ -120,7 +120,6 @@
             </div>
         </main>
     </div>
-
     <?php
     // ----- フッター部品を読み込む -----
     require_once 'a_footer.php';
@@ -128,7 +127,17 @@
     
     <!-- JavaScript -->
     <script>
-        // ハンバーガーメニューのスクリプトは省略
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.getElementById('sidebar-toggle-btn');
+            const body = document.body;
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', function() {
+                    // bodyタグに 'sidebar-collapsed' クラスを付けたり外したりする
+                    body.classList.toggle('sidebar-collapsed');
+                });
+            }
+        });
     </script>
 </body>
 </html>

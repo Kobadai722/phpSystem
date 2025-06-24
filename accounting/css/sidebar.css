@@ -1,0 +1,65 @@
+/* ページ全体のFlexbox設定 */
+.page-container {
+    display: flex;
+}
+
+/* サイドバーの基本スタイル */
+.sidebar {
+    flex-shrink: 0; /* サイドバーが縮まないようにする */
+    width: 280px; /* 展開時の幅 */
+    height: 100vh;
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    position: sticky;
+    top: 0;
+    transition: width 0.3s ease-in-out; /* 幅の変化をアニメーションさせる */
+    overflow-x: hidden; /* はみ出した要素を隠す */
+}
+
+/* メインコンテンツは残りの領域をすべて使う */
+.main-content {
+    flex-grow: 1;
+    padding: 2rem;
+    overflow-y: auto; /* コンテンツが多い場合にスクロール */
+}
+
+/* 開閉ボタンのスタイル */
+.sidebar-toggle {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem;
+}
+.sidebar-toggle button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* ナビゲーションリンクのテキスト */
+.sidebar .nav-link-text {
+    margin-left: 0.5rem;
+    transition: opacity 0.2s ease-in-out; /* 透明度をアニメーション */
+}
+
+/* ============ 収納時のスタイル ============ */
+
+/* bodyに.sidebar-collapsedクラスが付いた時のサイドバー */
+body.sidebar-collapsed .sidebar {
+    width: 80px; /* 収納時の幅 */
+}
+
+/* 収納時にナビゲーションのテキストを非表示にする */
+body.sidebar-collapsed .sidebar .nav-link-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 収納時にアイコンを中央揃えにする */
+body.sidebar-collapsed .sidebar .nav-link {
+    justify-content: center;
+}
+body.sidebar-collapsed .sidebar .nav-link i {
+    font-size: 1.2rem; /* アイコンを少し大きく */
+}
+
