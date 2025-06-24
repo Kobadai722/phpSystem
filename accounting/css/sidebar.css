@@ -26,8 +26,9 @@
 /* 開閉ボタンのスタイル */
 .sidebar-toggle {
     display: flex;
-    justify-content: flex-end;
-    padding: 1rem 1.5rem;
+    justify-content: flex-end; /* 展開時は右寄せ */
+    padding: 1rem;
+    transition: justify-content 0.3s ease;
 }
 .sidebar-toggle button {
     background: none;
@@ -36,30 +37,75 @@
     cursor: pointer;
 }
 
-/* ナビゲーションリンクのテキスト */
+/* ナビゲーションリンク */
+.nav-link-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
 .sidebar .nav-link-text {
-    margin-left: 0.5rem;
-    transition: opacity 0.2s ease-in-out; /* 透明度をアニメーション */
+    margin-left: 0.8rem;
+    white-space: nowrap; /* テキストが折り返さないようにする */
+    transition: opacity 0.2s ease-in-out;
 }
 
 /* ============ 収納時のスタイル ============ */
 
 /* bodyに.sidebar-collapsedクラスが付いた時のサイドバー */
 body.sidebar-collapsed .sidebar {
-    width: 80px; /* 収納時の幅 */
+    /* === ▼ 収納時の幅をアイコンの大きさに合わせて調整 ▼ === */
+    width: 72px; 
+}
+
+/* 収納時に開閉ボタンを中央揃えにする */
+body.sidebar-collapsed .sidebar-toggle {
+    justify-content: center;
+    padding: 1rem 0; /* 横の余白をなくす */
 }
 
 /* 収納時にナビゲーションのテキストを非表示にする */
 body.sidebar-collapsed .sidebar .nav-link-text {
     opacity: 0;
-    pointer-events: none;
+    pointer-events: none; /* クリックイベントも無効化 */
 }
 
 /* 収納時にアイコンを中央揃えにする */
-body.sidebar-collapsed .sidebar .nav-link {
+body.sidebar-collapsed .sidebar .nav-link-content {
     justify-content: center;
 }
+
 body.sidebar-collapsed .sidebar .nav-link i {
-    font-size: 1.2rem; /* アイコンを少し大きく */
+    font-size: 1.5rem; 
+}
+/* === ▲ ここまで修正 ▲ === */
+
+
+/* ============ ダッシュボードのグラフスタイル ============ */
+
+.gauge-chart {
+    /* グラフのサイズを大きく調整 */
+    width: 200px;
+    height: 100px;
+    border-radius: 200px 200px 0 0;
+    position: relative;
+    overflow: hidden;
+
+    background: conic-gradient(
+        from -90deg,
+        #dc3545 0% calc(var(--percentage) * 0.5%),
+        #ffc107 calc(var(--percentage) * 0.5%) 50%,
+        transparent 50% 100%
+    );
+}
+
+.gauge-chart::before {
+    content: '';
+    position: absolute;
+    background: #fff;
+    width: 80%;
+    height: 160%;
+    border-radius: 50%;
+    left: 10%;
+    top: 15%;
 }
 
