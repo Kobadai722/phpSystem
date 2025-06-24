@@ -17,11 +17,12 @@
     ?>
 </head>
 <body>
+    <?php
+        require_once '../header.php';
+    ?>s
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php
-        // a_main.phpと同じ階層にあるので、ファイル名だけでOK
-        require_once '../header.php';
         // ----- サイドバー部品を読み込む -----
         require_once './sideber.php'; 
         ?>
