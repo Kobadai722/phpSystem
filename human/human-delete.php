@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
 
     if (!is_numeric($employee_id) || $employee_id <= 0) {
         $_SESSION['error_message'] = "無効な従業員IDです。";
-        header("Location: main.php"); 
+        header("Location: editer.php"); 
         exit;
     }
 
@@ -31,11 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         $_SESSION['error_message'] = "データベースエラーにより、社員情報の削除に失敗しました。システム管理者にお問い合わせください。";
     }
 
-    header("Location: main.php"); 
+    header("Location: editer.php"); 
 } else {
     
     $_SESSION['error_message'] = "不正なリクエストです。";
-    header("Location: main.php");
+    header("Location: editer.php");
     exit;
 }
 ?>

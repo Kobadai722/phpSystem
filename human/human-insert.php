@@ -51,6 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+// 部署リストを取得
+$stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
+$divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
+
+// 職位リストを取得
+$stmt_jobs = $PDO->query("SELECT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION ORDER BY JOB_POSITION_ID");
+$job_positions = $stmt_jobs->fetchAll(PDO::FETCH_ASSOC);
+
 $error_message = $_SESSION['error_message'] ?? null;
 unset($_SESSION['error_message']);
 
@@ -81,22 +89,18 @@ unset($_SESSION['error_message']);
                     <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
                     <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
                         <option value="" selected disabled>選択してください...</option>
-                        <option value="1">営業部</option>
-                        <option value="2">開発部</option>
-                        <option value="3">人事部</option>
-                        <option value="4">総務部</option>
-                        <option value="5">経理部</option>
+                        <?php foreach ($divisions as $division): ?>
+                            <option value="<?= htmlspecialchars($division['DIVISION_ID']) ?>"><?= htmlspecialchars($division['DIVISION_NAME']) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label for="JOB_POSITION_ID" class="form-label">職位 <span class="text-danger">*</span></label>
                     <select class="form-select" id="JOB_POSITION_ID" name="JOB_POSITION_ID" required>
                         <option value="" selected disabled>選択してください...</option>
-                        <option value="1">部長</option>
-                        <option value="2">課長</option>
-                        <option value="3">係長</option>
-                        <option value="4">主任</option>
-                        <option value="5">一般社員</option>
+                        <?php foreach ($job_positions as $job): ?>
+                            <option value="<?= htmlspecialchars($job['JOB_POSITION_ID']) ?>"><?= htmlspecialchars($job['JOB_POSITION_NAME']) ?></option>
+                        <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="col-md-6"><label for="JOINING_DATE" class="form-label">入社日</label><input type="date" class="form-control" id="JOINING_DATE" name="JOINING_DATE"></div>
