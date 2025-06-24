@@ -89,6 +89,7 @@
                 </section>
 
                 <!-- 下段のカード (グラフ中心) -->
+                <!-- 左 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>売上</h3>
@@ -103,7 +104,7 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- 真ん中 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>収益</h3>
@@ -118,7 +119,7 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- みぎ -->
                 <section class="card">
                     <div class="card-header">
                         <h3>費用</h3>
