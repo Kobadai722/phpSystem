@@ -19,7 +19,7 @@
 <body>
     <?php
         require_once '../header.php';
-    ?>s
+    ?>
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php
