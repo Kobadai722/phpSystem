@@ -53,8 +53,8 @@
 
 /* bodyに.sidebar-collapsedクラスが付いた時のサイドバー */
 body.sidebar-collapsed .sidebar {
-    /* === ▼ 収納時の幅をアイコンの大きさに合わせて調整 ▼ === */
-    width: 72px; 
+    /* === ▼ アイコンのみ表示されるよう幅を調整 ▼ === */
+    width: 60px; 
 }
 
 /* 収納時に開閉ボタンを中央揃えにする */
@@ -62,6 +62,16 @@ body.sidebar-collapsed .sidebar-toggle {
     justify-content: center;
     padding: 1rem 0; /* 横の余白をなくす */
 }
+
+/* === ▼ 収納時のナビゲーションリストのスタイルを追加 ▼ === */
+body.sidebar-collapsed .sidebar .nav {
+    padding-left: 0; /* ulタグが持つ左の余白を削除 */
+}
+body.sidebar-collapsed .sidebar .nav-link {
+    padding: 0.75rem 0; /* 各アイコンの上下の余白を調整 */
+}
+
+
 
 /* 収納時にナビゲーションのテキストを非表示にする */
 body.sidebar-collapsed .sidebar .nav-link-text {
@@ -77,5 +87,4 @@ body.sidebar-collapsed .sidebar .nav-link-content {
 body.sidebar-collapsed .sidebar .nav-link i {
     font-size: 1.5rem; 
 }
-
 
