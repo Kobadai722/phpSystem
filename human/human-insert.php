@@ -41,8 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['error_message'] = "社員情報の登録に失敗しました。";
         }
     } catch (PDOException $e) {
-        error_log("Employee insertion error: " . $e->getMessage());
-        $_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。";
+        // error_log("Employee insertion error: " . $e->getMessage());
+        // $_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。";
+        // デバッグ用に、エラーメッセージを画面に直接表示する
+        die("データベースエラーが発生しました: " . $e->getMessage());
     }
 
     header('Location: human-insert.php');
