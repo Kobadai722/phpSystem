@@ -16,17 +16,10 @@
     overflow-x: hidden; /* はみ出した要素を隠す */
 }
 
-/* メインコンテンツは残りの領域をすべて使う */
-.main-content {
-    flex-grow: 1;
-    padding: 2rem;
-    overflow-y: auto; /* コンテンツが多い場合にスクロール */
-}
-
 /* 開閉ボタンのスタイル */
 .sidebar-toggle {
     display: flex;
-    justify-content: flex-end; /* 展開時は右寄せ */
+    justify-content: flex-start; /* 左寄せ */
     padding: 1rem;
     transition: justify-content 0.3s ease;
 }
@@ -49,12 +42,14 @@
     transition: opacity 0.2s ease-in-out;
 }
 
-/* ============ 収納時のスタイル ============ */
 
+/* ============ 収納時のスタイル ============ */
 /* bodyに.sidebar-collapsedクラスが付いた時のサイドバー */
 body.sidebar-collapsed .sidebar {
     /* === ▼ アイコンのみ表示されるよう幅を調整 ▼ === */
     width: 60px; 
+    /* アイコンの表示に合わせて幅を狭くする */
+    
 }
 
 /* 収納時に開閉ボタンを中央揃えにする */
@@ -70,8 +65,6 @@ body.sidebar-collapsed .sidebar .nav {
 body.sidebar-collapsed .sidebar .nav-link {
     padding: 0.75rem 0; /* 各アイコンの上下の余白を調整 */
 }
-
-
 
 /* 収納時にナビゲーションのテキストを非表示にする */
 body.sidebar-collapsed .sidebar .nav-link-text {
