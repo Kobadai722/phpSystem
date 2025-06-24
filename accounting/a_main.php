@@ -111,7 +111,7 @@
                         <a href="#">> 詳しく見る</a>
                     </div>
                     <div class="card-body chart-card">
-                        <div class="gauge-chart" style="--percentage: 68;"></div>
+                        <div class="gauge-chart" style="--percentage: 80;"></div>
                         <div class="legend">
                             <!-- <div><span class="color-dot red"></span>予約: 737名</div>
                             <div><span class="color-dot gray"></span>直接来店: 336名</div> -->
