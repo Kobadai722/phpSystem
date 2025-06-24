@@ -77,11 +77,30 @@
 
 /* === ▼ ゲージグラフのスタイルを修正 ▼ === */
 .gauge-chart {
-    width: 150px;
-    height: 75px; /* 半円なので高さは半分 */
-    border-radius: 150px 150px 0 0; /* 上半分を丸める */
+    /* グラフのサイズを大きく調整 */
+    width: 200px;
+    height: 100px;
+    border-radius: 200px 200px 0 0;
     position: relative;
     overflow: hidden;
+
+    background: conic-gradient(
+        from -90deg,
+        #dc3545 0% calc(var(--percentage) * 0.5%),
+        #ffc107 calc(var(--percentage) * 0.5%) 50%,
+        transparent 50% 100%
+    );
+}
+
+.gauge-chart::before {
+    content: '';
+    position: absolute;
+    background: #fff;
+    width: 80%;
+    height: 160%;
+    border-radius: 50%;
+    left: 10%;
+    top: 15%;
 
     /* * グラデーションの開始点を左(-90deg)に設定。
      * HTMLで指定された変数(--percentage)の値を半円(180deg = 全体の50%)にマッピングして、
@@ -94,7 +113,7 @@
         transparent 50% 100%                       /* 表示されない下半分 */
     );
 }
-/* === ▲ ここまで修正 ▲ === */
+
 
 /* 中央の白い円でドーナツ状に見せる */
 .gauge-chart::before {
@@ -125,3 +144,6 @@
 .color-dot.red { background-color: #dc3545; }
 /* 未達部分の色を黄色に変更 */
 .color-dot.yellow { background-color: #ffc107; }
+
+
+
