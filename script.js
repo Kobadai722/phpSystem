@@ -22,10 +22,10 @@ const comments = [
 ];
 
 const images = [
-    "kimu.png",
-    "kimu1.png",
-    "kimu2.png",
-    "kimu3.png"
+    "/images/kimu.png",
+    "/images/kimu1.png",
+    "/images/kimu2.png",
+    "/images/kimu3.png"
 ];
 
 const commentDisplay = document.getElementById('president-comment');
