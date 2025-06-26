@@ -29,7 +29,7 @@ const images = [
 ];
 
 const commentDisplay = document.getElementById('president-comment');
-const imageDisplay = document.getElementById('/images/kimu-image');
+const imageDisplay = document.getElementById('kimu-image');
 const newCommentBtn = document.getElementById('new-comment-btn');
 
 function displayRandomCommentAndImage() {
