@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>입국 금지 / 入国禁止</title>
+    <style>
+        body {
+            font-family: "Noto Sans KR", sans-serif;
+            background-color: #990000;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .banner {
+            border: 4px solid #ffcc00;
+            padding: 30px;
+            background-color: #cc0000;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #ffff00;
+        }
+
+        .translation-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            background-color: #ffcc00;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .translation-btn:hover {
+            background-color: #ffe066;
+        }
+
+        .question {
+            margin-top: 30px;
+            font-size: 1.5em;
+        }
+
+        .choices {
+            margin-top: 10px;
+        }
+
+        .choice-btn {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #fff;
+            color: #990000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .choice-btn:hover {
+            background-color: #ffcccc;
+        }
+        #entry-video {
+        transition: opacity 3s ease;
+        opacity: 1;
+        }
+        .fade-out {
+        opacity: 0;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1 id="title">【최고지도기관 통지】</h1>
+        <p id="content">
+            위대한 조선로동당의 영명한 령도와 천년을 두고 찬란히 빛나는 우리 조국의 존엄을 수호하는 숭고한 사명에 따라, 본 구역은 공화국의 주권적 령역으로서 어떠한 외국인과 허가받지 못한 자의 입국을 단호히 금지한다.<br><br>
+            이 결정은 우리 국가의 자주, 자립, 자위의 원칙에 따라 내려진 것이며, 이를 위반하는 그 어떤 행위도 공화국의 법률에 의해 가장 엄격하고 단호한 조치로 처리될 것이다.<br><br>
+            영광스러운 우리 인민의 평화와 행복, 그리고 국가적 존엄을 그 누구에게도 침해당하지 않게 하려는 드팀없는 의지의 표현이며, 모든 자는 이 명령에 절대 복종하여야 한다.<br><br>
+            주체 112(2023)년 6월 24일<br>
+            조선민주주의인민공화국 출입국지도부
+        </p>
+        <button class="translation-btn" id="translate-btn">번역 / 翻訳</button>
+
+        <div class="question" id="question">그럼에도 불구하고 입국하시겠습니까?</div>
+        <div class="choices">
+            <button class="choice-btn" id="yes-btn">예</button>
+            <button class="choice-btn" id="no-btn">아니요</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const title = document.getElementById('title');
+            const content = document.getElementById('content');
+            const btn = document.getElementById('translate-btn');
+            const question = document.getElementById('question');
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            let translated = false;
+
+            btn.addEventListener('click', function () {
+                if (!translated) {
+                    title.innerText = '【最高指導機関通達】';
+                    content.innerHTML = `
+                        偉大なる朝鮮労働党の英明なる導きと、千年にわたり輝き続けるわが祖国の尊厳を守護する崇高なる使命に基づき、当区域は共和国の主権的領域として、いかなる外国人および許可なき者の入国をも断固として禁止するものである。<br><br>
+                        この決定は、わが国家の自主・自立・自衛の原則に則ったものであり、これに違反するいかなる行為も、共和国の法律により極めて厳格かつ断固たる措置が取られることになる。<br><br>
+                        栄光ある我が人民の平和と幸福、そして国家的尊厳を何者にも侵させないとの断固たる意志の表れであり、すべての者はこの命令に絶対服従しなければならない。<br><br>
+                        チュチェ112（2023）年6月24日<br>
+                        朝鮮民主主義人民共和国 出入国指導部
+                    `;
+                    question.innerText = 'それでも入国しますか？';
+                    yesBtn.innerText = 'はい';
+                    noBtn.innerText = 'いいえ';
+                    translated = true;
+                } else {
+                    title.innerText = '【최고지도기관 통지】';
+                    content.innerHTML = `
+                        위대한 조선로동당의 영명한 령도와 천년을 두고 찬란히 빛나는 우리 조국의 존엄을 수호하는 숭고한 사명에 따라, 본 구역은 공화국의 주권적 령역으로서 어떠한 외국인과 허가받지 못한 자의 입국을 단호히 금지한다.<br><br>
+                        이 결정은 우리 국가의 자주, 자립, 자위의 원칙에 따라 내려진 것이며, 이를 위반하는 그 어떤 행위도 공화국의 법률에 의해 가장 엄격하고 단호한 조치로 처리될 것이다.<br><br>
+                        영광스러운 우리 인민의 평화와 행복, 그리고 국가적 존엄을 그 누구에게도 침해당하지 않게 하려는 드팀없는 의지의 표현이며, 모든 자는 이 명령에 절대 복종하여야 한다.<br><br>
+                        주체 112(2023)년 6월 24일<br>
+                        조선민주주의인민공화국 출입국지도부
+                    `;
+                    question.innerText = '그럼에도 불구하고 입국하시겠습니까?';
+                    yesBtn.innerText = '예';
+                    noBtn.innerText = '아니요';
+                    translated = false;
+                }
+            });
+
+            yesBtn.addEventListener('click', function () {
+        // バナーを隠す（動画だけを表示）
+        document.querySelector('.banner').style.display = 'none';
+
+        // 動画を表示して再生
+        const video = document.getElementById('entry-video');
+        video.style.display = 'block';
+        video.play();
+
+        // 再生が終わったらページ遷移
+        video.onended = function () {
+            window.location.href = "entry.html";
+    };
+});
+
+
+            noBtn.addEventListener('click', function () {
+                window.location.href = "main.html"; // 拒否ページ
+            });
+        });
+    </script>
+    <video id="entry-video" style="display:none; width:100vw; height:100vh; object-fit:cover; position:fixed; top:0; left:0; z-index:9999;" autoplay>
+    <source src="kokuei.mp4" type="video/mp4">
+    <div id="video-caption" style="
+    display:none;
+    position:fixed;
+    bottom:10%;
+    width:100%;
+    text-align:center;
+    font-size:2em;
+    font-weight:bold;
+    color:white;
+    text-shadow: 2px 2px 4px #000;
+    z-index:10000;
+">
+    偉大なる指導者が貴君を歓迎する
+</div>
+</body>
+</html>
