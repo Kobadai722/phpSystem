@@ -41,7 +41,7 @@ session_start();
                     </div>
                 </div>
                 <div class="service-menu">
-                    <a href="/sales/stock.php">
+                    <a href="/sales/views/stock.php">
                         <i class="bi bi-truck">販売管理</i>
                     </a>
                     <a href="/accounting/a_main.php">
