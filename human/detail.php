@@ -98,4 +98,5 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="live_search.js"></script></html>
+<!--<script src="live_search.js"></script>-->
+</html>
