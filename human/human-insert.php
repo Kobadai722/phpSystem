@@ -1,101 +1,121 @@
 <?php
+session_start(); 
 require_once '../config.php';
 
-$page_h1_title = "人事詳細";
-$page_title_tag = "人事管理表 - 詳細"; // デフォルトの<title>タグ用
-$employee_data = null;
-$error_message_for_table = null; // テーブル表示用のエラーメッセージ
+// フォームがPOSTされた場合の処理
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $NAME = $_POST['NAME'] ?? '';
+    $DIVISION_ID = $_POST['DIVISION_ID'] ?? null;
+    $JOB_POSITION_ID = $_POST['JOB_POSITION_ID'] ?? null;
+    $EMAIL = $_POST['EMAIL'] ?? '';
+    $EMERGENCY_CELL_NUMBER = $_POST['EMERGENCY_CELL_NUMBER'] ?? '';
+    $JOINING_DATE = $_POST['JOINING_DATE'] ?? '';
+    $POST_CODE = $_POST['POST_CODE'] ?? '';
+    $ADDRESS = $_POST['ADDRESS'] ?? '';
 
-if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-    $stmt = $PDO->prepare("
-        SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
-        FROM EMPLOYEE e
-        LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-        LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID
-        WHERE e.EMPLOYEE_ID = ?
-    ");
-    $stmt->execute([$_GET['id']]);
-    $employee_data = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($employee_data) {
-        $employee_name = htmlspecialchars($employee_data['NAME']);
-        $page_h1_title = $employee_name . "さんの詳細";
-        $page_title_tag = $employee_name . "さんの詳細 - 人事管理表";
-    } else {
-        $error_message_for_table = "該当社員が見つかりません。";
-        $page_h1_title = "エラー";
-        $page_title_tag = "該当社員なし - 人事管理表";
+    if (empty($NAME) || empty($DIVISION_ID) || empty($JOB_POSITION_ID)) {
+        $_SESSION['error_message'] = "氏名、所属部署、職位は必須項目です。";
+        header('Location: human-insert.php');
+        exit;
     }
-} else {
-    $error_message_for_table = "不正なリクエストです。";
-    $page_h1_title = "エラー";
-    $page_title_tag = "不正なリクエスト - 人事管理表";
+
+    try {
+        $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMAIL, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS)
+                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMAIL, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS)";
+        $stmt = $PDO->prepare($sql);
+
+        $stmt->bindValue(':NAME', $NAME, PDO::PARAM_STR);
+        $stmt->bindValue(':DIVISION_ID', $DIVISION_ID, PDO::PARAM_INT);
+        $stmt->bindValue(':JOB_POSITION_ID', $JOB_POSITION_ID, PDO::PARAM_INT);
+        $stmt->bindValue(':EMAIL', $EMAIL, PDO::PARAM_STR);
+        $stmt->bindValue(':EMERGENCY_CELL_NUMBER', $EMERGENCY_CELL_NUMBER, PDO::PARAM_STR);
+        $stmt->bindValue(':JOINING_DATE', !empty($JOINING_DATE) ? $JOINING_DATE : null, PDO::PARAM_STR);
+        $stmt->bindValue(':POST_CODE', $POST_CODE, PDO::PARAM_STR);
+        $stmt->bindValue(':ADDRESS', $ADDRESS, PDO::PARAM_STR);
+
+        if ($stmt->execute()) {
+            $_SESSION['success_message'] = "社員「" . htmlspecialchars($NAME) . "」さんを登録しました。";
+            header('Location: editer.php'); 
+            exit;
+        } else {
+            $_SESSION['error_message'] = "社員情報の登録に失敗しました。";
+        }
+    } catch (PDOException $e) {
+        // error_log("Employee insertion error: " . $e->getMessage());
+        //$_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。";
+        // デバッグ用に、エラーメッセージを画面に直接表示する
+        error_log("Employee insertion error: " . $e->getMessage());
+$_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。: " . $e->getMessage(); // エラーメッセージを追加
+header('Location: human-insert.php'); // エラー時に元のフォームに戻る
+exit;
+    }
+
+    header('Location: human-insert.php');
+    exit;
 }
+
+// 部署リストを取得
+$stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
+$divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
+
+// 職位リストを取得
+$stmt_jobs = $PDO->query("SELECT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION ORDER BY JOB_POSITION_ID");
+$job_positions = $stmt_jobs->fetchAll(PDO::FETCH_ASSOC);
+
+$error_message = $_SESSION['error_message'] ?? null;
+unset($_SESSION['error_message']);
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title><?php echo $page_title_tag; ?></title>
+    <title>社員情報登録 - 人事管理表</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <?php include '../header.php'; ?>
 <body>
-    <h1><?php echo $page_h1_title; ?></h1>
+    <div class="container py-4">
+        <h1>社員情報登録</h1>
 
-<div class="mb-3 p-3 border rounded">
-        <form>
-            <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                    <label for="display_mode_select" class="col-form-label">表示モード：</label>
-                </div>
-                <div class="col-auto">
-                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php" selected>一般画面</option> <option value="editer.php">編集者画面</option>
-                </select>
-                </div>
-            </div>
-        </form>
-        <div class="text-end mt-2">
-            <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
+        <?php if ($error_message): ?>
+        <div class="alert alert-danger" role="alert">
+            <?= htmlspecialchars($error_message) ?>
         </div>
-    </div>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>社員番号</th>
-                <th>氏名</th>
-                <th>所属部署</th>
-                <th>職位</th>
-                <th>緊急連絡先</th>
-                <th>入社日</th>
-                <th>郵便番号</th>
-                <th>住所</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php
+        <?php endif; ?>
 
-        if ($error_message_for_table) {
-            echo "<tr><td colspan=\"8\">" . htmlspecialchars($error_message_for_table) . "</td></tr>"; // colspan を 9 から 8 に変更
-        } elseif ($employee_data) {
-            // $row の代わりに $employee_data を使用
-            echo "<tr>";
-            echo "<td>" . htmlspecialchars($employee_data['EMPLOYEE_ID']) . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['NAME']) . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['DIVISION_NAME'] ?? '未登録') . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['JOB_POSITION_NAME'] ?? '未登録') . "</td>";
-            // echo "<td>" . htmlspecialchars($employee_data['EMAIL'] ?? '未入力') . "</td>"; この行を削除
-            echo "<td>" . htmlspecialchars($employee_data['EMERGENCY_CELL_NUMBER'] ?? '未入力') . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['JOINING_DATE'] ?? '未入力') . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['POST_CODE'] ?? '未入力') . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['ADDRESS'] ?? '未入力') . "</td>";
-            echo "</tr>";
-        }
-        
-        ?>
-        </tbody>
-    </table>
+        <form action="human-insert.php" method="post" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required></div>
+                <div class="col-md-6"><label for="EMAIL" class="form-label">メールアドレス</label><input type="email" class="form-control" id="EMAIL" name="EMAIL"></div>
+                <div class="col-md-6">
+                    <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
+                        <option value="" selected disabled>選択してください...</option>
+                        <?php foreach ($divisions as $division): ?>
+                            <option value="<?= htmlspecialchars($division['DIVISION_ID']) ?>"><?= htmlspecialchars($division['DIVISION_NAME']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="JOB_POSITION_ID" class="form-label">職位 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="JOB_POSITION_ID" name="JOB_POSITION_ID" required>
+                        <option value="" selected disabled>選択してください...</option>
+                        <?php foreach ($job_positions as $job): ?>
+                            <option value="<?= htmlspecialchars($job['JOB_POSITION_ID']) ?>"><?= htmlspecialchars($job['JOB_POSITION_NAME']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-6"><label for="JOINING_DATE" class="form-label">入社日</label><input type="date" class="form-control" id="JOINING_DATE" name="JOINING_DATE"></div>
+                <div class="col-md-6"><label for="EMERGENCY_CELL_NUMBER" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="EMERGENCY_CELL_NUMBER" name="EMERGENCY_CELL_NUMBER"></div>
+                <div class="col-md-6"><label for="POST_CODE" class="form-label">郵便番号</label><input type="text" class="form-control" id="POST_CODE" name="POST_CODE" placeholder="例: 123-4567"></div>
+                <div class="col-12"><label for="ADDRESS" class="form-label">住所</label><input type="text" class="form-control" id="ADDRESS" name="ADDRESS" placeholder="例: 東京都千代田区..."></div>
+            </div>
+            <hr class="my-4">
+            <button class="btn btn-primary" type="submit">登録する</button>
+            <a href="editer.php" class="btn btn-secondary">キャンセル</a>
+        </form>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </html>
