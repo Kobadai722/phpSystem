@@ -43,7 +43,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 <body>
     <h1><?php echo $page_h1_title; ?></h1>
 
-<!-- 編集者ページの切り替え -->
 <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 align-items-center">
@@ -52,8 +51,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 </div>
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php" selected>一般画面</option> <!-- detail.phpでは常にこちらが選択される想定 -->
-                        <option value="editer.php">編集者画面</option>
+                        <option value="main.php" selected>一般画面</option> <option value="editer.php">編集者画面</option>
                 </select>
                 </div>
             </div>
@@ -69,7 +67,6 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 <th>氏名</th>
                 <th>所属部署</th>
                 <th>職位</th>
-                <th>メールアドレス</th>
                 <th>緊急連絡先</th>
                 <th>入社日</th>
                 <th>郵便番号</th>
@@ -80,7 +77,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <?php
 
         if ($error_message_for_table) {
-            echo "<tr><td colspan=\"9\">" . htmlspecialchars($error_message_for_table) . "</td></tr>";
+            echo "<tr><td colspan=\"8\">" . htmlspecialchars($error_message_for_table) . "</td></tr>"; // colspan を 9 から 8 に変更
         } elseif ($employee_data) {
             // $row の代わりに $employee_data を使用
             echo "<tr>";
@@ -88,7 +85,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
             echo "<td>" . htmlspecialchars($employee_data['NAME']) . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['DIVISION_NAME'] ?? '未登録') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['JOB_POSITION_NAME'] ?? '未登録') . "</td>";
-            echo "<td>" . htmlspecialchars($employee_data['EMAIL'] ?? '未入力') . "</td>";
+            // echo "<td>" . htmlspecialchars($employee_data['EMAIL'] ?? '未入力') . "</td>"; この行を削除
             echo "<td>" . htmlspecialchars($employee_data['EMERGENCY_CELL_NUMBER'] ?? '未入力') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['JOINING_DATE'] ?? '未入力') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['POST_CODE'] ?? '未入力') . "</td>";
@@ -101,4 +98,5 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!--<script src="live_search.js"></script>-->
 </html>

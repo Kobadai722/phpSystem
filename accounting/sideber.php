@@ -1,49 +1,41 @@
 <?php
-// sidebar.phpを読み込む前に $current_page が定義されていること
+// sidebar.phpを読み込む前に $current_page が定義されていることを想定
 $current_page = $current_page ?? '';
 ?>
-<!-- サイドバー本体 -->
-<nav class="sidebar">
-    <!-- 開閉ボタン -->
-    <div class="sidebar-toggle">
-        <button id="sidebar-toggle-btn" aria-label="サイドバーを開閉する">
-            <i class="bi bi-list"></i>
-        </button>
-    </div>
 
-    <!-- メニューリスト -->
-    <ul class="nav flex-column">
-        <li class="nav-item">
-            <a class="nav-link <?php echo ($current_page === 'home') ? 'active' : ''; ?>" href="/accounting/a_main.php">
-                <div class="nav-link-content">
+<!-- Bootstrap Offcanvas Component -->
+<div class="offcanvas offcanvas-start sidebar-custom" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="sidebarMenuLabel">メニュー</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
+    </div>
+    <div class="offcanvas-body">
+        <!-- ナビゲーションリストはこれまでと同じ -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page === 'home') ? 'active' : ''; ?>" href="/accounting/a_main.php">
                     <i class="bi bi-house-door-fill"></i>
-                    <span class="nav-link-text">Home</span>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php echo ($current_page === 'list') ? 'active' : ''; ?>" href="/accounting/siwake_hyo/output_siwakehyo.php">
-                <div class="nav-link-content">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page === 'list') ? 'active' : ''; ?>" href="/accounting/siwake_hyo/output_siwakehyo.php">
                     <i class="bi bi-journals"></i>
-                    <span class="nav-link-text">仕訳一覧表示</span>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php echo ($current_page === 'input') ? 'active' : ''; ?>" href="/accounting/siwake_hyo/input_siwakehyo.php">
-                <div class="nav-link-content">
+                    <span>仕訳一覧表示</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page === 'input') ? 'active' : ''; ?>" href="/accounting/siwake_hyo/input_siwakehyo.php">
                     <i class="bi bi-journal-text"></i>
-                    <span class="nav-link-text">仕訳入力フォーム</span>
-                </div>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link <?php echo ($current_page === 'graph') ? 'active' : ''; ?>" href="#">
-                <div class="nav-link-content">
+                    <span>仕訳入力フォーム</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link <?php echo ($current_page === 'graph') ? 'active' : ''; ?>" href="#">
                     <i class="bi bi-bar-chart-line-fill"></i>
-                    <span class="nav-link-text">グラフでも作ろうかな</span>
-                </div>
-            </a>
-        </li>
-    </ul>
-</nav>
+                    <span>グラフでも作ろうかな</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
