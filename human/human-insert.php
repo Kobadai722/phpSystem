@@ -48,10 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
-$stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
+// 部署リストを取得
+$stmt_divisions = $PDO->query("SELECT DISTINCT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
 $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
 
-$stmt_jobs = $PDO->query("SELECT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION ORDER BY JOB_POSITION_ID");
+// 職位リストを取得
+$stmt_jobs = $PDO->query("SELECT DISTINCT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION ORDER BY JOB_POSITION_ID");
 $job_positions = $stmt_jobs->fetchAll(PDO::FETCH_ASSOC);
 
 $error_message = $_SESSION['error_message'] ?? null;
