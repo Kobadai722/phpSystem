@@ -84,9 +84,9 @@
     /* 切り取った分だけレイアウト上の高さを減らす */
     margin-bottom: -100px;
 
-    /* 240度の円弧を描画するグラデーション (7時 -> 5時) */
+    /* 240度の円弧を描画するグラデーション (8時 -> 4時) */
     background: conic-gradient(
-        from -150deg, /* グラデーションの開始を7時あたりに設定 */
+        from -120deg, /* グラデーションの開始を8時あたりに設定し左右対称に */
         #dc3545 0% calc(var(--percentage) * 0.667%),       /* 満たされている部分(赤) */
         #ffc107 calc(var(--percentage) * 0.667%) 66.7%,   /* 満たされていない部分(黄) */
         transparent 66.7% 100%                            /* 表示されない部分 */
@@ -121,3 +121,4 @@
 }
 .color-dot.red { background-color: #dc3545; }
 .color-dot.yellow { background-color: #ffc107; }
+
