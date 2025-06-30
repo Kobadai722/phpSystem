@@ -1,13 +1,11 @@
 <?php
-session_start(); 
+session_start();
 require_once '../config.php';
 
-// フォームがPOSTされた場合の処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $NAME = $_POST['NAME'] ?? '';
     $DIVISION_ID = $_POST['DIVISION_ID'] ?? null;
     $JOB_POSITION_ID = $_POST['JOB_POSITION_ID'] ?? null;
-    $EMAIL = $_POST['EMAIL'] ?? '';
     $EMERGENCY_CELL_NUMBER = $_POST['EMERGENCY_CELL_NUMBER'] ?? '';
     $JOINING_DATE = $_POST['JOINING_DATE'] ?? '';
     $POST_CODE = $_POST['POST_CODE'] ?? '';
@@ -20,14 +18,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMAIL, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS)
-                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMAIL, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS)";
+        $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS)
+                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS)";
         $stmt = $PDO->prepare($sql);
 
         $stmt->bindValue(':NAME', $NAME, PDO::PARAM_STR);
         $stmt->bindValue(':DIVISION_ID', $DIVISION_ID, PDO::PARAM_INT);
         $stmt->bindValue(':JOB_POSITION_ID', $JOB_POSITION_ID, PDO::PARAM_INT);
-        $stmt->bindValue(':EMAIL', $EMAIL, PDO::PARAM_STR);
         $stmt->bindValue(':EMERGENCY_CELL_NUMBER', $EMERGENCY_CELL_NUMBER, PDO::PARAM_STR);
         $stmt->bindValue(':JOINING_DATE', !empty($JOINING_DATE) ? $JOINING_DATE : null, PDO::PARAM_STR);
         $stmt->bindValue(':POST_CODE', $POST_CODE, PDO::PARAM_STR);
@@ -35,30 +32,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($stmt->execute()) {
             $_SESSION['success_message'] = "社員「" . htmlspecialchars($NAME) . "」さんを登録しました。";
-            header('Location: editer.php'); 
+            header('Location: editer.php');
             exit;
         } else {
             $_SESSION['error_message'] = "社員情報の登録に失敗しました。";
         }
     } catch (PDOException $e) {
-        // error_log("Employee insertion error: " . $e->getMessage());
-        //$_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。";
-        // デバッグ用に、エラーメッセージを画面に直接表示する
         error_log("Employee insertion error: " . $e->getMessage());
-$_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。: " . $e->getMessage(); // エラーメッセージを追加
-header('Location: human-insert.php'); // エラー時に元のフォームに戻る
-exit;
+        $_SESSION['error_message'] = "データベースエラーにより登録に失敗しました。管理者に連絡してください。: " . $e->getMessage();
+        header('Location: human-insert.php');
+        exit;
     }
 
     header('Location: human-insert.php');
     exit;
 }
 
-// 部署リストを取得
 $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
 $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
 
-// 職位リストを取得
 $stmt_jobs = $PDO->query("SELECT JOB_POSITION_ID, JOB_POSITION_NAME FROM JOB_POSITION ORDER BY JOB_POSITION_ID");
 $job_positions = $stmt_jobs->fetchAll(PDO::FETCH_ASSOC);
 
@@ -87,7 +79,6 @@ unset($_SESSION['error_message']);
         <form action="human-insert.php" method="post" class="needs-validation" novalidate>
             <div class="row g-3">
                 <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required></div>
-                <div class="col-md-6"><label for="EMAIL" class="form-label">メールアドレス</label><input type="email" class="form-control" id="EMAIL" name="EMAIL"></div>
                 <div class="col-md-6">
                     <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
                     <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
