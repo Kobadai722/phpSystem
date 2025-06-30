@@ -19,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $hashed_password = password_hash($PASSWORD, PASSWORD_DEFAULT);
-
+        // パスワードを平文で保存
         $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS, PASSWORD)
                 VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS, :PASSWORD)";
         $stmt = $PDO->prepare($sql);
@@ -32,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindValue(':JOINING_DATE', !empty($JOINING_DATE) ? $JOINING_DATE : null, PDO::PARAM_STR);
         $stmt->bindValue(':POST_CODE', $POST_CODE, PDO::PARAM_STR);
         $stmt->bindValue(':ADDRESS', $ADDRESS, PDO::PARAM_STR);
-        $stmt->bindValue(':PASSWORD', $hashed_password, PDO::PARAM_STR);
+        $stmt->bindValue(':PASSWORD', $PASSWORD, PDO::PARAM_STR); // 平文のパスワードをバインド
 
         if ($stmt->execute()) {
             $_SESSION['success_message'] = "社員「" . htmlspecialchars($NAME) . "」さんを登録しました。";
