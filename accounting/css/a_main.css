@@ -74,22 +74,17 @@
 /* === ▼ ゲージグラフのスタイルを修正 ▼ === */
 .gauge-chart {
     width: 280px; /* グラフの直径 */
-    height: 280px; /* 円にするため幅と高さを同じにする */
-    border-radius: 50%; /* 正円にする */
+    height: 140px; /* 半円なので高さは半分 */
+    border-radius: 280px 280px 0 0; /* 上半分を丸める */
     position: relative;
-    
-    /* 下110pxを切り取って、半円より広い円弧に見せる */
-    clip-path: inset(0 0 110px 0);
-    
-    /* 切り取った分だけレイアウト上の高さを減らす */
-    margin-bottom: -110px;
+    overflow: hidden; /* 下半分を隠す */
 
-    /* 240度の円弧を描画するグラデーション */
+    /* 180度の半円を描画するグラデーション */
     background: conic-gradient(
-        from -150deg, /* グラデーションの開始を7時あたりに設定 */
-        #dc3545 0% calc(var(--percentage) * 0.667%),       /* 満たされている部分(赤) */
-        #ffc107 calc(var(--percentage) * 0.667%) 66.7%,   /* 満たされていない部分(黄) */
-        transparent 66.7% 100%                            /* 表示されない部分 */
+        from -90deg, /* グラデーションを左から開始 */
+        #dc3545 0% calc(var(--percentage) * 0.5%),       /* 満たされている部分(赤) */
+        #ffc107 calc(var(--percentage) * 0.5%) 50%,   /* 満たされていない部分(黄) */
+        transparent 50% 100%                            /* 表示されない下半分 */
     );
 }
 
@@ -99,11 +94,11 @@
     background: #fff;
     /* ドーナツの穴のサイズを調整 */
     width: 80%;
-    height: 80%;
+    height: 160%;
     border-radius: 50%;
     /* 穴を中央に配置 */
     left: 10%;
-    top: 10%;
+    top: 15%;
 }
 /* === ▲ ここまで修正 ▲ === */
 
