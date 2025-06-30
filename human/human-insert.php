@@ -6,7 +6,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $NAME = $_POST['NAME'] ?? '';
     $DIVISION_ID = $_POST['DIVISION_ID'] ?? null;
     $JOB_POSITION_ID = $_POST['JOB_POSITION_ID'] ?? null;
-    $EMAIL = $_POST['EMAIL'] ?? '';
     $EMERGENCY_CELL_NUMBER = $_POST['EMERGENCY_CELL_NUMBER'] ?? '';
     $JOINING_DATE = $_POST['JOINING_DATE'] ?? '';
     $POST_CODE = $_POST['POST_CODE'] ?? '';
@@ -22,14 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $hashed_password = password_hash($PASSWORD, PASSWORD_DEFAULT);
 
-        $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMAIL, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS, PASSWORD)
-                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMAIL, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS, :PASSWORD)";
+        $sql = "INSERT INTO EMPLOYEE (NAME, DIVISION_ID, JOB_POSITION_ID, EMERGENCY_CELL_NUMBER, JOINING_DATE, POST_CODE, ADDRESS, PASSWORD)
+                VALUES (:NAME, :DIVISION_ID, :JOB_POSITION_ID, :EMERGENCY_CELL_NUMBER, :JOINING_DATE, :POST_CODE, :ADDRESS, :PASSWORD)";
         $stmt = $PDO->prepare($sql);
 
         $stmt->bindValue(':NAME', $NAME, PDO::PARAM_STR);
         $stmt->bindValue(':DIVISION_ID', $DIVISION_ID, PDO::PARAM_INT);
         $stmt->bindValue(':JOB_POSITION_ID', $JOB_POSITION_ID, PDO::PARAM_INT);
-        $stmt->bindValue(':EMAIL', $EMAIL, PDO::PARAM_STR);
         $stmt->bindValue(':EMERGENCY_CELL_NUMBER', $EMERGENCY_CELL_NUMBER, PDO::PARAM_STR);
         $stmt->bindValue(':JOINING_DATE', !empty($JOINING_DATE) ? $JOINING_DATE : null, PDO::PARAM_STR);
         $stmt->bindValue(':POST_CODE', $POST_CODE, PDO::PARAM_STR);
@@ -85,7 +83,6 @@ unset($_SESSION['error_message']);
         <form action="human-insert.php" method="post" class="needs-validation" novalidate>
             <div class="row g-3">
                 <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required></div>
-                <div class="col-md-6"><label for="EMAIL" class="form-label">メールアドレス</label><input type="email" class="form-control" id="EMAIL" name="EMAIL"></div>
                 <div class="col-md-6">
                     <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
                     <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
