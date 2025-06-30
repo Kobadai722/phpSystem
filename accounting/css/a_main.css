@@ -6,13 +6,18 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    flex-wrap: wrap; /* 画面が狭い時に折り返す */
+    gap: 1rem;
 }
 
+/* === ▼ レスポンシブグリッドに修正 ▼ === */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    /* 画面幅に応じて列数を自動調整。各カードの最小幅は320px */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem; /* カード間の余白 */
 }
+/* === ▲ ここまで修正 ▲ === */
 
 .card {
     background-color: #fff;
@@ -71,18 +76,19 @@
     gap: 1rem;
 }
 
-/* === ▼ ゲージグラフのスタイルを修正 ▼ === */
+/* === ▼ ゲージグラフのスタイルをレスポンシブに修正 ▼ === */
 .gauge-chart {
-    width: 280px; /* グラフの直径 */
-    height: 280px; /* 円にするため幅と高さを同じにする */
+    width: 100%; /* 親要素の幅に合わせる */
+    max-width: 280px; /* 最大幅は280pxまで */
+    aspect-ratio: 1 / 1; /* 幅と高さの比率を1:1に保ち、常に円形にする */
     border-radius: 50%; /* 正円にする */
     position: relative;
 
-    /* 下100pxを切り取って、半円より広い円弧に見せる */
-    clip-path: inset(0 0 100px 0);
+    /* 下部分を35.7%切り取る (100px / 280px) */
+    clip-path: inset(0 0 35.7% 0);
 
     /* 切り取った分だけレイアウト上の高さを減らす */
-    margin-bottom: -100px;
+    margin-bottom: -35.7%;
 
     /* 240度の円弧を描画するグラデーション (8時 -> 4時) */
     background: conic-gradient(
@@ -121,4 +127,3 @@
 }
 .color-dot.red { background-color: #dc3545; }
 .color-dot.yellow { background-color: #ffc107; }
-
