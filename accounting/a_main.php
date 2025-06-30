@@ -11,8 +11,6 @@
     <link rel="stylesheet" href="css/siwake.css">
     <link rel="stylesheet" href="css/a_main.css">
     <link rel="stylesheet" href="css/sidebar.css">
-    <!-- 作成したOffcanvas用のカスタムCSSを読み込む -->
-    <link rel="stylesheet" href="css/sidebar_bootstrap.css">
     <?php
     $page_title = 'home';
     $current_page = 'home'; 

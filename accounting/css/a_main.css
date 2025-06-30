@@ -127,9 +127,3 @@
 }
 .color-dot.red { background-color: #dc3545; }
 .color-dot.yellow { background-color: #ffc107; }
-.hamburger-button {
-    position: fixed;
-    top: 80px; /* ヘッダーの高さを考慮 */
-    left: 20px;
-    z-index: 1040;
-}

@@ -3,32 +3,6 @@
     display: flex;
 }
 
-/* BootstrapのOffcanvasコンポーネントに独自スタイルを適用 */
-.offcanvas.sidebar-custom {
-    background-color: #f8f9fa; /* サイドバーの背景色 */
-}
-
-.sidebar-custom .nav-link {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    padding: 0.75rem 1rem;
-    color: #333;
-}
-
-.sidebar-custom .nav-link i {
-    font-size: 1.5rem;
-    margin-right: 0.8rem;
-    width: 24px; /* アイコンの幅を固定してテキストの開始位置を揃える */
-    text-align: center;
-}
-
-/* アクティブなリンクのスタイル */
-.sidebar-custom .nav-link.active {
-    font-weight: bold;
-    color: #0d6efd; /* Bootstrapのプライマリカラー */
-}
-
 /* サイドバーの基本スタイル */
 .sidebar {
     flex-shrink: 0; /* サイドバーが縮まないようにする */
