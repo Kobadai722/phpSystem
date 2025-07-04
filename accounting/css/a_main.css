@@ -1,13 +1,13 @@
 /* =================================================
    ダッシュボードのスタイル
    ================================================= */
-   .dashboard-header {
+.dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
-    flex-wrap: wrap; /* 画面が狭い時に折り返す */
     gap: 1rem;
+    /* flex-wrapは、下のメディアクエリで画面が小さい時だけ適用します */
 }
 
 /* === ▼ レスポンシブグリッドに修正 ▼ === */
@@ -127,3 +127,12 @@
 }
 .color-dot.red { background-color: #dc3545; }
 .color-dot.yellow { background-color: #ffc107; }
+
+/* === ▼ メディアクエリを追加 ▼ === */
+/* 画面幅が768px以下の場合に適用されるスタイル */
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-wrap: wrap; /* 画面が狭い時に折り返す */
+        justify-content: center; /* 折り返した際に中央揃えにする */
+    }
+}
