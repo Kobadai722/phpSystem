@@ -6,7 +6,7 @@ require_once '../a_header.php';
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-    <?php require_once '../sideber.php' ?>
+    <?php require_once '../sidebar.php' ?>
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
       <div class="table-responsive">

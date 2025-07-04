@@ -1,20 +1,24 @@
-/* ダッシュボード全体のヘッダー */
-.dashboard-header {
+/* =================================================
+   ダッシュボードのスタイル
+   ================================================= */
+   .dashboard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    flex-wrap: wrap; /* 画面が狭い時に折り返す */
+    gap: 1rem;
 }
 
-/* カードを並べるグリッド */
+/* === ▼ レスポンシブグリッドに修正 ▼ === */
 .dashboard-grid {
     display: grid;
-    /* 列数を3列に固定 */
-    grid-template-columns: repeat(3, 1fr);
+    /* 画面幅に応じて列数を自動調整。各カードの最小幅は320px */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem; /* カード間の余白 */
 }
+/* === ▲ ここまで修正 ▲ === */
 
-/* カードの基本スタイル */
 .card {
     background-color: #fff;
     border: 1px solid #e9ecef;
@@ -43,7 +47,6 @@
     text-decoration: none;
 }
 
-/* メインの数値スタイル */
 .metric-value {
     font-size: 2.5rem;
     font-weight: bold;
@@ -55,7 +58,6 @@
     color: #6c757d;
 }
 
-/* 比較データ (前月比など) */
 .comparison {
     font-size: 0.9rem;
     color: #6c757d;
@@ -67,7 +69,6 @@
     color: #dc3545; /* 赤色 */
 }
 
-/* グラフカード用のスタイル */
 .chart-card {
     display: flex;
     flex-direction: column;
@@ -75,20 +76,26 @@
     gap: 1rem;
 }
 
-/* === ▼ ゲージグラフのスタイルを修正 ▼ === */
+/* === ▼ ゲージグラフのスタイルをレスポンシブに修正 ▼ === */
 .gauge-chart {
-    /* グラフのサイズを大きく調整 */
-    width: 200px;
-    height: 100px;
-    border-radius: 200px 200px 0 0;
+    width: 100%; /* 親要素の幅に合わせる */
+    max-width: 280px; /* 最大幅は280pxまで */
+    aspect-ratio: 1 / 1; /* 幅と高さの比率を1:1に保ち、常に円形にする */
+    border-radius: 50%; /* 正円にする */
     position: relative;
-    overflow: hidden;
 
+    /* 下部分を35.7%切り取る (100px / 280px) */
+    clip-path: inset(0 0 35.7% 0);
+
+    /* 切り取った分だけレイアウト上の高さを減らす */
+    margin-bottom: -35.7%;
+
+    /* 240度の円弧を描画するグラデーション (8時 -> 4時) */
     background: conic-gradient(
-        from -90deg,
-        #dc3545 0% calc(var(--percentage) * 0.5%),
-        #ffc107 calc(var(--percentage) * 0.5%) 50%,
-        transparent 50% 100%
+        from -120deg, /* グラデーションの開始を8時あたりに設定し左右対称に */
+        #dc3545 0% calc(var(--percentage) * 0.667%),       /* 満たされている部分(赤) */
+        #ffc107 calc(var(--percentage) * 0.667%) 66.7%,   /* 満たされていない部分(黄) */
+        transparent 66.7% 100%                            /* 表示されない部分 */
     );
 }
 
@@ -96,39 +103,16 @@
     content: '';
     position: absolute;
     background: #fff;
+    /* ドーナツの穴のサイズを調整 */
     width: 80%;
-    height: 160%;
+    height: 80%;
     border-radius: 50%;
+    /* 穴を中央に配置 */
     left: 10%;
-    top: 15%;
-
-    /* * グラデーションの開始点を左(-90deg)に設定。
-     * HTMLで指定された変数(--percentage)の値を半円(180deg = 全体の50%)にマッピングして、
-     * 左から右へグラフが満たされるように描画します。
-     */
-    background: conic-gradient(
-        from -90deg, /* グラデーションを左から開始 */
-        #dc3545 0% calc(var(--percentage) * 0.5%),   /* 満たされている部分(赤) */
-        #ffc107 calc(var(--percentage) * 0.5%) 50%, /* 満たされていない部分(黄) */
-        transparent 50% 100%                       /* 表示されない下半分 */
-    );
+    top: 10%;
 }
+/* === ▲ ここまで修正 ▲ === */
 
-
-/* 中央の白い円でドーナツ状に見せる */
-.gauge-chart::before {
-    content: '';
-    position: absolute;
-    background: #fff;
-    width: 80%;
-    height: 160%; /* 高さを大きくして半円をくり抜く */
-    border-radius: 50%;
-    left: 10%;
-    /* 内側の円を少し上に移動して、下の部分が厚く見えるように調整 */
-    top: 15%;
-}
-
-/* グラフの凡例 */
 .legend {
     display: flex;
     gap: 1rem;
@@ -142,8 +126,4 @@
     margin-right: 5px;
 }
 .color-dot.red { background-color: #dc3545; }
-/* 未達部分の色を黄色に変更 */
 .color-dot.yellow { background-color: #ffc107; }
-
-
-

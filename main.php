@@ -41,7 +41,7 @@ session_start();
                     </div>
                 </div>
                 <div class="service-menu">
-                    <a href="/sales/stock.php">
+                    <a href="/sales/views/stock.php">
                         <i class="bi bi-truck">販売管理</i>
                     </a>
                     <a href="/accounting/a_main.php">
@@ -53,9 +53,11 @@ session_start();
                     <a href="/customer/customer.php">
                         <i class="bi bi-file-person">顧客管理</i>
                     </a>
-                    <a href="customer_management.html">
+                    <!--
+                    <a href="kimu.html">
                         <img class="rocket-icon" src="/images/rocket.png"><i>人民管理</i>
                     </a>
+                    -->
                 </div>
                 <div class="room-ava">
                     <i class="bi bi-house-gear">ブース空き状況</i>
