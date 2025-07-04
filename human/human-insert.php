@@ -104,7 +104,7 @@ unset($_SESSION['error_message']);
                 <div class="col-md-6"><label for="EMERGENCY_CELL_NUMBER" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="EMERGENCY_CELL_NUMBER" name="EMERGENCY_CELL_NUMBER"></div>
                 <div class="col-md-6"><label for="POST_CODE" class="form-label">郵便番号</label><input type="text" class="form-control" id="POST_CODE" name="POST_CODE" placeholder="例: 123-4567"></div>
                 <div class="col-12"><label for="ADDRESS" class="form-label">住所</label><input type="text" class="form-control" id="ADDRESS" name="ADDRESS" placeholder="例: 東京都千代田区..." autocomplete="new-password"></div>
-                <div class="col-md-6"><label for="PASSWORD" class="form-label">パスワード <span class="text-danger">*</span></label><input type="password" class="form-control" id="PASSWORD" name="PASSWORD" required></div>
+                <p><div class="col-md-6"><label for="PASSWORD" class="form-label">パスワード <span class="text-danger">*</span></label><input type="password" class="form-control" id="PASSWORD" name="PASSWORD" required></p></div>
             </div>
             <hr class="my-4">
             <button class="btn btn-primary" type="submit">登録する</button>
