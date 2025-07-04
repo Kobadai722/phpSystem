@@ -40,7 +40,7 @@ $current_page = 'home';
             </header>
             
             <!-- 2. ダッシュボードのカード部分 -->
-            <div class="dashboard-grid">
+            <div class="dashboard-grid main-content">
                 <!-- 上段のカード -->
                 <section class="card">
                     <div class="card-header">
