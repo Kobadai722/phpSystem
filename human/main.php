@@ -13,12 +13,10 @@
 <?php include '../header.php'; ?>
 <body>
     <?php
-    // 成功メッセージの表示
     if (isset($_SESSION['success_message'])) {
         echo '<div class="alert alert-success alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['success_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['success_message']);
     }
-    // エラーメッセージの表示
     if (isset($_SESSION['error_message'])) {
         echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['error_message']);
@@ -26,8 +24,7 @@
     ?>
     <h1>人事管理表</h1>
     <?php
-    require_once '../config.php'; //DBサーバーと接続
-    // 検索フィルター用に、システムに登録されている全ての部署を取得する
+    require_once '../config.php';
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
@@ -39,7 +36,7 @@
                 </div>
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php" selected>一般画面</option>
+                        <option value="main.php">一般画面</option>
                         <option value="editer.php">編集者画面</option>
                 </select>
                 </div>
@@ -104,10 +101,6 @@
         </thead>
         <tbody id="employeeTableBody">
             <?php
-            // この部分のPHPでのデータ取得と表示ロジックは、
-            // JavaScriptからのAjaxリクエストに応答する 'fetch_employees.php' に移動します。
-            // あるいは、初期表示用にここに残し、JavaScriptで初回ロード時に検索関数を呼び出すことも可能です。
-            // 今回は、JavaScriptが初期ロード時にデータを取得するようにします。
             ?>
         </tbody>
     </table>
