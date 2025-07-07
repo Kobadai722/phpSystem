@@ -23,206 +23,180 @@
                     <div class="mb-3">
                         <label for="product_name" class="form-label">商品名 <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="product_name" name="product_name" required maxlength="20">
-                        <div class="invalid-feedback" id="product_name_error"></div> <div class="form-text text-muted">最大20文字まで</div>
+                        <div class="invalid-feedback">
+                            商品名を入力してください
+                        </div>
                     </div>
-                    
                     <div class="mb-3">
                         <label for="unit_price" class="form-label">単価 <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="unit_price" name="unit_price" required min="0" step="1">
-                        <div class="invalid-feedback" id="unit_price_error"></div> <div class="form-text text-muted">0以上の整数を入力してください</div>
+                        <input type="number" class="form-control" id="unit_price" name="unit_price" required min="0">
+                        <div class="invalid-feedback">
+                            単価を0以上の整数で入力してください
+                        </div>
                     </div>
-                    
                     <div class="mb-3">
                         <label for="initial_stock" class="form-label">初期在庫 <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="initial_stock" name="initial_stock" required min="0" step="1">
-                        <div class="invalid-feedback" id="initial_stock_error"></div> <div class="form-text text-muted">0以上の整数を入力してください</div>
+                        <input type="number" class="form-control" id="initial_stock" name="initial_stock" required min="0">
+                        <div class="invalid-feedback">
+                            初期在庫を0以上の整数で入力してください
+                        </div>
                     </div>
-                    
                     <div class="mb-3">
                         <label for="product_category" class="form-label">商品区分 <span class="text-danger">*</span></label>
                         <select class="form-select" id="product_category" name="product_category" required>
                             <option value="">選択してください</option>
-                            <option value="1">文房具</option>
-                            <option value="2">衛生用品</option>
-                            <option value="3">食品</option>
-                        </select>
-                        <div class="invalid-feedback" id="product_category_error"></div> </div>
+                            </select>
+                        <div class="invalid-feedback">
+                            商品区分を選択してください
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="description" class="form-label">備考/説明</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" maxlength="500"></textarea> <div class="form-text text-muted">商品の詳細情報や特記事項を記入してください。（500文字以内）</div>
+                    </div>
 
-                    <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success btn-lg" id="submitFormBtn"> 
-                            <i class="bi bi-save me-2"></i>登録する
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg" id="registerProductBtn">
+                            <span id="registerProductBtnText">商品を登録</span>
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display: none;" id="registerProductBtnSpinner"></span>
+                            <span id="registerProductBtnLoadingText" style="display: none;">登録中...</span>
                         </button>
-                        <a href="stock_management.php" class="btn btn-secondary btn-lg">
-                            <i class="bi bi-x-circle me-2"></i>キャンセル
-                        </a>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg">入力内容をリセット</button>
                     </div>
                 </form>
             </div>
         </section>
     </main>
 
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">登録内容の確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>以下の内容で商品を登録します。よろしいですか？</p>
-                    <table class="table table-bordered">
-                        <tr>
-                            <th class="w-25">商品名</th>
-                            <td id="confirm_product_name"></td>
-                        </tr>
-                        <tr>
-                            <th>単価</th>
-                            <td id="confirm_unit_price"></td>
-                        </tr>
-                        <tr>
-                            <th>初期在庫</th>
-                            <td id="confirm_initial_stock"></td>
-                        </tr>
-                        <tr>
-                            <th>商品区分</th>
-                            <td id="confirm_product_category"></td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-success" id="registerProductBtn">
-                        <span id="registerProductBtnText">登録する</span>
-                        <span id="registerProductBtnSpinner" class="spinner-border spinner-border-sm" role="status" aria-hidden="true" style="display:none;"></span>
-                        <span id="registerProductBtnLoadingText" style="display:none;"> 登録中...</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="resultModalLabel">登録結果</h5>
+                    <h5 class="modal-title" id="resultModalLabel">商品登録結果</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" id="resultModalBody">
                     </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">閉じる</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
                 </div>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', () => {
+            const productCategorySelect = document.getElementById('product_category');
             const productRegisterForm = document.getElementById('productRegisterForm');
-            const submitFormBtn = document.getElementById('submitFormBtn'); // submitボタンをIDで取得
-            const registerProductBtn = document.getElementById('registerProductBtn'); // 確認モーダル内の登録ボタン
-            const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
-            const resultModalBody = document.getElementById('resultModalBody');
-
-            // ローディングスピナー要素 (確認モーダル内のボタン用)
+            const registerProductBtn = document.getElementById('registerProductBtn');
             const registerProductBtnText = document.getElementById('registerProductBtnText');
             const registerProductBtnSpinner = document.getElementById('registerProductBtnSpinner');
             const registerProductBtnLoadingText = document.getElementById('registerProductBtnLoadingText');
+            const resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            const resultModalBody = document.getElementById('resultModalBody');
 
-            // バリデーションエラー表示用要素
-            const productNameInput = document.getElementById('product_name');
-            const unitPriceInput = document.getElementById('unit_price');
-            const initialStockInput = document.getElementById('initial_stock');
-            const productCategorySelect = document.getElementById('product_category');
+            // 商品区分をAPIから読み込む関数
+            async function loadProductCategories() {
+                try {
+                    const response = await fetch('../api/product_kubun_api.php'); // 商品区分APIのパス
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const categories = await response.json();
+                    
+                    // 既存のオプションをクリア（「選択してください」以外）
+                    while (productCategorySelect.children.length > 1) {
+                        productCategorySelect.removeChild(productCategorySelect.lastChild);
+                    }
 
-            const productNameError = document.getElementById('product_name_error');
-            const unitPriceError = document.getElementById('unit_price_error');
-            const initialStockError = document.getElementById('initial_stock_error');
-            const productCategoryError = document.getElementById('product_category_error');
-
-            // エラーメッセージとBootstrapのis-invalidクラスをクリアする関数
-            function clearValidationErrors() {
-                productNameInput.classList.remove('is-invalid');
-                unitPriceInput.classList.remove('is-invalid');
-                initialStockInput.classList.remove('is-invalid');
-                productCategorySelect.classList.remove('is-invalid');
-                productNameError.textContent = '';
-                unitPriceError.textContent = '';
-                initialStockError.textContent = '';
-                productCategoryError.textContent = '';
+                    categories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.PRODUCT_KUBUN_ID;
+                        option.textContent = category.PRODUCT_KUBUN_NAME;
+                        productCategorySelect.appendChild(option);
+                    });
+                } catch (error) {
+                    console.error('商品区分の読み込みに失敗しました:', error);
+                    // エラーメッセージを表示するなどの処理
+                }
             }
 
-            // バリデーションを実行する関数
+            // 初期ロード時に商品区分を読み込む
+            loadProductCategories();
+
+            // バリデーションエラーをクリアする関数
+            function clearValidationErrors() {
+                const inputs = productRegisterForm.querySelectorAll('.form-control, .form-select');
+                inputs.forEach(input => {
+                    input.classList.remove('is-invalid');
+                    const feedback = input.nextElementSibling;
+                    if (feedback && feedback.classList.contains('invalid-feedback')) {
+                        feedback.textContent = '';
+                    }
+                });
+            }
+
+            // フォームの入力値をチェックする関数
             function validateForm() {
-                clearValidationErrors(); // まず全てのエラーをクリア
-
                 let isValid = true;
+                clearValidationErrors(); // まずエラー表示をクリア
 
-                // 商品名バリデーション
-                const productName = productNameInput.value.trim();
-                if (productName === '') {
-                    productNameInput.classList.add('is-invalid');
-                    productNameError.textContent = '商品名は必須です。';
+                const productName = document.getElementById('product_name');
+                const unitPrice = document.getElementById('unit_price');
+                const initialStock = document.getElementById('initial_stock');
+                const productCategory = document.getElementById('product_category');
+                const description = document.getElementById('description'); // descriptionフィールドも取得
+
+                if (productName.value.trim() === '') {
+                    productName.classList.add('is-invalid');
+                    productName.nextElementSibling.textContent = '商品名は必須です。';
                     isValid = false;
-                } else if (productName.length > 20) {
-                    productNameInput.classList.add('is-invalid');
-                    productNameError.textContent = '商品名は20文字以内で入力してください。';
+                } else if (productName.value.length > 20) {
+                    productName.classList.add('is-invalid');
+                    productName.nextElementSibling.textContent = '商品名は20文字以内で入力してください。';
                     isValid = false;
                 }
 
-                // 単価バリデーション
-                const unitPrice = unitPriceInput.value;
-                if (unitPrice === '' || isNaN(unitPrice) || parseInt(unitPrice) < 0 || !Number.isInteger(parseFloat(unitPrice))) {
-                    unitPriceInput.classList.add('is-invalid');
-                    unitPriceError.textContent = '単価は0以上の整数を入力してください。';
+                if (unitPrice.value.trim() === '' || isNaN(unitPrice.value) || parseInt(unitPrice.value) < 0) {
+                    unitPrice.classList.add('is-invalid');
+                    unitPrice.nextElementSibling.textContent = '単価を0以上の整数で入力してください。';
                     isValid = false;
                 }
 
-                // 初期在庫バリデーション
-                const initialStock = initialStockInput.value;
-                if (initialStock === '' || isNaN(initialStock) || parseInt(initialStock) < 0 || !Number.isInteger(parseFloat(initialStock))) {
-                    initialStockInput.classList.add('is-invalid');
-                    initialStockError.textContent = '初期在庫は0以上の整数を入力してください。';
+                if (initialStock.value.trim() === '' || isNaN(initialStock.value) || parseInt(initialStock.value) < 0) {
+                    initialStock.classList.add('is-invalid');
+                    initialStock.nextElementSibling.textContent = '初期在庫を0以上の整数で入力してください。';
                     isValid = false;
                 }
 
-                // 商品区分バリデーション
-                const productCategoryValue = productCategorySelect.value;
-                if (productCategoryValue === '') { // valueが空の場合（"選択してください"が選ばれている場合）
-                    productCategorySelect.classList.add('is-invalid');
-                    productCategoryError.textContent = '商品区分を選択してください。';
+                if (productCategory.value === '') {
+                    productCategory.classList.add('is-invalid');
+                    productCategory.nextElementSibling.textContent = '商品区分を選択してください。';
                     isValid = false;
                 }
+
+                // descriptionのバリデーション
+                if (description.value.length > 500) {
+                    description.classList.add('is-invalid');
+                    description.nextElementSibling.textContent = '備考/説明は500文字以内で入力してください。';
+                    isValid = false;
+                }
+
 
                 return isValid;
             }
 
-            // フォームのsubmitイベントを捕捉
-            productRegisterForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // デフォルトのフォーム送信をキャンセル
+            // フォーム送信イベントリスナー
+            productRegisterForm.addEventListener('submit', async (event) => {
+                event.preventDefault(); // デフォルトのフォーム送信を防止
 
                 if (!validateForm()) {
-                    // バリデーションエラーがあれば何もしない
-                    return;
+                    return; // バリデーションに失敗したら処理を中断
                 }
-
-                // 確認モーダルに表示する内容を設定
-                document.getElementById('confirm_product_name').textContent = productNameInput.value.trim();
-                document.getElementById('confirm_unit_price').textContent = unitPriceInput.value;
-                document.getElementById('confirm_initial_stock').textContent = initialStockInput.value;
-                document.getElementById('confirm_product_category').textContent = productCategorySelect.options[productCategorySelect.selectedIndex].text;
-
-                confirmModal.show(); // 確認モーダルを表示
-            });
-
-            // 確認モーダル内の「登録する」ボタンのクリックイベント
-            registerProductBtn.addEventListener('click', async function() {
-                confirmModal.hide(); // 確認モーダルを閉じる
 
                 // ローディング表示開始
                 registerProductBtnText.style.display = 'none';
@@ -230,17 +204,18 @@
                 registerProductBtnLoadingText.style.display = 'inline';
                 registerProductBtn.disabled = true; // ボタンを無効化
 
-                const formData = new FormData(productRegisterForm);
+                const formData = new FormData(productRegisterForm); // フォームデータを取得
 
                 try {
-                    // AJAXリクエストは既存のadd_api.phpに対して行います
-                    const response = await fetch('../api/add_api.php', {
+                    const response = await fetch('../api/add_api.php', { // 登録APIのパス
                         method: 'POST',
                         body: formData
                     });
 
-                    if (!response.ok) { // HTTPステータスが2xx以外の場合
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                    if (!response.ok) {
+                        // HTTPエラーレスポンスの場合
+                        const errorText = await response.text();
+                        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
                     }
 
                     const data = await response.json(); // JSONレスポンスをパース
@@ -249,6 +224,7 @@
                         resultModalBody.innerHTML = `<div class="alert alert-success" role="alert">${data.message}</div>`;
                         productRegisterForm.reset(); // フォームをリセット
                         clearValidationErrors(); // バリデーションエラー表示もクリア
+                        // 必要であれば、商品IDを表示するなど
                     } else {
                         resultModalBody.innerHTML = `<div class="alert alert-danger" role="alert">${data.message}</div>`;
                     }

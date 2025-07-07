@@ -1,101 +1,130 @@
 <?php
 
-require_once '../../config.php'; // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。 // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。
+require_once '../../config.php';
 
-header('Content-Type: application/json'); // JSONでレスポンスを返す
+header('Content-Type: application/json');
 
-// POSTデータから必要な情報を取得
-// null合体演算子 (??) で未定義の場合に空文字列を設定
-$productName = $_POST['product_name'] ?? ''; // 商品名
-$unitPrice = $_POST['unit_price'] ?? ''; // 単価
-$initialStock = $_POST['initial_stock'] ?? ''; // 初期在庫
-// stock-register.php からは選択された商品区分ID（value属性）が送られてくるため、そのままIDとして受け取る
-$productCategoryId = $_POST['product_category'] ?? ''; // 商品区分ID
+$productName = $_POST['product_name'] ?? '';
+$unitPrice = $_POST['unit_price'] ?? '';
+$initialStock = $_POST['initial_stock'] ?? '';
+$productCategoryId = $_POST['product_category'] ?? '';
+$description = $_POST['description'] ?? ''; // ★追加：descriptionを取得
 
-// 入力値のバリデーション
 $errors = [];
 
-if (empty($productName)) { // 商品名が空の場合
+if (empty($productName)) {
     $errors[] = '商品名は必須です。';
-} elseif (mb_strlen($productName, 'UTF-8') > 20) { // PRODUCT.PRODUCT_NAMEがVARCHAR(20)なので20文字制限
+} elseif (mb_strlen($productName, 'UTF-8') > 20) {
     $errors[] = '商品名は20文字以内で入力してください。';
 }
 
-// filter_varを使用して整数として検証
-// FILTER_VALIDATE_INTは非整数値や空文字列の場合falseを返す
-if (filter_var($unitPrice, FILTER_VALIDATE_INT) === false || $unitPrice < 0) { // 単価が0以上の整数でない場合
+if (!filter_var($unitPrice, FILTER_VALIDATE_INT) || $unitPrice < 0) {
     $errors[] = '単価は0以上の整数で入力してください。';
 }
 
-if (filter_var($initialStock, FILTER_VALIDATE_INT) === false || $initialStock < 0) { // 初期在庫が0以上の整数でない場合
+if (!filter_var($initialStock, FILTER_VALIDATE_INT) || $initialStock < 0) {
     $errors[] = '初期在庫は0以上の整数で入力してください。';
 }
 
-// productCategoryIdが数値として正しいか、かつ0より大きいか（有効なIDか）をチェック
-// PRODUCT_KUBUN_IDは通常1以上の整数と仮定
-if (filter_var($productCategoryId, FILTER_VALIDATE_INT) === false || $productCategoryId <= 0) { // 商品区分が正しく指定されていない場合
-    $errors[] = '商品区分が正しく指定されていません。';
+if (empty($productCategoryId)) {
+    $errors[] = '商品区分を選択してください。';
 }
 
-// バリデーションエラーがある場合は、エラーメッセージをまとめて返す
+// descriptionのバリデーション（例：最大文字数制限）
+// PRODUCTテーブルのDESCRIPTIONカラムの型に合わせて調整してください
+if (mb_strlen($description, 'UTF-8') > 500) { // 例: 500文字制限
+    $errors[] = '備考/説明は500文字以内で入力してください。';
+}
+
 if (!empty($errors)) {
     echo json_encode(['success' => false, 'message' => implode(' ', $errors)]);
     exit;
 }
 
 try {
-    // トランザクション開始
     $PDO->beginTransaction();
 
-    // 1. 受け取ったPRODUCT_KUBUN_IDがPRODUCT_KUBUNテーブルに実在するか確認
-    $stmtKubunCheck = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id"); // PRODUCT_KUBUN_IDの存在チェック
-    $stmtKubunCheck->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
-    $stmtKubunCheck->execute();
-    if ($stmtKubunCheck->fetchColumn() === 0) { // 該当するIDが見つからなかった場合
-        $PDO->rollBack();
-        echo json_encode(['success' => false, 'message' => '指定された商品区分IDは存在しません。']);
-        exit;
+    // 商品区分名を取得してプレフィックスを決定
+    $stmtKubun = $PDO->prepare("SELECT PRODUCT_KUBUN_NAME FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id");
+    $stmtKubun->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
+    $stmtKubun->execute();
+    $productKubun = $stmtKubun->fetch(PDO::FETCH_ASSOC);
+
+    if (!$productKubun) {
+        throw new Exception("指定された商品区分が見つかりません。");
     }
 
-    // 2. PRODUCTテーブルに商品情報を挿入
-    // UNIT_SELLING_PRICEがテーブル名なので注意（コードはUNIT_PRICEで統一しているためそのまま）
-    // REORDER_POINTとORDER_NUMBERはER図によるとnullableなので、現在のフォーム入力には含まれないと仮定しNULLを挿入
+    $prefix = '';
+    // 要件定義書に基づいてプレフィックスを設定
+    switch ($productKubun['PRODUCT_KUBUN_NAME']) {
+        case 'PC':
+            $prefix = 'PC';
+            break;
+        case 'Mobile':
+            $prefix = 'MB';
+            break;
+        case 'Monitor':
+            $prefix = 'MN';
+            break;
+        case 'Option':
+            $prefix = 'OP';
+            break;
+        default:
+            $prefix = 'OT'; // Other
+            break;
+    }
+
+    // 新しい商品IDを生成
+    // 例: PC00001, MB00002
+    // 同じプレフィックスを持つ最新のIDを取得
+    $stmtLastId = $PDO->prepare("SELECT PRODUCT_ID FROM PRODUCT WHERE PRODUCT_ID LIKE :prefix ORDER BY PRODUCT_ID DESC LIMIT 1");
+    $stmtLastId->bindValue(':prefix', $prefix . '%', PDO::PARAM_STR);
+    $stmtLastId->execute();
+    $lastId = $stmtLastId->fetchColumn();
+
+    $newNumericId = 1;
+    if ($lastId) {
+        // プレフィックスの後の数値部分を取得してインクリメント
+        $numericPart = (int)substr($lastId, strlen($prefix));
+        $newNumericId = $numericPart + 1;
+    }
+
+    $newProductId = $prefix . sprintf('%05d', $newNumericId); // 5桁のゼロ埋め
+
+    // PRODUCTテーブルに商品情報を挿入
     $stmtProduct = $PDO->prepare(
-        "INSERT INTO PRODUCT (PRODUCT_NAME, UNIT_SELLING_PRICE, PRODUCT_KUBUN_ID, REORDER_POINT, ORDER_NUMBER) 
-         VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)" // PRODUCTテーブルへの挿入
+        "INSERT INTO PRODUCT (PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE, PRODUCT_KUBUN_ID, DESCRIPTION, REORDER_POINT, ORDER_NUMBER) 
+         VALUES (:product_id, :product_name, :unit_price, :product_kubun_id, :description, NULL, NULL)" // ★変更：DESCRIPTIONを追加
     );
+    $stmtProduct->bindParam(':product_id', $newProductId, PDO::PARAM_STR);
     $stmtProduct->bindParam(':product_name', $productName, PDO::PARAM_STR);
-    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT); // UNIT_SELLING_PRICE に対応
-    $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT); // IDを直接使用
+    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
+    $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
+    $stmtProduct->bindParam(':description', $description, PDO::PARAM_STR); // 追加：descriptionをバインド
     $stmtProduct->execute();
 
-    // 挿入された商品のPRODUCT_IDを取得
-    $newProductId = $PDO->lastInsertId(); // 挿入されたPRODUCT_IDの取得
-
-    // 3. STOCKテーブルに初期在庫を挿入
-    // STOCKテーブルの構造が不明ですが、STOCK_QUANTITYとLAST_UPDATING_TIMEが通常想定されます
+    // STOCKテーブルに初期在庫を挿入
     $stmtStock = $PDO->prepare(
         "INSERT INTO STOCK (PRODUCT_ID, STOCK_QUANTITY, LAST_UPDATING_TIME) 
-         VALUES (:product_id, :stock_quantity, NOW())" // STOCKテーブルへの挿入
+         VALUES (:product_id, :stock_quantity, NOW())"
     );
-    $stmtStock->bindParam(':product_id', $newProductId, PDO::PARAM_INT);
+    $stmtStock->bindParam(':product_id', $newProductId, PDO::PARAM_STR); // 変更: INTではなくSTRに
     $stmtStock->bindParam(':stock_quantity', $initialStock, PDO::PARAM_INT);
     $stmtStock->execute();
 
-    // 全ての操作が成功したらコミット
-    $PDO->commit(); // コミット
+    $PDO->commit();
     echo json_encode(['success' => true, 'message' => '商品が正常に追加されました。', 'product_id' => $newProductId]);
 
-} catch (PDOException $e) { // PDO関連のデータベースエラーをキャッチ
-    $PDO->rollBack(); // エラー発生時はロールバック
-    error_log("Database error in add_api.php: " . $e->getMessage()); // エラーをログに出力
+} catch (PDOException $e) {
+    $PDO->rollBack();
+    error_log("Database error in add_api.php: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'データベースエラーが発生しました。時間をおいて再度お試しください。' // 本番では詳細なエラーメッセージは非表示
+        'message' => 'データベースエラーが発生しました。時間をおいて再度お試しください。'
     ]);
-} catch (Exception $e) { // その他の予期せぬエラーをキャッチ
-    $PDO->rollBack(); // エラー発生時はロールバック
-    error_log("Unexpected error in add_api.php: " . $e->getMessage()); // エラーをログに出力
+} catch (Exception $e) {
+    $PDO->rollBack();
+    error_log("Unexpected error in add_api.php: " . $e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => '処理中に予期せぬエラーが発生しました。システム管理者にお問い合わせください。'

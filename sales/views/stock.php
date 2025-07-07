@@ -20,37 +20,31 @@
         <section class="content">
             <div class="search mt-3">
                 <div class="row g-2 w-100 align-items-center"><div class="col-md-auto position-relative">
-                        <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
-                        <button type="button" class="btn btn-sm btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2"
-                        id="clearButton" onclick="clearSearch()" style="display: none;">
-                        <i class="bi bi-x-lg"></i>
+                        <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()" onkeydown="if(event.keyCode===13) search()">
+                        <button class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2 p-0" type="button" onclick="clearSearch()" id="clearButton" style="display: none;">
+                            <i class="bi bi-x-circle-fill text-muted"></i>
                         </button>
                     </div>
                     <div class="col-md-auto">
-                        <button class="btn btn-primary search-btn" type="button" onclick="search()">
-                            <i class="bi bi-search me-2"></i>検索
-                        </button>
-                    </div>
-                    <div class="col"></div>
-                    <div class="col-md-auto text-end"><button onclick="location.href='/sales/views/stock_management.php'" class="btn btn-outline-secondary btn-sm me-3">在庫管理</button>
+                        <button class="btn btn-primary" onclick="search()"><i class="bi bi-search me-2"></i>検索</button>
                     </div>
                 </div>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-border table-hover table-smaller">
+            <div class="table-responsive mt-3">
+                <table id="inventoryTable" class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">商品ID</th>
-                            <th scope="col">商品名</th>
-                            <th scope="col">月額料金</th>
-                            <th scope="col">在庫数</th>
-                            <th scope="col">商品区分</th>
-                            <th scope="col"></th>
+                            <th>商品ID</th>
+                            <th>商品名</th>
+                            <th>在庫数</th>
+                            <th>単価</th>
+                            <th>商品区分</th>
+                            <th>備考/説明</th> <th>操作</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        </tbody>
+                        <tbody>
+                            </tbody>
                 </table>
             </div>
         </section>
@@ -83,4 +77,4 @@
             </div>
         </div>
     </div>
-</html>
+</html>A

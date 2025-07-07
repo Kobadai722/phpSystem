@@ -24,15 +24,15 @@
             </div>
             
             <div class="table-responsive">
-                <table class="table table-border table-hover table-smaller">
+                <table class="table table-hover table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">商品ID</th>
-                            <th scope="col">商品名</th>
-                            <th scope="col">在庫数</th>
-                            <th scope="col">単価</th>
-                            <th scope="col">商品区分</th> 
-                            <th scope="col"></th> 
+                            <th>商品ID</th>
+                            <th>商品名</th>
+                            <th>在庫数</th>
+                            <th>単価</th>
+                            <th>商品区分</th>
+                            <th>備考/説明</th> <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,9 +41,8 @@
             </div>
         </section>
     </main>
-    
-</body>
-<div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
+
+    <div class="modal fade" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,7 +67,8 @@
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous"></script>
     <script src="../js/inventory.js"></script>
+</body>
 </html>
