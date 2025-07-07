@@ -106,14 +106,9 @@
                 <th scope="col">緊急連絡先</th>
             </tr>
         </thead>
-<<<<<<< HEAD
         <tbody id="employeeTableBody">
-<<<<<<< HEAD
             </tbody>
-=======
-=======
         <tbody>
->>>>>>> parent of 21038eb (たばこ)
             <?php
             // 検索キーワードの受け取り
             $name_keyword = $_GET['name_keyword'] ?? null;
@@ -169,7 +164,6 @@
             };
             ?>
         </tbody>
->>>>>>> parent of 5a4a086 (まじこわれ)
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
