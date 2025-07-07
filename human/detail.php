@@ -2,9 +2,9 @@
 require_once '../config.php';
 
 $page_h1_title = "人事詳細";
-$page_title_tag = "人事管理表 - 詳細"; // デフォルトの<title>タグ用
+$page_title_tag = "人事管理表 - 詳細";
 $employee_data = null;
-$error_message_for_table = null; // テーブル表示用のエラーメッセージ
+$error_message_for_table = null;
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $stmt = $PDO->prepare("
@@ -51,7 +51,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 </div>
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php" selected>一般画面</option> <option value="editer.php">編集者画面</option>
+                        <option value="main.php">一般画面</option>
+                        <option value="editer.php">編集者画面</option>
                 </select>
                 </div>
             </div>
@@ -77,15 +78,13 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         <?php
 
         if ($error_message_for_table) {
-            echo "<tr><td colspan=\"8\">" . htmlspecialchars($error_message_for_table) . "</td></tr>"; // colspan を 9 から 8 に変更
+            echo "<tr><td colspan=\"8\">" . htmlspecialchars($error_message_for_table) . "</td></tr>";
         } elseif ($employee_data) {
-            // $row の代わりに $employee_data を使用
             echo "<tr>";
             echo "<td>" . htmlspecialchars($employee_data['EMPLOYEE_ID']) . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['NAME']) . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['DIVISION_NAME'] ?? '未登録') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['JOB_POSITION_NAME'] ?? '未登録') . "</td>";
-            // echo "<td>" . htmlspecialchars($employee_data['EMAIL'] ?? '未入力') . "</td>"; この行を削除
             echo "<td>" . htmlspecialchars($employee_data['EMERGENCY_CELL_NUMBER'] ?? '未入力') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['JOINING_DATE'] ?? '未入力') . "</td>";
             echo "<td>" . htmlspecialchars($employee_data['POST_CODE'] ?? '未入力') . "</td>";
@@ -98,5 +97,4 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!--<script src="live_search.js"></script>-->
 </html>

@@ -17,6 +17,7 @@ $current_page = 'home';
     <!-- 独自のCSS -->
     <link rel="stylesheet" href="css/a_main.css">
     <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/siwake.css">
 </head>
 <body>
     <?php
@@ -40,7 +41,7 @@ $current_page = 'home';
             </header>
             
             <!-- 2. ダッシュボードのカード部分 -->
-            <div class="dashboard-grid">
+            <div class="dashboard-grid main-content">
                 <!-- 上段のカード -->
                 <section class="card">
                     <div class="card-header">
