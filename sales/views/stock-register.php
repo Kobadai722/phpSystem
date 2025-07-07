@@ -42,9 +42,9 @@
                         <label for="product_category" class="form-label">商品区分 <span class="text-danger">*</span></label>
                         <select class="form-select" id="product_category" name="product_category" required>
                             <option value="">選択してください</option>
-                            <option value="1">IT機器レンタル</option>
-                            <option value="2">再販品 (中古)</option>
-                            <option value="3">関連サービス</option>
+                            <option value="1">文房具</option>
+                            <option value="2">衛生用品</option>
+                            <option value="3">食品</option>
                         </select>
                         <div class="invalid-feedback" id="product_category_error"></div> </div>
 
