@@ -90,6 +90,10 @@
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">検索</button>
                 </div>
+                <div class="col-auto form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="include_deleted" role="switch" <?= isset($_GET['include_deleted']) ? 'checked' : '' ?>>
+                    <label class="form-check-label" for="include_deleted">削除済みを含める</label>
+                </div>
             </div>
         </form>
         
@@ -111,68 +115,7 @@
             </tr>
         </thead>
         <tbody id="employeeTableBody">
-            <?php
-            // 検索キーワードの受け取り
-            $name_keyword = $_GET['name_keyword'] ?? null;
-            $id_keyword = $_GET['id_keyword'] ?? null;
-            $division_id = $_GET['division_id'] ?? null; 
-
-            // ベースとなるSQLクエリ
-            $sql_query = "SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
-                            FROM EMPLOYEE e
-                            LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
-                            LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";
-
-            $conditions = [];
-            $params = [];
-
-            // 氏名での検索条件
-            if (!empty($name_keyword)) {
-                $conditions[] = "e.NAME LIKE ?";
-                $params[] = '%' . $name_keyword . '%';
-            }
-
-            // 従業員番号での検索条件
-            if (!empty($id_keyword)) {
-                $conditions[] = "e.EMPLOYEE_ID LIKE ?";
-                $params[] = '%' . $id_keyword . '%';
-            }
-
-            // 部署での絞り込み条件
-            if (!empty($division_id)) {
-                $conditions[] = "e.DIVISION_ID = ?";
-                $params[] = $division_id;
-            }
-
-            // 検索条件が存在する場合、WHERE句をSQLに追加
-            if (!empty($conditions)) {
-                $sql_query .= " WHERE " . implode(" AND ", $conditions);
-            }
-
-            // SQLを準備して実行
-            $sql = $PDO->prepare($sql_query);
-            $sql->execute($params);
-
-            foreach ($sql as $row) { ?>
-                <tr>
-                    <td scope="row"><?= htmlspecialchars($row['EMPLOYEE_ID']) ?></td>
-                    <td><a href="detail.php?id=<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"><?= htmlspecialchars($row['NAME']) ?></a></td>
-                    <td><?= htmlspecialchars($row['DIVISION_NAME']) ?></td>
-                    <td><?= htmlspecialchars($row['JOB_POSITION_NAME']) ?></td>
-                    <td>
-                        <button type="button" class="btn btn-sm btn-danger delete-employee-btn"
-                                data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
-                                data-employee-id="<?= htmlspecialchars($row['EMPLOYEE_ID']) ?>"
-                                data-employee-name="<?= htmlspecialchars($row['NAME']) ?>">
-                            削除
-                        </button>
-                    </td>
-                </tr>
-
-            <?php
-            };
-            ?>
-        </tbody>
+            </tbody>
     </table>
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -183,7 +126,7 @@
                 </div>
                 <div class="modal-body">
                     本当に <strong id="modalEmployeeName"></strong> さんの情報を削除しますか？<br>
-                    この操作は元に戻せません。
+                    この操作は元に戻せます (論理削除)。
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
@@ -195,8 +138,28 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="restoreConfirmModalLabel">復元確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+                </div>
+                <div class="modal-body">
+                    本当に <strong id="modalRestoreEmployeeName"></strong> さんの情報を復元しますか？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                    <form action="human-restore.php" method="post" style="display: inline;">
+                        <input type="hidden" name="employee_id" id="modalRestoreEmployeeId" value="">
+                        <button type="submit" class="btn btn-info">復元する</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
-</html>
+<script src="live_search.js"></script> </html>
