@@ -22,7 +22,7 @@ function loadInventory() {
 
             // データが0件の場合、メッセージを表示
             if (data.length === 0) {
-                const row = `<tr><td colspan="7" class="text-center">在庫データが存在しません</td></tr>`; // ★変更：colspanを7に調整
+                const row = `<tr><td colspan="5" class="text-center">在庫データが存在しません</td></tr>`;
                 tbody.insertAdjacentHTML("beforeend", row);
                 return;
             }
@@ -34,8 +34,7 @@ function loadInventory() {
                 const productName = item.PRODUCT_NAME ?? '';
                 const stockQuantity = item.STOCK_QUANTITY ?? '';
                 const unitSellingPrice = item.UNIT_SELLING_PRICE ?? '';
-                const productKubunName = item.PRODUCT_KUBUN_NAME ?? '';
-                const description = item.DESCRIPTION ?? ''; // ★追加：descriptionを取得
+                const productKubunName = item.PRODUCT_KUBUN_NAME ?? ''; // lastUpdated から変更
 
                 const tr = `
                     <tr>
@@ -44,7 +43,7 @@ function loadInventory() {
                         <td>${stockQuantity}</td>
                         <td>${unitSellingPrice}</td>
                         <td>${productKubunName}</td> 
-                        <td>${description}</td> <td>
+                        <td>
                             <button 
                                 class="btn btn-outline-primary btn-sm"
                                 data-bs-toggle="modal" 
@@ -62,6 +61,6 @@ function loadInventory() {
         .catch(error => {
             console.error('在庫情報の取得中にエラーが発生しました:', error);
             const tbody = document.querySelector("tbody");
-            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">在庫データの取得中にエラーが発生しました。</td></tr>`; // ★変更：colspanを7に調整
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">在庫データの取得中にエラーが発生しました。</td></tr>`;
         });
 }
