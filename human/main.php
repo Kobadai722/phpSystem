@@ -1,4 +1,4 @@
-<?php session_start(); // セッションを開始 ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -13,12 +13,10 @@
 <?php include '../header.php'; ?>
 <body>
     <?php
-    // 成功メッセージの表示
     if (isset($_SESSION['success_message'])) {
         echo '<div class="alert alert-success alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['success_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['success_message']);
     }
-    // エラーメッセージの表示
     if (isset($_SESSION['error_message'])) {
         echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['error_message']);
@@ -26,8 +24,7 @@
     ?>
     <h1>人事管理表</h1>
     <?php
-    require_once '../config.php'; //DBサーバーと接続
-    // 検索フィルター用に、システムに登録されている全ての部署を取得する
+    require_once '../config.php';
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
@@ -56,7 +53,7 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="name_keyword" name="name_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['name_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
                             <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
@@ -68,7 +65,7 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="id_keyword" name="id_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['id_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
                             <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
@@ -87,7 +84,11 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
+
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary">検索</button>
                 </div>
+            </div>
         </form>
     </div>
 
@@ -103,16 +104,11 @@
             </tr>
         </thead>
         <tbody id="employeeTableBody">
-            <?php
-            // この部分のPHPでのデータ取得と表示ロジックは、
-            // JavaScriptからのAjaxリクエストに応答する 'fetch_employees.php' に移動します。
-            // あるいは、初期表示用にここに残し、JavaScriptで初回ロード時に検索関数を呼び出すことも可能です。
-            // 今回は、JavaScriptが初期ロード時にデータを取得するようにします。
-            ?>
-        </tbody>
+            </tbody>
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
-<script src="live_search.js"></script> </html>
+<script src="live_search.js"></script>
+</html>

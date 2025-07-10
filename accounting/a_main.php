@@ -1,36 +1,39 @@
+<?php
+// ----- このページ固有の情報を定義 -----
+$page_title = '会計システム --Prototype--';
+$current_page = 'home'; 
+?>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会計システム --Prototype--</title>
+    <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
     
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    <!-- 独自のCSS (a_main.phpからの相対パスに修正) -->
-    <link rel="stylesheet" href="css/siwake.css">
+    <!-- 独自のCSS -->
     <link rel="stylesheet" href="css/a_main.css">
     <link rel="stylesheet" href="css/sidebar.css">
-    <!-- 作成したOffcanvas用のカスタムCSSを読み込む -->
-    <link rel="stylesheet" href="css/sidebar_bootstrap.css">
-    <?php
-    $page_title = 'home';
-    $current_page = 'home'; 
-    ?>
+    <link rel="stylesheet" href="css/siwake.css">
 </head>
 <body>
     <?php
+        // header.phpはメインコンテンツの外、<body>の直下などで読み込むのが一般的です
         require_once '../header.php';
     ?>
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php
         // ----- サイドバー部品を読み込む -----
-        require_once './sideber.php'; 
+        // ファイル名が'sideber.php'ではなく'sidebar.php'の場合、修正してください
+        require_once 'sidebar.php'; 
         ?>
         <!-- メインコンテンツ -->
         <main class="main-content">
-            <!-- 1. ヘッダー部分 -->
+            <!-- 1. ページのヘッダー部分 -->
             <header class="dashboard-header">
                 <div class="date-range">
                     <h1>会計システム--Prototype--</h1>
@@ -38,7 +41,7 @@
             </header>
             
             <!-- 2. ダッシュボードのカード部分 -->
-            <div class="dashboard-grid">
+            <div class="dashboard-grid main-content">
                 <!-- 上段のカード -->
                 <section class="card">
                     <div class="card-header">
@@ -91,7 +94,7 @@
                     <div class="card-body chart-card">
                         <div class="gauge-chart" style="--percentage: 52;"></div>
                         <div class="legend">
-                        <!-- TODO: 売上高を表示 -->
+                            <!-- TODO: 売上高を表示 -->
                         </div>
                     </div>
                 </section>
@@ -122,10 +125,6 @@
             </div>
         </main>
     </div>
-    <?php
-    // ----- フッター部品を読み込む -----
-    require_once 'a_footer.php';
-    ?>
     
     <!-- JavaScript -->
     <script>
@@ -135,7 +134,6 @@
 
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function() {
-                    // bodyタグに 'sidebar-collapsed' クラスを付けたり外したりする
                     body.classList.toggle('sidebar-collapsed');
                 });
             }
