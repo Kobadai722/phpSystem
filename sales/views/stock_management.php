@@ -36,33 +36,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                        require_once '../../config.php'; // DB接続設定などを読み込みます。
-
-                        try {
-                            $stmt = $PDO->query(
-                                "SELECT p.PRODUCT_ID, p.PRODUCT_NAME, s.STOCK_QUANTITY, p.UNIT_SELLING_PRICE, pk.PRODUCT_KUBUN_NAME
-                                FROM PRODUCT p
-                                JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
-                                JOIN PRODUCT_KUBUN pk ON p.PRODUCT_KUBUN_ID = pk.PRODUCT_KUBUN_ID
-                                ORDER BY p.PRODUCT_ID ASC"
-                            );
-                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                                echo '<tr>';
-                                echo '<td>' . htmlspecialchars($row['PRODUCT_ID']) . '</td>';
-                                echo '<td>' . htmlspecialchars($row['PRODUCT_NAME']) . '</td>';
-                                echo '<td>' . htmlspecialchars($row['STOCK_QUANTITY']) . '</td>';
-                                echo '<td>' . htmlspecialchars($row['UNIT_SELLING_PRICE']) . '</td>';
-                                echo '<td>' . htmlspecialchars($row['PRODUCT_KUBUN_NAME']) . '</td>';
-                                // ここを修正: btn-info から btn-outline-primary に戻す
-                                echo '<td><button class="btn btn-sm btn-outline-primary edit-product-btn" data-product-id="' . htmlspecialchars($row['PRODUCT_ID']) . '" data-bs-toggle="modal" data-bs-target="#addConfirmModal">編集</button></td>';
-                                echo '</tr>';
-                            }
-                        } catch (PDOException $e) {
-                            echo '<tr><td colspan="6" class="text-danger">データベースエラー: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
-                        }
-                        ?>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -70,9 +44,9 @@
     
 </body>
 <div class="modal fade modal-lg" id="addConfirmModal" tabindex="-1" aria-labelledby="addConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
                 <h5 class="modal-title" id="addConfirmModalLabel">商品情報の変更</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -81,33 +55,48 @@
                 <input type="hidden" id="editProductId" name="product_id">
 
                 <div class="mb-3">
-                    <label for="currentProductName" class="form-label">現在の商品の名前:</label>
-                    <span id="currentProductName" class="form-control-plaintext"></span>
+                    <label class="form-label">現在の商品名:</label>
+                    <span id="displayProductName" class="form-control-plaintext"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="name" class="form-label">新しい商品名 <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="name" name="name" required maxlength="20">
+                    <label for="inputProductName" class="form-label">新しい商品名 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="inputProductName" name="name" required maxlength="20">
                     <div class="invalid-feedback">
                         商品名を入力してください
                     </div>
                 </div>
+
                 <div class="mb-3">
-                    <label for="stockQuantity" class="form-label">在庫数 <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" required min="0">
+                    <label class="form-label">現在の在庫数:</label>
+                    <span id="displayStockQuantity" class="form-control-plaintext"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="inputStockQuantity" class="form-label">新しい在庫数 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputStockQuantity" name="stockQuantity" required min="0">
                     <div class="invalid-feedback">
                         在庫数を入力してください
                     </div>
                 </div>
+
                 <div class="mb-3">
-                    <label for="unitPrice" class="form-label">単価 <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" id="unitPrice" name="unitPrice" required min="0" step="0.01">
+                    <label class="form-label">現在の単価:</label>
+                    <span id="displayUnitPrice" class="form-control-plaintext"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="inputUnitPrice" class="form-label">新しい単価 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="inputUnitPrice" name="unitPrice" required min="0" step="0.01">
                     <div class="invalid-feedback">
                         単価を入力してください
                     </div>
                 </div>
+
                 <div class="mb-3">
-                    <label for="productCategory" class="form-label">商品区分 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="productCategory" name="productCategory" required>
+                    <label class="form-label">現在の商品区分:</label>
+                    <span id="displayProductCategory" class="form-control-plaintext"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="inputProductCategory" class="form-label">新しい商品区分 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="inputProductCategory" name="productCategory" required>
                         <option value="">選択してください</option>
                         <option value="1">作業用品</option>
                         <option value="2">オフィス用品</option>
@@ -119,14 +108,14 @@
                         商品区分を選択してください
                     </div>
                 </div>
-                </div>
+            </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                 <button type="button" class="btn btn-primary" id="saveConfirmButton">保存</button>
-                </div>
             </div>
         </div>
     </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>

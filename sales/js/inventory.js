@@ -1,37 +1,41 @@
 // inventory.js
 
-// ページのロードが完了したときに実行される初期化処理
 document.addEventListener('DOMContentLoaded', () => {
     loadInventory(); // ページ読み込み時に在庫リストを取得・表示
 
-    // Bootstrapモーダルのインスタンスを取得
     const addConfirmModal = new bootstrap.Modal(document.getElementById('addConfirmModal'));
     
-    // モーダルの各要素への参照を取得
+    // 隠しフィールド
     const editProductIdInput = document.getElementById('editProductId');
-    const currentProductNameSpan = document.getElementById('currentProductName');
-    const productNameInput = document.getElementById('name');
-    const stockQuantityInput = document.getElementById('stockQuantity');
-    const unitPriceInput = document.getElementById('unitPrice');
-    const productCategorySelect = document.getElementById('productCategory');
+
+    // 現在の情報を表示する要素
+    const displayProductNameSpan = document.getElementById('displayProductName');
+    const displayStockQuantitySpan = document.getElementById('displayStockQuantity');
+    const displayUnitPriceSpan = document.getElementById('displayUnitPrice');
+    const displayProductCategorySpan = document.getElementById('displayProductCategory');
+
+    // 変更用の入力フォーム要素
+    const inputProductName = document.getElementById('inputProductName');
+    const inputStockQuantity = document.getElementById('inputStockQuantity');
+    const inputUnitPrice = document.getElementById('inputUnitPrice');
+    const inputProductCategory = document.getElementById('inputProductCategory'); // select要素
+    
     const saveConfirmButton = document.getElementById('saveConfirmButton');
 
     // tbody要素に対してイベント委譲を設定（動的に追加されるボタンに対応）
     const tbody = document.querySelector("tbody");
     tbody.addEventListener('click', function(event) {
-        // クリックされた要素が「編集」ボタンかどうかをチェック
         if (event.target.classList.contains('edit-product-btn')) {
             const button = event.target;
-            const productId = button.dataset.productId; // data-product-id から商品IDを取得
+            const productId = button.dataset.productId;
 
-            // モーダル表示前に、編集対象の商品IDを隠しフィールドにセット
             editProductIdInput.value = productId;
 
             // 以前のバリデーションメッセージをクリア
-            productNameInput.classList.remove('is-invalid');
-            stockQuantityInput.classList.remove('is-invalid');
-            unitPriceInput.classList.remove('is-invalid');
-            productCategorySelect.classList.remove('is-invalid');
+            inputProductName.classList.remove('is-invalid');
+            inputStockQuantity.classList.remove('is-invalid');
+            inputUnitPrice.classList.remove('is-invalid');
+            inputProductCategory.classList.remove('is-invalid');
 
             // 商品情報をAPIから取得し、モーダルに設定
             fetch(`../api/get_product_details.php?product_id=${productId}`)
@@ -39,24 +43,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.success) {
                         const product = data.product;
-                        currentProductNameSpan.textContent = product.PRODUCT_NAME;
-                        productNameInput.value = product.PRODUCT_NAME;
-                        stockQuantityInput.value = product.STOCK_QUANTITY;
-                        unitPriceInput.value = product.UNIT_SELLING_PRICE;
-                        productCategorySelect.value = product.PRODUCT_KUBUN_ID; // PRODUCT_KUBUN_ID を使用
+                        
+                        // 現在の情報を表示する<span>に値をセット
+                        displayProductNameSpan.textContent = product.PRODUCT_NAME;
+                        displayStockQuantitySpan.textContent = product.STOCK_QUANTITY;
+                        displayUnitPriceSpan.textContent = product.UNIT_SELLING_PRICE;
+                        displayProductCategorySpan.textContent = product.PRODUCT_KUBUN_NAME; // 商品区分名を表示
 
-                        // Bootstrapのdata属性でモーダルが開くため、ここでは手動で表示しない
-                        // addConfirmModal.show(); // この行は不要
+                        // 変更用の入力フォームに現在の値をセット
+                        inputProductName.value = product.PRODUCT_NAME;
+                        inputStockQuantity.value = product.STOCK_QUANTITY;
+                        inputUnitPrice.value = product.UNIT_SELLING_PRICE;
+                        inputProductCategory.value = product.PRODUCT_KUBUN_ID; // 商品区分IDをセット
+
                     } else {
                         alert('商品情報の取得に失敗しました: ' + data.message);
-                        // 失敗した場合、モーダルが空のまま開くのを防ぐため閉じる（Bootstrapで開いていれば手動で閉じる必要あり）
                         addConfirmModal.hide(); 
                     }
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
                     alert('商品情報の取得中にエラーが発生しました。');
-                    addConfirmModal.hide(); // エラー時も閉じる
+                    addConfirmModal.hide();
                 });
         }
     });
@@ -64,47 +72,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // モーダルの「保存」ボタンのクリックイベントを処理
     saveConfirmButton.addEventListener('click', function() {
         const productId = editProductIdInput.value;
-        const newProductName = productNameInput.value.trim();
-        const newStockQuantity = stockQuantityInput.value.trim();
-        const newUnitPrice = unitPriceInput.value.trim();
-        const newProductCategory = productCategorySelect.value;
+        // 変更用の入力フォームから値を取得
+        const newProductName = inputProductName.value.trim();
+        const newStockQuantity = inputStockQuantity.value.trim();
+        const newUnitPrice = inputUnitPrice.value.trim();
+        const newProductCategory = inputProductCategory.value; // 商品区分ID
 
         let isValid = true;
 
         // クライアントサイドでのバリデーションチェック
         if (newProductName === '') {
-            productNameInput.classList.add('is-invalid');
+            inputProductName.classList.add('is-invalid');
             isValid = false;
         } else {
-            productNameInput.classList.remove('is-invalid');
+            inputProductName.classList.remove('is-invalid');
         }
 
         if (newStockQuantity === '' || isNaN(newStockQuantity) || parseInt(newStockQuantity) < 0) {
-            stockQuantityInput.classList.add('is-invalid');
+            inputStockQuantity.classList.add('is-invalid');
             isValid = false;
         } else {
-            stockQuantityInput.classList.remove('is-invalid');
+            inputStockQuantity.classList.remove('is-invalid');
         }
         
         if (newUnitPrice === '' || isNaN(newUnitPrice) || parseFloat(newUnitPrice) < 0) {
-            unitPriceInput.classList.add('is-invalid');
+            inputUnitPrice.classList.add('is-invalid');
             isValid = false;
         } else {
-            unitPriceInput.classList.remove('is-invalid');
+            inputUnitPrice.classList.remove('is-invalid');
         }
 
         if (newProductCategory === '') {
-            productCategorySelect.classList.add('is-invalid');
+            inputProductCategory.classList.add('is-invalid');
             isValid = false;
         } else {
-            productCategorySelect.classList.remove('is-invalid');
+            inputProductCategory.classList.remove('is-invalid');
         }
 
         if (!isValid) {
-            return; // バリデーションエラーがあれば送信しない
+            return;
         }
 
-        // FormDataオブジェクトを作成してAPIに送信
         const formData = new FormData();
         formData.append('product_id', productId);
         formData.append('product_name', newProductName);
@@ -120,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             if (data.success) {
                 alert('商品情報が正常に更新されました。');
-                addConfirmModal.hide(); // モーダルを閉じる
-                loadInventory(); // 在庫リストを再読み込みして最新の情報を表示
+                addConfirmModal.hide();
+                loadInventory();
             } else {
                 alert('商品情報の更新に失敗しました: ' + data.message);
             }
@@ -134,10 +142,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // モーダルが閉じられたときにフォームのバリデーション状態をリセット
     document.getElementById('addConfirmModal').addEventListener('hidden.bs.modal', function () {
-        productNameInput.classList.remove('is-invalid');
-        stockQuantityInput.classList.remove('is-invalid');
-        unitPriceInput.classList.remove('is-invalid');
-        productCategorySelect.classList.remove('is-invalid');
+        inputProductName.classList.remove('is-invalid');
+        inputStockQuantity.classList.remove('is-invalid');
+        inputUnitPrice.classList.remove('is-invalid');
+        inputProductCategory.classList.remove('is-invalid');
     });
 });
 
@@ -177,7 +185,10 @@ function loadInventory() {
                         <td>${productKubunName}</td>
                         <td>
                             <button
-                                class="btn btn-outline-primary btn-sm edit-product-btn" data-bs-toggle="modal"                         data-bs-target="#addConfirmModal"               data-product-id="${productId}">
+                                class="btn btn-outline-primary btn-sm edit-product-btn"
+                                data-bs-toggle="modal"
+                                data-bs-target="#addConfirmModal"
+                                data-product-id="${productId}">
                                 編集
                             </button>
                         </td>
