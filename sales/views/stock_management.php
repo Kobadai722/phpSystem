@@ -52,6 +52,8 @@
             </div>
             <div class="modal-body">
                 <h5 class="my-4">変更する商品の詳細情報を入力してください。</h5>
+                <input type="hidden" id="editProductId" name="product_id">
+
                 <div class="mb-3">
                     <label for="currentProductName" class="form-label">現在の商品の名前:</label>
                     <span id="currentProductName" class="form-control-plaintext"></span>
@@ -81,12 +83,12 @@
                     <label for="productCategory" class="form-label">商品区分 <span class="text-danger">*</span></label>
                     <select class="form-select" id="productCategory" name="productCategory" required>
                         <option value="">選択してください</option>
-                        <option value="作業用品">作業用品</option>
-                        <option value="オフィス用品">オフィス用品</option>
-                        <option value="医療・衛生用品">医療・衛生用品</option>
-                        <option value="IT・デジタル機器">IT・デジタル機器</option>
-                        <option value="建築・土木資材">建築・土木資材</option>
-                        </select>
+                        <option value="1">作業用品</option>
+                        <option value="2">オフィス用品</option>
+                        <option value="3">医療・衛生用品</option>
+                        <option value="4">IT・デジタル機器</option>
+                        <option value="5">建築・土木資材</option>
+                    </select>
                     <div class="invalid-feedback">
                         商品区分を選択してください
                     </div>
