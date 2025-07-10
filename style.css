@@ -300,57 +300,82 @@ main {
   font-weight: 600;
 }
 
-.booth_status{
-  display: flex; /* 子要素を横並びにする */
-  justify-content: space-around; /* 子要素を均等に配置する */
-  align-items: flex-start; /* 子要素を上端に揃える */
-  padding: 20px; /* 全体のパディング */
-  width: 100%; /* 親要素の幅いっぱいにする */
-  box-sizing: border-box; /* パディングを幅に含める */
+.room-container{
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.booth_status a {
-    text-decoration: none; 
-    color: inherit; /* 親要素の文字色を継承する */
-    display: flex; /* aタグもflexコンテナにして、中のiタグを中央寄せしやすくする */
-    justify-content: center; /* 横方向の中央寄せ */
-    align-items: center; /* 縦方向の中央寄せ */
-    flex-direction: column; /* 中身を縦並びに */
-    flex-basis: 20%; /* 各項目が均等な幅を占めるように */
-    max-width: 25%; /* 過度に広がらないように */
-    margin: 0 10px; /* アイテム間の余白 */
+.room-card {
+    padding: 20px;
+    width: 280px; /* カードの幅を調整 */
+    text-align: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.booth_status a:hover {
-    opacity: 0.7; /* ホバーで少し透明にする */
-    transition: opacity 0.3s ease; /* アニメーションを追加 */
+.room-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
 }
 
-.booth_status i {
-    display: flex; /* アイコンとテキストを縦並びにするため */
-    flex-direction: column; /* 子要素を縦方向に配置 */
-    align-items: center; /* 子要素を中央揃えにする */
-    font-size: 30px; /* アイコンのサイズ */
-    font-weight: 700;
-    text-align: center; /* テキストを中央揃え */
-    min-width: 100px; /* 各項目の最小幅を設定 */
+.status {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
 }
 
-.booth_status i::before {
-    margin-bottom: 5px; /* アイコンとテキストの間の余白 */
+.status.used {
+    background-color: #ff6b6b; /* 赤色 */
 }
 
-/* アイコンに続くテキスト（販売管理など）のスタイル */
-.booth_status i {
-    font-style: normal; /* iタグのデフォルトの斜体を解除 */
-    font-size: 16px; /* テキストのサイズ */
-    font-weight: 700;
-    margin-top: 5px; /* アイコンとテキストの間の余白 */
+.status.available {
+    background-color: #2ecc71; /* 緑色 */
 }
 
-.booth_status .bi::before {
-    font-family: "bootstrap-icons" !important; /* Bootstrap Iconsのフォントを指定 */
-    font-size: 50px; /* アイコンのサイズを再指定（親のiタグに設定したものと同じ） */
-    display: block; /* アイコンをブロック要素にして改行させる */
-    margin-bottom: 5px; /* アイコンとテキストの間の余白 */
+.details {
+    margin-top: 10px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.details .time {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.details .meeting-type {
+    margin-bottom: 5px;
+}
+
+.details .user {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.calendar-icon {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #888;
+}
+
+.calendar-icon:hover {
+    color: #333;
 }

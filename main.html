@@ -79,6 +79,91 @@
 
 <body class="bg-image">
     <div class="container-main">
+        <div class="grid">
+            <div class="g-col-4">
+                <div class="col-4 attendance-system">
+                <p class="current-date">2025年06月17日</p>
+                <p class="time-display">14:29</p>
+                <p class="greeting">こんにちはSSKさん</p>
+                <div class="button-container">
+                    <div class="punch-in-button">
+                        <a href="">出勤</a>
+                    </div>
+                    <div class="punch-out-button">
+                        <a href="">退勤</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <div class="g-col-8">
+                <div class="info-area">
+                    <div style="display: flex; align-items: center;">
+                        <i class="bi bi-info-circle info-icon"></i>
+                        <p class="info-text">熱中症対策に注意！こまめに水分補給を！</p>
+                    </div>
+                </div>
+                <div class="service-menu">
+                    <a href="/sales/stock.php">
+                        <i class="bi bi-truck">販売管理</i>
+                    </a>
+                    <a href="/accounting/a_main.php">
+                        <i class="bi bi-cash-coin">会計管理</i>
+                    </a>
+                    <a href="/human/main.php">
+                        <i class="bi bi-people">人事管理</i>
+                    </a>
+                    <a href="/customer/customer.php">
+                        <i class="bi bi-file-person">顧客管理</i>
+                    </a>
+                    <a href="kimu.html">
+                        <img class="rocket-icon" src="/images/rocket.png"><i>人民管理</i>
+                    </a>
+                </div>
+                <div class="room-ava">
+                    <p class="booth_status_title"><i class="bi bi-hourglass-split"></i>ブース空き状況</p>
+                    <div class="room-container">
+                        <div class="room-card">
+                        <div class="room-name">大会議室</div>
+                        <div class="status used">
+                            利用中
+                        </div>
+                        <div class="details">
+                            <div class="time">15:00-16:00</div>
+                            <div class="meeting-type">戦略会議</div>
+                            <div class="user">桜井康成</div>
+                        </div>
+                        <button class="calendar-icon">📅</button>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 A</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">17:00-18:00</div>
+                                <div class="meeting-type">定例MTG</div>
+                                <div class="user">福永哲也</div>
+                            </div>
+                            <button class="calendar-icon">📅</button>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 B</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">16:00-17:00</div>
+                                <div class="meeting-type">打ち合わせ</div>
+                                <div class="user">桜井浩次</div>
+                            </div>
+                            <button class="calendar-icon">📅</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-4 attendance-system">
                 <p class="current-date">2025年06月17日</p>
@@ -92,6 +177,7 @@
                         <a href="">退勤</a>
                     </div>
                 </div>
+            </div>
             </div>
             <div class="col-8">
                 <div class="info-area">
@@ -119,19 +205,45 @@
                 </div>
                 <div class="room-ava">
                     <p class="booth_status_title"><i class="bi bi-hourglass-split"></i>ブース空き状況</p>
-                    <div class="booth_status">
-                        <a href="/sales/stock.php">
-                            <i class="bi bi-circle">ヒマワリ</i>
-                        </a>
-                        <a href="/accounting/a_main.php">
-                            <i class="bi bi-circle">フリージア</i>
-                        </a>
-                        <a href="/human/main.php">
-                            <i class="bi bi-circle">スズラン</i>
-                        </a>
-                        <a href="/customer/customer.php">
-                            <i class="bi bi-circle">エーデルワイス</i>
-                        </a>
+                    <div class="room-container">
+                        <div class="room-card">
+                        <div class="room-name">大会議室</div>
+                        <div class="status used">
+                            利用中
+                        </div>
+                        <div class="details">
+                            <div class="time">15:00-16:00</div>
+                            <div class="meeting-type">戦略会議</div>
+                            <div class="user">桜井康成</div>
+                        </div>
+                        <button class="calendar-icon">📅</button>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 A</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">17:00-18:00</div>
+                                <div class="meeting-type">定例MTG</div>
+                                <div class="user">福永哲也</div>
+                            </div>
+                            <button class="calendar-icon">📅</button>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 B</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">16:00-17:00</div>
+                                <div class="meeting-type">打ち合わせ</div>
+                                <div class="user">桜井浩次</div>
+                            </div>
+                            <button class="calendar-icon">📅</button>
+                        </div>
                     </div>
                 </div>
             </div>
