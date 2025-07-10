@@ -1,5 +1,6 @@
 // inventory.js
 
+// ページのロードが完了したときに実行される初期化処理
 document.addEventListener('DOMContentLoaded', () => {
     loadInventory(); // ページ読み込み時に在庫リストを取得・表示
 
@@ -8,27 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // 隠しフィールド
     const editProductIdInput = document.getElementById('editProductId');
 
-    // 現在の情報を表示する要素
-    const displayProductNameSpan = document.getElementById('displayProductName');
-    const displayStockQuantitySpan = document.getElementById('displayStockQuantity');
-    const displayUnitPriceSpan = document.getElementById('displayUnitPrice');
-    const displayProductCategorySpan = document.getElementById('displayProductCategory');
+    // 現在の情報を表示する要素への参照 (stock_management.php のIDに合わせて調整)
+    const currentProductNameSpan = document.getElementById('currentProductName');
+    const currentStockQuantitySpan = document.getElementById('currentStockQuantity');
+    const currentUnitPriceSpan = document.getElementById('currentUnitPrice');
+    const currentProductCategorySpan = document.getElementById('currentProductCategory');
 
-    // 変更用の入力フォーム要素
-    const inputProductName = document.getElementById('inputProductName');
-    const inputStockQuantity = document.getElementById('inputStockQuantity');
-    const inputUnitPrice = document.getElementById('inputUnitPrice');
-    const inputProductCategory = document.getElementById('inputProductCategory'); // select要素
+    // 変更用の入力フォーム要素への参照 (stock_management.php のIDに合わせて調整)
+    const inputProductName = document.getElementById('name'); // id="name"
+    const inputStockQuantity = document.getElementById('stockQuantity'); // id="stockQuantity"
+    const inputUnitPrice = document.getElementById('unitPrice'); // id="unitPrice"
+    const inputProductCategory = document.getElementById('productCategory'); // id="productCategory" (select要素)
     
     const saveConfirmButton = document.getElementById('saveConfirmButton');
 
     // tbody要素に対してイベント委譲を設定（動的に追加されるボタンに対応）
     const tbody = document.querySelector("tbody");
     tbody.addEventListener('click', function(event) {
+        // クリックされた要素が「編集」ボタンかどうかをチェック
         if (event.target.classList.contains('edit-product-btn')) {
             const button = event.target;
-            const productId = button.dataset.productId;
+            const productId = button.dataset.productId; // data-product-id から商品IDを取得
 
+            // モーダル表示前に、編集対象の商品IDを隠しフィールドにセット
             editProductIdInput.value = productId;
 
             // 以前のバリデーションメッセージをクリア
@@ -45,19 +48,20 @@ document.addEventListener('DOMContentLoaded', () => {
                         const product = data.product;
                         
                         // 現在の情報を表示する<span>に値をセット
-                        displayProductNameSpan.textContent = product.PRODUCT_NAME;
-                        displayStockQuantitySpan.textContent = product.STOCK_QUANTITY;
-                        displayUnitPriceSpan.textContent = product.UNIT_SELLING_PRICE;
-                        displayProductCategorySpan.textContent = product.PRODUCT_KUBUN_NAME; // 商品区分名を表示
+                        currentProductNameSpan.textContent = product.PRODUCT_NAME;
+                        currentStockQuantitySpan.textContent = product.STOCK_QUANTITY;
+                        currentUnitPriceSpan.textContent = product.UNIT_SELLING_PRICE;
+                        currentProductCategorySpan.textContent = product.PRODUCT_KUBUN_NAME; // 商品区分名を表示
 
                         // 変更用の入力フォームに現在の値をセット
                         inputProductName.value = product.PRODUCT_NAME;
                         inputStockQuantity.value = product.STOCK_QUANTITY;
                         inputUnitPrice.value = product.UNIT_SELLING_PRICE;
                         inputProductCategory.value = product.PRODUCT_KUBUN_ID; // 商品区分IDをセット
-
+                        
                     } else {
                         alert('商品情報の取得に失敗しました: ' + data.message);
+                        // データ取得に失敗した場合、モーダルが空のまま開くのを防ぐため閉じる
                         addConfirmModal.hide(); 
                     }
                 })
@@ -129,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success) {
                 alert('商品情報が正常に更新されました。');
                 addConfirmModal.hide();
-                loadInventory();
+                loadInventory(); // テーブルのデータを再読み込みして最新の状態にする
             } else {
                 alert('商品情報の更新に失敗しました: ' + data.message);
             }
@@ -150,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// 在庫情報を取得して表示する関数
+// 在庫情報を取得して表示する関数 (stock_management.phpの<tbody>が空のため、必須)
 function loadInventory() {
     fetch("../api/inventory_api.php")
         .then(response => {
@@ -161,7 +165,7 @@ function loadInventory() {
         })
         .then(data => {
             const tbody = document.querySelector("tbody");
-            tbody.innerHTML = "";
+            tbody.innerHTML = ""; // 一度中身をクリア
 
             if (data.length === 0) {
                 const row = `<tr><td colspan="6" class="text-center">在庫データが存在しません</td></tr>`;

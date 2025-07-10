@@ -55,48 +55,48 @@
                 <input type="hidden" id="editProductId" name="product_id">
 
                 <div class="mb-3">
-                    <label class="form-label">現在の商品名:</label>
-                    <span id="displayProductName" class="form-control-plaintext"></span>
+                    <label for="currentProductName" class="form-label">現在の商品の名前:</label>
+                    <span id="currentProductName" class="form-control-plaintext"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="inputProductName" class="form-label">新しい商品名 <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="inputProductName" name="name" required maxlength="20">
+                    <label for="name" class="form-label">新しい商品名 <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="name" name="name" required maxlength="20">
                     <div class="invalid-feedback">
                         商品名を入力してください
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">現在の在庫数:</label>
-                    <span id="displayStockQuantity" class="form-control-plaintext"></span>
+                    <label for="currentStockQuantity" class="form-label">現在の在庫数:</label>
+                    <span id="currentStockQuantity" class="form-control-plaintext"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="inputStockQuantity" class="form-label">新しい在庫数 <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" id="inputStockQuantity" name="stockQuantity" required min="0">
+                    <label for="stockQuantity" class="form-label">新しい在庫数 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" required min="0">
                     <div class="invalid-feedback">
                         在庫数を入力してください
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">現在の単価:</label>
-                    <span id="displayUnitPrice" class="form-control-plaintext"></span>
+                    <label for="currentUnitPrice" class="form-label">現在の単価:</label>
+                    <span id="currentUnitPrice" class="form-control-plaintext"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="inputUnitPrice" class="form-label">新しい単価 <span class="text-danger">*</span></label>
-                    <input type="number" class="form-control" id="inputUnitPrice" name="unitPrice" required min="0" step="0.01">
+                    <label for="unitPrice" class="form-label">新しい単価 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="unitPrice" name="unitPrice" required min="0" step="0.01">
                     <div class="invalid-feedback">
                         単価を入力してください
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">現在の商品区分:</label>
-                    <span id="displayProductCategory" class="form-control-plaintext"></span>
+                    <label for="currentProductCategory" class="form-label">現在の商品区分:</label>
+                    <span id="currentProductCategory" class="form-control-plaintext"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="inputProductCategory" class="form-label">新しい商品区分 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="inputProductCategory" name="productCategory" required>
+                    <label for="productCategory" class="form-label">新しい商品区分 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="productCategory" name="productCategory" required>
                         <option value="">選択してください</option>
                         <option value="1">作業用品</option>
                         <option value="2">オフィス用品</option>
