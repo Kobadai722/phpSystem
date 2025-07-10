@@ -42,10 +42,10 @@
                         try {
                             $stmt = $PDO->query(
                                 "SELECT p.PRODUCT_ID, p.PRODUCT_NAME, s.STOCK_QUANTITY, p.UNIT_SELLING_PRICE, pk.PRODUCT_KUBUN_NAME
-                                 FROM PRODUCT p
-                                 JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
-                                 JOIN PRODUCT_KUBUN pk ON p.PRODUCT_KUBUN_ID = pk.PRODUCT_KUBUN_ID
-                                 ORDER BY p.PRODUCT_ID ASC"
+                                FROM PRODUCT p
+                                JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+                                JOIN PRODUCT_KUBUN pk ON p.PRODUCT_KUBUN_ID = pk.PRODUCT_KUBUN_ID
+                                ORDER BY p.PRODUCT_ID ASC"
                             );
                             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                                 echo '<tr>';
