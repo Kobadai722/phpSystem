@@ -47,22 +47,54 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="addConfirmModalLabel">商品の追加</h5>
+                <h5 class="modal-title" id="addConfirmModalLabel">商品情報の変更</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5 class="my-4">追加する商品の詳細情報を入力してください。</h5>
+                <h5 class="my-4">変更する商品の詳細情報を入力してください。</h5>
                 <div class="mb-3">
-                    <label for="name" class="form-label">商品名 <span class="text-danger">*</span></label>
+                    <label for="currentProductName" class="form-label">現在の商品の名前:</label>
+                    <span id="currentProductName" class="form-control-plaintext"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">新しい商品名 <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" id="name" name="name" required maxlength="20">
                     <div class="invalid-feedback">
                         商品名を入力してください
                     </div>
                 </div>
+                <div class="mb-3">
+                    <label for="stockQuantity" class="form-label">在庫数 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" required min="0">
+                    <div class="invalid-feedback">
+                        在庫数を入力してください
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="unitPrice" class="form-label">単価 <span class="text-danger">*</span></label>
+                    <input type="number" class="form-control" id="unitPrice" name="unitPrice" required min="0" step="0.01">
+                    <div class="invalid-feedback">
+                        単価を入力してください
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="productCategory" class="form-label">商品区分 <span class="text-danger">*</span></label>
+                    <select class="form-select" id="productCategory" name="productCategory" required>
+                        <option value="">選択してください</option>
+                        <option value="作業用品">作業用品</option>
+                        <option value="オフィス用品">オフィス用品</option>
+                        <option value="医療・衛生用品">医療・衛生用品</option>
+                        <option value="IT・デジタル機器">IT・デジタル機器</option>
+                        <option value="建築・土木資材">建築・土木資材</option>
+                        </select>
+                    <div class="invalid-feedback">
+                        商品区分を選択してください
+                    </div>
+                </div>
                 </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                <button type="button" class="btn btn-primary" id="confirmDeleteButton">追加</button>
+                <button type="button" class="btn btn-primary" id="saveConfirmButton">保存</button>
                 </div>
             </div>
         </div>
