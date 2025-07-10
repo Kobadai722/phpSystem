@@ -36,7 +36,33 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                        <?php
+                        require_once '../../config.php'; // DB接続設定などを読み込みます。
+
+                        try {
+                            $stmt = $PDO->query(
+                                "SELECT p.PRODUCT_ID, p.PRODUCT_NAME, s.STOCK_QUANTITY, p.UNIT_SELLING_PRICE, pk.PRODUCT_KUBUN_NAME
+                                 FROM PRODUCT p
+                                 JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+                                 JOIN PRODUCT_KUBUN pk ON p.PRODUCT_KUBUN_ID = pk.PRODUCT_KUBUN_ID
+                                 ORDER BY p.PRODUCT_ID ASC"
+                            );
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                                echo '<tr>';
+                                echo '<td>' . htmlspecialchars($row['PRODUCT_ID']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['PRODUCT_NAME']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['STOCK_QUANTITY']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['UNIT_SELLING_PRICE']) . '</td>';
+                                echo '<td>' . htmlspecialchars($row['PRODUCT_KUBUN_NAME']) . '</td>';
+                                // ここを修正: btn-info から btn-outline-primary に戻す
+                                echo '<td><button class="btn btn-sm btn-outline-primary edit-product-btn" data-product-id="' . htmlspecialchars($row['PRODUCT_ID']) . '" data-bs-toggle="modal" data-bs-target="#addConfirmModal">編集</button></td>';
+                                echo '</tr>';
+                            }
+                        } catch (PDOException $e) {
+                            echo '<tr><td colspan="6" class="text-danger">データベースエラー: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
+                        }
+                        ?>
+                    </tbody>
                 </table>
             </div>
         </section>
