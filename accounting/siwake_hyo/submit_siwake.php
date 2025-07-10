@@ -2,33 +2,8 @@
 <?php 
   require_once '../../header.php';
   $page_title = '仕訳登録完了';
-  $current_page = 'submit'; 
-?>
-  <h3>以下の内容で仕訳が登録されました</h3>
-  <table class="table text-center">
-    <tr>
-      <th>日付</th>
-      <th>摘要</th>
-      <th>借方科目</th>
-      <th>借方金額</th>
-      <th>貸方科目</th>
-      <th>貸方金額</th>
-    </tr>
-    <tr>
-        <td><?php echo $_POST['entry_date']; ?></td>
-        <td><?php echo $_POST['description']; ?></td>
-        <td><?php echo $_POST['debit_account']; ?></td>
-        <td><?php echo $_POST['debit_amount']; ?></td>
-        <td><?php echo $_POST['credit_account']; ?></td>
-        <td><?php echo $_POST['credit_amount']; ?></td>
-    </tr>
-  </table>
+  $current_page = 'submit';
 
-  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
-  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
-  <p><a href="../../main.php">トップページに戻る</a></p>
-
-  <?php
     // 入力チェック
     if (
       empty($_POST['entry_date']) ||
@@ -71,6 +46,29 @@
   $sql = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, AMOUNT, TYPE) VALUES(?, ?, ?, ?)');
   $sql->execute([$header_id, $credit_account, $credit_account, '貸方']);
   ?>
+    <h3>以下の内容で仕訳が登録されました</h3>
+  <table class="table text-center">
+    <tr>
+      <th>日付</th>
+      <th>摘要</th>
+      <th>借方科目</th>
+      <th>借方金額</th>
+      <th>貸方科目</th>
+      <th>貸方金額</th>
+    </tr>
+    <tr>
+        <td><?php echo $_POST['entry_date']; ?></td>
+        <td><?php echo $_POST['description']; ?></td>
+        <td><?php echo $_POST['debit_account']; ?></td>
+        <td><?php echo $_POST['debit_amount']; ?></td>
+        <td><?php echo $_POST['credit_account']; ?></td>
+        <td><?php echo $_POST['credit_amount']; ?></td>
+    </tr>
+  </table>
+
+  <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
+  <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
+  <p><a href="../../main.php">トップページに戻る</a></p>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" xintegrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </html>
