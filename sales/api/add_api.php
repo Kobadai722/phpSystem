@@ -92,7 +92,7 @@ try {
 
     // 全ての操作が成功したらコミット
     $PDO->commit();
-    echo json_encode(['success' => true, 'message' => '商品が正常に追加されました。', 'product_id' => $newProductId]);
+    echo json_encode(['success' => true, 'message' => '商品情報が正常に更新されました。', 'product_id' => $newProductId]);
 
 } catch (PDOException $e) {
     $PDO->rollBack();
