@@ -1,27 +1,12 @@
-/* =================================== */
 /* サイドバーの基本スタイル */
-/* =================================== */
-body {
-    transition: padding-left 0.3s ease-in-out;
-    /* サイドバー開閉時のアニメーション */
-}
-
-main {
-    display: flex;
-}
-
-.content {
-    flex-grow: 1;
-    padding: 1.5rem;
-}
-
 .sidebar {
     display: flex;
+    /* ▼ 親要素に対してflexboxを有効にするため、directionを指定 */
     flex-direction: column;
-    width: 250px;
+    width: 280px;
     /* PC表示用に幅を固定 */
     height: 100vh;
-    background-color: #ffffff;
+    background-color: #f8f9fa;
     border-right: 1px solid #dee2e6;
     position: sticky;
     top: 0;
@@ -29,10 +14,10 @@ main {
     overflow-x: hidden;
 }
 
+/* 開閉ボタンのスタイル */
 .sidebar-toggle {
     display: flex;
-    justify-content: flex-end;
-    /* アイコンを右寄せに */
+    justify-content: flex-start;
     padding: 1rem;
     transition: justify-content 0.3s ease;
 }
@@ -40,107 +25,95 @@ main {
 .sidebar-toggle button {
     background: none;
     border: none;
-    font-size: 1.2rem;
-    /* アイコンサイズ調整 */
-    color: #495057;
+    font-size: 1.5rem;
     cursor: pointer;
 }
 
+/* ナビゲーションリンクのコンテナ */
 .nav-links {
     display: flex;
     flex-direction: column;
+    /* リンクを縦に並べる */
     width: 100%;
 }
 
-.nav-link {
-    color: #343a40;
-    text-decoration: none;
-}
-
-.nav-link:hover {
-    background-color: #f1f3f5;
-}
-
+/* ナビゲーションリンク */
 .nav-link-content {
     display: flex;
     align-items: center;
     width: 100%;
-    padding: 0.9rem 1.5rem;
+    padding: 0.8rem 1rem;
     /* リンクに余白を追加 */
-    white-space: nowrap;
-    /* テキストの折り返しを防ぐ */
-}
-
-.nav-link-content i {
-    width: 20px;
-    /* アイコンの幅を固定 */
-    text-align: center;
-    font-size: 1.1rem;
 }
 
 .sidebar .nav-link-text {
-    margin-left: 1rem;
+    margin-left: 0.8rem;
+    white-space: nowrap;
     transition: opacity 0.2s ease-in-out;
 }
 
 
 /* =================================== */
-/* ▼ サイドバー折りたたみ時のスタイル ▼ */
+/* サイドバー折りたたみ時のスタイル     */
 /* =================================== */
+
+/* bodyに .sidebar-collapsed クラスが付いた時のスタイル */
 body.sidebar-collapsed .sidebar {
     width: 80px;
     /* 折りたたんだ時の幅 */
 }
 
 body.sidebar-collapsed .sidebar-toggle {
+    /* ボタン内のアイコンを中央揃えにする */
     justify-content: center;
-    /* アイコンを中央揃えに */
 }
 
 body.sidebar-collapsed .nav-link-text {
-    opacity: 0;
-    /* テキストを透明にする */
+    /* アクセシビリティのために、実際には要素を消さずに見えなくする */
     visibility: hidden;
 }
-
 /* ========================================================== */
-/* ▼ メディアクエリ：画面幅が768px以下の時に適用するスタイル ▼ */
+/* メディアクエリ：画面幅が768px以下の時に適用するスタイル */
 /* ========================================================== */
 @media (max-width: 768px) {
-    main {
-        flex-direction: column;
-        /* 全体を縦並びに */
-    }
 
+    /* サイドバーを上部ヘッダーに変形させる */
     .sidebar {
         width: 100%;
+        /* 幅を画面全体に */
         height: auto;
+        /* 高さは中身に合わせる */
         flex-direction: row;
+        /* 中身を横並びにする */
         border-right: none;
+        /* 右の境界線を消す */
         border-bottom: 1px solid #dee2e6;
-        position: static;
-        /* position:sticky を解除 */
+        /* 下に境界線を引く */
+        align-items: center;
+        /* 中身を垂直方向に中央揃え */
     }
 
+    /* ナビゲーションリンクのコンテナを横並びに */
     .nav-links {
         flex-direction: row;
+        /* リンクを横に並べる */
     }
 
-    /* スマホでは開閉ボタン不要なので隠す */
+    /* 開閉ボタンはスマホでは不要なので隠す */
     .sidebar-toggle {
         display: none;
     }
 
-    /* テキストや幅を元に戻す */
-    body.sidebar-collapsed .sidebar,
-    .sidebar {
-        width: 100%;
-    }
-
-    body.sidebar-collapsed .nav-link-text,
+    /* スマホ表示のときは、テキストを隠さない */
     .sidebar .nav-link-text {
         opacity: 1;
-        visibility: visible;
+        white-space: normal;
+        /* テキストの折り返しを許可 */
         margin-left: 0.5rem;
+    }
+
+    /* スマホ表示ではサイドバーの開閉機能を無効化 */
+    body.sidebar-collapsed .sidebar {
+        width: 100%;
     }
 }
