@@ -24,7 +24,9 @@
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
-                    <div class="col-md-auto"> <button class="btn btn-primary search-btn" type="button" onclick="loadInventory()"> <i class="bi bi-search me-2"></i>検索
+                    <div class="col-md-auto"> 
+                        <button class="btn btn-primary search-btn" type="button" onclick="search()">
+                            <i class="bi bi-search me-2"></i>検索
                         </button>
                     </div>
                 </div>
