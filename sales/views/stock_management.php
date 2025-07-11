@@ -30,7 +30,8 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-auto"> <a href="stock-register.php" class="btn btn-primary">
+                <div class="col-md-auto"> 
+                    <a href="stock-register.php" class="btn btn-primary">
                         <i class="bi bi-plus-circle me-2"></i>商品追加
                     </a>
                 </div>
