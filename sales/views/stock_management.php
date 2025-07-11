@@ -11,37 +11,32 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/stock_styles.css">
 </head>
-<body>
-    <?php include '../../header.php'; ?>
+<body onload="search()"> <?php include '../../header.php'; ?>
     <main>
         <?php include '../includes/localNavigation.php'; ?>
         
         <section class="content">
-            <div class="search mt-3">
-                <div class="row g-2 w-100 align-items-center">
-                    <div class="col-md-auto position-relative">
-                        <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-3"> <div class="d-flex align-items-center">
+                    <div class="position-relative me-2"> <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
                         <button type="button" class="btn btn-sm btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2"
                             id="clearButton" onclick="clearSearch()" style="display: none;">
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
-                        <div class="col-md-auto">
-                            <button class="btn btn-primary search-btn" type="button" onclick="search()">
+                    <div>
+                        <button class="btn btn-primary search-btn" type="button" onclick="search()">
                             <i class="bi bi-search me-2"></i>検索
-                            </button>
-                        </div>
-                <div class="col-md-auto text-end">
+                        </button>
                     </div>
-            </div>
-        </div>
-        <div class="d-flex justify-content-end mb-3">
-            <a href="stock-register.php" class="btn btn-primary">
-                <i class="bi bi-plus-circle me-2"></i>商品追加
-            </a>
-        </div>
+                </div>
 
-        <div class="table-responsive">
+                <div> <a href="stock-register.php" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-2"></i>商品追加
+                    </a>
+                </div>
+            </div>
+
+            <div class="table-responsive">
                 <table class="table table-border table-hover table-smaller">
                     <thead>
                         <tr>
@@ -54,7 +49,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </section>
@@ -138,4 +133,4 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script src="../js/inventory.js"></script>
-</html>
+    <script src="../js/search.js"></script> </html>
