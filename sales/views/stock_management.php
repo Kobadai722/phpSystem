@@ -16,8 +16,10 @@
         <?php include '../includes/localNavigation.php'; ?>
         
         <section class="content">
-            <div class="d-flex justify-content-between align-items-center mb-3 mt-3"> <div class="d-flex align-items-center">
-                    <div class="position-relative me-2"> <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
+            <div class="d-flex justify-content-between align-items-center mb-3 mt-3">
+                <div class="d-flex align-items-center">
+                    <div class="position-relative me-2">
+                        <input type="text" id="searchInput" class="form-control pe-5" placeholder="商品名または商品IDで検索" oninput="toggleClearButton()">
                         <button type="button" class="btn btn-sm btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2"
                             id="clearButton" onclick="clearSearch()" style="display: none;">
                             <i class="bi bi-x-lg"></i>
@@ -30,7 +32,8 @@
                     </div>
                 </div>
 
-                <div> <a href="stock-register.php" class="btn btn-primary">
+                <div>
+                    <a href="stock-register.php" class="btn btn-primary">
                         <i class="bi bi-plus-circle me-2"></i>商品追加
                     </a>
                 </div>
@@ -49,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </section>
@@ -129,8 +132,9 @@
         </div>
     </div>
 </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script src="../js/inventory.js"></script>
-    <script src="../js/search.js"></script> </html>
+    <script src="../js/search.js"></script>
+</html>
