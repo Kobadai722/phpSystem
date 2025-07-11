@@ -13,8 +13,7 @@
 </head>
 <?php include '../../header.php'; ?>
 
-<body onload="search()">
-    <main>
+<body> <main>
         <?php include '../includes/localNavigation.php'; ?>
 
         <section class="content">
@@ -46,8 +45,7 @@
                             <th scope="col">料金</th>
                             <th scope="col">在庫数</th>
                             <th scope="col">商品区分</th>
-                            <th scope="col"></th>
-                        </tr>
+                            </tr>
                     </thead>
                     <tbody>
                         </tbody>
@@ -64,23 +62,4 @@
         crossorigin="anonymous"></script>
     <script src="../js/search.js"></script>
 </body>
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>以下の商品を削除してもよろしいですか？</p>
-                <p><strong>商品ID: </strong><span id="modalProductId"></span></p>
-                <p><strong>商品名: </strong><span id="modalProductName"></span></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteButton">削除</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </html>

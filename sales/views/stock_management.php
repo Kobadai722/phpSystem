@@ -24,8 +24,7 @@
                             <i class="bi bi-x-lg"></i>
                         </button>
                     </div>
-                    <div class="col-md-auto"> <button class="btn btn-primary search-btn" type="button" onclick="search()">
-                            <i class="bi bi-search me-2"></i>検索
+                    <div class="col-md-auto"> <button class="btn btn-primary search-btn" type="button" onclick="loadInventory()"> <i class="bi bi-search me-2"></i>検索
                         </button>
                     </div>
                 </div>
@@ -44,8 +43,7 @@
                             <th scope="col">在庫数</th>
                             <th scope="col">単価</th>
                             <th scope="col">商品区分</th> 
-                            <th scope="col"></th> 
-                        </tr>
+                            <th scope="col"></th> </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -128,7 +126,29 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">削除の確認</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>以下の商品を削除してもよろしいですか？</p>
+                <p><strong>商品ID: </strong><span id="modalProductId"></span></p>
+                <p><strong>商品名: </strong><span id="modalProductName"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">削除</button>
+            </div>
+        </div>
+    </div>
+</div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
-    <script src="../js/inventory.js"></script> </html>
+    <script src="../js/inventory.js"></script>
+</html>
