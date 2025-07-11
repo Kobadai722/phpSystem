@@ -31,7 +31,7 @@
                             <i class="bi bi-search me-2"></i>検索
                             </button>
                         </div>
-                    < class="col"></
+
                 <div class="col-md-auto text-end">
                     </div>
             </div>
