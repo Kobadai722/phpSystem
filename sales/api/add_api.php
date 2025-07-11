@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../config.php'; // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。 // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。
+require_once '../../config.php'; // DB接続設定などを読み込みます。このファイルでPDOインスタンスが$PDOとして利用可能と仮定します。
 
 header('Content-Type: application/json'); // JSONでレスポンスを返す
 
@@ -48,54 +48,62 @@ try {
     $PDO->beginTransaction();
 
     // 1. 受け取ったPRODUCT_KUBUN_IDがPRODUCT_KUBUNテーブルに実在するか確認
-    $stmtKubunCheck = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id"); // PRODUCT_KUBUN_IDの存在チェック
+    $stmtKubunCheck = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT_KUBUN WHERE PRODUCT_KUBUN_ID = :product_kubun_id");
     $stmtKubunCheck->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
     $stmtKubunCheck->execute();
-    if ($stmtKubunCheck->fetchColumn() === 0) { // 該当するIDが見つからなかった場合
+    if ($stmtKubunCheck->fetchColumn() === 0) {
         $PDO->rollBack();
         echo json_encode(['success' => false, 'message' => '指定された商品区分IDは存在しません。']);
         exit;
     }
 
-    // 2. PRODUCTテーブルに商品情報を挿入
-    // UNIT_SELLING_PRICEがテーブル名なので注意（コードはUNIT_PRICEで統一しているためそのまま）
-    // REORDER_POINTとORDER_NUMBERはER図によるとnullableなので、現在のフォーム入力には含まれないと仮定しNULLを挿入
+    // 2. 同じ商品名が既に存在するか確認 [ここから追加・変更]
+    $stmtCheckDuplicateName = $PDO->prepare("SELECT COUNT(*) FROM PRODUCT WHERE PRODUCT_NAME = :product_name");
+    $stmtCheckDuplicateName->bindParam(':product_name', $productName, PDO::PARAM_STR);
+    $stmtCheckDuplicateName->execute();
+    if ($stmtCheckDuplicateName->fetchColumn() > 0) { // 既に同じ商品名が存在する場合
+        $PDO->rollBack();
+        echo json_encode(['success' => false, 'message' => '入力された商品名は既に登録されています。別の商品名を入力してください。']);
+        exit;
+    }
+    // [ここまで追加・変更]
+
+    // 3. PRODUCTテーブルに商品情報を挿入 (既存の処理)
     $stmtProduct = $PDO->prepare(
         "INSERT INTO PRODUCT (PRODUCT_NAME, UNIT_SELLING_PRICE, PRODUCT_KUBUN_ID, REORDER_POINT, ORDER_NUMBER) 
-         VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)" // PRODUCTテーブルへの挿入
+        VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)"
     );
     $stmtProduct->bindParam(':product_name', $productName, PDO::PARAM_STR);
-    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT); // UNIT_SELLING_PRICE に対応
-    $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT); // IDを直接使用
+    $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
+    $stmtProduct->bindParam(':product_kubun_id', $productCategoryId, PDO::PARAM_INT);
     $stmtProduct->execute();
 
-    // 挿入された商品のPRODUCT_IDを取得
-    $newProductId = $PDO->lastInsertId(); // 挿入されたPRODUCT_IDの取得
+    // 挿入された商品のPRODUCT_IDを取得 (既存の処理)
+    $newProductId = $PDO->lastInsertId();
 
-    // 3. STOCKテーブルに初期在庫を挿入
-    // STOCKテーブルの構造が不明ですが、STOCK_QUANTITYとLAST_UPDATING_TIMEが通常想定されます
+    // 4. STOCKテーブルに初期在庫を挿入 (既存の処理)
     $stmtStock = $PDO->prepare(
         "INSERT INTO STOCK (PRODUCT_ID, STOCK_QUANTITY, LAST_UPDATING_TIME) 
-         VALUES (:product_id, :stock_quantity, NOW())" // STOCKテーブルへの挿入
+        VALUES (:product_id, :stock_quantity, NOW())"
     );
     $stmtStock->bindParam(':product_id', $newProductId, PDO::PARAM_INT);
     $stmtStock->bindParam(':stock_quantity', $initialStock, PDO::PARAM_INT);
     $stmtStock->execute();
 
     // 全ての操作が成功したらコミット
-    $PDO->commit(); // コミット
+    $PDO->commit();
     echo json_encode(['success' => true, 'message' => '商品が正常に追加されました。', 'product_id' => $newProductId]);
 
-} catch (PDOException $e) { // PDO関連のデータベースエラーをキャッチ
-    $PDO->rollBack(); // エラー発生時はロールバック
-    error_log("Database error in add_api.php: " . $e->getMessage()); // エラーをログに出力
+} catch (PDOException $e) {
+    $PDO->rollBack();
+    error_log("Database error in add_api.php: " . $e->getMessage());
     echo json_encode([
         'success' => false,
-        'message' => 'データベースエラーが発生しました。時間をおいて再度お試しください。' // 本番では詳細なエラーメッセージは非表示
+        'message' => 'データベースエラーが発生しました。時間をおいて再度お試しください。'
     ]);
-} catch (Exception $e) { // その他の予期せぬエラーをキャッチ
-    $PDO->rollBack(); // エラー発生時はロールバック
-    error_log("Unexpected error in add_api.php: " . $e->getMessage()); // エラーをログに出力
+} catch (Exception $e) {
+    $PDO->rollBack();
+    error_log("Unexpected error in add_api.php: " . $e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => '処理中に予期せぬエラーが発生しました。システム管理者にお問い合わせください。'

@@ -11,13 +11,14 @@ $error_message_for_table = null;
 $employee_id = $_GET['id'] ?? null;
 
 if (isset($employee_id) && is_numeric($employee_id)) {
+    // IS_DELETED = FALSE の条件を削除し、削除済み社員も表示できるように修正
     $stmt = $PDO->prepare("
         SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
         FROM EMPLOYEE e
         LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
         LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID
-        WHERE e.EMPLOYEE_ID = ? AND e.IS_DELETED = FALSE
-    "); // IS_DELETED = FALSE を追加して、削除済み社員は表示しない
+        WHERE e.EMPLOYEE_ID = ?
+    ");
     $stmt->execute([$employee_id]);
     $employee_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -26,7 +27,7 @@ if (isset($employee_id) && is_numeric($employee_id)) {
         $page_h1_title = $employee_name . "さんの詳細";
         $page_title_tag = $employee_name . "さんの詳細 - 人事管理表";
     } else {
-        $error_message_for_table = "該当社員が見つからないか、既に削除されています。";
+        $error_message_for_table = "該当社員が見つかりません。"; // メッセージを修正
         $page_h1_title = "エラー";
         $page_title_tag = "該当社員なし - 人事管理表";
     }
@@ -77,7 +78,7 @@ if (isset($employee_id) && is_numeric($employee_id)) {
                 <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
             </div>
         </div>
-        
+
         <?php if ($error_message_for_table): ?>
             <div class="alert alert-warning" role="alert">
                 <?= htmlspecialchars($error_message_for_table) ?>
