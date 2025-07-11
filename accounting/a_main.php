@@ -28,7 +28,6 @@ $current_page = 'home';
     <div class="page-container">
         <?php
         // ----- サイドバー部品を読み込む -----
-        // ファイル名が'sideber.php'ではなく'sidebar.php'の場合、修正してください
         require_once 'sidebar.php'; 
         ?>
         <!-- メインコンテンツ -->
