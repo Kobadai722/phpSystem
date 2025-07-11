@@ -68,6 +68,7 @@ function search() {
                     <td>${unitSellingPrice}</td>
                     <td>${stockQuantity}</td>
                     <td>${productKubunName}</td>
+                    <td></td>
                     </tr>
             `;
             // テーブルの末尾に追加
