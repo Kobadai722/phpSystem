@@ -12,12 +12,49 @@ main {
 .row{
   margin-bottom: 10px;
 }
+
 .container{
   margin: 0 auto;
 }
 
-.container-main{
-  margin: 3rem;
+.container-main {
+    display: flex; /* Flexbox を使用して横並びにする */
+    max-width: 100vw; /* 最大幅を設定して広がりすぎないようにする */
+    border-radius: 8px;
+    overflow: hidden; /* コンテナからはみ出る要素を隠す */
+}
+
+.left-panel {
+    flex: 0 0 30%; /* 幅を30%に固定 */
+    padding: 20px;
+    box-sizing: border-box; /* padding を含めて幅を計算 */
+}
+
+.right-panel {
+    flex: 0 0 70%; /* 幅を70%に固定 */
+    padding: 20px;
+    box-sizing: border-box; /* padding を含めて幅を計算 */
+}
+
+/* レスポンシブ対応の例: 画面幅が小さい場合は縦積みにする */
+@media (max-width: 768px) {
+    .container-main {
+        flex-direction: column; /* 縦積みに変更 */
+        width: 100%; /* 小さい画面では幅を100%に */
+        border-radius: 0; /* 角丸をなくす */
+    }
+
+    .left-panel,
+    .right-panel {
+        flex: 0 0 auto; /* 幅を自動調整 */
+        width: 100%; /* 幅を100%に */
+        border-right: none; /* 縦積みなので右側の境界線は不要 */
+        border-bottom: 1px solid #ccc; /* 下側に境界線を追加 */
+    }
+
+    .right-panel {
+        border-bottom: none; /* 最後のパネルは下側の境界線不要 */
+    }
 }
 
 .container-main p{
@@ -28,6 +65,16 @@ main {
 }
 
 .attendance-system{
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.weather-area{
+  margin-top: 10px;
   background-color: rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
