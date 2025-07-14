@@ -9,6 +9,7 @@ $id_keyword = $_GET['id_keyword'] ?? null;
 $division_id = $_GET['division_id'] ?? null;
 
 // ベースとなるSQLクエリ
+// IS_DELETED カラムの取得を削除
 $sql_query = "SELECT e.EMPLOYEE_ID, e.NAME, d.DIVISION_NAME, j.JOB_POSITION_NAME, e.JOINING_DATE, e.EMERGENCY_CELL_NUMBER
             FROM EMPLOYEE e
             LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
@@ -34,6 +35,7 @@ if (!empty($division_id)) {
     $conditions[] = "e.DIVISION_ID = ?";
     $params[] = $division_id;
 }
+
 
 // 検索条件が存在する場合、WHERE句をSQLに追加
 if (!empty($conditions)) {
