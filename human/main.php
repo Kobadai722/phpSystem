@@ -85,9 +85,6 @@
                     </select>
                 </div>
 
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">検索</button>
-                </div>
             </div>
         </form>
     </div>

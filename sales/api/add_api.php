@@ -71,7 +71,7 @@ try {
     // 3. PRODUCTテーブルに商品情報を挿入 (既存の処理)
     $stmtProduct = $PDO->prepare(
         "INSERT INTO PRODUCT (PRODUCT_NAME, UNIT_SELLING_PRICE, PRODUCT_KUBUN_ID, REORDER_POINT, ORDER_NUMBER) 
-         VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)"
+        VALUES (:product_name, :unit_price, :product_kubun_id, NULL, NULL)"
     );
     $stmtProduct->bindParam(':product_name', $productName, PDO::PARAM_STR);
     $stmtProduct->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
@@ -84,7 +84,7 @@ try {
     // 4. STOCKテーブルに初期在庫を挿入 (既存の処理)
     $stmtStock = $PDO->prepare(
         "INSERT INTO STOCK (PRODUCT_ID, STOCK_QUANTITY, LAST_UPDATING_TIME) 
-         VALUES (:product_id, :stock_quantity, NOW())"
+        VALUES (:product_id, :stock_quantity, NOW())"
     );
     $stmtStock->bindParam(':product_id', $newProductId, PDO::PARAM_INT);
     $stmtStock->bindParam(':stock_quantity', $initialStock, PDO::PARAM_INT);

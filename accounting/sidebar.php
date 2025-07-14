@@ -4,13 +4,6 @@ $current_page = $current_page ?? '';
 ?>
 <!-- サイドバー本体 -->
 <nav class="sidebar">
-    <!-- 開閉ボタン -->
-    <div class="sidebar-toggle">
-        <button id="sidebar-toggle-btn" aria-label="サイドバーを開閉する">
-            <i class="bi bi-list"></i>
-        </button>
-    </div>
-
     <!-- メニューリスト -->
     <ul class="nav flex-column">
         <li class="nav-item">

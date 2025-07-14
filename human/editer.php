@@ -87,9 +87,6 @@
                     </select>
                 </div>
 
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">検索</button>
-                </div>
                 <div class="col-auto form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="include_deleted" role="switch" <?= isset($_GET['include_deleted']) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="include_deleted">削除済みを含める</label>
