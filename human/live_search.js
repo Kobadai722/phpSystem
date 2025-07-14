@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const idKeywordInput = document.getElementById('id_keyword');
     const divisionSelect = document.getElementById('division_id');
     const employeeTableBody = document.getElementById('employeeTableBody');
-    const includeDeletedCheckbox = document.getElementById('include_deleted'); // 新しく追加
+    // const includeDeletedCheckbox = document.getElementById('include_deleted'); // 削除: 「削除済みを含める」チェックボックス
 
     // 検索を実行する関数
     let searchTimer; // 遅延実行のためのタイマー
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const id = idKeywordInput.value;
             const division = divisionSelect.value;
             
-            // 現在のページがediter.phpかどうかを判定
+            // 現在のページがediter.phpかどうかを判定 (不要だが、他のロジックに影響しないため残す)
             const isEditerPage = window.location.pathname.includes('editer.php');
 
             // URLSearchParamsを使ってクエリパラメータを構築
@@ -26,13 +26,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (id) params.append('id_keyword', id);
             if (division) params.append('division_id', division);
             
-            // editer.phpの場合のみ 'include_deleted' パラメータを使用
-            if (isEditerPage && includeDeletedCheckbox) {
-                params.append('include_deleted', includeDeletedCheckbox.checked ? 'true' : 'false');
-            } else {
-                // main.php または include_deleted チェックボックスがない場合は常にfalse
-                params.append('include_deleted', 'false');
-            }
+            // 削除: 「削除済みを含める」パラメータの追加ロジック
+            // if (isEditerPage && includeDeletedCheckbox) {
+            //     params.append('include_deleted', includeDeletedCheckbox.checked ? 'true' : 'false');
+            // } else {
+            //     params.append('include_deleted', 'false');
+            // }
 
 
             // Ajaxリクエストを送信
@@ -75,29 +74,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr>
                         <td scope="row">${escapeHtml(employee.EMPLOYEE_ID)}</td>
                         <td><a href="detail.php?id=${escapeHtml(employee.EMPLOYEE_ID)}">${escapeHtml(employee.NAME)}` + 
-                        (employee.IS_DELETED ? ' <span class="badge bg-danger">削除済み</span>' : '') + 
+                        // 削除: (employee.IS_DELETED ? ' <span class="badge bg-danger">削除済み</span>' : '') + // 削除済みバッジ
                         `</a></td>
                         <td>${escapeHtml(employee.DIVISION_NAME)}</td>
                         <td>${escapeHtml(employee.JOB_POSITION_NAME)}</td>
                         <td>
-                            ${employee.IS_DELETED ? 
-                                `
-                                <button type="button" class="btn btn-sm btn-info restore-employee-btn"
-                                        data-bs-toggle="modal" data-bs-target="#restoreConfirmModal"
-                                        data-employee-id="${escapeHtml(employee.EMPLOYEE_ID)}"
-                                        data-employee-name="${escapeHtml(employee.NAME)}">
-                                    復元
-                                </button>
-                                ` : 
-                                `
-                                <button type="button" class="btn btn-sm btn-danger delete-employee-btn"
-                                        data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
-                                        data-employee-id="${escapeHtml(employee.EMPLOYEE_ID)}"
-                                        data-employee-name="${escapeHtml(employee.NAME)}">
-                                    削除
-                                </button>
-                                `
-                            }
+                            <button type="button" class="btn btn-sm btn-danger delete-employee-btn"
+                                    data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+                                    data-employee-id="${escapeHtml(employee.EMPLOYEE_ID)}"
+                                    data-employee-name="${escapeHtml(employee.NAME)}">
+                                削除
+                            </button>
                         </td>
                     </tr>
                 `;
@@ -119,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         
         if (isEditerPage) {
-            setupModalButtons();
+            setupModalButtons(); // 削除ボタンのセットアップは維持
         }
     }
 
@@ -148,8 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             deleteButtons.forEach(button => {
                 
-                button.removeEventListener('click', handleEditDeleteClick); // 新しい関数名
-                button.addEventListener('click', handleEditDeleteClick); // 新しい関数名
+                button.removeEventListener('click', handleEditDeleteClick);
+                button.addEventListener('click', handleEditDeleteClick);
             });
 
             function handleEditDeleteClick() { 
@@ -165,30 +152,31 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        const restoreButtons = document.querySelectorAll('.restore-employee-btn');
-        const restoreConfirmModal = document.getElementById('restoreConfirmModal');
+        // 削除: 復元ボタン関連のロジック
+        // const restoreButtons = document.querySelectorAll('.restore-employee-btn');
+        // const restoreConfirmModal = document.getElementById('restoreConfirmModal');
 
-        if (restoreButtons.length > 0 && restoreConfirmModal) {
-            const modalRestoreEmployeeNameSpan = restoreConfirmModal.querySelector('#modalRestoreEmployeeName');
-            const modalRestoreEmployeeIdInput = restoreConfirmModal.querySelector('#modalRestoreEmployeeId');
+        // if (restoreButtons.length > 0 && restoreConfirmModal) {
+        //     const modalRestoreEmployeeNameSpan = restoreConfirmModal.querySelector('#modalRestoreEmployeeName');
+        //     const modalRestoreEmployeeIdInput = restoreConfirmModal.querySelector('#modalRestoreEmployeeId');
 
-            restoreButtons.forEach(button => {
+        //     restoreButtons.forEach(button => {
                 
-                button.removeEventListener('click', handleEditRestoreClick); // 新しい関数名
-                button.addEventListener('click', handleEditRestoreClick); // 新しい関数名
-            });
+        //         button.removeEventListener('click', handleEditRestoreClick);
+        //         button.addEventListener('click', handleEditRestoreClick);
+        //     });
             
-            function handleEditRestoreClick() {           const employeeId = this.dataset.employeeId;
-                const employeeName = this.dataset.employeeName;
+        //     function handleEditRestoreClick() {           const employeeId = this.dataset.employeeId;
+        //         const employeeName = this.dataset.employeeName;
 
-                if (modalRestoreEmployeeNameSpan) {
-                    modalRestoreEmployeeNameSpan.textContent = employeeName;
-                }
-                if (modalRestoreEmployeeIdInput) {
-                    modalRestoreEmployeeIdInput.value = employeeId;
-                }
-            }
-        }
+        //         if (modalRestoreEmployeeNameSpan) {
+        //             modalRestoreEmployeeNameSpan.textContent = employeeName;
+        //         }
+        //         if (modalRestoreEmployeeIdInput) {
+        //             modalRestoreEmployeeIdInput.value = employeeId;
+        //         }
+        //     }
+        // }
     }
 
 
@@ -196,9 +184,7 @@ document.addEventListener('DOMContentLoaded', function() {
     nameKeywordInput.addEventListener('input', performSearch);
     idKeywordInput.addEventListener('input', performSearch);
     divisionSelect.addEventListener('change', performSearch);
-    if (includeDeletedCheckbox) { 
-        includeDeletedCheckbox.addEventListener('change', performSearch);
-    }
+    // 削除: if (includeDeletedCheckbox) { includeDeletedCheckbox.addEventListener('change', performSearch); }
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault();
         performSearch();
