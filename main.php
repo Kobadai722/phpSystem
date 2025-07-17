@@ -61,9 +61,6 @@ session_start();
                     <a href="/customer/customer.php">
                         <i class="bi bi-file-person">顧客管理</i>
                     </a>
-                    <a href="kimu.html">
-                        <img class="rocket-icon" src="/images/rocket.png"><i>人民管理</i>
-                    </a>
                 </div>
                 <div class="room-ava">
                     <p class="booth_status_title"><i class="bi bi-hourglass-split"></i>ブース空き状況</p>
@@ -92,17 +89,6 @@ session_start();
 
                         <div class="room-card">
                             <div class="room-name">小会議室 B</div>
-                            <div class="status available">
-                                空室
-                            </div>
-                            <div class="details">
-                                <div class="time">16:00-17:00</div>
-                                <div class="meeting-type">打ち合わせ</div>
-                            </div>
-                        </div>
-
-                         <div class="room-card">
-                            <div class="room-name">小会議室 C</div>
                             <div class="status available">
                                 空室
                             </div>
