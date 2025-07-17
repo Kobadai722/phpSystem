@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
+
 error_log("human-delete.php accessed.");
 session_start();
 require_once '../config.php';
@@ -38,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         $_SESSION['error_message'] = "データベースエラーにより、社員情報の削除に失敗しました。システム管理者にお問い合わせください。";
     }
 
-    header("Location: detail_edit.php?id=" . urlencode($employee_id));
+    header("Location: editer.php");
     exit;
 } else {
     $_SESSION['error_message'] = "不正なリクエストです。";
