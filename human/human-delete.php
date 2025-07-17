@@ -1,20 +1,38 @@
 <?php
-error_log("human-delete.php accessed.");
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
+
 session_start();
 require_once '../config.php';
 
+// デバッグメッセージを格納するセッション配列を初期化
+if (!isset($_SESSION['debug_messages'])) {
+    $_SESSION['debug_messages'] = [];
+}
+$_SESSION['debug_messages'][] = "human-delete.php accessed.";
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
     $employee_id = $_POST['employee_id'];
-    error_log("Received employee_id: " . $employee_id);
+    $_SESSION['debug_messages'][] = "Received employee_id: " . $employee_id;
 
     try {
         $PDO->beginTransaction();
 
-        $check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
-        $check_stmt = $PDO->prepare($check_sql);
-        $check_stmt->execute([$employee_id]);
+        //$check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        $employee_id = $_POST['employee_id'];
+        try{
+            $check_sql = $PDO -> prepare("DELEAT FROM EMPLOYEE WHERE EMPLOYEE_ID = ?");
+            $check_stmt = $PDO->prepare($check_sql[$employee_id]);
+        }catch(PDOException $e){
+            $_SESSION['error_message'] = "社員情報の削除に失敗しました。";
+        }
+
+
+        
         $employee_status = $check_stmt->fetch(PDO::FETCH_ASSOC);
-        error_log("Employee status from DB: " . print_r($employee_status, true));
+        $_SESSION['debug_messages'][] = "Employee status from DB: " . print_r($employee_status, true);
 
         if (!$employee_status) {
             $_SESSION['error_message'] = "社員情報の削除に失敗しました。社員ID: " . htmlspecialchars($employee_id, ENT_QUOTES, 'UTF-8') . " が見つかりません。";
@@ -34,11 +52,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         $PDO->commit();
     } catch (PDOException $e) {
         $PDO->rollBack();
-        error_log("Employee logical deletion error: " . $e->getMessage());
+        $_SESSION['debug_messages'][] = "Employee logical deletion error: " . $e->getMessage();
         $_SESSION['error_message'] = "データベースエラーにより、社員情報の削除に失敗しました。システム管理者にお問い合わせください。";
     }
 
-    header("Location: detail_edit.php?id=" . urlencode($employee_id));
+    header("Location: editer.php");
     exit;
 } else {
     $_SESSION['error_message'] = "不正なリクエストです。";

@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
+
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -21,6 +27,16 @@
         echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['error_message']);
     }
+    // ここから追加
+    if (isset($_SESSION['debug_messages']) && !empty($_SESSION['debug_messages'])) {
+        echo '<div class="alert alert-info alert-dismissible fade show m-3" role="alert"><strong>デバッグ情報:</strong><pre>';
+        foreach ($_SESSION['debug_messages'] as $msg) {
+            echo htmlspecialchars($msg) . "\n";
+        }
+        echo '</pre><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
+        unset($_SESSION['debug_messages']); // 表示後は削除
+    }
+    // ここまで追加
     ?>
     <h1>人事管理表-編集者モード</h1>
     <?php
