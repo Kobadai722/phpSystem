@@ -22,7 +22,7 @@ body {
 /* メインコンテナのスタイル */
 .container-main {
     display: flex;
-    max-width: 1400px; /* 少し広めに調整 */
+    max-width: 2000px; /* 少し広めに調整 */
     width: 90%; /* 画面幅に応じて調整 */
     min-height: 80vh; /* 最低の高さを設定 */
     background-color: rgba(255, 255, 255, 0.1); /* 全体的な透明感 */
@@ -32,7 +32,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3); /* 透明なボーダー */
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); /* 柔らかいシャドウ */
     overflow: hidden;
-    margin: 40px auto; /* 中央寄せと上下マージン */
+    margin: 15px auto; /* 中央寄せと上下マージン */
 }
 
 .left-panel {
