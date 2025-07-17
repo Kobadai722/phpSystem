@@ -17,7 +17,7 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem; /* カード間の余白 */
 }
-/* === ▲ ここまで修正 ▲ === */
+
 
 .card {
     background-color: #fff;

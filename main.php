@@ -17,13 +17,13 @@ session_start();
     <link href="style.css" rel="stylesheet" />
 </head>
 <?php include 'header.php'; ?>
-<body class="bg-image">
+<body class="bg-image" id="mainBody">
     <div class="container-main">
-        <div class="row">
-            <div class="col-4 attendance-system">
-                <p class="current-date"><?php echo date('Y年m月d日'); ?></p>
-                <p class="time-display" id="realtime-time"></p>
-                <p class="greeting">こんにちは<?php echo $_SESSION['dname']; ?>さん</p>
+        <div class="left-panel">
+            <div class="attendance-system">
+                <p class="current-date">2025年06月17日</p>
+                <p class="time-display">14:29</p>
+                <p class="greeting">こんにちはSSKさん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
                         <a href="">出勤</a>
@@ -33,15 +33,23 @@ session_start();
                     </div>
                 </div>
             </div>
-            <div class="col-8">
-                <div class="info-area">
+            <div class="weather-area">
+                <p class="weather-title">今日の札幌市の天気</p>
+                <div id="weather-info">
+                    <p>天気情報を読み込み中...</p>
+                </div>
+
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="info-area">
                     <div style="display: flex; align-items: center;">
                         <i class="bi bi-info-circle info-icon"></i>
                         <p class="info-text">熱中症対策に注意！こまめに水分補給を！</p>
                     </div>
                 </div>
                 <div class="service-menu">
-                    <a href="/sales/views/stock.php">
+                    <a href="/sales/stock.php">
                         <i class="bi bi-truck">販売管理</i>
                     </a>
                     <a href="/accounting/a_main.php">
@@ -53,34 +61,56 @@ session_start();
                     <a href="/customer/customer.php">
                         <i class="bi bi-file-person">顧客管理</i>
                     </a>
-                    <!--
-                    <a href="kimu.html">
-                        <img class="rocket-icon" src="/images/rocket.png"><i>人民管理</i>
-                    </a>
-                    -->
                 </div>
                 <div class="room-ava">
-                    <i class="bi bi-house-gear">ブース空き状況</i>
-                    <i class="bi bi-circle"></i>
+                    <p class="booth_status_title"><i class="bi bi-hourglass-split"></i>ブース空き状況</p>
+                    <div class="room-container">
+                        <div class="room-card">
+                        <div class="room-name">大会議室</div>
+                        <div class="status used">
+                            利用中
+                        </div>
+                        <div class="details">
+                            <div class="time">15:00-16:00</div>
+                            <div class="meeting-type">戦略会議</div>
+                        </div>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 A</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">17:00-18:00</div>
+                                <div class="meeting-type">定例MTG</div>
+                            </div>
+                        </div>
+
+                        <div class="room-card">
+                            <div class="room-name">小会議室 B</div>
+                            <div class="status available">
+                                空室
+                            </div>
+                            <div class="details">
+                                <div class="time">16:00-17:00</div>
+                                <div class="meeting-type">打ち合わせ</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4 attendance-system">
-                <p class="weather-title">今日の札幌市の天気</p>
-                <div id="weather-info">
-                    <p>天気情報を読み込み中...</p>
+                <div class="customize-area">
+                    <p class="customize_title"><i class="bi bi-image"></i>背景をカスタマイズする</p>
+                    <input type="file" name="test" accept="image/png, image/jpeg" id="backgroundInput">
                 </div>
-                
-            </div>
         </div>
     </div>
-    
-    
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </script>
 <script src="weather.js"></script>
+<script src="background_changer.js"></script>
 <script>
     // リアルタイムで時刻を更新するJavaScript
     function updateTime() {
