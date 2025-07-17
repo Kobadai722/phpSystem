@@ -1,444 +1,562 @@
-main {
-  max-width: 1300px;
-  margin: 3.5rem auto;
+/* 全体的なリセットと基本スタイル */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans JP", sans-serif; /* モダンなフォントに変更 */
+    color: #333; /* 基本の文字色 */
+    line-height: 1.6;
+    overflow-x: hidden; /* 横スクロールバーの抑制 */
+    /* display: flex; /* これを削除 */
+    /* justify-content: center; */ /* これを削除 */
+    /* align-items: center; */ /* これを削除 */
+    min-height: 100vh; /* 画面いっぱいに広がるように */
 }
 
-.bg-image{
-  /* background-image: url(/images/hassaan-here-GhUkIOvihpg-unsplash.jpg); */ /* この行をコメントアウトまたは削除 */
-  background-size: cover;
-  background-repeat: no-repeat;
+/* 背景画像の設定はJavaScriptで制御されるため、ここからは透明度などを調整 */
+.bg-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-.row{
-  margin-bottom: 10px;
-}
-
-.container{
-  margin: 0 auto;
-}
-
+/* メインコンテナのスタイル */
 .container-main {
-    display: flex; /* Flexbox を使用して横並びにする */
-    max-width: 100vw; /* 最大幅を設定して広がりすぎないようにする */
-    border-radius: 8px;
-    overflow: hidden; /* コンテナからはみ出る要素を隠す */
+    display: flex;
+    max-width: 1400px; /* 少し広めに調整 */
+    width: 90%; /* 画面幅に応じて調整 */
+    min-height: 80vh; /* 最低の高さを設定 */
+    background-color: rgba(255, 255, 255, 0.1); /* 全体的な透明感 */
+    backdrop-filter: blur(10px); /* Frosted Glass効果 */
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px; /* より丸みのある角 */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* 透明なボーダー */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2); /* 柔らかいシャドウ */
+    overflow: hidden;
+    margin: 40px auto; /* 中央寄せと上下マージン */
 }
 
 .left-panel {
-    flex: 0 0 30%; /* 幅を30%に固定 */
-    padding: 20px;
-    box-sizing: border-box; /* padding を含めて幅を計算 */
+    flex: 0 0 35%; /* 左パネルの幅を調整 */
+    padding: 30px; /* パディングを増やす */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 各セクション間の隙間 */
 }
 
 .right-panel {
-    flex: 0 0 70%; /* 幅を70%に固定 */
-    padding: 20px;
-    box-sizing: border-box; /* padding を含めて幅を計算 */
+    flex: 0 0 65%; /* 右パネルの幅を調整 */
+    padding: 30px; /* パディングを増やす */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* 各セクション間の隙間 */
 }
 
-/* レスポンシブ対応の例: 画面幅が小さい場合は縦積みにする */
-@media (max-width: 768px) {
-    .container-main {
-        flex-direction: column; /* 縦積みに変更 */
-        width: 100%; /* 小さい画面では幅を100%に */
-        border-radius: 0; /* 角丸をなくす */
-    }
-
-    .left-panel,
-    .right-panel {
-        flex: 0 0 auto; /* 幅を自動調整 */
-        width: 100%; /* 幅を100%に */
-        border-right: none; /* 縦積みなので右側の境界線は不要 */
-        border-bottom: 1px solid #ccc; /* 下側に境界線を追加 */
-    }
-
-    .right-panel {
-        border-bottom: none; /* 最後のパネルは下側の境界線不要 */
-    }
+/* 各セクションの共通スタイル (Frosted Glass効果) */
+.attendance-system,
+.weather-area,
+.info-area,
+.service-menu,
+.room-ava,
+.customize-area {
+    background-color: rgba(255, 255, 255, 0.15); /* より透明度を高く */
+    backdrop-filter: blur(15px); /* ぼかしを強く */
+    -webkit-backdrop-filter: blur(15px);
+    border-radius: 15px; /* 角丸を調整 */
+    border: 1px solid rgba(255, 255, 255, 0.4); /* ボーダーを少し強調 */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* シャドウを調整 */
+    padding: 25px; /* パディングを調整 */
+    margin-bottom: 0; /* 親のgapで制御するためマージンをリセット */
 }
 
-.container-main p{
-  font-family: "Noto Sans JP", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
-  font-style: normal;
+.container-main p {
+    font-family: "Noto Sans JP", sans-serif;
+    font-weight: 500; /* フォントウェイトを調整 */
+    color: #222; /* 文字色を少し濃く */
 }
 
-.attendance-system{
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+/* 勤怠システム */
+.current-date {
+    font-size: 1.8rem;
+    text-align: center;
+    margin-top: 2rem; /* 上部マージンを調整 */
+    margin-bottom: 0.5rem;
+    color: #444;
 }
 
-.weather-area{
-  margin-top: 10px;
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+.time-display {
+    font-size: 5rem; /* 時刻のサイズを調整 */
+    text-align: center;
+    margin: 0.5rem 0 1rem 0;
+    color: #1a1a1a;
+    font-weight: 700;
+    letter-spacing: -2px; /* 少し詰める */
 }
 
-.current-date{
-  font-size: 1.8rem;
-  text-align: center;
-  margin-top: 4rem;
-  margin-bottom: 0%;
-  padding: 0%;
-}
-
-.time-display{
-  font-size: 6rem;
-  text-align: center;
-  margin-top: 0%;
-}
-
-.greeting{
-  text-align: center;
-  font-size: 1.5rem;
+.greeting {
+    text-align: center;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    color: #555;
 }
 
 .button-container {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  margin: 30px 0 30px 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* ボタン間の隙間を広げる */
+    margin-bottom: 20px;
 }
 
-.punch-in-button{
-    width:120px;
-    height:80px;
-    line-height:80px;
+.punch-in-button,
+.punch-out-button {
+    width: 130px; /* ボタンの幅を調整 */
+    height: 90px; /* ボタンの高さを調整 */
+    line-height: 90px;
 }
-.punch-in-button a{
-    display:block;
-    width:100%;
-    height:100%;
+
+.punch-in-button a,
+.punch-out-button a {
+    display: block;
+    width: 100%;
+    height: 100%;
     text-decoration: none;
-    background:#51C96B;
-    text-align:center;
-    color:#FFFFFF;
-    font-size:28px;
-    font-weight:bold;
-    border-radius:7px;
-    -webkit-border-radius:7px;
-    -moz-border-radius:7px;
-    box-shadow:5px 5px 0px 0px #DEDEDE ;
-}
-.punch-in-button a:hover{
-    background:#3C9550;
-    color:#FFFFFF;
-    margin-left:5px;
-    margin-top:5px;
-    box-shadow:none;
-}
-
-.punch-out-button{
-    width:120px;
-    height:80px;
-    line-height:80px;
-}
-.punch-out-button a{
-    display:block;
-    width:100%;
-    height:100%;
-    text-decoration: none;
-    background:#2A8AD4;
-    text-align:center;
-    color:#FFFFFF;
-    font-size:28px;
-    font-weight:bold;
-    border-radius:7px;
-    -webkit-border-radius:7px;
-    -moz-border-radius:7px;
-    box-shadow:5px 5px 0px 0px #DEDEDE ;
-}
-.punch-out-button a:hover{
-    background:#174D76;
-    color:#FFFFFF;
-    margin-left:5px;
-    margin-top:5px;
-    box-shadow:none;
-}
-
-.weather-title{
     text-align: center;
-    font-size: 1.5rem;
-    margin: 1rem;
-    color: #333; /* 文字色を少し濃く */
+    color: #FFFFFF;
+    font-size: 26px; /* フォントサイズ調整 */
+    font-weight: bold;
+    border-radius: 10px; /* 角丸を強く */
+    transition: all 0.3s ease; /* ホバーアニメーション */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2); /* シャドウを調整 */
 }
 
-.weather-note{
-    font-size: 12px;
+.punch-in-button a {
+    background: linear-gradient(135deg, #51C96B, #3C9550); /* グラデーション */
+}
+
+.punch-in-button a:hover {
+    background: linear-gradient(135deg, #3C9550, #2a6b38);
+    transform: translate(2px, 2px); /* 押された感を演出 */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.punch-out-button a {
+    background: linear-gradient(135deg, #2A8AD4, #174D76); /* グラデーション */
+}
+
+.punch-out-button a:hover {
+    background: linear-gradient(135deg, #174D76, #0e2f4a);
+    transform: translate(2px, 2px); /* 押された感を演出 */
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* 天気エリア */
+.weather-title {
+    font-size: 1.6rem;
     text-align: center;
-    color: #666; /* 注意書きの色を調整 */
-    margin-top: 15px; /* 上部に少し余白 */
+    margin: 1rem 0;
+    color: #444;
+    font-weight: 600;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
 }
 
 .weather-main {
     display: flex;
-    flex-direction: row; /* ★ここをrowに変更して横並びに★ */
-    justify-content: center; /* 横方向の中央揃え */
-    align-items: center; /* 縦方向の中央揃え */
-    gap: 30px; /* 天気情報と気温の間の隙間を広げる */
-    width: fit-content; /* コンテンツに合わせて幅を調整 */
-    max-width: 90%; /* 必要に応じて最大幅を設定 */
-    margin: 20px auto;
-    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; /* 隙間を広げる */
+    margin: 15px auto;
 }
 
 .weather-info-group {
     display: flex;
-    flex-direction: column; /* アイコンと天気テキストは縦並び */
-    align-items: center; /* 中央揃え */
-    gap: 10px; /* アイコンとテキストの間の隙間 */
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
 }
 
-.weather-telop{
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap; /* テキストの折り返しを防ぐ */
+.weather-telop {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
 }
 
-.weather-img{
-    width: 120px;
-    height: 120px;
+.weather-img {
+    width: 100px;
+    height: 100px;
     object-fit: contain;
 }
 
 .weather-temperature-info {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 中央揃え */
+    align-items: center;
     gap: 5px;
 }
 
-.weather-max{
-    font-size: 1.1rem;
-    font-weight: 700;
+.weather-max {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #e74c3c; /* 最高気温の色 */
 }
 
 .weather-temp-value {
     display: flex;
     align-items: flex-end;
-    gap: 5px;
+    gap: 3px;
 }
 
-.weather-temp{
-    font-size: 3.5rem;
+.weather-temp {
+    font-size: 3.8rem; /* 気温のサイズを調整 */
     font-weight: 700;
     line-height: 1;
+    color: #1a1a1a;
 }
 
-.weather-c{
-    font-size: 1.8rem;
+.weather-c {
+    font-size: 1.6rem; /* ºCのサイズを調整 */
     font-weight: 500;
-    padding-bottom: 5px;
+    padding-bottom: 8px;
+    color: #555;
 }
 
-.info-area{
-  background-color: rgba(0, 128, 0, 0.25);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 1%;
-  margin-bottom: 10px;
+/* 情報エリア */
+.info-area {
+    background-color: rgba(0, 128, 0, 0.15); /* 緑系の透明色 */
+    border: 1px solid rgba(0, 128, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 128, 0, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 15px 25px; /* パディングを調整 */
 }
 
-.info-icon{
-  font-size: 2rem;
-  color: #008000;
-  line-height: 1;
-  margin-right: 10px;
+.info-icon {
+    font-size: 2.2rem; /* アイコンサイズ調整 */
+    color: #27ae60; /* 緑色を強調 */
+    margin-right: 15px;
 }
 
-.info-text{
-  font-size: 1.3rem;
-  color: #008000;
-  line-height: 1; /* 行の高さを1に設定 */
-  margin: 0; /* デフォルトマージンをリセット */
+.info-text {
+    font-size: 1.3rem;
+    color: #27ae60;
+    margin: 0;
+    font-weight: 500;
 }
 
-.service-menu{
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  display: flex; /* 子要素を横並びにする */
-  justify-content: space-around; /* 子要素を均等に配置する */
-  align-items: flex-start; /* 子要素を上端に揃える */
-  padding: 20px; /* 全体のパディング */
-  width: 100%; /* 親要素の幅いっぱいにする */
-  box-sizing: border-box; /* パディングを幅に含める */
-  margin-bottom: 10px;
+/* サービスメニュー */
+.service-menu {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    padding: 25px; /* パディングを調整 */
+    flex-wrap: wrap; /* 折り返しを許可 */
 }
 
 .service-menu a {
     text-decoration: none;
-    color: inherit; /* 親要素の文字色を継承する */
-    display: flex; /* aタグもflexコンテナにして、中のiタグを中央寄せしやすくする */
-    justify-content: center; /* 横方向の中央寄せ */
-    align-items: center; /* 縦方向の中央寄せ */
-    flex-direction: column; /* 中身を縦並びに */
-    flex-basis: 20%; /* 各項目が均等な幅を占めるように */
-    max-width: 25%; /* 過度に広がらないように */
-    margin: 0 10px; /* アイテム間の余白 */
-}
-
-.service-menu a:hover {
-    opacity: 0.7; /* ホバーで少し透明にする */
-    transition: opacity 0.3s ease; /* アニメーションを追加 */
-}
-
-.service-menu i {
-    display: flex; /* アイコンとテキストを縦並びにするため */
-    flex-direction: column; /* 子要素を縦方向に配置 */
-    align-items: center; /* 子要素を中央揃えにする */
-    font-size: 50px; /* アイコンのサイズ */
-    text-align: center; /* テキストを中央揃え */
-    min-width: 100px; /* 各項目の最小幅を設定 */
-}
-
-.service-menu i::before {
-    margin-bottom: 5px; /* アイコンとテキストの間の余白 */
-}
-
-/* アイコンに続くテキスト（販売管理など）のスタイル */
-.service-menu i {
-    font-style: normal; /* iタグのデフォルトの斜体を解除 */
-    font-size: 16px; /* テキストのサイズ */
-    font-weight: 700;
-    margin-top: 5px; /* アイコンとテキストの間の余白 */
-}
-
-.service-menu .bi::before {
-    font-family: "bootstrap-icons" !important; /* Bootstrap Iconsのフォントを指定 */
-    font-size: 50px; /* アイコンのサイズを再指定（親のiタグに設定したものと同じ） */
-    display: block; /* アイコンをブロック要素にして改行させる */
-    margin-bottom: 5px; /* アイコンとテキストの間の余白 */
-}
-
-.rocket-icon{
-  width: 45px;
-}
-
-.room-ava{
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 1%;
-  margin-bottom: 10px;
-}
-
-.booth_status_title{
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
-.room-container{
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.room-card {
-    padding: 20px;
-    width: 280px; /* カードの幅を調整 */
-    text-align: center;
-    position: relative;
+    color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-basis: 20%; /* 各項目が均等な幅を占めるように */
+    max-width: 25%;
+    margin: 10px; /* アイテム間の余白を調整 */
+    transition: transform 0.2s ease; /* ホバーアニメーション */
+}
+
+.service-menu a:hover {
+    transform: translateY(-5px); /* 少し上に浮き上がる */
+    color: #007bff; /* ホバー時の色 */
+}
+
+.service-menu i {
+    font-style: normal;
+    font-size: 1.1rem; /* テキストのサイズ */
+    font-weight: 600;
+    margin-top: 8px; /* アイコンとテキストの間の余白 */
+    text-align: center;
+}
+
+.service-menu .bi::before {
+    font-family: "bootstrap-icons" !important;
+    font-size: 55px; /* アイコンのサイズを大きく */
+    display: block;
+    margin-bottom: 5px;
+    color: #555; /* アイコンの色 */
+}
+
+.rocket-icon {
+    width: 50px; /* ロケットアイコンのサイズ調整 */
+    height: 50px;
+    object-fit: contain;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease;
+}
+
+.service-menu a:hover .rocket-icon {
+    transform: rotate(15deg); /* ホバー時に回転 */
+}
+
+/* ブース空き状況 */
+.room-ava {
+    padding: 25px; /* パディング調整 */
+}
+
+.booth_status_title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.booth_status_title .bi {
+    margin-right: 10px;
+    font-size: 1.8rem;
+    color: #555;
+}
+
+.room-container {
+    display: flex;
+    gap: 25px; /* カード間の隙間を広げる */
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.room-card {
+    background-color: rgba(255, 255, 255, 0.2); /* カード内の背景も透明に */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 260px; /* カードの幅を調整 */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-8px); /* ホバーで浮き上がる */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .room-name {
-    font-size: 1.2em;
+    font-size: 1.3em;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #222;
 }
 
 .status {
-    width: 100px;
-    height: 100px;
+    width: 110px; /* ステータス円のサイズを調整 */
+    height: 110px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.1em;
+    font-size: 1.2em;
     font-weight: bold;
     color: #fff;
     margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* シャドウを追加 */
 }
 
 .status.used {
-    background-color: #ff6b6b; /* 赤色 */
+    background: linear-gradient(135deg, #ff6b6b, #e74c3c); /* グラデーション */
 }
 
 .status.available {
-    background-color: #2ecc71; /* 緑色 */
+    background: linear-gradient(135deg, #2ecc71, #27ae60); /* グラデーション */
 }
 
 .details {
     margin-top: 10px;
-    color: #555;
+    color: #444;
     line-height: 1.5;
+    font-size: 0.95em;
 }
 
 .details .time {
     font-weight: bold;
     margin-bottom: 5px;
+    color: #333;
 }
 
 .details .meeting-type {
     margin-bottom: 5px;
+    color: #555;
 }
 
-.details .user {
-    font-size: 0.9em;
-    color: #777;
+/* 背景カスタマイズエリア */
+.customize-area {
+    padding: 25px; /* パディング調整 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 左寄せ */
 }
 
-.calendar-icon {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    font-size: 1.5em;
-    cursor: pointer;
-    color: #888;
-}
-
-.calendar-icon:hover {
+.customize_title {
+    font-size: 1.6rem;
+    font-weight: 600;
     color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
 }
 
-.customize-area{
-  background-color: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 1%;
-  margin-bottom: 10px;
+.customize_title .bi {
+    margin-right: 10px;
+    font-size: 1.8rem;
+    color: #555;
 }
 
-.customize_title{
-  font-size: 1.5rem;
-  font-weight: 600;
+.customize-area input[type="file"] {
+    padding: 10px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #333; /* 文字色 */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: auto; /* 幅を自動調整 */
+}
+
+.customize-area input[type="file"]::-webkit-file-upload-button {
+    background-color: #007bff; /* ボタンの色 */
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.customize-area input[type="file"]::-webkit-file-upload-button:hover {
+    background-color: #0056b3;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 1024px) {
+    .container-main {
+        width: 95%;
+        flex-direction: column;
+        margin: 20px auto;
+    }
+
+    .left-panel,
+    .right-panel {
+        flex: 1 1 100%;
+        padding: 20px;
+    }
+
+    .service-menu {
+        justify-content: center; /* センタリング */
+    }
+
+    .service-menu a {
+        flex-basis: 45%; /* 小さい画面で2列に */
+        margin: 10px 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .container-main {
+        border-radius: 0; /* 角丸をなくす */
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    .left-panel,
+    .right-panel {
+        padding: 15px;
+    }
+
+    .time-display {
+        font-size: 4rem;
+    }
+
+    .punch-in-button a,
+    .punch-out-button a {
+        font-size: 24px;
+        width: 110px;
+        height: 70px;
+        line-height: 70px;
+    }
+
+    .weather-main {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .info-icon {
+        font-size: 1.8rem;
+    }
+    .info-text {
+        font-size: 1.1rem;
+    }
+
+    .service-menu a {
+        flex-basis: 48%; /* ほぼ2列 */
+    }
+
+    .service-menu .bi::before {
+        font-size: 45px;
+    }
+    .rocket-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .room-card {
+        width: 100%; /* フル幅に */
+    }
+
+    .customize-area input[type="file"] {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .left-panel,
+    .right-panel {
+        padding: 10px;
+    }
+    .time-display {
+        font-size: 3.5rem;
+    }
+    .button-container {
+        gap: 15px;
+    }
+    .punch-in-button a,
+    .punch-out-button a {
+        font-size: 20px;
+        width: 100px;
+        height: 60px;
+        line-height: 60px;
+    }
+    .weather-telop {
+        font-size: 1.4rem;
+    }
+    .weather-temp {
+        font-size: 3rem;
+    }
+    .service-menu a {
+        flex-basis: 90%; /* 1列に */
+        margin: 10px 0;
+    }
+    .service-menu .bi::before {
+        font-size: 50px;
+    }
 }
