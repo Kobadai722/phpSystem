@@ -1,4 +1,10 @@
-<?php session_start(); ?>
+<?php
+ini_set('display_errors', 'On');
+ini_set('display_startup_errors', 'On');
+error_reporting(E_ALL);
+
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
