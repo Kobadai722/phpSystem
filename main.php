@@ -17,7 +17,7 @@ session_start();
     <link href="style.css" rel="stylesheet" />
 </head>
 <?php include 'header.php'; ?>
-<body class="bg-image">
+<body class="bg-image" id="mainBody">
     <div class="container-main">
         <div class="left-panel">
             <div class="attendance-system">
@@ -31,14 +31,14 @@ session_start();
                     <div class="punch-out-button">
                         <a href="">退勤</a>
                     </div>
-                </div> 
+                </div>
             </div>
             <div class="weather-area">
                 <p class="weather-title">今日の札幌市の天気</p>
                 <div id="weather-info">
                     <p>天気情報を読み込み中...</p>
                 </div>
-                
+
             </div>
         </div>
         <div class="right-panel">
@@ -113,13 +113,18 @@ session_start();
                         </div>
                     </div>
                 </div>
-        </div>    
+                <div class="customize-area">
+                    <p class="customize_title"><i class="bi bi-image"></i>背景をカスタマイズする</p>
+                    <input type="file" name="test" accept="image/png, image/jpeg" id="backgroundInput">
+                </div>
+        </div>
     </div>
-    
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 </script>
 <script src="weather.js"></script>
+<script src="background_changer.js"></script>
 <script>
     // リアルタイムで時刻を更新するJavaScript
     function updateTime() {
