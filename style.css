@@ -24,7 +24,7 @@ body {
     display: flex;
     min-height: 80vh; /* 最低の高さを設定 */
     overflow: hidden;
-    margin: 15px 35px 15px 35px; /* 中央寄せと上下マージン */
+    margin: 8px 35px 8px 35px; /* 中央寄せと上下マージン */
 }
 
 .left-panel {
