@@ -22,7 +22,6 @@ body {
 /* メインコンテナのスタイル */
 .container-main {
     display: flex;
-    max-width: 2000px; /* 少し広めに調整 */
     width: 90%; /* 画面幅に応じて調整 */
     min-height: 80vh; /* 最低の高さを設定 */
     background-color: rgba(255, 255, 255, 0.1); /* 全体的な透明感 */
