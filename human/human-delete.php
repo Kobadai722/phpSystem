@@ -20,9 +20,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
     try {
         $PDO->beginTransaction();
 
-        $check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
-        $check_stmt = $PDO->prepare($check_sql);
-        $check_stmt->execute([$employee_id]);
+        //$check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        $employee_id = $_POST['employee_id'];
+        try{
+            $check_sql = $PDO -> prepare("DELEAT FROM EMPLOYEE WHERE EMPLOYEE_ID = ?");
+            $check_stmt = $PDO->prepare($check_sql[$employee_id]);
+        }catch(PDOException $e){
+            $_SESSION['error_message'] = "社員情報の削除に失敗しました。";
+        }
+
+
+        
         $employee_status = $check_stmt->fetch(PDO::FETCH_ASSOC);
         $_SESSION['debug_messages'][] = "Employee status from DB: " . print_r($employee_status, true);
 
