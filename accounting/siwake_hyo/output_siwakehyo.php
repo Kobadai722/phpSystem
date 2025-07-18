@@ -2,8 +2,6 @@
 $page_title = '仕訳一覧表示';
 $current_page = 'list';
 require_once '../a_header.php';
-?>
-<?php
 require_once '../../config.php';
 require_once '../../header.php';
 ?>

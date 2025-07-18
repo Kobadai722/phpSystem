@@ -1,11 +1,9 @@
 <?php
-require_once __DIR__ . '../../config.php';
-require_once __DIR__ . '../../header.php';
-require_once '../a_header.php'; 
-// a_header.php で config.php や header.php が読み込まれていることを想定
-
-$page_title = '仕訳登録完了';
+$page_title = '仕訳登録画面';
 $current_page = 'submit';
+require_once '../a_header.php';
+require_once '../../config.php';
+require_once '../../header.php';
 
 // =================================================================
 // 1. 入力値のチェック
