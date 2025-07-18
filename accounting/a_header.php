@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- === ▼ サイトの基準URLを<base>タグで定義 ▼ === -->
-    <!-- これで、このページ内のすべての相対パスは /PHPSYSTEM/ から始まります -->
+    <!-- これで、このページ内のすべての相対パスは /PHPSYSTEM/ から始まる -->
     <base href="/PHPSYSTEM/">
 
     <title>
