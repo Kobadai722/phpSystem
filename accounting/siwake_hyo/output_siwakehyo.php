@@ -4,7 +4,7 @@ $current_page = 'list';
 require_once '../a_header.php';
 require_once '../../config.php';
 require_once '../../header.php';
-session_start();
+
 ?>
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
