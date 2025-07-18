@@ -129,23 +129,6 @@ session_start();
         <tbody id="employeeTableBody">
             </tbody>
     </table>
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteConfirmModalLabel">削除確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-                </div>
-                <div class="modal-body">
-                    本当に <strong id="modalEmployeeName"></strong> さんの情報を削除しますか？<br>
-                    この操作は元に戻せません (物理削除)。
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- 論理削除を実現できたら以下の機能を実装する
     <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
