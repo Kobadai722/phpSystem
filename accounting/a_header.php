@@ -21,6 +21,11 @@
     <!-- === ▼ 独自のCSSのパスを<base>タグからの相対パスに修正 ▼ === -->
     <link rel="stylesheet" href="accounting/css/siwake.css">
     <link rel="stylesheet" href="accounting/css/sidebar.css">
+    
 
 </head>
 <body>
+    <?php
+        require_once __DIR__ . '/accounting/header.php';
+        require_once __DIR__ . '/accounting/config.php';
+

@@ -3,11 +3,7 @@ $page_title = '仕訳入力フォーム';
 $current_page = 'input';
 require_once '../a_header.php';
 ?>
-<?php
-require_once '../../config.php';
-require_once '../../header.php';
-session_start();
-?>
+
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->

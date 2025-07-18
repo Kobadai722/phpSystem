@@ -2,10 +2,6 @@
 $page_title = '仕訳登録画面';
 $current_page = 'submit';
 require_once '../a_header.php';
-require_once '../../config.php';
-require_once '../../header.php';
-session_start();
-
 
 // =================================================================
 // 1. 入力値のチェック
