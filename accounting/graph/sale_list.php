@@ -7,6 +7,8 @@
 session_start();
 // ----- データの取得と絞り込み処理 -----
 
+$sales_sum = 0; 
+
 // 1. フォームから送信された年・月を取得する
 // GETパラメータがなければ、nullを設定
 $selected_year = $_GET['year'] ?? null;
@@ -39,7 +41,7 @@ try {
 ?>
 <!-- ページ部 -->
 <div class="page-container">
-    <?php  require_once '../sidebar.php'; ?>
+    <?php require_once __DIR__ . "/../sidebar.php"; ?>
     <main class="main-content">
         <h1><?php echo htmlspecialchars($page_title); ?></h1>
 
@@ -87,8 +89,8 @@ try {
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th>売上日 (SALE_DATE)</th>
-                        <th class="text-end">売上高 (AMOUNT)</th>
+                        <th>取引日 (SALE_DATE)</th>
+                        <th class="text-end">売上高</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,16 +104,21 @@ try {
                                 <td><?php echo htmlspecialchars($row['SALE_DATE']); ?></td>
                                 <td class="text-end"><?php echo number_format($row['AMOUNT']); ?> 円</td>
                             </tr>
+                            <?php $sales_sum += $row['AMOUNT']; ?>
+
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
             </table>
+            <h2>
+                <!-- 総額表示 -->
+                合計 <?php echo $sales_sum; ?> 円
+            </h2>
         </div>
+            
     </main>
 </div>
 
 <?php
 
 ?>
-
-

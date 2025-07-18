@@ -67,7 +67,9 @@
     </tr>
   </table>
   <?php
+  if($debit_account = 8 ){
     require_once '../sales_insert_function.php';
+  }
   ?>
 
   <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
