@@ -34,10 +34,8 @@ function runSalesBatchProcess(PDO $pdo)
 
         // Step 2: 抽出したデータをSALES_ENTRIESテーブルに登録
         if (!empty($results)) {
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-            // ★ 修正箇所：テーブルが空でない場合のみTRUNCATEを実行する ★
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-            
+
+            //テーブルが空でない場合のみTRUNCATEを実行する 
             // まず、現在のテーブルの行数を取得
             $count_stmt = $pdo->query("SELECT COUNT(*) FROM SALES_ENTRIES");
             $current_rows = (int)$count_stmt->fetchColumn();
@@ -48,9 +46,7 @@ function runSalesBatchProcess(PDO $pdo)
             if ($current_rows > 0) {
                 $pdo->exec("TRUNCATE TABLE SALES_ENTRIES");
             }
-            
-            // ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
-
+        
             $sql_insert = $pdo->prepare(
                 "INSERT INTO SALES_ENTRIES (SALE_DATE, AMOUNT) VALUES (:sale_date, :amount)"
             );
@@ -74,4 +70,9 @@ function runSalesBatchProcess(PDO $pdo)
         // die()の代わりにエラーメッセージを返す
         return "バッチ処理中にエラーが発生しました: " . $e->getMessage();
     }
+
+    // step3. sale_dataから年と月を取り出す
+    
+    
 }
+
