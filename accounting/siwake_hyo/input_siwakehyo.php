@@ -15,7 +15,7 @@ require_once '../../header.php';
     <main class="main-content">
       <div class="table-responsive">
         <h1><i class="bi bi-journal-text"></i> 仕訳入力</h1>
-        <form action="submit_siwake.php" method="post">
+        <form action="/accounting/siwake_hyo/submit_siwake.php" method="post">
           <table class="table table-bordered table-hover table-sm">
             <tr>
               <!-- 仕訳ヘッダー-->

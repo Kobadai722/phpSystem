@@ -60,7 +60,6 @@ require_once '../../header.php';
           </tbody>
         </table>
       </div>
-      <!-- csv出力を予定 -->
       <a href="../siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
       <a href="../../main.php" class="btn btn-secondary mt-3">トップページに戻る</a>
     </main>
