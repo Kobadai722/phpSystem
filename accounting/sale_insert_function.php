@@ -70,9 +70,5 @@ function runSalesBatchProcess(PDO $pdo)
         // die()の代わりにエラーメッセージを返す
         return "バッチ処理中にエラーが発生しました: " . $e->getMessage();
     }
-
-    // step3. sale_dataから年と月を取り出す
-    
-    
 }
 
