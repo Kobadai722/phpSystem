@@ -27,16 +27,16 @@ session_start();
         echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['error_message']);
     }
-    // ここから追加
+    /* デバッグ情報の表示
     if (isset($_SESSION['debug_messages']) && !empty($_SESSION['debug_messages'])) {
         echo '<div class="alert alert-info alert-dismissible fade show m-3" role="alert"><strong>デバッグ情報:</strong><pre>';
         foreach ($_SESSION['debug_messages'] as $msg) {
             echo htmlspecialchars($msg) . "\n";
         }
         echo '</pre><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        unset($_SESSION['debug_messages']); // 表示後は削除
+        unset($_SESSION['debug_messages']); /
     }
-    // ここまで追加
+    */
     ?>
     <h1>人事管理表-編集者モード</h1>
     <?php
@@ -139,18 +139,15 @@ session_start();
                 </div>
                 <div class="modal-body">
                     本当に <strong id="modalEmployeeName"></strong> さんの情報を削除しますか？<br>
-                    この操作は元に戻せます (論理削除)。
+                    この操作は元に戻せません (物理削除)。
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <form action="human-delete.php" method="post" style="display: inline;">
-                        <input type="hidden" name="employee_id" id="modalEmployeeId" value="">
-                        <button type="submit" class="btn btn-danger">削除する</button>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
+    <!-- 論理削除を実現できたら以下の機能を実装する
     <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -158,6 +155,7 @@ session_start();
                     <h5 class="modal-title" id="restoreConfirmModalLabel">復元確認</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
                 </div>
+                
                 <div class="modal-body">
                     本当に <strong id="modalRestoreEmployeeName"></strong> さんの情報を復元しますか？
                 </div>
@@ -168,9 +166,11 @@ session_start();
                         <button type="submit" class="btn btn-info">復元する</button>
                     </form>
                 </div>
+                        
             </div>
         </div>
     </div>
+    -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
