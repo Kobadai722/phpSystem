@@ -105,7 +105,7 @@ foreach ($sql_accounts->fetchAll(PDO::FETCH_ASSOC) as $acc) {
 if ($debit_account_id == 8) {
     echo '<div class="alert alert-info">売上データが検出されたため、売上集計データを更新します...</div>';
     // バッチ処理の部品ファイルを読み込む
-    require_once '../../batch_process_sales.php';
+    require_once '../batch_process_sales.php';
     // バッチ処理関数を実行し、結果を表示
     $batch_message = runSalesBatchProcess($PDO);
     echo '<div class="alert alert-success">' . htmlspecialchars($batch_message, ENT_QUOTES, 'UTF-8') . '</div>';
