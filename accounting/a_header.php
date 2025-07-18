@@ -7,7 +7,7 @@
 
     <!-- === ▼ サイトの基準URLを<base>タグで定義 ▼ === -->
     <!-- これで、このページ内のすべての相対パスは /PHPSYSTEM/ から始まる -->
-    <base href="/PHPSYSTEM/">
+    <base href="/">
 
     <title>
         <?php
