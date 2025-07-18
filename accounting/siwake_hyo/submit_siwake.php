@@ -1,5 +1,6 @@
 <!-- ヘッダーの読み込み -->
 <?php 
+  require_once '../a_header.php';
   require_once '../../header.php';
   $page_title = '仕訳登録完了';
   $current_page = 'submit';
@@ -65,6 +66,9 @@
         <td><?php echo $_POST['credit_amount']; ?></td>
     </tr>
   </table>
+  <?php
+    require_once '';
+  ?>
 
   <p><a href="../siwake_hyo/input_siwakehyo.php">仕訳入力画面に戻る</a></p>
   <p><a href="../siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
