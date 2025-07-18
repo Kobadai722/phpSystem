@@ -1,10 +1,15 @@
-<!DOCTYPE html>
-<html lang="ja">
-
+<?php
+// このヘッダーは、どの階層のPHPファイルからでも呼び出せます。
+?>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- === ▼ サイトの基準URLを<base>タグで定義 ▼ === -->
+    <!-- これで、このページ内のすべての相対パスは /PHPSYSTEM/ から始まります -->
+    <base href="/PHPSYSTEM/">
+
+    <title>
         <?php
         // $page_titleにタイトルを入れる。nullの場合 ”私のウェブサイト” を表示
         if (isset($page_title)) {
@@ -14,12 +19,14 @@
         }
         ?>
     </title>
-  <!-- Bootstrap (主にテーブルなどのコンポーネント用) -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-  <!-- Bootstrap Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- 独自のCSSのパスを<base>タグからの相対パスに修正 -->
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- === ▼ 独自のCSSのパスを<base>タグからの相対パスに修正 ▼ === -->
     <link rel="stylesheet" href="accounting/css/siwake.css">
     <link rel="stylesheet" href="accounting/css/sidebar.css">
+
 </head>
 <body>
