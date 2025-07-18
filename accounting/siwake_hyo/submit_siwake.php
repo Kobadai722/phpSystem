@@ -1,5 +1,6 @@
 <?php
-// ヘッダーの読み込み（重複を避け、一つにまとめるのが望ましい）
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../header.php';
 require_once '../a_header.php'; 
 // a_header.php で config.php や header.php が読み込まれていることを想定
 
@@ -114,8 +115,8 @@ if ($debit_account_id == 8) {
 ?>
 
 <hr>
-<p><a href="input_siwake.php">続けて仕訳を入力する</a></p>
-<p><a href="output_siwakehyo.php">仕訳一覧表示</a></p>
+<p><a href="/accounting/siwake_hyo/input_siwakehyo.php">続けて仕訳を入力する</a></p>
+<p><a href="/accounting/siwake_hyo/output_siwakehyo.php">仕訳一覧表示</a></p>
 <p><a href="../../main.php">トップページに戻る</a></p>
 
 <?php 
