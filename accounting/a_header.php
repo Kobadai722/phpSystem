@@ -24,9 +24,6 @@
 </head>
 <body>
   <?php
-  // DB接続
-  require_once '../../config.php';
-  // セッション開始
-  session_start();
-  require_once '../../header.php'; // ヘッダーの読み込み
+  require_once __DIR__. '../config.php';// DB接続
+  require_once  __DIR__.'../header.php'; // ヘッダーの読み込み
   ?>
