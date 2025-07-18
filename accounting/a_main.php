@@ -27,7 +27,7 @@ $current_page = 'home';
     <div class="page-container">
         <?php
         // ----- サイドバー部品を読み込む -----
-        require_once 'sidebar.php'; 
+        require_once __DIR__ . '/../sidebar.php';
         ?>
         <!-- メインコンテンツ -->
         <main class="main-content">
