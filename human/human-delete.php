@@ -7,15 +7,15 @@ session_start();
 require_once '../config.php';
 
 // デバッグメッセージを格納するセッション配列を初期化
-if (!isset($_SESSION['debug_messages'])) {
-    $_SESSION['debug_messages'] = [];
-}
-$_SESSION['debug_messages'][] = "human-delete.php accessed.";
+// if (!isset($_SESSION['debug_messages'])) {
+//     $_SESSION['debug_messages'] = [];
+// }
+// $_SESSION['debug_messages'][] = "human-delete.php accessed.";
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
     $employee_id = $_POST['employee_id'];
-    $_SESSION['debug_messages'][] = "Received employee_id: " . $employee_id;
+    // $_SESSION['debug_messages'][] = "Received employee_id: " . $employee_id;
 
     try {
         $PDO->beginTransaction();
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         $check_existence_stmt->execute([$employee_id]);
         $employee_exists = $check_existence_stmt->fetch(PDO::FETCH_ASSOC);
 
-        $_SESSION['debug_messages'][] = "Employee existence check from DB: " . print_r($employee_exists, true);
+        // $_SESSION['debug_messages'][] = "Employee existence check from DB: " . print_r($employee_exists, true);
 
         if (!$employee_exists) {
             // 社員が存在しない場合
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         $PDO->commit();
     } catch (PDOException $e) {
         $PDO->rollBack();
-        $_SESSION['debug_messages'][] = "Employee physical deletion error: " . $e->getMessage();
+        // $_SESSION['debug_messages'][] = "Employee physical deletion error: " . $e->getMessage();
         $_SESSION['error_message'] = "データベースエラーにより、社員情報の削除に失敗しました。システム管理者にお問い合わせください。";
     }
 
