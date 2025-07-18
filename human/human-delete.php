@@ -20,18 +20,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
     try {
         $PDO->beginTransaction();
 
-        //$check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
-        $employee_id = $_POST['employee_id'];
-        try{
-            $check_sql = $PDO -> prepare("DELEAT FROM EMPLOYEE WHERE EMPLOYEE_ID = ?");
-            $check_stmt = $PDO->prepare($check_sql[$employee_id]);
-        }catch(PDOException $e){
-            $_SESSION['error_message'] = "社員情報の削除に失敗しました。";
-        }
-
-
-        
+        // 社員情報の存在と削除状態を確認するSQL
+        $check_sql = "SELECT IS_DELETED FROM EMPLOYEE WHERE EMPLOYEE_ID = ?";
+        $check_stmt = $PDO->prepare($check_sql);
+        $check_stmt->execute([$employee_id]);
         $employee_status = $check_stmt->fetch(PDO::FETCH_ASSOC);
+
         $_SESSION['debug_messages'][] = "Employee status from DB: " . print_r($employee_status, true);
 
         if (!$employee_status) {
@@ -39,6 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['employee_id'])) {
         } elseif ($employee_status['IS_DELETED'] == TRUE) {
             $_SESSION['error_message'] = "社員ID: " . htmlspecialchars($employee_id, ENT_QUOTES, 'UTF-8') . " は既に削除済みです。";
         } else {
+            // 論理削除を行うSQL
             $update_sql = "UPDATE EMPLOYEE SET IS_DELETED = TRUE WHERE EMPLOYEE_ID = ?";
             $update_stmt = $PDO->prepare($update_sql);
             $update_stmt->execute([$employee_id]);
