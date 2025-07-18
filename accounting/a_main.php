@@ -19,17 +19,17 @@ $current_page = 'home';
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
-<body>
-    <?php
-        // header.phpはメインコンテンツの外、<body>の直下などで読み込むのが一般的です
-        require_once '../header.php';
+<?php
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../config.php';
+
     ?>
+<body>
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php
         // ----- サイドバー部品を読み込む -----
-        // ファイル名が'sideber.php'ではなく'sidebar.php'の場合、修正してください
-        require_once 'sidebar.php'; 
+        require_once __DIR__ . '/sidebar.php';
         ?>
         <!-- メインコンテンツ -->
         <main class="main-content">

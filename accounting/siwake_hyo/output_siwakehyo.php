@@ -3,11 +3,10 @@ $page_title = '仕訳一覧表示';
 $current_page = 'list';
 require_once '../a_header.php';
 ?>
-  
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-    <?php include_once '../sidebar.php'; ?>
+    <?php require_once __DIR__ . '/../sidebar.php'; ?>
 
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
@@ -57,8 +56,7 @@ require_once '../a_header.php';
           </tbody>
         </table>
       </div>
-      <!-- csv出力を予定 -->
-      <a href="../siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
+      <a href="/accounting/siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
       <a href="../../main.php" class="btn btn-secondary mt-3">トップページに戻る</a>
     </main>
   </div>

@@ -1,4 +1,4 @@
-<?php session_start(); // セッションを開始 ?>
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-auto">
                 <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php">一般画面</option>
+                        <option value="main.php" selected>一般画面</option>
                         <option value="editer.php">編集者画面</option>
                 </select>
                 </div>
@@ -53,7 +53,7 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="name_keyword" name="name_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['name_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['name_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
                             <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
@@ -65,7 +65,7 @@
                 <div class="col-auto">
                     <div class="position-relative">
                         <input type="text" id="id_keyword" name="id_keyword" class="form-control pe-4" value="<?= htmlspecialchars($_GET['id_keyword'] ?? '', ENT_QUOTES) ?>">
-                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;<?php if (empty($_GET['id_keyword'] ?? '')) echo ' display: none;'; ?>" title="クリア">
+                        <span onclick="clearInputField(this)" class="clear-input-btn position-absolute top-50 end-0 translate-middle-y me-2" style="cursor: pointer;" title="クリア">
                             <i class="fas fa-times-circle"></i>
                         </span>
                     </div>
@@ -84,7 +84,8 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                </div>
+
+            </div>
         </form>
     </div>
 
@@ -100,12 +101,11 @@
             </tr>
         </thead>
         <tbody id="employeeTableBody">
-            <?php
-            ?>
-        </tbody>
+            </tbody>
     </table>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
-<script src="live_search.js"></script> </html>
+<script src="live_search.js"></script>
+</html>
