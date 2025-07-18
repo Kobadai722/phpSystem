@@ -20,7 +20,9 @@ $current_page = 'home';
     <link rel="stylesheet" href="css/siwake.css">
 </head>
 <?php
-        require_once '../header.php';
+        require_once __DIR__ . '/../header.php';
+        require_once __DIR__ . '/../config.php';
+
     ?>
 <body>
     <!-- ページ全体のコンテナ -->
