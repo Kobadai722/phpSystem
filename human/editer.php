@@ -128,7 +128,7 @@ session_start();
         </thead>
         <tbody id="employeeTableBody">
             </tbody>
-    </table>
+        </table>
     <!-- 論理削除を実現できたら以下の機能を実装する
     <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -148,10 +148,11 @@ session_start();
                         <button type="submit" class="btn btn-info">復元する</button>
                     </form>
                 </div>
-                        -->
+                        
             </div>
         </div>
     </div>
+    -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
