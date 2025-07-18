@@ -124,7 +124,6 @@ session_start();
                 <th scope="col">氏名</th>
                 <th scope="col">所属部署</th>
                 <th scope="col">職位</th>
-                <th scope="col">操作</th>
             </tr>
         </thead>
         <tbody id="employeeTableBody">
@@ -166,11 +165,10 @@ session_start();
                         <button type="submit" class="btn btn-info">復元する</button>
                     </form>
                 </div>
-                        
+                        -->
             </div>
         </div>
     </div>
-    -->
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
