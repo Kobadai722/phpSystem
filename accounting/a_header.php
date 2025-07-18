@@ -23,10 +23,3 @@
   <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
-  <?php
-  // DB接続
-  require_once '../../config.php';
-  // セッション開始
-  session_start();
-  require_once '../../header.php'; // ヘッダーの読み込み
-  ?>
