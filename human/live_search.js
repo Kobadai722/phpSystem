@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const id = idKeywordInput.value;
             const division = divisionSelect.value;
             
-            // 現在のページがediter.phpかどうかを判定 (不要だが、他のロジックに影響しないため残す)
+            // 現在のページがediter.phpかどうかを判定
             const isEditerPage = window.location.pathname.includes('editer.php');
 
             // URLSearchParamsを使ってクエリパラメータを構築
@@ -61,8 +61,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateTable(employees, isEditerPage) { // isEditerPage パラメータを追加
         employeeTableBody.innerHTML = ''; // テーブルの中身をクリア
 
+        // editer.phpの「操作」列がなくなったため、列数を5に調整（以前は6）
+        const colspanCount = isEditerPage ? '5' : '6';
+
         if (employees.length === 0) {
-            employeeTableBody.innerHTML = '<tr><td colspan="' + (isEditerPage ? '5' : '6') + '">該当する従業員が見つかりません。</td></tr>'; // 列数を調整
+            employeeTableBody.innerHTML = `<tr><td colspan="${colspanCount}">該当する従業員が見つかりません。</td></tr>`;
             return;
         }
 
@@ -70,6 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             let row;
             if (isEditerPage) {
                 // editer.php 用の行フォーマット
+                // 削除ボタンのHTMLを削除
                 row = `
                     <tr>
                         <td scope="row">${escapeHtml(employee.EMPLOYEE_ID)}</td>
@@ -79,13 +83,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${escapeHtml(employee.DIVISION_NAME)}</td>
                         <td>${escapeHtml(employee.JOB_POSITION_NAME)}</td>
                         <td>
-                            <button type="button" class="btn btn-sm btn-danger delete-employee-btn"
-                                    data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
-                                    data-employee-id="${escapeHtml(employee.EMPLOYEE_ID)}"
-                                    data-employee-name="${escapeHtml(employee.NAME)}">
-                                削除
-                            </button>
-                        </td>
+                            </td>
                     </tr>
                 `;
             } else {
@@ -104,10 +102,10 @@ document.addEventListener('DOMContentLoaded', function() {
             employeeTableBody.insertAdjacentHTML('beforeend', row);
         });
 
-        
-        if (isEditerPage) {
-            setupModalButtons(); // 削除ボタンのセットアップは維持
-        }
+        // 削除ボタンが存在しなくなるため、setupModalButtons()の呼び出しも不要
+        // if (isEditerPage) {
+        //     setupModalButtons(); 
+        // }
     }
 
     function escapeHtml(text) {
@@ -124,7 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
 
-
+    // setupModalButtons() 関数を削除またはコメントアウト
+    /*
     function setupModalButtons() {
         const deleteButtons = document.querySelectorAll('.delete-employee-btn');
         const deleteConfirmModal = document.getElementById('deleteConfirmModal');
@@ -166,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //         button.addEventListener('click', handleEditRestoreClick);
         //     });
             
-        //     function handleEditRestoreClick() {           const employeeId = this.dataset.employeeId;
+        //     function handleEditRestoreClick() {        const employeeId = this.dataset.employeeId;
         //         const employeeName = this.dataset.employeeName;
 
         //         if (modalRestoreEmployeeNameSpan) {
@@ -178,6 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
         //     }
         // }
     }
+    */
 
 
     // イベントリスナーの追加
@@ -217,6 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         performSearch(); // クリア後も検索を実行
     };
 
-    // 初期ロード時にもボタンのイベントリスナーを設定
-    setupModalButtons();
+    // 初期ロード時にもボタンのイベントリスナーを設定 (削除ボタンが存在しないため不要)
+    // setupModalButtons();
 });
