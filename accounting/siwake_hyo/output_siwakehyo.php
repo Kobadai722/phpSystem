@@ -59,7 +59,7 @@ require_once '../../header.php';
           </tbody>
         </table>
       </div>
-      <a href="../siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
+      <a href="/accounting/siwake_hyo/input_siwakehyo.php" class="btn btn-primary mt-3">仕訳入力画面に戻る</a>
       <a href="../../main.php" class="btn btn-secondary mt-3">トップページに戻る</a>
     </main>
   </div>
