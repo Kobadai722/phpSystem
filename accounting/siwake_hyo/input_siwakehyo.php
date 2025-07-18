@@ -1,4 +1,5 @@
 <?php
+session_start();
 $page_title = '仕訳入力フォーム';
 $current_page = 'input';
 require_once '../a_header.php';

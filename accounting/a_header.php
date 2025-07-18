@@ -27,5 +27,5 @@
 <body>
     <?php
         require_once __DIR__ . '/accounting/header.php';
-        require_once __DIR__ . '/accounting/config.php';
+        require_once __DIR__ . '/config.php';
 
