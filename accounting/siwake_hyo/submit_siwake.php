@@ -4,6 +4,8 @@ $current_page = 'submit';
 require_once '../a_header.php';
 require_once '../../config.php';
 require_once '../../header.php';
+session_start();
+
 
 // =================================================================
 // 1. 入力値のチェック
@@ -29,12 +31,9 @@ if ($debit_amount != $credit_amount) {
 }
 
 // =================================================================
-// 2. データベース登録処理 (トランザクション使用)
+// 2. データベース登録処理
 // =================================================================
 try {
-    // トランザクション開始
-    $PDO->beginTransaction();
-
     // Step 1: 仕訳ヘッダーの登録
     $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION, AMOUNT) VALUES(?, ?, ?)');
     $sql_header->execute([$entry_date, $description, $debit_amount]); // 金額もヘッダーに保存すると便利
@@ -42,12 +41,11 @@ try {
     // 登録したヘッダーのIDを取得
     $header_id = $PDO->lastInsertId();
 
-    // Step 2: 仕訳明細（借方）の登録
+    // Step 2: 仕訳明細（借方）
     $sql_entries = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES(?, ?, ?, ?)');
     $sql_entries->execute([$header_id, $debit_account_id, '借方', $debit_amount]);
 
-    // Step 3: 仕訳明細（貸方）の登録
-    // ★★★ バグ修正箇所1: 第3引数を $credit_amount に修正 ★★★
+    // Step 3: 仕訳明細（貸方)
     $sql_entries->execute([$header_id, $credit_account_id, '貸方', $credit_amount]);
 
     // すべての登録が成功したらコミット
