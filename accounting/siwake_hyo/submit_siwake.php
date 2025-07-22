@@ -33,25 +33,36 @@ if ($debit_amount != $credit_amount) {
 // 2. データベース登録処理
 // =================================================================
 try {
-    // トランザクション開始
-    $PDO->beginTransaction();
+       // トランザクション開始
+        $PDO->beginTransaction();
 
-    // Step 1: 仕訳ヘッダーの登録
-    $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
-    $sql_header->execute([$entry_date, $description]);
+       // Step 1: 仕訳ヘッダーの登録（変更なし）
+        $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION, AMOUNT) VALUES(?, ?, ?)');
+        $sql_header->execute([$entry_date, $description, $debit_amount]);
+        
+       // 登録したヘッダーのIDを取得
+        $header_id = $PDO->lastInsertId();
     
-    // 登録したヘッダーのIDを取得
-    $header_id = $PDO->lastInsertId();
-
-    // Step 2: 仕訳明細（借方）
-    $sql_entries = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES(?, ?, ?, ?)');
-    $sql_entries->execute([$header_id, $debit_account_id, '借方', $debit_amount]);
-
-    // Step 3: 仕訳明細（貸方)
-    $sql_entries->execute([$header_id, $credit_account_id, '貸方', $credit_amount]);
-
-    // すべての登録が成功したらコミット
-    $PDO->commit();
+       // =================================================================
+       // ★★★ 修正箇所 ★★★
+       // Step 2 & 3: 仕訳明細（借方・貸方）を一度に登録
+       // =================================================================
+        $sql_entries = $PDO->prepare(
+           // VALUES句を2つ繋げて、2行分のデータを一度にINSERTする
+            'INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) 
+            VALUES (?, ?, ?, ?), (?, ?, ?, ?)'
+        );
+    
+       // 2行分のデータを一つの配列にまとめる
+        $params = [
+            $header_id, $debit_account_id, '借方', $debit_amount,
+            $header_id, $credit_account_id, '貸方', $credit_amount
+        ]; 
+       // execute()の呼び出しは1回で完了
+        $sql_entries->execute($params);
+    
+       // すべての登録が成功したらコミット
+        $PDO->commit();
 
 } catch (PDOException $e) {
     // エラーが発生したらロールバック
