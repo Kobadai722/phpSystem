@@ -34,7 +34,7 @@ $current_page = $current_page ?? '';
             <a class="nav-link <?php echo ($current_page === 'graph') ? 'active' : ''; ?>" href="#">
                 <div class="nav-link-content">
                     <i class="bi bi-bar-chart-line-fill"></i>
-                    <span class="nav-link-text">グラフでも作ろうかな</span>
+                    <span class="nav-link-text">グラフ</span>
                 </div>
             </a>
         </li>

@@ -1,5 +1,6 @@
 <?php
   $page_title = "売上高一覧";
+  $current_page = "graph";
   require_once "../a_header.php";
   require_once "../config.php";
   require_once "../header.php";
