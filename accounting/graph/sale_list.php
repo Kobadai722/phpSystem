@@ -1,11 +1,9 @@
 <?php
-  $page_title = "売上高一覧";
-  $current_page = "graph";
-  require_once "../a_header.php";
-  require_once "../config.php";
-  require_once "../header.php";
-
-session_start();
+$page_title = "売上高一覧";
+$current_page = "graph";
+require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../header.php';
 // ----- データの取得と絞り込み処理 -----
 
 $sales_sum = 0; 
