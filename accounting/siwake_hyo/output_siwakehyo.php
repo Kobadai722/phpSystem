@@ -32,15 +32,29 @@ require_once __DIR__ . '/../../header.php';
             <?php
             //勘定科目テーブル、仕訳ヘッダーテーブル、仕訳明細テーブルの結合
             $sql = $PDO->prepare("SELECT
-                            h.ID, h.ENTRY_DATE, h.DESCRIPTION,
-                            debit_acc.NAME AS debit_name, debit_entry.AMOUNT AS debit_amount,
-                            credit_acc.NAME AS credit_name, credit_entry.AMOUNT AS credit_amount
-                        FROM JOURNAL_HEADERS AS h
-                        LEFT JOIN JOURNAL_ENTRIES AS debit_entry ON h.ID = debit_entry.HEADER_ID AND debit_entry.TYPE = '借方'
-                        LEFT JOIN ACCOUNTS AS debit_acc ON debit_entry.ACCOUNT_ID = debit_acc.ID
-                        LEFT JOIN JOURNAL_ENTRIES AS credit_entry ON h.ID = credit_entry.HEADER_ID AND credit_entry.TYPE = '貸方'
-                        LEFT JOIN ACCOUNTS AS credit_acc ON credit_entry.ACCOUNT_ID = credit_acc.ID
-                        ORDER BY h.ID");
+                                      h.ID,
+                                      h.ENTRY_DATE,
+                                      h.DESCRIPTION,
+                                      debit_acc.NAME AS debit_name,
+                                      debit_entry.AMOUNT AS debit_amount,
+                                      credit_acc.NAME AS credit_name,
+                                      credit_entry.AMOUNT AS credit_amount
+                                  FROM
+                                      JOURNAL_HEADERS AS h
+                                  LEFT JOIN
+                                      JOURNAL_ENTRIES AS debit_entry
+                                      ON h.ID = debit_entry.JOURNAL_HEADER_ID AND debit_entry.TYPE = '借方'
+                                  LEFT JOIN
+                                      ACCOUNTS AS debit_acc
+                                      ON debit_entry.ACCOUNT_ID = debit_acc.ID
+                                  LEFT JOIN
+                                      JOURNAL_ENTRIES AS credit_entry
+                                      ON h.ID = credit_entry.JOURNAL_HEADER_ID AND credit_entry.TYPE = '貸方'
+                                  LEFT JOIN
+                                      ACCOUNTS AS credit_acc
+                                      ON credit_entry.ACCOUNT_ID = credit_acc.ID
+                                  ORDER BY
+                                      h.ENTRY_DATE DESC, h.ID DESC;");
             $sql->execute();
             $results = $sql->fetchAll(PDO::FETCH_ASSOC);
 
