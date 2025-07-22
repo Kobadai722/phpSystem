@@ -1,13 +1,14 @@
 <head>
+    <?php session_start();?>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <base href="/">
 
     <title>
         <?php
-        // $page_titleにタイトルを入れる。nullの場合 ”私のウェブサイト” を表示
+        // $page_titleにタイトルを入れる
         if (isset($page_title)) {
-            echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8') . ' | 私のウェブサイト';
+            echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8');
         } else {
             echo '私のウェブサイト';
         }
@@ -25,6 +26,9 @@
 
 </head>
 <body>
-
+    <?php
+        require_once __DIR__ . '/../config.php';
+        require_once __DIR__ . '/../header.php';
+    ?>
 
 
