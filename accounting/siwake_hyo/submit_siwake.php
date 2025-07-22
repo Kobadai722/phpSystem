@@ -33,6 +33,9 @@ if ($debit_amount != $credit_amount) {
 // 2. データベース登録処理
 // =================================================================
 try {
+    // トランザクション開始
+    $PDO->beginTransaction();
+
     // Step 1: 仕訳ヘッダーの登録
     $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION, AMOUNT) VALUES(?, ?, ?)');
     $sql_header->execute([$entry_date, $description, $debit_amount]); // 金額もヘッダーに保存すると便利
