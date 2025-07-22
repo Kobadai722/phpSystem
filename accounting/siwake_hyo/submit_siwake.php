@@ -26,7 +26,7 @@ $credit_amount = $_POST['credit_amount'];
 
 // 金額が等しいかチェック (貸借平均の原理)
 if ($debit_amount != $credit_amount) {
-    die('借方と貸方の金額が一致しません。<a href="input_siwake.php">戻る</a>');
+    die('借方と貸方の金額が一致しません。<a href="input_siwakehyo.php">戻る</a>');
 }
 
 // =================================================================
