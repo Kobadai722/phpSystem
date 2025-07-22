@@ -37,8 +37,8 @@ try {
     $PDO->beginTransaction();
 
     // Step 1: 仕訳ヘッダーの登録
-    $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION, AMOUNT) VALUES(?, ?, ?)');
-    $sql_header->execute([$entry_date, $description, $debit_amount]); // 金額もヘッダーに保存すると便利
+    $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION) VALUES(?, ?)');
+    $sql_header->execute([$entry_date, $description]);
     
     // 登録したヘッダーのIDを取得
     $header_id = $PDO->lastInsertId();
