@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '../../config.php';
-require_once '../a_header.php';
-require_once __DIR__ . '../../header.php'; // サイト全体の共通ヘッダー
+require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../../config.php';
+require_once __DIR__ . '/../../header.php';
 
 $page_title = '仕訳入力フォーム';
 $current_page = 'input';
