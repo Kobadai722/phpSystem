@@ -36,31 +36,20 @@ try {
        // トランザクション開始
         $PDO->beginTransaction();
 
-       // Step 1: 仕訳ヘッダーの登録（変更なし）
+       // Step 1: 仕訳ヘッダーの登録
         $sql_header = $PDO->prepare('INSERT INTO JOURNAL_HEADERS (ENTRY_DATE, DESCRIPTION, AMOUNT) VALUES(?, ?, ?)');
         $sql_header->execute([$entry_date, $description, $debit_amount]);
         
        // 登録したヘッダーのIDを取得
         $header_id = $PDO->lastInsertId();
-    
-       // =================================================================
-       // ★★★ 修正箇所 ★★★
-       // Step 2 & 3: 仕訳明細（借方・貸方）を一度に登録
-       // =================================================================
-        $sql_entries = $PDO->prepare(
-           // VALUES句を2つ繋げて、2行分のデータを一度にINSERTする
-            'INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) 
-            VALUES (?, ?, ?, ?), (?, ?, ?, ?)'
-        );
-    
-       // 2行分のデータを一つの配列にまとめる
-        $params = [
-            $header_id, $debit_account_id, '借方', $debit_amount,
-            $header_id, $credit_account_id, '貸方', $credit_amount
-        ]; 
-       // execute()の呼び出しは1回で完了
-        $sql_entries->execute($params);
-    
+       // Step 2 & 3: 仕訳明細（借方・貸方）を登録
+        // 借方の仕訳明細を登録
+        $sql_debit =  $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
+        $sql_debit->execute([$header_id, $debit_account_id, '借方', $debit_amount]);
+         // 貸方の仕訳明細を登録
+        $sql_credit = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
+        $sql_credit->execute([$header_id, $credit_account_id, '貸方', $credit_amount]);
+        
        // すべての登録が成功したらコミット
         $PDO->commit();
 
