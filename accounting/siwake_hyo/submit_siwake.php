@@ -44,10 +44,10 @@ try {
         $header_id = $PDO->lastInsertId();
        // Step 2 & 3: 仕訳明細（借方・貸方）を登録
         // 借方の仕訳明細を登録
-        $sql_debit =  $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
+        $sql_debit =  $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
         $sql_debit->execute([$header_id, $debit_account_id, '借方', $debit_amount]);
          // 貸方の仕訳明細を登録
-        $sql_credit = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (JOURNAL_HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
+        $sql_credit = $PDO->prepare('INSERT INTO JOURNAL_ENTRIES (HEADER_ID, ACCOUNT_ID, TYPE, AMOUNT) VALUES (?, ?, ?, ?)');
         $sql_credit->execute([$header_id, $credit_account_id, '貸方', $credit_amount]);
         
        // すべての登録が成功したらコミット
