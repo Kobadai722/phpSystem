@@ -19,12 +19,11 @@ function runSalesBatchProcess(PDO $pdo)
 {
     try {
         // Step 1: 仕訳データから売上データを抽出
-        $sql_select = $pdo->prepare('
-            SELECT H.ENTRY_DATE, E.AMOUNT 
-            FROM JOURNAL_ENTRIES AS E
-            JOIN JOURNAL_HEADERS AS H ON E.JOURNAL_HEADER_ID = H.ID
-            WHERE E.ACCOUNT_ID = :account_id AND E.TYPE = :type
-        ');
+        $sql_select = $pdo->prepare('SELECT H.ENTRY_DATE, E.AMOUNT 
+                                    FROM JOURNAL_ENTRIES AS E
+                                    JOIN JOURNAL_HEADERS AS H ON E.HEADER_ID = H.ID
+                                    WHERE E.ACCOUNT_ID = :account_id AND E.TYPE = :type
+                                    ');
         $sql_select->bindValue(':account_id', 8, PDO::PARAM_INT);
         $sql_select->bindValue(':type', '借方', PDO::PARAM_STR);
         $sql_select->execute();
@@ -64,7 +63,6 @@ function runSalesBatchProcess(PDO $pdo)
         if ($pdo->inTransaction()) {
             $pdo->rollBack();
         }
-        // die()の代わりにエラーメッセージを返す
         return "バッチ処理中にエラーが発生しました: " . $e->getMessage();
     }
 }
