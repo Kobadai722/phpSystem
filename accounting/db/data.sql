@@ -19,3 +19,4 @@ INSERT INTO ACCOUNTS (NAME, TYPE, CODE) VALUES
 ('給料', '費用', '502'),
 ('通信費', '費用', '503'),
 ('旅費交通費', '費用', '504');
+
