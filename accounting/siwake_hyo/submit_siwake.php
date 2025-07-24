@@ -52,9 +52,20 @@ try {
         
        // すべての登録が成功したらコミット
         $PDO->commit();
+    
+    // =================================================================
+    // 3. 表示用に勘定科目名を取得
+    // =================================================================
+    $account_names = [];
+    $sql_accounts = $PDO->prepare('SELECT ID, NAME FROM ACCOUNTS WHERE ID IN (?, ?)');
+    $sql_accounts->execute([$debit_account_id, $credit_account_id]);
+    foreach ($sql_accounts->fetchAll(PDO::FETCH_ASSOC) as $acc) {
+        $account_names[$acc['ID']] = $acc['NAME'];
+    }
+
 
     // =================================================================
-    // 3. 登録完了メッセージの表示
+    // 4. 登録完了メッセージの表示
     // =================================================================
     ?>
     <h3>以下の内容で仕訳が登録されました</h3>
@@ -87,18 +98,6 @@ try {
     $PDO->rollBack();
     die("データベース登録中にエラーが発生しました: " . $e->getMessage());
 }
-
-// =================================================================
-// 4. 表示用に勘定科目名を取得
-// =================================================================
-$account_names = [];
-$sql_accounts = $PDO->prepare('SELECT ID, NAME FROM ACCOUNTS WHERE ID IN (?, ?)');
-$sql_accounts->execute([$debit_account_id, $credit_account_id]);
-foreach ($sql_accounts->fetchAll(PDO::FETCH_ASSOC) as $acc) {
-    $account_names[$acc['ID']] = $acc['NAME'];
-}
-
-
 
 // =================================================================
 // 5. 売上高科目の場合、バッチ処理を実行
