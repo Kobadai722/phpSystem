@@ -43,13 +43,13 @@ require_once __DIR__ . '/../../header.php';
                                       JOURNAL_HEADERS AS h
                                   LEFT JOIN
                                       JOURNAL_ENTRIES AS debit_entry
-                                      ON h.ID = debit_entry.JOURNAL_HEADER_ID AND debit_entry.TYPE = '借方'
+                                      ON h.ID = debit_entry.HEADER_ID AND debit_entry.TYPE = '借方'
                                   LEFT JOIN
                                       ACCOUNTS AS debit_acc
                                       ON debit_entry.ACCOUNT_ID = debit_acc.ID
                                   LEFT JOIN
                                       JOURNAL_ENTRIES AS credit_entry
-                                      ON h.ID = credit_entry.JOURNAL_HEADER_ID AND credit_entry.TYPE = '貸方'
+                                      ON h.ID = credit_entry.HEADER_ID AND credit_entry.TYPE = '貸方'
                                   LEFT JOIN
                                       ACCOUNTS AS credit_acc
                                       ON credit_entry.ACCOUNT_ID = credit_acc.ID
