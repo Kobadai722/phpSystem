@@ -111,7 +111,7 @@ try {
             </table>
             <h2>
                 <!-- 総額表示 -->
-                合計 <?php echo $sales_sum; ?> 円
+                合計 <?php echo number_format($sales_sum); ?> 円
             </h2>
         </div>
             
