@@ -53,6 +53,35 @@ try {
        // すべての登録が成功したらコミット
         $PDO->commit();
 
+    // =================================================================
+    // 3. 登録完了メッセージの表示
+    // =================================================================
+    ?>
+    <h3>以下の内容で仕訳が登録されました</h3>
+    <table class="table text-center table-bordered">
+        <thead class="thead-light">
+            <tr>
+                <th>日付</th>
+                <th>摘要</th>
+                <th>借方科目</th>
+                <th>借方金額</th>
+                <th>貸方科目</th>
+                <th>貸方金額</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><?php echo htmlspecialchars($entry_date, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?></td>
+                <td><?php echo htmlspecialchars($account_names[$debit_account_id] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
+                <td>¥<?php echo number_format($debit_amount); ?></td>
+                <td><?php echo htmlspecialchars($account_names[$credit_account_id] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
+                <td>¥<?php echo number_format($credit_amount); ?></td>
+            </tr>
+        </tbody>
+    </table>
+
+<?php
 } catch (PDOException $e) {
     // エラーが発生したらロールバック
     $PDO->rollBack();
@@ -60,7 +89,7 @@ try {
 }
 
 // =================================================================
-// 3. 表示用に勘定科目名を取得
+// 4. 表示用に勘定科目名を取得
 // =================================================================
 $account_names = [];
 $sql_accounts = $PDO->prepare('SELECT ID, NAME FROM ACCOUNTS WHERE ID IN (?, ?)');
@@ -69,33 +98,6 @@ foreach ($sql_accounts->fetchAll(PDO::FETCH_ASSOC) as $acc) {
     $account_names[$acc['ID']] = $acc['NAME'];
 }
 
-// =================================================================
-// 4. 登録完了メッセージの表示
-// =================================================================
-?>
-<h3>以下の内容で仕訳が登録されました</h3>
-<table class="table text-center table-bordered">
-    <thead class="thead-light">
-        <tr>
-            <th>日付</th>
-            <th>摘要</th>
-            <th>借方科目</th>
-            <th>借方金額</th>
-            <th>貸方科目</th>
-            <th>貸方金額</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><?php echo htmlspecialchars($entry_date, ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?></td>
-            <td><?php echo htmlspecialchars($account_names[$debit_account_id] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
-            <td>¥<?php echo number_format($debit_amount); ?></td>
-            <td><?php echo htmlspecialchars($account_names[$credit_account_id] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
-            <td>¥<?php echo number_format($credit_amount); ?></td>
-        </tr>
-    </tbody>
-</table>
 
 <?php
 // =================================================================
