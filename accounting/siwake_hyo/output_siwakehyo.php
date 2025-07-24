@@ -35,24 +35,15 @@ require_once __DIR__ . '/../../header.php';
                                       h.ID,
                                       h.ENTRY_DATE,
                                       h.DESCRIPTION,
-                                      debit_acc.NAME AS debit_name,
-                                      debit_entry.AMOUNT AS debit_amount,
-                                      credit_acc.NAME AS credit_name,
-                                      credit_entry.AMOUNT AS credit_amount
+                                      (SELECT ACCOUNT_ID FROM JOURNAL_ENTRIES WHERE HEADER_ID = h.ID AND TYPE = '借方') AS debit_name,
+                                      e.DEBIT_AMOUNT,
+                                      (SELECT NAME FROM ACCOUNTS WHERE ID = e.CREDIT_ACCOUNT_ID AND TYPE = '貸方') AS credit_name,
+                                      e.CREDIT_AMOUNT
                                   FROM
                                       JOURNAL_HEADERS AS h
                                   LEFT JOIN
-                                      JOURNAL_ENTRIES AS debit_entry
-                                      ON h.ID = debit_entry.JOURNAL_HEADER_ID AND debit_entry.TYPE = '借方'
-                                  LEFT JOIN
-                                      ACCOUNTS AS debit_acc
-                                      ON debit_entry.ACCOUNT_ID = debit_acc.ID
-                                  LEFT JOIN
-                                      JOURNAL_ENTRIES AS credit_entry
-                                      ON h.ID = credit_entry.JOURNAL_HEADER_ID AND credit_entry.TYPE = '貸方'
-                                  LEFT JOIN
-                                      ACCOUNTS AS credit_acc
-                                      ON credit_entry.ACCOUNT_ID = credit_acc.ID
+                                      JOURNAL_ENTRIES AS e
+                                      ON h.ID = e.HEADER_ID
                                   ORDER BY
                                       h.ENTRY_DATE DESC, h.ID DESC;");
             $sql->execute();
