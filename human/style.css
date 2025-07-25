@@ -3,8 +3,8 @@ body {
     background-color: #f4f4f4;
     color: #333;
     line-height: 1.6;
-    margin: 0;
-    padding: 20px;
+    margin: 0; /* bodyのデフォルトのマージンを削除 */
+    padding: 0; /* bodyのデフォルトのパディングを削除 */
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -23,9 +23,9 @@ a:hover {
 
 .container {
     max-width: 960px;
-    margin: 30px auto;
+    margin: 30px auto; /* ページ全体の左右中央揃えと上下の余白を制御 */
     background-color: #fff;
-    padding: 30px;
+    padding: 30px; /* コンテンツと枠の間のパディング */
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
