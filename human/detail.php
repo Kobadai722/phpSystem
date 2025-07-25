@@ -43,9 +43,10 @@ if (isset($employee_id) && is_numeric($employee_id)) {
     <meta charset="UTF-8">
     <title><?php echo $page_title_tag; ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <?php include '../header.php'; ?>
     <link rel="stylesheet" href="style.css">
 </head>
-<?php include '../header.php'; ?>
+
 <body>
     <div class="container py-4">
         <h1><?php echo $page_h1_title; ?></h1>
