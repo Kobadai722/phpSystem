@@ -129,6 +129,18 @@ try {
                 </tfoot>
             </table>
         </div>
+        <?php
+        // バッチ処理が実行されたらメッセージを表示
+        if ($batch_message !== null) {
+            echo '<div class="alert alert-success mt-3">' . htmlspecialchars($batch_message, ENT_QUOTES, 'UTF-8') . '</div>';
+        }
+        ?>
+
+        <form action="" method="POST" class="mt-4">
+            <button type="submit" name="run_batch" class="btn btn-info">
+                売上集計データを手動更新
+            </button>
+        </form>
     </main>
 </div>
 
