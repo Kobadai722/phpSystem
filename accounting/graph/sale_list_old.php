@@ -1,54 +1,34 @@
 <?php
-// ----- ページ設定と部品の読み込み -----
 $page_title = "売上高一覧";
 $current_page = "graph";
-
 require_once __DIR__ . '/../a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
-
-
-
 // ----- データの取得と絞り込み処理 -----
 
-$sales_sum = 0;
+$sales_sum = 0; 
 
-// フォームから送信された年・月を取得
+// 1. フォームから送信された年・月を取得する
+// GETパラメータがなければ、nullを設定
 $selected_year = $_GET['year'] ?? null;
 $selected_month = $_GET['month'] ?? null;
 
-
-// === ▼▼▼ SQLクエリの組み立てロジックを修正 ▼▼▼ ===
-
-// SQLクエリの組み立て準備
+// 2. SQLクエリを準備する
+// 基本のSQL文
 $sql_base = "SELECT SALE_DATE, AMOUNT FROM SALES_ENTRIES";
-$where_conditions = []; // WHERE句の条件を格納する配列
-$params = [];           // パラメータを格納する配列
+$params = []; // SQLに渡すパラメータを格納する配列
 
-// 年が選択されていたら、年の条件を追加
-if (!empty($selected_year)) {
-    $where_conditions[] = "YEAR(SALE_DATE) = ?";
-    $params[] = $selected_year;
+// もし年と月が両方選択された場合のみ
+if (!empty($selected_year) && !empty($selected_month)) {
+    $sql_where = " WHERE YEAR(SALE_DATE) = ? AND MONTH(SALE_DATE) = ?";
+    $sql_query = $sql_base . $sql_where . " ORDER BY SALE_DATE DESC";
+    $params = [$selected_year, $selected_month];
+} else {
+    // 絞り込みがない場合は、全件取得
+    $sql_query = $sql_base . " ORDER BY SALE_DATE DESC";
 }
 
-// 月が選択されていたら、月の条件を追加
-if (!empty($selected_month)) {
-    $where_conditions[] = "MONTH(SALE_DATE) = ?";
-    $params[] = $selected_month;
-}
-
-// 組み立てた条件を元に、最終的なSQLクエリを生成
-$sql_query = $sql_base;
-if (!empty($where_conditions)) {
-    // 条件が1つ以上あれば、"WHERE" と "AND" で連結する
-    $sql_query .= " WHERE " . implode(' AND ', $where_conditions);
-}
-$sql_query .= " ORDER BY SALE_DATE DESC";
-
-// === ▲▲▲ ここまで修正 ▲▲▲ ===
-
-
-// データベースからデータを取得
+// 3. データベースからデータを取得
 try {
     $stmt = $PDO->prepare($sql_query);
     $stmt->execute($params);
@@ -58,31 +38,37 @@ try {
 }
 
 ?>
+<!-- ページ部 -->
 <div class="page-container">
     <?php require_once __DIR__ . "/../sidebar.php"; ?>
     <main class="main-content">
         <h1><?php echo htmlspecialchars($page_title); ?></h1>
 
+        <!-- 表示する期間選択フォーム -->
         <form action="" method="GET" class="border rounded p-3 my-4 bg-light">
             <div class="row align-items-end">
+                <!-- 年の選択 -->
                 <div class="col-md-4">
                     <label for="year" class="form-label">年を選択</label>
                     <select name="year" id="year" class="form-select">
                         <option value="">-- 全て --</option>
                         <?php
+                        // 今年から過去5年分をプルダウンに表示
                         $current_year = date('Y');
                         for ($y = $current_year; $y >= $current_year - 5; $y--) {
+                            // 送信された年と同じなら、selected属性を付ける
                             $selected_attr = ($y == $selected_year) ? 'selected' : '';
                             echo "<option value='{$y}' {$selected_attr}>{$y}年</option>";
                         }
                         ?>
                     </select>
                 </div>
+                <!-- 月の選択 -->
                 <div class="col-md-4">
                     <label for="month" class="form-label">月を選択</label>
                     <select name="month" id="month" class="form-select">
                         <option value="">-- 全て --</option>
-                        <?php
+                        <?php 
                         for ($m = 1; $m <= 12; $m++) {
                             $selected_attr = ($m == $selected_month) ? 'selected' : '';
                             echo "<option value='{$m}' {$selected_attr}>{$m}月</option>";
@@ -90,18 +76,20 @@ try {
                         ?>
                     </select>
                 </div>
+                <!-- 集計ボタン -->
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary w-100">この期間で集計</button>
                 </div>
             </div>
         </form>
 
+        <!-- 売上高一覧テーブル -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
                     <tr>
-                        <th>売上日</th>
-                        <th class="text-end">売上金額</th>
+                        <th>取引日 (SALE_DATE)</th>
+                        <th class="text-end">売上高</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -116,20 +104,19 @@ try {
                                 <td class="text-end"><?php echo number_format($row['AMOUNT']); ?> 円</td>
                             </tr>
                             <?php $sales_sum += $row['AMOUNT']; ?>
+
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
-                <tfoot>
-                    <tr class="table-group-divider">
-                        <th class="text-end">合計</th>
-                        <th class="text-end"><?php echo number_format($sales_sum); ?> 円</th>
-                    </tr>
-                </tfoot>
             </table>
+            <h2>
+                <!-- 総額表示 -->
+                合計 <?php echo number_format($sales_sum); ?> 円
+            </h2>
         </div>
     </main>
 </div>
 
 <?php
-// require_once __DIR__ . '/../a_footer.php';
+
 ?>
