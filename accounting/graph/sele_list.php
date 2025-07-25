@@ -135,7 +135,6 @@ try {
             echo '<div class="alert alert-success mt-3">' . htmlspecialchars($batch_message, ENT_QUOTES, 'UTF-8') . '</div>';
         }
         ?>
-
         <form action="" method="POST" class="mt-4">
             <button type="submit" name="run_batch" class="btn btn-info">
                 売上集計データを手動更新
