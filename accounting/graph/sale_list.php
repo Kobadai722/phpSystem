@@ -119,13 +119,11 @@ try {
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
-                <tfoot>
-                    <tr class="table-group-divider">
-                        <th class="text-end">合計</th>
-                        <th class="text-end"><?php echo number_format($sales_sum); ?> 円</th>
-                    </tr>
-                </tfoot>
             </table>
+            <h2>
+                <!-- 総額表示 -->
+                合計 <?php echo number_format($sales_sum); ?> 円
+            </h2>
         </div>
     </main>
 </div>

@@ -104,7 +104,6 @@ try {
                                 <td class="text-end"><?php echo number_format($row['AMOUNT']); ?> 円</td>
                             </tr>
                             <?php $sales_sum += $row['AMOUNT']; ?>
-
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
