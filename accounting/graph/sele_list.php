@@ -2,14 +2,13 @@
 // ----- ページ設定と部品の読み込み -----
 $page_title = "売上高一覧";
 $current_page = "graph";
+require_once __DIR__ . '/../a_header.php';
 
-// 1. 最初に設定ファイルとサイト全体のヘッダーを読み込む
-// パスは実際のファイル配置に合わせて調整してください
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 
 // 2. このページ用のヘッダー部品を読み込む
-require_once __DIR__ . '/../a_header.php';
+
 
 // ----- データの取得と絞り込み処理 -----
 
