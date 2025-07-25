@@ -102,12 +102,13 @@ session_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+            <!--    削除済みを含める
                 <div class="col-auto form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="include_deleted" role="switch" <?= isset($_GET['include_deleted']) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="include_deleted">削除済みを含める</label>
                 </div>
             </div>
+                -->
         </form>
         
         <form>
