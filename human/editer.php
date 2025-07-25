@@ -7,7 +7,7 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
-<?php include '../header.php'; ?>
+
 <head>
     <meta charset="UTF-8">
     <title>人事管理表</title>
@@ -17,7 +17,7 @@ session_start();
     <link rel="stylesheet" href="human.css">
     <link rel="stylesheet" href="style.css">
 </head>
-
+<?php include '../header.php'; ?>
 <body>
     <?php
     if (isset($_SESSION['success_message'])) {
