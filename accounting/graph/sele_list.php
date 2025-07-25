@@ -9,6 +9,18 @@ require_once __DIR__ . '/../../header.php';
 
 // 2. このページ用のヘッダー部品を読み込む
 
+// === ▼▼▼ バッチ処理の実行ロジックを追加 ▼▼▼ ===
+$batch_message = null; // バッチ処理のメッセージを初期化
+
+// フォームがPOST送信されたかチェック
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['run_batch'])) {
+    // バッチ処理の部品ファイルを読み込む
+    require_once __DIR__ . '/../batch_process_sales.php';
+    // バッチ処理関数を実行し、結果をメッセージに格納
+    $batch_message = runSalesBatchProcess($PDO);
+}
+
+
 
 // ----- データの取得と絞り込み処理 -----
 
@@ -129,16 +141,17 @@ try {
             </table>
         </div>
         <?php
-        // バッチ処理が実行されたらメッセージを表示
-        if ($batch_message !== null) {
-            echo '<div class="alert alert-success mt-3">' . htmlspecialchars($batch_message, ENT_QUOTES, 'UTF-8') . '</div>';
-        }
-        ?>
-        <form action="" method="POST" class="mt-4">
-            <button type="submit" name="run_batch" class="btn btn-info">
-                売上集計データを手動更新
-            </button>
-        </form>
+    // バッチ処理が実行されたらメッセージを表示
+    if ($batch_message !== null) {
+        echo '<div class="alert alert-info mt-3">' . htmlspecialchars($batch_message, ENT_QUOTES, 'UTF-8') . '</div>';
+    }
+    ?>
+
+    <form action="" method="POST" class="mt-4">
+        <button type="submit" name="run_batch" class="btn btn-info">
+            売上集計データを手動更新
+        </button>
+    </form>
     </main>
 </div>
 
