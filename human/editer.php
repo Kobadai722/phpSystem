@@ -14,9 +14,11 @@ session_start();
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <?php include '../header.php'; ?>
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="human.css">
 </head>
-<?php include '../header.php'; ?>
+
 <body>
     <?php
     if (isset($_SESSION['success_message'])) {
@@ -102,12 +104,13 @@ session_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-
+            <!--    削除済みを含める
                 <div class="col-auto form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="include_deleted" role="switch" <?= isset($_GET['include_deleted']) ? 'checked' : '' ?>>
                     <label class="form-check-label" for="include_deleted">削除済みを含める</label>
                 </div>
             </div>
+                -->
         </form>
         
         <form>

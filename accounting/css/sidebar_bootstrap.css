@@ -1,0 +1,45 @@
+/* BootstrapのOffcanvasコンポーネントに独自スタイルを適用 */
+.offcanvas.sidebar-custom {
+    background-color: #f8f9fa; /* サイドバーの背景色 */
+    width: 280px; /* サイドバーの幅 */
+}
+
+.sidebar-custom .offcanvas-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.sidebar-custom .nav-link {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    color: #333;
+    border-radius: 0.25rem;
+    margin: 0.1rem 0;
+}
+
+.sidebar-custom .nav-link:hover {
+    background-color: #e9ecef;
+}
+
+.sidebar-custom .nav-link i {
+    font-size: 1.3rem;
+    margin-right: 0.8rem;
+    width: 24px; /* アイコンの幅を固定してテキストの開始位置を揃える */
+    text-align: center;
+}
+
+/* アクティブなリンクのスタイル */
+.sidebar-custom .nav-link.active {
+    font-weight: bold;
+    color: #0d6efd; /* Bootstrapのプライマリカラー */
+    background-color: #e0eafc;
+}
+
+/* ハンバーガーメニューボタンの位置調整用 */
+.hamburger-button {
+    position: fixed;
+    top: 80px; /* ヘッダーの高さを考慮 */
+    left: 20px;
+    z-index: 1040; /* Offcanvasよりは手前に来ないようにする */
+}
