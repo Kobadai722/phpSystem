@@ -21,10 +21,10 @@
         <li class="nav-item dropdown dropdown-center">
             <a class="nav-link dropdown-toggle" href="#" id="stockDropdown" role="button"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-box-seam"></i> 発注管理
+                <i class="bi bi-box-seam"></i> 注文管理
             </a>
             <ul class="dropdown-menu" aria-labelledby="stockDropdown">
-                <li><a class="dropdown-item" href="/../sales/views/purchase.php">発注履歴</a></li>
+                <li><a class="dropdown-item" href="/../sales/views/purchase.php">注文履歴</a></li>
                 <li><a class="dropdown-item" href="#"></a></li>
                 <li><a class="dropdown-item" href="#"></a></li>
             </ul>
