@@ -17,42 +17,7 @@
         <section class="content">
             <div class="bg-white p-3 shadow-sm rounded mb-3">
                 <div class="row g-2">
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm">
-                            <option>担当者</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm">
-                            <option>株式会社サンプル</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control form-control-sm" placeholder="請求月">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control form-control-sm" placeholder="案件No | 名称">
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-select form-select-sm">
-                            <option>部門</option>
-                        </select>
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button class="btn btn-outline-secondary btn-sm">詳細検索</button>
-                    </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" placeholder="納品日From">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control form-control-sm" placeholder="納品日To">
-                    </div>
-                    <div class="col-md-2">
-                        <input type="text" class="form-control form-control-sm" placeholder="ステータス">
-                    </div>
-                    <div class="col-md-2 text-end">
-                        <button class="btn btn-primary btn-sm">条件リセット</button>
-                    </div>
+                    
                 </div>
             </div>
         </section>
