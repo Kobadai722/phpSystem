@@ -101,7 +101,8 @@ require_once '../../config.php'; // データベース接続設定ファイル�
                 ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
                 try {
                     const queryParams = new URLSearchParams(params).toString();
-                    const response = await fetch(`get_orders_api.php?${queryParams}`);
+                    // ファイルツリーに合わせてパスを修正
+                    const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
                     const data = await response.json();
 
                     ordersTableBody.innerHTML = ''; // 既存の行をクリア
@@ -116,7 +117,7 @@ require_once '../../config.php'; // データベース接続設定ファイル�
                                 day: '2-digit',
                                 hour: '2-digit',
                                 minute: '2-digit'
-                            }).replace(/\//g, '/'); // スラッシュの代わりにハイフンを使用しないように調整
+                            }).replace(/\//g, '/');
                             const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
 
                             row.innerHTML = `
