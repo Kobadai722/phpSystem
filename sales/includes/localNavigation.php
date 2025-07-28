@@ -24,7 +24,7 @@
                 <i class="bi bi-box-seam"></i> 発注管理
             </a>
             <ul class="dropdown-menu" aria-labelledby="stockDropdown">
-                <li><a class="dropdown-item" href="/../sales/views/purchase.php"></a></li>
+                <li><a class="dropdown-item" href="/../sales/views/purchase.php">発注履歴</a></li>
                 <li><a class="dropdown-item" href="#"></a></li>
                 <li><a class="dropdown-item" href="#"></a></li>
             </ul>
