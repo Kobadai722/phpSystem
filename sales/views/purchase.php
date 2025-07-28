@@ -23,7 +23,7 @@ require_once '../../config.php'; // データベース接続設定ファイル�
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">検索・フィルタリング</h5>
-                        <form class="row g-3 align-items-end">
+                        <form class="row g-3 align-items-end" id="searchForm">
                             <div class="col-md-3">
                                 <label for="orderId" class="form-label">注文ID</label>
                                 <input type="text" class="form-control" id="orderId" placeholder="例: ORD001">
@@ -52,7 +52,7 @@ require_once '../../config.php'; // データベース接続設定ファイル�
                                 <button type="submit" class="btn btn-primary" id="searchButton">
                                     <i class="bi bi-search"></i> 検索
                                 </button>
-                                <button type="reset" class="btn btn-secondary ms-2">
+                                <button type="reset" class="btn btn-secondary ms-2" id="resetButton">
                                     <i class="bi bi-arrow-counterclockwise"></i> リセット
                                 </button>
                             </div>
@@ -80,55 +80,7 @@ require_once '../../config.php'; // データベース接続設定ファイル�
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
-                            <?php
-                            try {
-                                // SQLクエリを構築
-                                // S_ORDER (注文表) と CUSTOMER (顧客表) を結合して、注文一覧に必要な情報を取得
-                                // status カラムは、画面レイアウトに合わせて「支払い状況」と「配送状況」の両方に出力
-                                $sql = "SELECT 
-                                            so.order_id,
-                                            so.order_datetime,
-                                            c.customer_name,
-                                            so.total_amount,
-                                            so.status -- S_ORDER.statusを使用
-                                        FROM 
-                                            S_ORDER so
-                                        LEFT JOIN 
-                                            CUSTOMER c ON so.customer_id = c.customer_id
-                                        ORDER BY 
-                                            so.order_datetime DESC"; // 最新の注文から表示
-
-                                $stmt = $PDO->prepare($sql);
-                                $stmt->execute();
-                                $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                                if (empty($orders)) {
-                                    echo '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
-                                } else {
-                                    foreach ($orders as $order) {
-                                        // 日時のフォーマット
-                                        $order_datetime_formatted = (new DateTime($order['order_datetime']))->format('Y/m/d H:i');
-                                        // 合計金額のフォーマット
-                                        $total_amount_formatted = '¥' . number_format($order['total_amount']);
-
-                                        echo '<tr>';
-                                        echo '<td>' . htmlspecialchars($order['order_id']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($order_datetime_formatted) . '</td>';
-                                        echo '<td>' . htmlspecialchars($order['customer_name']) . '</td>';
-                                        echo '<td>' . htmlspecialchars($total_amount_formatted) . '</td>';
-                                        echo '<td>' . htmlspecialchars($order['status']) . '</td>'; // 支払い状況
-                                        echo '<td>' . htmlspecialchars($order['status']) . '</td>'; // 配送状況 (現状は同じカラムを使用)
-                                        echo '<td class="actions">';
-                                        echo '<a href="order_detail_view.php?id=' . htmlspecialchars($order['order_id']) . '" class="btn btn-info btn-sm me-1">詳細</a>';
-                                        echo '<a href="order_detail_edit.php?id=' . htmlspecialchars($order['order_id']) . '&mode=edit" class="btn btn-warning btn-sm">編集</a>';
-                                        echo '</td>';
-                                        echo '</tr>';
-                                    }
-                                }
-                            } catch (PDOException $e) {
-                                echo '<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ' . htmlspecialchars($e->getMessage()) . '</td></tr>';
-                            }
-                            ?>
+                            <tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -138,5 +90,95 @@ require_once '../../config.php'; // データベース接続設定ファイル�
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/..." crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            const searchForm = document.getElementById('searchForm');
+            const resetButton = document.getElementById('resetButton');
+
+            // 注文データをAPIから取得し、テーブルに表示する関数
+            async function fetchOrders(params = {}) {
+                ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
+                try {
+                    const queryParams = new URLSearchParams(params).toString();
+                    const response = await fetch(`get_orders_api.php?${queryParams}`);
+                    const data = await response.json();
+
+                    ordersTableBody.innerHTML = ''; // 既存の行をクリア
+
+                    if (data.success && data.orders.length > 0) {
+                        data.orders.forEach(order => {
+                            const row = document.createElement('tr');
+                            const orderDatetime = new Date(order.order_datetime);
+                            const formattedDatetime = orderDatetime.toLocaleString('ja-JP', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            }).replace(/\//g, '/'); // スラッシュの代わりにハイフンを使用しないように調整
+                            const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
+
+                            row.innerHTML = `
+                                <td>${escapeHTML(order.order_id)}</td>
+                                <td>${escapeHTML(formattedDatetime)}</td>
+                                <td>${escapeHTML(order.customer_name)}</td>
+                                <td>${escapeHTML(formattedAmount)}</td>
+                                <td>${escapeHTML(order.status)}</td>
+                                <td>${escapeHTML(order.status)}</td>
+                                <td class="actions">
+                                    <a href="order_detail_view.php?id=${escapeHTML(order.order_id)}" class="btn btn-info btn-sm me-1">詳細</a>
+                                    <a href="order_detail_edit.php?id=${escapeHTML(order.order_id)}&mode=edit" class="btn btn-warning btn-sm">編集</a>
+                                </td>
+                            `;
+                            ordersTableBody.appendChild(row);
+                        });
+                    } else if (data.success && data.orders.length === 0) {
+                        ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
+                    } else {
+                        ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ${escapeHTML(data.message || '不明なエラー')}</td></tr>`;
+                    }
+                } catch (error) {
+                    console.error('Error fetching orders:', error);
+                    ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データを取得できませんでした: ${escapeHTML(error.message)}</td></tr>`;
+                }
+            }
+
+            // HTMLエスケープ関数
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.appendChild(document.createTextNode(str));
+                return div.innerHTML;
+            }
+
+            // 検索フォームの送信イベントリスナー
+            searchForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // フォームのデフォルト送信を防止
+                const orderId = document.getElementById('orderId').value;
+                const customerName = document.getElementById('customerName').value;
+                const paymentStatus = document.getElementById('paymentStatus').value;
+                const deliveryStatus = document.getElementById('deliveryStatus').value;
+
+                const params = {
+                    orderId: orderId,
+                    customerName: customerName,
+                    paymentStatus: paymentStatus,
+                    deliveryStatus: deliveryStatus
+                };
+                fetchOrders(params);
+            });
+
+            // リセットボタンのクリックイベントリスナー
+            resetButton.addEventListener('click', function() {
+                // フォームをリセット
+                searchForm.reset();
+                // フィルタリングなしで再度データを取得
+                fetchOrders({});
+            });
+
+            // ページ読み込み時に初期データを取得
+            fetchOrders();
+        });
+    </script>
     </body>
 </html>
