@@ -1,11 +1,7 @@
 <?php
-// PHPコードの冒頭に余分な空白や改行を一切入れない
-
+require_once '../../config.php';// DB接続設定などを読み込み
 // JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
-
-// DB接続設定などを読み込み
-require_once '../../config.php';
 
 try {
     // 検索条件を格納する配列
