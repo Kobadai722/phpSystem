@@ -16,23 +16,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
             ordersTableBody.innerHTML = ''; // 既存の行をクリア
 
-            if (data.success && data.orders.length > 0) {
-                data.orders.forEach(order => {
+            // APIの返却データを 'data.data' として参照するように修正
+            if (data.success && data.data && data.data.length > 0) {
+                data.data.forEach(order => {
                     const row = document.createElement('tr');
-                    const orderDatetime = new Date(order.order_datetime);
-                    const formattedDatetime = orderDatetime.toLocaleString('ja-JP', {
+                    
+                    // 日付のキーを 'order_date' に修正
+                    const orderDate = new Date(order.order_date);
+                    const formattedDate = orderDate.toLocaleDateString('ja-JP', {
                         year: 'numeric',
                         month: '2-digit',
-                        day: '2-digit',
-                        hour: '2-digit',
-                        minute: '2-digit'
+                        day: '2-digit'
                     }).replace(/\//g, '/');
                     const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
 
-                    // APIの返却データに合わせて表示ロジックを修正
                     row.innerHTML = `
                         <td>${escapeHTML(order.order_id)}</td>
-                        <td>${escapeHTML(formattedDatetime)}</td>
+                        <td>${escapeHTML(formattedDate)}</td>
                         <td>${escapeHTML(order.customer_name)}</td>
                         <td>${escapeHTML(formattedAmount)}</td>
                         <td>${escapeHTML(order.payment_status)}</td>
@@ -44,10 +44,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     `;
                     ordersTableBody.appendChild(row);
                 });
-            } else if (data.success && data.orders.length === 0) {
+            } else if (data.success && data.data && data.data.length === 0) {
                 ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
             } else {
-                ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ${escapeHTML(data.message || '不明なエラー')}</td></tr>`;
+                // APIからのエラーメッセージを表示するように修正
+                ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ${escapeHTML(data.error_message || '不明なエラー')}</td></tr>`;
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
@@ -71,10 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const deliveryStatus = document.getElementById('deliveryStatus').value;
 
         const params = {
-            orderId: orderId,
-            customerName: customerName,
-            paymentStatus: paymentStatus,
-            deliveryStatus: deliveryStatus
+            order_id: orderId, // APIのパラメータ名に合わせて修正
+            customer_name: customerName,
+            payment_status: paymentStatus,
+            delivery_status: deliveryStatus
         };
         fetchOrders(params);
     });
