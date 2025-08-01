@@ -1,17 +1,6 @@
 <?php
 // JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
-
-// config.phpのパスを確認し、存在しない場合はJSONエラーを出力
-$configPath = '../../config.php';
-if (!file_exists($configPath)) {
-    echo json_encode([
-        'success' => false,
-        'error_message' => '設定ファイルが見つかりません: ' . $configPath
-    ]);
-    exit;
-}
-
 require_once $configPath; // 設定ファイルを読み込む
 
 try {
@@ -79,3 +68,4 @@ try {
     ]);
     exit;
 }
+?>
