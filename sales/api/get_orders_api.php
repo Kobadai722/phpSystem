@@ -16,7 +16,7 @@ try {
     $deliveryStatus = $_GET['deliveryStatus'] ?? '';
 
     // SQLクエリの構築
-    $sql = "SELECT * FROM orders WHERE 1=1";
+    $sql = "SELECT order_id, order_datetime, customer_name, total_amount, payment_status, delivery_status FROM orders WHERE 1=1";
     $params = [];
 
     if (!empty($orderId)) {

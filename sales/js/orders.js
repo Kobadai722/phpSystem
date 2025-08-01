@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
         try {
             const queryParams = new URLSearchParams(params).toString();
-            // フォルダ構成に合わせてパスを修正
+            // ファイルツリーに合わせてパスを修正
             const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
             const data = await response.json();
 
