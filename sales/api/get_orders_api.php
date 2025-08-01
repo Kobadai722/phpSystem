@@ -1,8 +1,18 @@
 <?php
-
-require_once '../../config.php'; // 設定ファイルを読み込む
+// JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
 
+// config.phpのパスを確認し、存在しない場合はJSONエラーを出力
+$configPath = '../../config.php';
+if (!file_exists($configPath)) {
+    echo json_encode([
+        'success' => false,
+        'error_message' => '設定ファイルが見つかりません: ' . $configPath
+    ]);
+    exit;
+}
+
+require_once $configPath; // 設定ファイルを読み込む
 
 try {
     // 検索条件を格納する配列
@@ -35,13 +45,13 @@ try {
     }
 
     // クエリの組み立て
-    $query = 'SELECT o.order_id, o.customer_name, o.order_date, o.total_amount, o.payment_status, o.delivery_status 
+    $query = 'SELECT o.order_id, o.customer_name, o.order_date, o.total_amount, o.payment_status, o.delivery_status
               FROM orders o';
 
     if (count($searchConditions) > 0) {
         $query .= ' WHERE ' . implode(' AND ', $searchConditions);
     }
-    
+
     $query .= ' ORDER BY o.order_date DESC';
 
     // プリペアドステートメントの準備
@@ -54,7 +64,7 @@ try {
 
     // SQL実行
     $stmt->execute();
-    
+
     // 結果を取得
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -64,10 +74,8 @@ try {
 } catch (PDOException $e) {
     // エラーハンドリング
     echo json_encode([
-        'success' => false, 
+        'success' => false,
         'error_message' => 'データの取得中にエラーが発生しました: ' . $e->getMessage()
     ]);
     exit;
 }
-
-?>
