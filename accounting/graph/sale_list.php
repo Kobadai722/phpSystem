@@ -1,54 +1,38 @@
 <?php
-// ----- ページ設定と部品の読み込み -----
+// ----- ページ設定 -----
 $page_title = "売上高一覧";
-$current_page = "graph";
-
+$current_page = "graph"; // サイドバーのハイライト用
 require_once __DIR__ . '/../a_header.php';
+
+// ----- 部品の読み込み -----
+// パスは実際のファイル配置に合わせて調整してください
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 
-
-
-// ----- データの取得と絞り込み処理 -----
-
+// ----- データ処理 -----
 $sales_sum = 0;
-
-// フォームから送信された年・月を取得
 $selected_year = $_GET['year'] ?? null;
 $selected_month = $_GET['month'] ?? null;
 
-
-// === ▼▼▼ SQLクエリの組み立てロジックを修正 ▼▼▼ ===
-
-// SQLクエリの組み立て準備
 $sql_base = "SELECT SALE_DATE, AMOUNT FROM SALES_ENTRIES";
-$where_conditions = []; // WHERE句の条件を格納する配列
-$params = [];           // パラメータを格納する配列
+$where_conditions = [];
+$params = [];
 
-// 年が選択されていたら、年の条件を追加
 if (!empty($selected_year)) {
     $where_conditions[] = "YEAR(SALE_DATE) = ?";
     $params[] = $selected_year;
 }
-
-// 月が選択されていたら、月の条件を追加
 if (!empty($selected_month)) {
     $where_conditions[] = "MONTH(SALE_DATE) = ?";
     $params[] = $selected_month;
 }
 
-// 組み立てた条件を元に、最終的なSQLクエリを生成
 $sql_query = $sql_base;
 if (!empty($where_conditions)) {
-    // 条件が1つ以上あれば、"WHERE" と "AND" で連結する
     $sql_query .= " WHERE " . implode(' AND ', $where_conditions);
 }
 $sql_query .= " ORDER BY SALE_DATE DESC";
 
-// === ▲▲▲ ここまで修正 ▲▲▲ ===
-
-
-// データベースからデータを取得
 try {
     $stmt = $PDO->prepare($sql_query);
     $stmt->execute($params);
@@ -57,12 +41,28 @@ try {
     die("データベースエラー: " . $e->getMessage());
 }
 
+// a_header.phpをここで読み込む
+require_once __DIR__ . '/../a_header.php';
 ?>
-<div class="page-container">
-    <?php require_once __DIR__ . "/../sidebar.php"; ?>
-    <main class="main-content">
+
+<body>
+
+    <!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
+    <button class="btn btn-light shadow-sm hamburger-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+        <i class="bi bi-list fs-4"></i>
+    </button>
+
+    <?php
+    // Bootstrap版のサイドバー部品を読み込む
+    require_once __DIR__ . '/../sidebar_bootstrap.php';
+    ?>
+
+    <!-- メインコンテンツ -->
+    <!-- サイドバーと重ならないように左に余白を設ける -->
+    <main class="container-fluid" style="padding-left: 80px; padding-top: 20px;">
         <h1><?php echo htmlspecialchars($page_title); ?></h1>
 
+        <!-- 表示する期間選択フォーム -->
         <form action="" method="GET" class="border rounded p-3 my-4 bg-light">
             <div class="row align-items-end">
                 <div class="col-md-4">
@@ -96,6 +96,7 @@ try {
             </div>
         </form>
 
+        <!-- 売上高一覧テーブル -->
         <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="table-light">
@@ -119,15 +120,23 @@ try {
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </tbody>
+                <tfoot>
+                    <tr class="table-group-divider">
+                        <th class="text-end">合計</th>
+                        <th class="text-end"><?php echo number_format($sales_sum); ?> 円</th>
+                    </tr>
+                </tfoot>
             </table>
-            <h2>
-                <!-- 総額表示 -->
-                合計 <?php echo number_format($sales_sum); ?> 円
-            </h2>
         </div>
     </main>
-</div>
 
-<?php
-// require_once __DIR__ . '/../a_footer.php';
-?>
+    <?php
+    // フッター部品を読み込む
+    // require_once __DIR__ . '/../a_footer.php';
+    ?>
+
+    <!-- BootstrapのJavaScriptバンドルを読み込む (Offcanvasの動作に必須) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
