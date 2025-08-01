@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
         ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
         try {
             const queryParams = new URLSearchParams(params).toString();
-            // ★パスはこれで正しいです★
             const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
             const data = await response.json();
 
@@ -29,13 +28,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     }).replace(/\//g, '/');
                     const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
 
+                    // HTMLテンプレートリテラルを修正しました
                     row.innerHTML = `
                         <td>${escapeHTML(order.order_id)}</td>
                         <td>${escapeHTML(formattedDatetime)}</td>
                         <td>${escapeHTML(order.customer_name)}</td>
                         <td>${escapeHTML(formattedAmount)}</td>
-                        <td>${escapeHTML(order.status)}</td>
-                        <td>${escapeHTML(order.status)}</td>
+                        <td>${escapeHTML(order.payment_status)}</td>
+                        <td>${escapeHTML(order.delivery_status)}</td>
                         <td class="actions">
                             <a href="order_detail_view.php?id=${escapeHTML(order.order_id)}" class="btn btn-info btn-sm me-1">詳細</a>
                             <a href="order_detail_edit.php?id=${escapeHTML(order.order_id)}&mode=edit" class="btn btn-warning btn-sm">編集</a>
