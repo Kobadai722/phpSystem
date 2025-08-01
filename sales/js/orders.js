@@ -1,3 +1,5 @@
+// orders.js
+
 document.addEventListener('DOMContentLoaded', function() {
     const ordersTableBody = document.getElementById('ordersTableBody');
     const searchForm = document.getElementById('searchForm');
@@ -8,8 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
         ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
         try {
             const queryParams = new URLSearchParams(params).toString();
-            // APIへのパスを修正
-            const response = await fetch(`get_orders_api.php?${queryParams}`);
+            // ★パスはこれで正しいです★
+            const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
             const data = await response.json();
 
             ordersTableBody.innerHTML = ''; // 既存の行をクリア
@@ -32,8 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <td>${escapeHTML(formattedDatetime)}</td>
                         <td>${escapeHTML(order.customer_name)}</td>
                         <td>${escapeHTML(formattedAmount)}</td>
-                        <td>${escapeHTML(order.payment_status)}</td>
-                        <td>${escapeHTML(order.delivery_status)}</td>
+                        <td>${escapeHTML(order.status)}</td>
+                        <td>${escapeHTML(order.status)}</td>
                         <td class="actions">
                             <a href="order_detail_view.php?id=${escapeHTML(order.order_id)}" class="btn btn-info btn-sm me-1">詳細</a>
                             <a href="order_detail_edit.php?id=${escapeHTML(order.order_id)}&mode=edit" class="btn btn-warning btn-sm">編集</a>
