@@ -35,7 +35,7 @@ try {
         $sql .= " AND delivery_status = :deliveryStatus";
         $params[':deliveryStatus'] = $deliveryStatus;
     }
-    
+
     $sql .= " ORDER BY order_datetime DESC";
 
     $stmt = $pdo->prepare($sql);

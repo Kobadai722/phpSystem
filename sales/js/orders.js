@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
         try {
             const queryParams = new URLSearchParams(params).toString();
+            // フォルダ構成に合わせてパスを修正
             const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
             const data = await response.json();
 
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }).replace(/\//g, '/');
                     const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
 
-                    // HTMLテンプレートリテラルを修正しました
+                    // APIの返却データに合わせて表示ロジックを修正
                     row.innerHTML = `
                         <td>${escapeHTML(order.order_id)}</td>
                         <td>${escapeHTML(formattedDatetime)}</td>
