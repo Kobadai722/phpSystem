@@ -11,9 +11,10 @@
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/stock_styles.css">
 </head>
-<?php include '../../header.php'; ?>
+
 
 <body> 
+    <?php include '../../header.php'; ?>
     <main>
         <?php include '../includes/localNavigation.php'; ?>
 
