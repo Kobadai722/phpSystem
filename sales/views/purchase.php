@@ -1,7 +1,4 @@
-<?php
-require_once '../../config.php'; // データベース接続設定ファイルを読み込む
-?>
-<!DOCTYPE html>
+
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
