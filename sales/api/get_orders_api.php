@@ -1,8 +1,7 @@
 <?php
-
-require_once '../../config.php'; // DB接続設定などを読み込み
 // JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
+require_once '../../config.php'; // DB接続設定などを読み込み
 
 try {
     // 検索条件を格納する配列
