@@ -13,7 +13,8 @@
 </head>
 <?php include '../../header.php'; ?>
 
-<body> <main>
+<body> 
+    <main>
         <?php include '../includes/localNavigation.php'; ?>
 
         <section class="content">
