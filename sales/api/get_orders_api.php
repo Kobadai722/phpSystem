@@ -1,58 +1,70 @@
 <?php
-header('Content-Type: application/json');
+// エラー表示を有効化（開発用。公開時はオフに）
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-require_once '../../config.php'; // データベース接続設定ファイルを読み込む
+// レスポンスを JSON として返す
+header('Content-Type: application/json; charset=UTF-8');
+
+// DB接続情報
+$host = 'localhost';
+$dbname = 'your_database';
+$user = 'your_username';
+$pass = 'your_password';
+
+// パラメータ取得（フィルタリング）
+$orderId = $_GET['orderId'] ?? '';
+$customerName = $_GET['customerName'] ?? '';
+$paymentStatus = $_GET['paymentStatus'] ?? '';
+$deliveryStatus = $_GET['deliveryStatus'] ?? '';
 
 try {
-    $pdo = new PDO(DSN, DB_USER, DB_PASS, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
+    // DB接続
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 検索パラメータの取得
-    $orderId = $_GET['orderId'] ?? '';
-    $customerName = $_GET['customerName'] ?? '';
-    $paymentStatus = $_GET['paymentStatus'] ?? '';
-    $deliveryStatus = $_GET['deliveryStatus'] ?? '';
-
-    // SQLクエリの構築
-    $sql = "SELECT order_id, order_datetime, customer_name, total_amount, payment_status, delivery_status FROM orders WHERE 1=1";
+    // クエリ組み立て
+    $sql = "SELECT * FROM orders WHERE 1=1";
     $params = [];
 
-    if (!empty($orderId)) {
+    if ($orderId !== '') {
         $sql .= " AND order_id LIKE :orderId";
-        $params[':orderId'] = '%' . $orderId . '%';
+        $params[':orderId'] = "%$orderId%";
     }
-    if (!empty($customerName)) {
+    if ($customerName !== '') {
         $sql .= " AND customer_name LIKE :customerName";
-        $params[':customerName'] = '%' . $customerName . '%';
+        $params[':customerName'] = "%$customerName%";
     }
-    if (!empty($paymentStatus)) {
+    if ($paymentStatus !== '') {
         $sql .= " AND payment_status = :paymentStatus";
         $params[':paymentStatus'] = $paymentStatus;
     }
-    if (!empty($deliveryStatus)) {
+    if ($deliveryStatus !== '') {
         $sql .= " AND delivery_status = :deliveryStatus";
         $params[':deliveryStatus'] = $deliveryStatus;
     }
 
-    $sql .= " ORDER BY order_datetime DESC";
-
+    // 実行
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
-    $orders = $stmt->fetchAll();
+    $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // 成功レスポンス
     echo json_encode([
         'success' => true,
-        'orders' => $orders,
-        'message' => '注文データを正常に取得しました。'
-    ]);
+        'orders' => $orders
+    ], JSON_UNESCAPED_UNICODE);
+
 } catch (PDOException $e) {
+    // エラーレスポンス
     echo json_encode([
         'success' => false,
-        'orders' => [],
-        'message' => 'データベースエラー: ' . $e->getMessage()
-    ]);
-    exit;
+        'message' => 'DB接続エラー: ' . $e->getMessage()
+    ], JSON_UNESCAPED_UNICODE);
+} catch (Exception $e) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'システムエラー: ' . $e->getMessage()
+    ], JSON_UNESCAPED_UNICODE);
 }
-?>
