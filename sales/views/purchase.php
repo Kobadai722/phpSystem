@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
-    <?php include '../../header.php'; ?>
+    
 <body>
+    <?php include '../../header.php'; ?>
     <main>
         <?php include '../includes/localNavigation.php'; ?>
 
