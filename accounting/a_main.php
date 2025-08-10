@@ -43,6 +43,7 @@ $current_page = 'home';
             <!-- 2. ダッシュボードのカード部分 -->
             <div class="dashboard-grid main-content">
                 <!-- 上段のカード -->
+                <!-- 資産 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>資産</h3>
@@ -58,6 +59,7 @@ $current_page = 'home';
                         </div>
                     </div>
                 </section>
+                <!-- 負債 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>負債</h3>
@@ -73,6 +75,7 @@ $current_page = 'home';
                         </div>
                     </div>
                 </section>
+                <!-- 純利益 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>純利益</h3>
@@ -86,6 +89,7 @@ $current_page = 'home';
                 </section>
 
                 <!-- 下段のカード (グラフ中心) -->
+                <!-- 売上 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>売上</h3>
@@ -94,10 +98,12 @@ $current_page = 'home';
                     <div class="card-body chart-card">
                         <div class="gauge-chart" style="--percentage: 52;"></div>
                         <div class="legend">
+                            
                             <!-- TODO: 売上高を表示 -->
                         </div>
                     </div>
                 </section>
+                <!-- 収益 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>収益</h3>
@@ -110,6 +116,7 @@ $current_page = 'home';
                         </div>
                     </div>
                 </section>
+                <!-- 費用 -->
                 <section class="card">
                     <div class="card-header">
                         <h3>費用</h3>
