@@ -3,11 +3,11 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// JSONヘッダーを送信
-header('Content-Type: application/json; charset=UTF-8');
 
 // DB接続設定などを読み込み
 require_once '../../config.php';
+// JSONヘッダーを送信
+header('Content-Type: application/json');
 
 // $pdo が存在するか確認
 if (!isset($pdo) || !($pdo instanceof PDO)) {
