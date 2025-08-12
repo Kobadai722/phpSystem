@@ -1,4 +1,12 @@
+
+
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 require_once '../../config.php';// DB接続設定などを読み込み
 // JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
