@@ -1,15 +1,22 @@
-
-
 <?php
-
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-require_once '../../config.php';// DB接続設定などを読み込み
 // JSONヘッダーを送信
 header('Content-Type: application/json; charset=UTF-8');
+
+// DB接続設定などを読み込み
+require_once __DIR__ . '/../../config.php';
+
+// $pdo が存在するか確認
+if (!isset($pdo) || !($pdo instanceof PDO)) {
+    echo json_encode([
+        'success' => false,
+        'error_message' => 'データベース接続が初期化されていません（config.phpのパスを確認してください）'
+    ]);
+    exit;
+}
 
 try {
     // 検索条件を格納する配列
@@ -43,7 +50,7 @@ try {
 
     // クエリの組み立て
     $query = 'SELECT o.order_id, o.customer_name, o.order_date, o.total_amount, o.payment_status, o.delivery_status
-              FROM orders o';
+                FROM orders o';
 
     if (count($searchConditions) > 0) {
         $query .= ' WHERE ' . implode(' AND ', $searchConditions);
@@ -76,4 +83,3 @@ try {
     ]);
     exit;
 }
-?>
