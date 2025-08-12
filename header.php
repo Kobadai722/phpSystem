@@ -19,7 +19,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/../sales/views/stock.php">在庫管理システム</a></li>
                             <li><a class="dropdown-item" href="/../sales/views/management.php">売上管理システム</a></li>
-                            <li><a class="dropdown-item" href="/../sales/views/purchase.php">仕入管理システム</a></li>
+                            <li><a class="dropdown-item" href="/../sales/views/purchase.php">注文管理システム</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
