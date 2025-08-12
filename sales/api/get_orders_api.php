@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 header('Content-Type: application/json; charset=UTF-8');
 
 // DB接続設定などを読み込み
-require_once __DIR__ . '/../../config.php';
+require_once '../../config.php';
 
 // $pdo が存在するか確認
 if (!isset($pdo) || !($pdo instanceof PDO)) {
