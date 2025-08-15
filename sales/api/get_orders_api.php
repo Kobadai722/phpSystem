@@ -4,10 +4,9 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 
-// DB接続設定などを読み込み
-require_once '../../config.php';
-// JSONヘッダーを送信
-header('Content-Type: application/json');
+require_once '../../config.php'; // 設定ファイルを読み込む
+
+header('Content-Type: application/json'); // JSON形式でレスポンスを返すことを指定
 
 try {
     // 検索条件を格納する配列
