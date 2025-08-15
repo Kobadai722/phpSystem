@@ -9,15 +9,6 @@ require_once '../../config.php';
 // JSONヘッダーを送信
 header('Content-Type: application/json');
 
-// $pdo が存在するか確認
-if (!isset($pdo) || !($pdo instanceof PDO)) {
-    echo json_encode([
-        'success' => false,
-        'error_message' => 'データベース接続が初期化されていません（config.phpのパスを確認してください）'
-    ]);
-    exit;
-}
-
 try {
     // 検索条件を格納する配列
     $searchConditions = [];
