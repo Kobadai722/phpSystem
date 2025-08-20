@@ -5,6 +5,7 @@ html, body {
     height: 100%; /* HTMLとBODYの高さを画面いっぱいに広げる */
     margin: 0;
     padding: 0;
+    overflow-x: hidden; /* 横方向のはみ出しを禁止 */
 }
 
 .page-container {
@@ -18,6 +19,8 @@ html, body {
     padding-left: 80px; /* ハンバーガーボタンと重ならないように左に余白を設ける */
     padding-top: 20px;
     padding-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box; /* paddingを含めて幅を計算 */
 }
 
 /* =================================================
@@ -32,6 +35,7 @@ html, body {
 
 .dashboard-grid {
     display: grid;
+    /* 画面幅に応じて列数を自動調整。各カードの最小幅は320px */
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 1.5rem;
 }
@@ -93,14 +97,18 @@ html, body {
     gap: 1rem;
 }
 
+/* === ▼ ゲージグラフのスタイルを修正 ▼ === */
 .gauge-chart {
     width: 100%;
     max-width: 280px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     position: relative;
-    clip-path: inset(0 0 35.7% 0);
-    margin-bottom: -35.7%;
+    
+    /* 下部分の切り抜き量を調整して、はみ出しをなくす */
+    clip-path: inset(0 0 34% 0);
+    margin-bottom: -34%;
+
     background: conic-gradient(
         from -120deg,
         #dc3545 0% calc(var(--percentage) * 0.667%),
@@ -119,6 +127,8 @@ html, body {
     left: 10%;
     top: 10%;
 }
+/* === ▲ ここまで修正 ▲ === */
+
 
 .legend {
     display: flex;
