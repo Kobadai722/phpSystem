@@ -1,0 +1,136 @@
+/* =================================================
+   ページ全体のレイアウト
+   ================================================= */
+html, body {
+    height: 100%; /* HTMLとBODYの高さを画面いっぱいに広げる */
+    margin: 0;
+    padding: 0;
+}
+
+.page-container {
+    display: flex; /* Flexboxレイアウトを有効化 */
+    flex-direction: column; /* 子要素を縦に並べる */
+    min-height: 100vh; /* コンテナの高さを最低でも画面の高さ100%にする */
+}
+
+.main-content {
+    flex-grow: 1; /* 残りの利用可能なスペースをすべて埋めるように広がる */
+    padding-left: 80px; /* ハンバーガーボタンと重ならないように左に余白を設ける */
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* =================================================
+   ダッシュボードのスタイル
+   ================================================= */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background-color: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.card-header a {
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+}
+.metric-value small {
+    font-size: 1rem;
+    font-weight: normal;
+    color: #6c757d;
+}
+
+.comparison {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.comparison .up {
+    color: #198754; /* 緑色 */
+}
+.comparison .down {
+    color: #dc3545; /* 赤色 */
+}
+
+.chart-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.gauge-chart {
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    position: relative;
+    clip-path: inset(0 0 35.7% 0);
+    margin-bottom: -35.7%;
+    background: conic-gradient(
+        from -120deg,
+        #dc3545 0% calc(var(--percentage) * 0.667%),
+        #ffc107 calc(var(--percentage) * 0.667%) 66.7%,
+        transparent 66.7% 100%
+    );
+}
+
+.gauge-chart::before {
+    content: '';
+    position: absolute;
+    background: #fff;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    left: 10%;
+    top: 10%;
+}
+
+.legend {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+}
+.color-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.color-dot.red { background-color: #dc3545; }
+.color-dot.yellow { background-color: #ffc107; }
