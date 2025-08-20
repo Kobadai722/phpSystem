@@ -9,8 +9,26 @@ $current_page = 'home';
 // パスは実際のファイル配置に合わせて調整してください
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../header.php';
+?>
 
-// =================================================================
+
+<head> <!-- 文字コードをUTF-8に設定 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- 独自のCSS -->
+    <link rel="stylesheet" href="css/a_main.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/siwake.css">
+</head>
+<body>
+    <?php
+    // =================================================================
 // ダッシュボード用データ取得・計算処理
 // =================================================================
 try {
@@ -62,21 +80,6 @@ try {
 }
 ?>
 
-<head> <!-- 文字コードをUTF-8に設定 -->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
-
-    <!-- Bootstrap (integrity属性のタイポを修正) -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
-    <!-- 独自のCSS -->
-    <link rel="stylesheet" href="css/a_main.css">
-    <link rel="stylesheet" href="css/sidebar.css">
-    <link rel="stylesheet" href="css/siwake.css">
-</head>
-<body>
     <!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
     <button class="btn btn-light shadow-sm hamburger-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
         <i class="bi bi-list fs-4"></i>
