@@ -1,4 +1,8 @@
-
+<?php
+// ----- このページ固有の情報を定義 -----
+$page_title = '会計システム --Prototype--';
+$current_page = 'home'; 
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -17,10 +21,6 @@
 </head>
 <body>
     <?php
-    // ----- ページ設定と部品の読み込み -----
-    $page_title = '会計システム --Prototype--';
-    $current_page = 'home';
-
     // パスは実際のファイル配置に合わせて調整してください
     require_once __DIR__ . '/../config.php';
     require_once __DIR__ . '/../header.php';
