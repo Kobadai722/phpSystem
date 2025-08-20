@@ -3,9 +3,10 @@
 $page_title = '会計システム --Prototype--';
 $current_page = 'home'; 
 
-// パスは実際のファイル配置に合わせて調整してください
+
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../header.php';
+require_once __DIR__ . '/../a_header.php';
 ?>
 <head>
     <meta charset="UTF-8">
