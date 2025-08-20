@@ -1,7 +1,7 @@
 <?php
 // ----- ページ設定と部品の読み込み -----
 $page_title = '会計システム --Prototype--';
-$current_page = 'home'; 
+$current_page = 'home';
 
 
 require_once __DIR__ . '/../config.php';
@@ -10,15 +10,16 @@ require_once __DIR__ . '/../header.php';
 ?>
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
-    
+
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
+
     <!-- 独自のCSS -->
     <link rel="stylesheet" href="css/a_main.css">
     <link rel="stylesheet" href="css/sidebar.css">
@@ -72,8 +73,6 @@ try {
     $achievement_rate = ($target_goal > 0) ? ($sales_for_month / $target_goal) * 100 : 0;
     // 目標までの残額
     $remaining_amount = $target_goal - $sales_for_month;
-
-
 } catch (PDOException $e) {
     die("データベースエラー: " . $e->getMessage());
 }
@@ -89,14 +88,14 @@ try {
     // === ▼ Bootstrap版のサイドバー部品を読み込むように変更 ▼ ===
     require_once __DIR__ . '/sidebar_bootstrap.php';
     ?>
-        
+
     <!-- メインコンテンツ -->
     <!-- ハンバーガーボタンと重ならないように左に余白を設定 -->
     <main class="main-content" style="padding-left: 80px;">
         <header class="dashboard-header">
             <h1>会計システム--Prototype--</h1>
         </header>
-        
+
         <div class="dashboard-grid">
             <!-- 売上カード -->
             <section class="card">
@@ -138,7 +137,7 @@ try {
                             </div>
                         </div>
                     </form>
-                    
+
                     <hr>
 
                     <!-- 結果表示エリア -->
@@ -148,7 +147,7 @@ try {
                     </div>
 
                     <div class="gauge-chart" style="--percentage: <?php echo $achievement_rate; ?>;"></div>
-                    
+
                     <div class="d-flex justify-content-around mt-3">
                         <div>
                             <div class="small text-muted">達成率</div>
@@ -167,8 +166,9 @@ try {
             </section>
         </div>
     </main>
-    
+
     <!-- === ▼ BootstrapのJavaScriptを読み込むように変更 (Offcanvasの動作に必須) ▼ === -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
