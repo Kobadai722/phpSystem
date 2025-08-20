@@ -2,7 +2,10 @@
 // ----- ページ設定と部品の読み込み -----
 $page_title = '会計システム --Prototype--';
 $current_page = 'home';
-
+?>
+<!DOCTYPE html>
+<html lang="ja">
+<?php
 // パスは実際のファイル配置に合わせて調整してください
 require_once __DIR__ . '/../config.php';
 require_once __DIR__ . '/../header.php';
@@ -58,9 +61,8 @@ try {
     die("データベースエラー: " . $e->getMessage());
 }
 ?>
-<!DOCTYPE html>
-<html lang="ja">
-<head>
+
+<head> <!-- 文字コードをUTF-8に設定 -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
