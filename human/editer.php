@@ -114,6 +114,10 @@ session_start();
         </thead>
         <!-- 追加部分-->
         <div class="mb-3 p-3 border rounded">
+        
+        <tbody id="employeeTableBody">
+            </tbody>
+        </table>
         <form>
             <div class="row g-3 align-items-center">
                 <div class="col-auto">
@@ -131,9 +135,6 @@ session_start();
             <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
         </div>
     </div>
-        <tbody id="employeeTableBody">
-            </tbody>
-        </table>
     <!-- 論理削除を実現できたら以下の機能を実装する
     <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
