@@ -1,33 +1,24 @@
 // orders.js
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
     const ordersTableBody = document.getElementById('ordersTableBody');
     const searchForm = document.getElementById('searchForm');
-    const resetButton = document.getElementById('resetButton');
 
     // 注文データをAPIから取得し、テーブルに表示する関数
-    async function fetchOrders(params = {}) {
+    const fetchOrders = async (params = {}) => {
         ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
         try {
             const queryParams = new URLSearchParams(params).toString();
-            // ファイルツリーに合わせてパスを修正
             const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
             const data = await response.json();
 
-            ordersTableBody.innerHTML = ''; // 既存の行をクリア
+            ordersTableBody.innerHTML = '';
 
-            // APIの返却データを 'data.data' として参照するように修正
             if (data.success && data.data && data.data.length > 0) {
                 data.data.forEach(order => {
                     const row = document.createElement('tr');
-                    
-                    // 日付のキーを 'order_date' に修正
                     const orderDate = new Date(order.order_date);
-                    const formattedDate = orderDate.toLocaleDateString('ja-JP', {
-                        year: 'numeric',
-                        month: '2-digit',
-                        day: '2-digit'
-                    }).replace(/\//g, '/');
+                    const formattedDate = orderDate.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '/');
                     const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
 
                     row.innerHTML = `
@@ -47,45 +38,37 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (data.success && data.data && data.data.length === 0) {
                 ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
             } else {
-                // APIからのエラーメッセージを表示するように修正
                 ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ${escapeHTML(data.error_message || '不明なエラー')}</td></tr>`;
             }
         } catch (error) {
             console.error('Error fetching orders:', error);
             ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データを取得できませんでした: ${escapeHTML(error.message)}</td></tr>`;
         }
-    }
+    };
 
     // HTMLエスケープ関数
-    function escapeHTML(str) {
+    const escapeHTML = (str) => {
         const div = document.createElement('div');
-        div.appendChild(document.createTextNode(str));
+        div.textContent = str;
         return div.innerHTML;
-    }
+    };
 
     // 検索フォームの送信イベントリスナー
-    searchForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // フォームのデフォルト送信を防止
-        const orderId = document.getElementById('orderId').value;
-        const customerName = document.getElementById('customerName').value;
-        const paymentStatus = document.getElementById('paymentStatus').value;
-        const deliveryStatus = document.getElementById('deliveryStatus').value;
-
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
         const params = {
-            order_id: orderId, // APIのパラメータ名に合わせて修正
-            customer_name: customerName,
-            payment_status: paymentStatus,
-            delivery_status: deliveryStatus
+            order_id: document.getElementById('orderId').value,
+            customer_name: document.getElementById('customerName').value,
+            payment_status: document.getElementById('paymentStatus').value,
+            delivery_status: document.getElementById('deliveryStatus').value
         };
         fetchOrders(params);
     });
 
     // リセットボタンのクリックイベントリスナー
-    resetButton.addEventListener('click', function() {
-        // フォームをリセット
+    document.getElementById('resetButton').addEventListener('click', () => {
         searchForm.reset();
-        // フィルタリングなしで再度データを取得
-        fetchOrders({});
+        fetchOrders();
     });
 
     // ページ読み込み時に初期データを取得
