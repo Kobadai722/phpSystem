@@ -3,7 +3,7 @@ session_start();
 require_once '../config.php';
 
 if (!isset($_GET['customer_id']) || !is_numeric($_GET['customer_id'])) {
-    header('Location: ../customer/customer.php');
+    header('Location: customer.php');
     exit;
 }
 
@@ -15,7 +15,7 @@ $customer_stmt->execute([$customer_id]);
 $customer = $customer_stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$customer) {
-    header('Location: ../customer/customer.php');
+    header('Location: customer.php');
     exit;
 }
 
@@ -37,8 +37,8 @@ $inquiries = $inquiries_stmt->fetchAll(PDO::FETCH_ASSOC);
 <main class="container">
     <h2 class="my-4"><?= htmlspecialchars($customer['NAME']) ?>様 お問い合わせ一覧</h2>
     <div class="text-end mb-3">
-        <a href="inquiry_register.php?customer_id=<?= $customer_id ?>" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新規登録</a>
-        <a href="../customer/customer.php" class="btn btn-secondary">顧客一覧に戻る</a>
+        <a href="inquiry-register.php?customer_id=<?= $customer_id ?>" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新規登録</a>
+        <a href="customer.php" class="btn btn-secondary">顧客一覧に戻る</a>
     </div>
 
     <?php if (isset($_SESSION['success_message'])) : ?>
@@ -61,7 +61,7 @@ $inquiries = $inquiries_stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= htmlspecialchars(date('Y-m-d H:i', strtotime($inquiry['INQUIRY_DATETIME']))) ?></td>
                     <td style="white-space: pre-wrap;"><?= htmlspecialchars($inquiry['INQUIRY_DETAIL']) ?></td>
                     <td>
-                        <form action="inquiry_process.php" method="post" class="d-inline">
+                        <form action="inquiry-process.php" method="post" class="d-inline">
                             <input type="hidden" name="action" value="update_status">
                             <input type="hidden" name="inquiry_detail_id" value="<?= $inquiry['INQUIRY_DETAIL_ID'] ?>">
                             <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
@@ -73,7 +73,7 @@ $inquiries = $inquiries_stmt->fetchAll(PDO::FETCH_ASSOC);
                         </form>
                     </td>
                     <td>
-                        <a href="inquiry_edit.php?inquiry_detail_id=<?= $inquiry['INQUIRY_DETAIL_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
+                        <a href="inquiry-edit.php?inquiry_detail_id=<?= $inquiry['INQUIRY_DETAIL_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= $inquiry['INQUIRY_DETAIL_ID'] ?>">
                             削除
                         </button>
@@ -95,7 +95,7 @@ $inquiries = $inquiries_stmt->fetchAll(PDO::FETCH_ASSOC);
                 <p>この問い合わせを削除しますか？</p>
             </div>
             <div class="modal-footer">
-                <form action="inquiry_process.php" method="post">
+                <form action="inquiry-process.php" method="post">
                     <input type="hidden" name="action" value="delete">
                     <input type="hidden" name="inquiry_detail_id" id="inquiryIdToDelete">
                     <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
