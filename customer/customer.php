@@ -1,32 +1,74 @@
-<?php session_start(); ?>
+<?php
+session_start();
+require_once '../config.php';
+
+// 検索条件の取得
+$search_id = $_GET['customer_id'] ?? '';
+$search_name = $_GET['name'] ?? '';
+$search_tel = $_GET['cell_number'] ?? '';
+$search_mail = $_GET['mail'] ?? '';
+
+// ベースとなるSQL
+$sql = "SELECT * FROM CUSTOMER WHERE 1=1";
+$params = [];
+
+// 検索条件の組み立て
+if (!empty($search_id)) {
+    $sql .= " AND CUSTOMER_ID = ?";
+    $params[] = $search_id;
+}
+if (!empty($search_name)) {
+    $sql .= " AND NAME LIKE ?";
+    $params[] = '%' . $search_name . '%';
+}
+if (!empty($search_tel)) {
+    $sql .= " AND CELL_NUMBER LIKE ?";
+    $params[] = '%' . $search_tel . '%';
+}
+if (!empty($search_mail)) {
+    $sql .= " AND MAIL LIKE ?";
+    $params[] = '%' . $search_mail . '%';
+}
+
+// ページネーション設定
+$limit = 20;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$start = ($page - 1) * $limit;
+
+// 総件数を取得
+$count_sql = preg_replace('/SELECT \* FROM/', 'SELECT COUNT(*) FROM', $sql);
+$count_stmt = $PDO->prepare($count_sql);
+$count_stmt->execute($params);
+$total_results = $count_stmt->fetchColumn();
+$total_pages = ceil($total_results / $limit);
+
+// 表示データの取得
+$sql .= " LIMIT :start, :limit";
+$stmt = $PDO->prepare($sql);
+// パラメータのバインド
+foreach ($params as $key => $value) {
+    $stmt->bindValue($key + 1, $value);
+}
+$stmt->bindValue(':start', $start, PDO::PARAM_INT);
+$stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>顧客管理</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../style.css" rel="stylesheet" />
     <link href="customer.css" rel="stylesheet" />
     <style>
-        /* ページネーションで高さが変わらないようにテーブルの高さを固定 */
-        .table tbody {
-            display: block;
-            height: 720px; /* 20行分の目安の高さ */
-            overflow-y: auto;
-        }
-        .table thead, .table tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed;
-        }
-        /* メールアドレスが長い場合に改行する */
-        .table td {
-            word-wrap: break-word; /* 長い単語を強制的に改行 */
-            word-break: break-all;  /* 単語の途中でも改行 */
-        }
+        .table tbody { display: block; height: 720px; overflow-y: auto; }
+        .table thead, .table tbody tr { display: table; width: 100%; table-layout: fixed; }
+        .table td { word-wrap: break-word; word-break: break-all; }
     </style>
 </head>
 <?php include '../header.php'; ?>
@@ -36,48 +78,29 @@
         <div class="text-end">
             <button type="button" class="btn btn-primary mb-4" onclick="location.href='customer-register.php'"><i class="bi bi-plus-lg"></i>追加</button>
         </div>
-        <div class="accordion mb-4" id="accordionExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        <i class="bi bi-search"></i>検索
-                    </button>
-                </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-                    <div class="accordion-body">
-                        <div class="gray-box">
-                            <form action="customer-output.php" method="post" class="mb-4">
-                                <div class="mb-2">
-                                    <label for="customerid" class="form-label">顧客ID</label>
-                                    <input type="text" name="customerid" id="customerid" class="form-control">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="name" class="form-label">氏名</label>
-                                    <input type="text" name="name" id="name" class="form-control">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="cell_number" class="form-label">電話番号</label>
-                                    <input type="text" name="cell_number" id="cell_number" class="form-control">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="mail" class="form-label">メールアドレス</label>
-                                    <input type="text" name="mail" id="mail" class="form-control">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="post_code" class="form-label">郵便番号</label>
-                                    <input type="text" name="post_code" id="post_code" class="form-control">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="address" class="form-label">住所</label>
-                                    <input type="text" name="address" id="address" class="form-control">
-                                </div>
-                                <input type="submit" value="検索" class="btn btn-primary">
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-2">
+                <label for="customer_id" class="form-label">顧客ID</label>
+                <input type="text" name="customer_id" id="customer_id" class="form-control" value="<?= htmlspecialchars($search_id) ?>">
             </div>
-        </div>
+            <div class="col-md-3">
+                <label for="name" class="form-label">企業名</label>
+                <input type="text" name="name" id="name" class="form-control" value="<?= htmlspecialchars($search_name) ?>">
+            </div>
+            <div class="col-md-3">
+                <label for="cell_number" class="form-label">電話番号</label>
+                <input type="text" name="cell_number" id="cell_number" class="form-control" value="<?= htmlspecialchars($search_tel) ?>">
+            </div>
+            <div class="col-md-3">
+                <label for="mail" class="form-label">メールアドレス</label>
+                <input type="text" name="mail" id="mail" class="form-control" value="<?= htmlspecialchars($search_mail) ?>">
+            </div>
+            <div class="col-md-1 align-self-end">
+                <button type="submit" class="btn btn-primary">検索</button>
+            </div>
+        </form>
+        <hr>
 
         <table class="table table-hover">
             <thead>
@@ -92,24 +115,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php
-                require_once '../config.php';
-                $limit = 20;
-                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                $start = ($page - 1) * $limit;
-
-                $count_stmt = $PDO->query("SELECT COUNT(*) FROM CUSTOMER");
-                $total_results = $count_stmt->fetchColumn();
-                $total_pages = ceil($total_results / $limit);
-
-                $stmt = $PDO->prepare("SELECT * FROM CUSTOMER LIMIT :start, :limit");
-                $stmt->bindParam(':start', $start, PDO::PARAM_INT);
-                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-                $stmt->execute();
-                $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-                foreach ($results as $row) {
-                ?>
+                <?php foreach ($results as $row) : ?>
                     <tr>
                         <td scope="row"><?= htmlspecialchars($row['CUSTOMER_ID']) ?></td>
                         <td><?= htmlspecialchars($row['NAME']) ?></td>
@@ -124,9 +130,7 @@
                             </button>
                         </td>
                     </tr>
-                <?php
-                }
-                ?>
+                <?php endforeach; ?>
             </tbody>
         </table>
 
@@ -134,23 +138,21 @@
             <ul class="pagination">
                 <?php for ($i = 1; $i <= $total_pages; $i++) : ?>
                     <li class="page-item <?php if ($page == $i) echo 'active'; ?>">
-                        <a class="page-link" href="customer.php?page=<?= $i; ?>"><?= $i; ?></a>
+                        <a class="page-link" href="?page=<?= $i; ?>&amp;customer_id=<?= htmlspecialchars($search_id) ?>&amp;name=<?= htmlspecialchars($search_name) ?>&amp;cell_number=<?= htmlspecialchars($search_tel) ?>&amp;mail=<?= htmlspecialchars($search_mail) ?>"><?= $i; ?></a>
                     </li>
                 <?php endfor; ?>
             </ul>
         </nav>
     </main>
 
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal fade" id="deleteModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">削除の確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title">削除の確認</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    本当に <strong id="customerNameToDelete"></strong> を削除しますか？
-                </div>
+                <div class="modal-body">本当に <strong id="customerNameToDelete"></strong> を削除しますか？</div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <form id="deleteForm" action="customer-delete.php" method="post">
@@ -162,19 +164,15 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         var deleteModal = document.getElementById('deleteModal');
         deleteModal.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget;
             var customerId = button.getAttribute('data-id');
             var customerName = button.getAttribute('data-name');
-            var modalBodyName = deleteModal.querySelector('#customerNameToDelete');
-            var modalInputId = deleteModal.querySelector('#customerIdToDelete');
-
-            modalBodyName.textContent = customerName;
-            modalInputId.value = customerId;
+            deleteModal.querySelector('#customerNameToDelete').textContent = customerName;
+            deleteModal.querySelector('#customerIdToDelete').value = customerId;
         });
     </script>
 </body>

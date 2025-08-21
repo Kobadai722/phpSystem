@@ -49,33 +49,29 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <a href="inquiry-register.php" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新規登録</a>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header">検索条件</div>
-        <div class="card-body">
-            <form method="get" class="row g-3">
-                <div class="col-md-4">
-                    <label for="customer_name" class="form-label">企業名</label>
-                    <input type="text" name="customer_name" id="customer_name" class="form-control" value="<?= htmlspecialchars($search_customer_name) ?>">
-                </div>
-                <div class="col-md-4">
-                    <label for="content" class="form-label">問い合わせ内容</label>
-                    <input type="text" name="content" id="content" class="form-control" value="<?= htmlspecialchars($search_content) ?>">
-                </div>
-                <div class="col-md-3">
-                    <label for="status" class="form-label">対応状況</label>
-                    <select name="status" id="status" class="form-select">
-                        <option value="">すべて</option>
-                        <option value="未対応" <?= $search_status == '未対応' ? 'selected' : '' ?>>未対応</option>
-                        <option value="対応中" <?= $search_status == '対応中' ? 'selected' : '' ?>>対応中</option>
-                        <option value="対応済み" <?= $search_status == '対応済み' ? 'selected' : '' ?>>対応済み</option>
-                    </select>
-                </div>
-                <div class="col-md-1 align-self-end">
-                    <button type="submit" class="btn btn-primary">検索</button>
-                </div>
-            </form>
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="customer_name" class="form-label">企業名</label>
+            <input type="text" name="customer_name" id="customer_name" class="form-control" value="<?= htmlspecialchars($search_customer_name) ?>">
         </div>
-    </div>
+        <div class="col-md-4">
+            <label for="content" class="form-label">問い合わせ内容</label>
+            <input type="text" name="content" id="content" class="form-control" value="<?= htmlspecialchars($search_content) ?>">
+        </div>
+        <div class="col-md-3">
+            <label for="status" class="form-label">対応状況</label>
+            <select name="status" id="status" class="form-select">
+                <option value="">すべて</option>
+                <option value="未対応" <?= $search_status == '未対応' ? 'selected' : '' ?>>未対応</option>
+                <option value="対応中" <?= $search_status == '対応中' ? 'selected' : '' ?>>対応中</option>
+                <option value="対応済み" <?= $search_status == '対応済み' ? 'selected' : '' ?>>対応済み</option>
+            </select>
+        </div>
+        <div class="col-md-1 align-self-end">
+            <button type="submit" class="btn btn-primary">検索</button>
+        </div>
+    </form>
+    <hr>
 
     <?php if (isset($_SESSION['success_message'])) : ?>
         <div class="alert alert-success"><?= $_SESSION['success_message']; unset($_SESSION['success_message']); ?></div>
