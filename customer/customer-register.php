@@ -19,7 +19,7 @@ require_once '../config.php'; // データベース接続情報
         <form id="customerForm" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">企業名 <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="name" name="name" required maxlength="10">
+                <input type="text" class="form-control" id="name" name="name" required maxlength="20">
                 <div class="invalid-feedback">
                     企業名を入力してください。
                 </div>
