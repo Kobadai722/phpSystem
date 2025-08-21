@@ -36,7 +36,7 @@ try {
     }
     $query .= ' ORDER BY o.order_date DESC';
 
-    $stmt = $pdo->prepare($query);
+    $stmt = $PDO->prepare($query);
     foreach ($params as $param => $value) {
         $stmt->bindValue($param, $value);
     }

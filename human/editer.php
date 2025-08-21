@@ -87,14 +87,7 @@ session_start();
                         <?php endforeach; ?>
                     </select>
                 </div>
-            <!--    削除済みを含める
-                <div class="col-auto form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="include_deleted" role="switch" <?= isset($_GET['include_deleted']) ? 'checked' : '' ?>>
-                    <label class="form-check-label" for="include_deleted">削除済みを含める</label>
-                </div>
-            </div>
-                -->
-        </form>
+            </form>
         
         <form>
             <div class="mt-2">
@@ -112,12 +105,11 @@ session_start();
                 <th scope="col">職位</th>
             </tr>
         </thead>
-        <!-- 追加部分-->
-        <div class="mb-3 p-3 border rounded">
-        
         <tbody id="employeeTableBody">
             </tbody>
         </table>
+
+    <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 align-items-center">
                 <div class="col-auto">
@@ -131,35 +123,9 @@ session_start();
                 </div>
             </div>
         </form>
-        <div class="text-end mt-2">
-            <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
-        </div>
     </div>
-    <!-- 論理削除を実現できたら以下の機能を実装する
-    <div class="modal fade" id="restoreConfirmModal" tabindex="-1" aria-labelledby="restoreConfirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="restoreConfirmModalLabel">復元確認</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-                </div>
-                
-                <div class="modal-body">
-                    本当に <strong id="modalRestoreEmployeeName"></strong> さんの情報を復元しますか？
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <form action="human-restore.php" method="post" style="display: inline;">
-                        <input type="hidden" name="employee_id" id="modalRestoreEmployeeId" value="">
-                        <button type="submit" class="btn btn-info">復元する</button>
-                    </form>
-                </div>
-                        
-            </div>
-        </div>
-    </div>
-    -->
-</body>
+
+    </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
