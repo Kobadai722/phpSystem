@@ -121,7 +121,7 @@ session_start();
                         <option value="editer.php" selected>編集者画面</option>
                 </select>
                 </div>
-                <div class="col-auto">
+                <div class="text-end mt-2">
                     <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
                 </div>
             </div>
