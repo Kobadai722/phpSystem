@@ -115,7 +115,8 @@ require_once '../config.php'; // データベース接続情報
             var submitButton = document.getElementById('submitButton');
             var confirmRegisterButton = document.getElementById('confirmRegister');
             var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
-            var resultModal = new bootstrap.Modal(document.getElementById('resultModal'));
+            var resultModalEl = document.getElementById('resultModal');
+            var resultModal = new bootstrap.Modal(resultModalEl);
             var cellNumberInput = document.getElementById('cell_number');
             var postCodeInput = document.getElementById('post_code');
 
@@ -174,7 +175,6 @@ require_once '../config.php'; // データベース接続情報
                             form.classList.remove('was-validated');
                             cellNumberInput.classList.remove('is-invalid');
                             postCodeInput.classList.remove('is-invalid');
-
                         } else {
                             resultModalBody.innerHTML = '<p class="text-danger">' + data.message + '</p>';
                         }
@@ -187,6 +187,14 @@ require_once '../config.php'; // データベース接続情報
                         resultModalBody.innerHTML = '<p class="text-danger">登録中にエラーが発生しました。</p>';
                         resultModal.show();
                     });
+            });
+
+            resultModalEl.addEventListener('hidden.bs.modal', function (event) {
+                // モーダル内に成功メッセージ（.text-success）が存在する場合のみ遷移
+                const successMessage = resultModalEl.querySelector('.text-success');
+                if (successMessage) {
+                    window.location.href = 'customer.php';
+                }
             });
         })();
     </script>
