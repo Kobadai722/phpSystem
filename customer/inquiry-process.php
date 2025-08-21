@@ -3,18 +3,17 @@ session_start();
 require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: customer.php');
+    header('Location: inquiry.php');
     exit;
 }
 
 $action = $_POST['action'] ?? '';
-$customer_id = $_POST['customer_id'] ?? 0;
 
 try {
     switch ($action) {
         case 'register':
             $stmt = $PDO->prepare("INSERT INTO INQUIRY_DETAIL (CUSTOMER_ID, INQUIRY_DATETIME, INQUIRY_DETAIL) VALUES (?, ?, ?)");
-            $stmt->execute([$customer_id, $_POST['inquiry_datetime'], $_POST['inquiry_detail']]);
+            $stmt->execute([$_POST['customer_id'], $_POST['inquiry_datetime'], $_POST['inquiry_detail']]);
             $_SESSION['success_message'] = '新しい問い合わせを登録しました。';
             break;
 
@@ -37,9 +36,8 @@ try {
             break;
     }
 } catch (PDOException $e) {
-    // 実際には、より詳細なエラーハンドリングが望ましい
     $_SESSION['error_message'] = '処理中にエラーが発生しました。';
 }
 
-header("Location: inquiry.php?customer_id=" . $customer_id);
+header("Location: inquiry.php");
 exit;

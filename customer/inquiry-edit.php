@@ -3,17 +3,17 @@ session_start();
 require_once '../config.php';
 
 if (!isset($_GET['inquiry_detail_id']) || !is_numeric($_GET['inquiry_detail_id'])) {
-    header('Location: customer.php');
+    header('Location: inquiry.php');
     exit;
 }
 
 $inquiry_detail_id = $_GET['inquiry_detail_id'];
-$stmt = $PDO->prepare("SELECT * FROM INQUIRY_DETAIL WHERE INQUIRY_DETAIL_ID = ?");
+$stmt = $PDO->prepare("SELECT i.*, c.NAME as customer_name FROM INQUIRY_DETAIL i JOIN CUSTOMER c ON i.CUSTOMER_ID = c.CUSTOMER_ID WHERE i.INQUIRY_DETAIL_ID = ?");
 $stmt->execute([$inquiry_detail_id]);
 $inquiry = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$inquiry) {
-    header('Location: customer.php');
+    header('Location: inquiry.php');
     exit;
 }
 ?>
@@ -28,10 +28,10 @@ if (!$inquiry) {
 <body>
 <main class="container">
     <h2 class="my-4">問い合わせ編集</h2>
+    <h5 class="mb-4">顧客名: <?= htmlspecialchars($inquiry['customer_name']) ?></h5>
     <form action="inquiry-process.php" method="post">
         <input type="hidden" name="action" value="edit">
         <input type="hidden" name="inquiry_detail_id" value="<?= $inquiry['INQUIRY_DETAIL_ID'] ?>">
-        <input type="hidden" name="customer_id" value="<?= $inquiry['CUSTOMER_ID'] ?>">
         
         <div class="mb-3">
             <label for="inquiry_datetime" class="form-label">問い合わせ日時</label>
@@ -53,7 +53,7 @@ if (!$inquiry) {
         </div>
         
         <button type="submit" class="btn btn-primary">更新</button>
-        <a href="inquiry.php?customer_id=<?= $inquiry['CUSTOMER_ID'] ?>" class="btn btn-secondary">キャンセル</a>
+        <a href="inquiry.php" class="btn btn-secondary">キャンセル</a>
     </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
