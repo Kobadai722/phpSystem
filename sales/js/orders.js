@@ -17,20 +17,21 @@ document.addEventListener('DOMContentLoaded', () => {
             if (data.success && data.data && data.data.length > 0) {
                 data.data.forEach(order => {
                     const row = document.createElement('tr');
-                    const orderDate = new Date(order.order_date);
+                    // 修正: データベースのカラム名に合わせてキー名を変更
+                    const orderDate = new Date(order.ORDER_DATETIME);
                     const formattedDate = orderDate.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '/');
-                    const formattedAmount = '¥' + Number(order.total_amount).toLocaleString();
+                    const formattedAmount = '¥' + Number(order.TOTAL_AMOUNT).toLocaleString();
 
                     row.innerHTML = `
-                        <td>${escapeHTML(order.order_id)}</td>
+                        <td>${escapeHTML(order.ORDER_ID)}</td>
                         <td>${escapeHTML(formattedDate)}</td>
-                        <td>${escapeHTML(order.customer_name)}</td>
+                        <td>${escapeHTML(order.CUSTOMER_NAME)}</td>
                         <td>${escapeHTML(formattedAmount)}</td>
-                        <td>${escapeHTML(order.payment_status)}</td>
-                        <td>${escapeHTML(order.delivery_status)}</td>
+                        <td>${escapeHTML(order.STATUS)}</td>
+                        <td>${escapeHTML(order.STATUS)}</td>
                         <td class="actions">
-                            <a href="order_detail_view.php?id=${escapeHTML(order.order_id)}" class="btn btn-info btn-sm me-1">詳細</a>
-                            <a href="order_detail_edit.php?id=${escapeHTML(order.order_id)}&mode=edit" class="btn btn-warning btn-sm">編集</a>
+                            <a href="order_detail_view.php?id=${escapeHTML(order.ORDER_ID)}" class="btn btn-info btn-sm me-1">詳細</a>
+                            <a href="order_detail_edit.php?id=${escapeHTML(order.ORDER_ID)}&mode=edit" class="btn btn-warning btn-sm">編集</a>
                         </td>
                     `;
                     ordersTableBody.appendChild(row);
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const params = {
             order_id: document.getElementById('orderId').value,
             customer_name: document.getElementById('customerName').value,
+            // 修正: payment_statusとdelivery_statusを単一のキーに統合
             payment_status: document.getElementById('paymentStatus').value,
             delivery_status: document.getElementById('deliveryStatus').value
         };
