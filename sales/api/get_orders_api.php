@@ -16,12 +16,11 @@ try {
         $conditions[] = 'o.ORDER_ID = :orderId';
         $params[':orderId'] = $_GET['orderId'];
     }
-    // CUSTOMERテーブルのカラム名に合わせて修正
+    // GETパラメータのキーを orders.js と一致させる
     if (!empty($_GET['customerName'])) {
         $conditions[] = 'c.NAME LIKE :customerName';
         $params[':customerName'] = '%' . $_GET['customerName'] . '%';
     }
-    // payment_statusとdelivery_statusを単一のSTATUSカラムで処理
     if (!empty($_GET['paymentStatus'])) {
         $conditions[] = 'o.STATUS = :paymentStatus';
         $params[':paymentStatus'] = $_GET['paymentStatus'];
@@ -32,7 +31,8 @@ try {
     }
 
     // クエリの構築
-    // CUSTOMERテーブルをJOINして顧客名を取得し、NAMEをCUSTOMER_NAMEとして返す
+    // ordersテーブルと CUSTOMER テーブルを CUSTOMER_ID で結合
+    // c.NAME を CUSTOMER_NAME というエイリアスで返す
     $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME FROM orders o JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
     if (count($conditions) > 0) {
         $query .= ' WHERE ' . implode(' AND ', $conditions);

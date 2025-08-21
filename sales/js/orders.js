@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const params = {
+            // HTMLのinput idと一致させる
             orderId: document.getElementById('orderId').value,
             customerName: document.getElementById('customerName').value,
             paymentStatus: document.getElementById('paymentStatus').value,
