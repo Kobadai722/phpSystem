@@ -27,6 +27,7 @@ if (!$customer) {
     <meta charset="UTF-8">
     <title>顧客情報編集</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajaxzip3.github.io/ajaxzip3.js" charset="UTF-8"></script>
     <link href="../style.css" rel="stylesheet" />
     <link href="customer.css" rel="stylesheet" />
 </head>
@@ -57,7 +58,10 @@ if (!$customer) {
 
             <div class="mb-3">
                 <label for="post_code" class="form-label">郵便番号 <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="post_code" name="post_code" required maxlength="8" value="<?= htmlspecialchars($customer['POST_CODE']) ?>">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="post_code" name="post_code" required maxlength="8" value="<?= htmlspecialchars($customer['POST_CODE']) ?>" onkeyup="AjaxZip3.zip2addr(this,'','address','address');">
+                    <button type="button" class="btn btn-outline-secondary" onclick="AjaxZip3.zip2addr('post_code','','address','address');">自動入力</button>
+                </div>
                 <div class="invalid-feedback">郵便番号はXXX-XXXXの形式で入力してください。</div>
             </div>
 
@@ -91,5 +95,43 @@ if (!$customer) {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function() {
+            'use strict'
+            var cellNumberInput = document.getElementById('cell_number');
+            var postCodeInput = document.getElementById('post_code');
+
+            // 入力値を半角に変換し、不要な文字を削除する関数
+            function formatInput(value) {
+                return value.replace(/[ーあ-んA-Za-zＡ-Ｚａ-ｚ０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                }).replace(/[^0-9]/g, '');
+            }
+
+            // 電話番号をフォーマットする関数
+            cellNumberInput.addEventListener('input', function(e) {
+                let value = formatInput(e.target.value);
+                if (value.length > 11) value = value.slice(0, 11);
+
+                if (value.length > 3 && value.length <= 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3);
+                } else if (value.length > 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7);
+                }
+                e.target.value = value;
+            });
+
+            // 郵便番号をフォーマットする関数
+            postCodeInput.addEventListener('input', function(e) {
+                let value = formatInput(e.target.value);
+                if (value.length > 7) value = value.slice(0, 7);
+
+                if (value.length > 3) {
+                    value = value.slice(0, 3) + '-' + value.slice(3);
+                }
+                e.target.value = value;
+            });
+        })();
+    </script>
 </body>
 </html>
