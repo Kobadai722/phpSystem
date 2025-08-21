@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注文管理システム - 注文一覧</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../css/styles.css">
-</head>
+    <link rel="stylesheet" href="../css/styles.css"> </head>
 <body>
     <?php include '../../header.php'; ?>
     <main>
@@ -20,14 +20,18 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">検索・フィルタリング</h5>
-                        <form class="row g-3 align-items-end" id="searchForm">
+                        <div class="row g-3 align-items-end">
                             <div class="col-md-3">
                                 <label for="orderId" class="form-label">注文ID</label>
                                 <input type="text" class="form-control" id="orderId" placeholder="例: ORD001">
                             </div>
-                            <div class="col-md-3">
-                                <label for="customerName" class="form-label">顧客名</label>
-                                <input type="text" class="form-control" id="customerName" placeholder="例: 山田太郎">
+                            <div class="col-md-3 position-relative">
+                                <label for="searchInput" class="form-label">顧客名</label>
+                                <input type="text" class="form-control pe-5" id="searchInput" placeholder="例: 山田太郎" oninput="toggleClearButton()">
+                                <button type="button" class="btn btn-sm btn-outline-secondary position-absolute end-0 top-50 translate-middle-y me-2"
+                                id="clearButton" onclick="clearSearch()" style="display: none;">
+                                <i class="bi bi-x-lg"></i>
+                                </button>
                             </div>
                             <div class="col-md-3">
                                 <label for="paymentStatus" class="form-label">支払い状況</label>
@@ -46,14 +50,14 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary" id="searchButton">
+                                <button type="button" class="btn btn-primary" id="searchButton" onclick="search()">
                                     <i class="bi bi-search"></i> 検索
                                 </button>
-                                <button type="reset" class="btn btn-secondary ms-2" id="resetButton">
+                                <button type="button" class="btn btn-secondary ms-2" id="resetButton" onclick="resetForm()">
                                     <i class="bi bi-arrow-counterclockwise"></i> リセット
                                 </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
 
@@ -85,7 +89,8 @@
         </section>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script src="../js/orders.js"></script>
 </body>
 </html>
