@@ -19,7 +19,7 @@ require_once '../config.php'; // データベース接続情報
         <form id="customerForm" method="post" class="needs-validation" novalidate>
             <div class="mb-3">
                 <label for="name" class="form-label">企業名 <span class="text-danger">*</span></label>
-                <input type="text" class="form-control" id="name" name="name" required maxlength="20">
+                <input type="text" class="form-control" id="name" name="name" required maxlength="50">
                 <div class="invalid-feedback">
                     企業名を入力してください。
                 </div>
@@ -27,10 +27,9 @@ require_once '../config.php'; // データベース接続情報
 
             <div class="mb-3">
                 <label for="cell_number" class="form-label">電話番号</label>
-                <input type="tel" class="form-control" id="cell_number" name="cell_number" maxlength="20" pattern="[0-9]*">
-                <div class="form-text">「-」等の入力は不要です。</div>
+                <input type="tel" class="form-control" id="cell_number" name="cell_number" maxlength="13">
                 <div class="invalid-feedback" id="cell_number_error">
-                    電話番号は半角数字で入力してください。
+                    正しい形式の電話番号を入力してください。
                 </div>
             </div>
 
@@ -45,12 +44,11 @@ require_once '../config.php'; // データベース接続情報
             <div class="mb-3">
                 <label for="post_code" class="form-label">郵便番号 <span class="text-danger">*</span></label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="post_code" name="post_code" required maxlength="7" pattern="[0-9]*" onkeyup="AjaxZip3.zip2addr(this,'','address','address');">
+                    <input type="text" class="form-control" id="post_code" name="post_code" required maxlength="8" onkeyup="AjaxZip3.zip2addr(this,'','address','address');">
                     <button type="button" class="btn btn-outline-secondary" onclick="AjaxZip3.zip2addr('post_code','','address','address');">自動入力</button>
                 </div>
-                <div class="form-text">「-」等の入力は不要です。</div>
                 <div class="invalid-feedback" id="post_code_error">
-                    郵便番号は半角数字で入力してください。
+                    郵便番号はXXX-XXXXの形式で入力してください。
                 </div>
             </div>
 
@@ -105,6 +103,7 @@ require_once '../config.php'; // データベース接続情報
         </div>
     </div>
 
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
     <script>
@@ -120,40 +119,50 @@ require_once '../config.php'; // データベース接続情報
             var cellNumberInput = document.getElementById('cell_number');
             var postCodeInput = document.getElementById('post_code');
 
-            function validateNumericInput(inputElement) {
-                if (inputElement.value && !/^[0-9]*$/.test(inputElement.value)) {
-                    inputElement.classList.add('is-invalid');
-                    return false;
-                } else {
-                    inputElement.classList.remove('is-invalid');
-                    return true;
-                }
+            // 入力値を半角に変換し、不要な文字を削除する関数
+            function formatInput(value) {
+                return value.replace(/[ーあ-んA-Za-zＡ-Ｚａ-ｚ０-９]/g, function(s) {
+                    return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+                }).replace(/[^0-9]/g, '');
             }
 
-            cellNumberInput.addEventListener('input', function() {
-                validateNumericInput(this);
+            // 電話番号をフォーマットする関数
+            cellNumberInput.addEventListener('input', function(e) {
+                let value = formatInput(e.target.value);
+                if (value.length > 11) value = value.slice(0, 11);
+
+                if (value.length > 3 && value.length <= 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3);
+                } else if (value.length > 7) {
+                    value = value.slice(0, 3) + '-' + value.slice(3, 7) + '-' + value.slice(7);
+                }
+                e.target.value = value;
             });
 
-            postCodeInput.addEventListener('input', function() {
-                validateNumericInput(this);
-            });
+            // 郵便番号をフォーマットする関数
+            postCodeInput.addEventListener('input', function(e) {
+                let value = formatInput(e.target.value);
+                if (value.length > 7) value = value.slice(0, 7);
 
+                if (value.length > 3) {
+                    value = value.slice(0, 3) + '-' + value.slice(3);
+                }
+                e.target.value = value;
+            });
 
             submitButton.addEventListener('click', function(event) {
-                var isCellNumberValid = validateNumericInput(cellNumberInput);
-                var isPostCodeValid = validateNumericInput(postCodeInput);
-
-                if (!form.checkValidity() || !isCellNumberValid || !isPostCodeValid) {
+                if (!form.checkValidity()) {
                     event.preventDefault();
                     event.stopPropagation();
-                    form.classList.add('was-validated');
-                } else {
-                    document.getElementById('modalName').textContent = document.getElementById('name').value;
-                    document.getElementById('modalCellNumber').textContent = document.getElementById('cell_number').value || '未入力';
-                    document.getElementById('modalMail').textContent = document.getElementById('mail').value;
-                    document.getElementById('modalPostCode').textContent = document.getElementById('post_code').value;
-                    document.getElementById('modalAddress').textContent = document.getElementById('address').value;
+                }
+                form.classList.add('was-validated');
 
+                if (form.checkValidity()) {
+                    document.getElementById('modalName').textContent = document.getElementById('name').value;
+                    document.getElementById('modalCellNumber').textContent = cellNumberInput.value || '未入力';
+                    document.getElementById('modalPostCode').textContent = postCodeInput.value;
+                    document.getElementById('modalMail').textContent = document.getElementById('mail').value;
+                    document.getElementById('modalAddress').textContent = document.getElementById('address').value;
                     confirmModal.show();
                 }
             });
@@ -173,8 +182,6 @@ require_once '../config.php'; // データベース接続情報
                             resultModalBody.innerHTML = '<p class="text-success">' + data.message + '</p>';
                             form.reset();
                             form.classList.remove('was-validated');
-                            cellNumberInput.classList.remove('is-invalid');
-                            postCodeInput.classList.remove('is-invalid');
                         } else {
                             resultModalBody.innerHTML = '<p class="text-danger">' + data.message + '</p>';
                         }
@@ -190,7 +197,6 @@ require_once '../config.php'; // データベース接続情報
             });
 
             resultModalEl.addEventListener('hidden.bs.modal', function (event) {
-                // モーダル内に成功メッセージ（.text-success）が存在する場合のみ遷移
                 const successMessage = resultModalEl.querySelector('.text-success');
                 if (successMessage) {
                     window.location.href = 'customer.php';
