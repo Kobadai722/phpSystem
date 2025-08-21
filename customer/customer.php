@@ -83,7 +83,7 @@
                     <th scope="col">メールアドレス</th>
                     <th scope="col">郵便番号</th>
                     <th scope="col">住所</th>
-                    <th scope="col">操作</th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
