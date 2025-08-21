@@ -46,24 +46,7 @@ session_start();
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    <div class="mb-3 p-3 border rounded">
-        <form>
-            <div class="row g-3 align-items-center">
-                <div class="col-auto">
-                    <label for="display_mode_select" class="col-form-label">表示モード：</label>
-                </div>
-                <div class="col-auto">
-                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
-                        <option value="main.php">一般画面</option>
-                        <option value="editer.php" selected>編集者画面</option>
-                </select>
-                </div>
-            </div>
-        </form>
-        <div class="text-end mt-2">
-            <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
-        </div>
-    </div>
+    
     <div>
         <form id="searchForm" class="mb-3 p-3 border rounded">
             <div class="row g-3 align-items-center">
@@ -129,6 +112,25 @@ session_start();
                 <th scope="col">職位</th>
             </tr>
         </thead>
+        <!-- 追加部分-->
+        <div class="mb-3 p-3 border rounded">
+        <form>
+            <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                    <label for="display_mode_select" class="col-form-label">表示モード：</label>
+                </div>
+                <div class="col-auto">
+                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
+                        <option value="main.php">一般画面</option>
+                        <option value="editer.php" selected>編集者画面</option>
+                </select>
+                </div>
+            </div>
+        </form>
+        <div class="text-end mt-2">
+            <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
+        </div>
+    </div>
         <tbody id="employeeTableBody">
             </tbody>
         </table>
