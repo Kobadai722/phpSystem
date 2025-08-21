@@ -22,6 +22,11 @@
             width: 100%;
             table-layout: fixed;
         }
+        /* メールアドレスが長い場合に改行する */
+        .table td {
+            word-wrap: break-word; /* 長い単語を強制的に改行 */
+            word-break: break-all;  /* 単語の途中でも改行 */
+        }
     </style>
 </head>
 <?php include '../header.php'; ?>
@@ -83,7 +88,7 @@
                     <th scope="col">メールアドレス</th>
                     <th scope="col">郵便番号</th>
                     <th scope="col">住所</th>
-                    <th scope="col"></th>
+                    <th scope="col">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -156,7 +161,6 @@
             </div>
         </div>
     </div>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
