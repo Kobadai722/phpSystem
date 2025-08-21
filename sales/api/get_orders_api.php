@@ -12,26 +12,25 @@ try {
     $params = [];
 
     // 検索条件の追加
-    if (!empty($_GET['order_id'])) {
-        $conditions[] = 'o.ORDER_ID = :order_id';
-        $params[':order_id'] = $_GET['order_id'];
+    if (!empty($_GET['orderId'])) {
+        $conditions[] = 'o.ORDER_ID = :orderId';
+        $params[':orderId'] = $_GET['orderId'];
     }
-    if (!empty($_GET['customer_name'])) {
-        $conditions[] = 'c.CUSTOMER_NAME LIKE :customer_name';
-        $params[':customer_name'] = '%' . $_GET['customer_name'] . '%';
+    if (!empty($_GET['customerName'])) {
+        $conditions[] = 'c.CUSTOMER_NAME LIKE :customerName';
+        $params[':customerName'] = '%' . $_GET['customerName'] . '%';
     }
     // payment_statusとdelivery_statusを単一のSTATUSカラムで処理
-    if (!empty($_GET['payment_status'])) {
-        $conditions[] = 'o.STATUS = :payment_status';
-        $params[':payment_status'] = $_GET['payment_status'];
+    if (!empty($_GET['paymentStatus'])) {
+        $conditions[] = 'o.STATUS = :paymentStatus';
+        $params[':paymentStatus'] = $_GET['paymentStatus'];
     }
-    if (!empty($_GET['delivery_status'])) {
-        $conditions[] = 'o.STATUS = :delivery_status';
-        $params[':delivery_status'] = $_GET['delivery_status'];
+    if (!empty($_GET['deliveryStatus'])) {
+        $conditions[] = 'o.STATUS = :deliveryStatus';
+        $params[':deliveryStatus'] = $_GET['deliveryStatus'];
     }
 
     // クエリの構築
-    // customersテーブルをJOINして顧客名を取得
     $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.CUSTOMER_NAME FROM orders o JOIN customers c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
     if (count($conditions) > 0) {
         $query .= ' WHERE ' . implode(' AND ', $conditions);
@@ -46,8 +45,6 @@ try {
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 顧客名を取得するためのサンプルテーブルスキーマ
-    // 
     echo json_encode(['success' => true, 'data' => $orders]);
 
 } catch (PDOException $e) {

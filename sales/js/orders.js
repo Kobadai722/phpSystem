@@ -58,11 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
         const params = {
-            order_id: document.getElementById('orderId').value,
-            customer_name: document.getElementById('customerName').value,
-            // 修正: payment_statusとdelivery_statusを単一のキーに統合
-            payment_status: document.getElementById('paymentStatus').value,
-            delivery_status: document.getElementById('deliveryStatus').value
+            // HTMLのinput idと一致させる
+            orderId: document.getElementById('orderId').value,
+            customerName: document.getElementById('customerName').value,
+            paymentStatus: document.getElementById('paymentStatus').value,
+            deliveryStatus: document.getElementById('deliveryStatus').value
         };
         fetchOrders(params);
     });
