@@ -83,10 +83,10 @@ unset($_SESSION['error_message']);
 
         <form action="human-insert.php" method="post" class="needs-validation" novalidate>
             <div class="row g-3">
-                <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required></div>
+                <div class="col-md-6"><label for="NAME" class="form-label">氏名 <span class="text-danger">*</span></label><input type="text" class="form-control" id="NAME" name="NAME" required autocomplete="nope"></div>
                 <div class="col-md-6">
                     <label for="DIVISION_ID" class="form-label">所属部署 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required>
+                    <select class="form-select" id="DIVISION_ID" name="DIVISION_ID" required autocomplete="nope">
                         <option value="" selected disabled>選択してください...</option>
                         <?php foreach ($divisions as $division): ?>
                             <option value="<?= htmlspecialchars($division['DIVISION_ID']) ?>"><?= htmlspecialchars($division['DIVISION_NAME']) ?></option>
@@ -95,18 +95,18 @@ unset($_SESSION['error_message']);
                 </div>
                 <div class="col-md-6">
                     <label for="JOB_POSITION_ID" class="form-label">職位 <span class="text-danger">*</span></label>
-                    <select class="form-select" id="JOB_POSITION_ID" name="JOB_POSITION_ID" required>
+                    <select class="form-select" id="JOB_POSITION_ID" name="JOB_POSITION_ID" required autocomplete="nope">
                         <option value="" selected disabled>選択してください...</option>
                         <?php foreach ($job_positions as $job): ?>
                             <option value="<?= htmlspecialchars($job['JOB_POSITION_ID']) ?>"><?= htmlspecialchars($job['JOB_POSITION_NAME']) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="col-md-6"><label for="JOINING_DATE" class="form-label">入社日</label><input type="date" class="form-control" id="JOINING_DATE" name="JOINING_DATE"></div>
-                <div class="col-md-6"><label for="EMERGENCY_CELL_NUMBER" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="EMERGENCY_CELL_NUMBER" name="EMERGENCY_CELL_NUMBER"></div>
-                <div class="col-md-6"><label for="POST_CODE" class="form-label">郵便番号</label><input type="text" class="form-control" id="POST_CODE" name="POST_CODE" placeholder="例: 123-4567" autocomplete="off"></div>
-                <div class="col-12"><label for="ADDRESS" class="form-label">住所</label><input type="text" class="form-control" id="ADDRESS" name="ADDRESS" placeholder="例: 東京都千代田区..." autocomplete="off"></div>
-                <div class="col-md-6"><label for="PASSWORD" class="form-label">パスワード <span class="text-danger">*</span></label><input type="password" class="form-control" id="PASSWORD" name="PASSWORD" required></div>
+                <div class="col-md-6"><label for="JOINING_DATE" class="form-label">入社日</label><input type="date" class="form-control" id="JOINING_DATE" name="JOINING_DATE" autocomplete="nope"></div>
+                <div class="col-md-6"><label for="EMERGENCY_CELL_NUMBER" class="form-label">緊急連絡先</label><input type="tel" class="form-control" id="EMERGENCY_CELL_NUMBER" name="EMERGENCY_CELL_NUMBER" autocomplete="nope"></div>
+                <div class="col-md-6"><label for="POST_CODE" class="form-label">郵便番号</label><input type="text" class="form-control" id="POST_CODE" name="POST_CODE" placeholder="例: 123-4567" autocomplete="nope"></div>
+                <div class="col-12"><label for="ADDRESS" class="form-label">住所</label><input type="text" class="form-control" id="ADDRESS" name="ADDRESS" placeholder="例: 東京都千代田区..." autocomplete="nope"></div>
+                <div class="col-md-6"><label for="PASSWORD" class="form-label">パスワード <span class="text-danger">*</span></label><input type="password" class="form-control" id="PASSWORD" name="PASSWORD" required autocomplete="new-password"></div>
             </div>
             <hr class="my-4">
             <button class="btn btn-primary" type="submit">登録する</button>

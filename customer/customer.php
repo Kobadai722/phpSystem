@@ -118,6 +118,7 @@
                         <td><?= htmlspecialchars($row['POST_CODE']) ?></td>
                         <td><?= htmlspecialchars($row['ADDRESS']) ?></td>
                         <td>
+                            <a href="../inquiry/inquiry_list.php?customer_id=<?= $row['CUSTOMER_ID'] ?>" class="btn btn-info btn-sm">問合せ</a>
                             <a href="customer-edit.php?id=<?= $row['CUSTOMER_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= htmlspecialchars($row['CUSTOMER_ID']) ?>" data-name="<?= htmlspecialchars($row['NAME']) ?>">
                                 削除
