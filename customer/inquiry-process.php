@@ -3,7 +3,7 @@ session_start();
 require_once '../config.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../customer/customer.php');
+    header('Location: customer.php');
     exit;
 }
 
@@ -41,5 +41,5 @@ try {
     $_SESSION['error_message'] = '処理中にエラーが発生しました。';
 }
 
-header("Location: inquiry_list.php?customer_id=" . $customer_id);
+header("Location: inquiry.php?customer_id=" . $customer_id);
 exit;

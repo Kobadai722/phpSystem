@@ -3,7 +3,7 @@ session_start();
 require_once '../config.php';
 
 if (!isset($_GET['inquiry_detail_id']) || !is_numeric($_GET['inquiry_detail_id'])) {
-    header('Location: ../customer/customer.php');
+    header('Location: customer.php');
     exit;
 }
 
@@ -13,7 +13,7 @@ $stmt->execute([$inquiry_detail_id]);
 $inquiry = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$inquiry) {
-    header('Location: ../customer/customer.php');
+    header('Location: customer.php');
     exit;
 }
 ?>
@@ -28,7 +28,7 @@ if (!$inquiry) {
 <body>
 <main class="container">
     <h2 class="my-4">問い合わせ編集</h2>
-    <form action="inquiry_process.php" method="post">
+    <form action="inquiry-process.php" method="post">
         <input type="hidden" name="action" value="edit">
         <input type="hidden" name="inquiry_detail_id" value="<?= $inquiry['INQUIRY_DETAIL_ID'] ?>">
         <input type="hidden" name="customer_id" value="<?= $inquiry['CUSTOMER_ID'] ?>">
@@ -53,7 +53,7 @@ if (!$inquiry) {
         </div>
         
         <button type="submit" class="btn btn-primary">更新</button>
-        <a href="inquiry_list.php?customer_id=<?= $inquiry['CUSTOMER_ID'] ?>" class="btn btn-secondary">キャンセル</a>
+        <a href="inquiry.php?customer_id=<?= $inquiry['CUSTOMER_ID'] ?>" class="btn btn-secondary">キャンセル</a>
     </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
