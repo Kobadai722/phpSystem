@@ -145,7 +145,7 @@ require_once '../config.php'; // データベース接続情報
                 if (value.length > 7) value = value.slice(0, 7);
 
                 if (value.length > 3) {
-                    value = value.slice(0, 3) + '-' + value.slice(4);
+                    value = value.slice(0, 3) + '-' + value.slice(3);
                 }
                 e.target.value = value;
             });
@@ -166,7 +166,7 @@ require_once '../config.php'; // データベース接続情報
                     confirmModal.show();
                 }
             });
-            
+
             confirmRegisterButton.addEventListener('click', function() {
                 const formData = new FormData(form);
 
