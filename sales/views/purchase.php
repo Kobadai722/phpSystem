@@ -67,13 +67,13 @@
                     <table class="table table-hover table-bordered bg-white shadow-sm rounded">
                         <thead class="table-light">
                             <tr>
-                                <th>注文ID</th>
-                                <th>注文日時</th>
-                                <th>顧客名</th>
-                                <th>合計金額</th>
-                                <th>支払い状況</th>
-                                <th>配送状況</th>
-                                <th>操作</th>
+                                <th scope="col">注文ID</th>
+                                <th scope="col">注文日時</th>
+                                <th scope="col">顧客名</th>
+                                <th scope="col">合計金額</th>
+                                <th scope="col">支払い状況</th>
+                                <th scope="col">配送状況</th>
+                                <th scope="col">操作</th>
                             </tr>
                         </thead>
                         <tbody id="ordersTableBody">
