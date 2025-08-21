@@ -10,6 +10,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="../style.css" rel="stylesheet" />
     <link href="customer.css" rel="stylesheet" />
+    <style>
+        /* ページネーションで高さが変わらないようにテーブルの高さを固定 */
+        .table tbody {
+            display: block;
+            height: 720px; /* 20行分の目安の高さ */
+            overflow-y: auto;
+        }
+        .table thead, .table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+    </style>
 </head>
 <?php include '../header.php'; ?>
 <body>
@@ -70,7 +83,7 @@
                     <th scope="col">メールアドレス</th>
                     <th scope="col">郵便番号</th>
                     <th scope="col">住所</th>
-                    <th scope="col"></th>
+                    <th scope="col">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -100,6 +113,7 @@
                         <td><?= htmlspecialchars($row['POST_CODE']) ?></td>
                         <td><?= htmlspecialchars($row['ADDRESS']) ?></td>
                         <td>
+                            <a href="customer-edit.php?id=<?= $row['CUSTOMER_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= htmlspecialchars($row['CUSTOMER_ID']) ?>" data-name="<?= htmlspecialchars($row['NAME']) ?>">
                                 削除
                             </button>
@@ -142,6 +156,7 @@
             </div>
         </div>
     </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
