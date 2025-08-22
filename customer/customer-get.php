@@ -1,5 +1,5 @@
 <?php
-require_once '../../config.php'; // DBサーバーと接続
+require_once '../config.php'; // DBサーバーと接続 (パスを修正)
 
 header('Content-Type: application/json; charset=UTF-8');
 
@@ -15,8 +15,9 @@ $params = [];
 
 // 検索条件の組み立て
 if (!empty($search_id)) {
-    $sql .= " AND CUSTOMER_ID LIKE ?";
-    $params[] = '%' . $search_id . '%';
+    // 顧客IDは完全一致で検索
+    $sql .= " AND CUSTOMER_ID = ?";
+    $params[] = $search_id;
 }
 if (!empty($search_name)) {
     $sql .= " AND NAME LIKE ?";
