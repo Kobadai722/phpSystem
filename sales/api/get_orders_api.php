@@ -11,12 +11,12 @@ try {
     $conditions = [];
     $params = [];
 
-    // 検索条件の追加
+    // 検索条件の追加
     if (!empty($_GET['orderId'])) {
         $conditions[] = 'o.ORDER_ID = :orderId';
         $params[':orderId'] = $_GET['orderId'];
     }
-    // GETパラメータのキーを orders.js と一致させる
+    // GETパラメータのキーを orders.js と一致させる
     if (!empty($_GET['customerName'])) {
         $conditions[] = 'c.NAME LIKE :customerName';
         $params[':customerName'] = '%' . $_GET['customerName'] . '%';
@@ -30,10 +30,10 @@ try {
         $params[':deliveryStatus'] = $_GET['deliveryStatus'];
     }
 
-    // クエリの構築
-    // ordersテーブルと CUSTOMER テーブルを CUSTOMER_ID で結合
-    // c.NAME を CUSTOMER_NAME というエイリアスで返す
-    $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME FROM orders o JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
+    // クエリの構築
+    // ordersテーブルと CUSTOMER テーブルを CUSTOMER_ID で結合
+    // c.NAME を CUSTOMER_NAME というエイリアスで返す
+    $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME FROM S_ORDER o JOIN S_CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
     if (count($conditions) > 0) {
         $query .= ' WHERE ' . implode(' AND ', $conditions);
     }
@@ -42,7 +42,7 @@ try {
     $stmt = $PDO->prepare($query);
     foreach ($params as $param => $value) {
         $stmt->bindValue($param, $value);
-    }
+}
 
     $stmt->execute();
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -51,8 +51,8 @@ try {
 
 } catch (PDOException $e) {
     echo json_encode([
-        'success' => false,
-        'error_message' => 'データの取得中にエラーが発生しました: ' . $e->getMessage()
+    'success' => false,
+    'error_message' => 'データの取得中にエラーが発生しました: ' . $e->getMessage()
     ]);
     exit;
 }
