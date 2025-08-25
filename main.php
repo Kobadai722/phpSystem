@@ -1,7 +1,6 @@
 <?php
 session_start();
 require_once 'config.php';
-// 出勤・退勤機能に必要なPHPロジックは別のファイルに分離します。
 
 if (!isset($_SESSION['employee_id'])) {
     header('Location: login.php');
