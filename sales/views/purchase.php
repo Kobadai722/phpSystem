@@ -37,14 +37,6 @@
                                     <option value="支払い済み">支払い済み</option>
                                 </select>
                             </div>
-                            <div class="col-md-3">
-                                <label for="deliveryStatus" class="form-label">配送状況</label>
-                                <select class="form-select" id="deliveryStatus">
-                                    <option value="">全て</option>
-                                    <option value="未発送">未発送</option>
-                                    <option value="発送済み">発送済み</option>
-                                </select>
-                            </div>
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary" id="searchButton">
                                     <i class="bi bi-search"></i> 検索

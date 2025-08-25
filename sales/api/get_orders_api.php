@@ -27,14 +27,13 @@ try {
         $conditions[] = 'o.STATUS = :paymentStatus';
         $params[':paymentStatus'] = $_GET['paymentStatus'];
     }
-    if (!empty($_GET['deliveryStatus'])) {
-        // ここは支払いステータスと同じカラムを参照している前提
-        $conditions[] = 'o.STATUS = :deliveryStatus';
-        $params[':deliveryStatus'] = $_GET['deliveryStatus'];
-    }
+    // ★ここを削除またはコメントアウト★
+    // if (!empty($_GET['deliveryStatus'])) {
+    //     $conditions[] = 'o.STATUS = :deliveryStatus';
+    //     $params[':deliveryStatus'] = $_GET['deliveryStatus'];
+    // }
 
-    // ★テーブル名を修正しました★
-    // S_ORDERとS_CUSTOMERを結合してデータを取得するSQLクエリ
+    // ★テーブル名をS_ORDERに修正、顧客テーブルをS_CUSTOMERと仮定して結合★
     $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME FROM S_ORDER o JOIN S_CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
     
     // 検索条件があればWHERE句を追加
