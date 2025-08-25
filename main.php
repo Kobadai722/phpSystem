@@ -1,13 +1,34 @@
 <?php
 session_start();
 require_once 'config.php';
+// 変更箇所：出勤・退勤機能のために attendance_in.php や attendance_out.php と連携するロジックを追加
 
 if (!isset($_SESSION['employee_id'])) {
     header('Location: login.php');
     exit;
 }
 
-$employee_name = $_SESSION['employee_name'] ?? "ゲスト";
+$employee_id = $_SESSION['employee_id'];
+$employee_name = "ゲスト";
+$attendance_record = null;
+
+try {
+    // 変更箇所：ログインしている従業員名と当日の出勤データを取得します
+    $stmt = $PDO->prepare("SELECT NAME FROM EMPLOYEE WHERE EMPLOYEE_ID = ?");
+    $stmt->execute([$employee_id]);
+    $employee = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($employee) {
+        $employee_name = htmlspecialchars($employee['NAME']);
+    }
+
+    $today = date("Y-m-d");
+    $stmt = $PDO->prepare("SELECT * FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
+    $stmt->execute([$employee_id, $today]);
+    $attendance_record = $stmt->fetch(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    // エラーハンドリング
+}
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -43,12 +64,16 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 <p class="time-display" id="realtime-time">14:29</p>
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
-                    <div class="punch-in-button">
-                        <a href="#" id="mainClockInBtn">出勤</a>
-                    </div>
-                    <div class="punch-out-button">
-                        <a href="#" id="mainClockOutBtn">退勤</a>
-                    </div>
+                    <?php if (!$attendance_record) : ?>
+                        <div class="punch-in-button">
+                            <a href="human/attendance_in.php">出勤</a>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($attendance_record && !$attendance_record['CLOCK_OUT_TIME']) : ?>
+                        <div class="punch-out-button">
+                            <a href="human/attendance_out.php">退勤</a>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="weather-area">
