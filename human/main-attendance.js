@@ -24,8 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
-        // APIのパスを修正
-        fetch('human/attendance_api.php?action=getHistory')
+        fetch('human/api/attendance_api.php?action=getHistory')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -46,8 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     clockInBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        // APIのパスを修正
-        fetch('human/attendance_api.php', {
+        fetch('human/api/attendance_api.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'action=clockIn'
@@ -65,8 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     clockOutBtn.addEventListener('click', function(e) {
         e.preventDefault();
-        // APIのパスを修正
-        fetch('human/attendance_api.php', {
+        fetch('human/api/attendance_api.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: 'action=clockOut'

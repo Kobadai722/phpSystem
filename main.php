@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once 'config.php';
+// 出勤・退勤機能に必要なPHPロジックは別のファイルに分離します。
 
 if (!isset($_SESSION['employee_id'])) {
     header('Location: login.php');
@@ -50,6 +51,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                         <a href="#" id="mainClockOutBtn">退勤</a>
                     </div>
                 </div>
+                <div id="statusMessage" class="mt-3"></div>
             </div>
             <div class="weather-area">
                 <p class="weather-title">今日の札幌市の天気</p>
@@ -129,6 +131,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
+    <script src="human/main-attendance.js"></script>
     <script>
         // リアルタイムで時刻を更新するJavaScript
         function updateTime() {
