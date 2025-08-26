@@ -11,44 +11,34 @@ require_once '../../config.php';
 header('Content-Type: application/json');
 
 try {
-    $conditions = [];
-    $params = [];
+    // GETまたはPOSTデータからキーワードを取得
+    $keyword = $_GET['keyword'] ?? ($_POST['keyword'] ?? '');
 
-    // 検索条件をGETリクエストから取得し、動的にSQLクエリを構築
-    if (!empty($_GET['orderId'])) {
-        $conditions[] = 'o.ORDER_ID = :orderId';
-        $params[':orderId'] = $_GET['orderId'];
-    }
-    if (!empty($_GET['customerName'])) {
-        $conditions[] = 'c.NAME LIKE :customerName';
-        $params[':customerName'] = '%' . $_GET['customerName'] . '%';
-    }
-    if (!empty($_GET['paymentStatus'])) {
-        $conditions[] = 'o.STATUS = :paymentStatus';
-        $params[':paymentStatus'] = $_GET['paymentStatus'];
-    }
-    // ★ここを削除またはコメントアウト★
-    // if (!empty($_GET['deliveryStatus'])) {
-    //     $conditions[] = 'o.STATUS = :deliveryStatus';
-    //     $params[':deliveryStatus'] = $_GET['deliveryStatus'];
-    // }
+    // SQLクエリを構築
+    // S_ORDERとCUSTOMERをCUSTOMER_IDで結合して、注文情報と顧客名を取得
+    $sql = "SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME 
+            FROM S_ORDER o 
+            LEFT JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID";
 
-    // ★テーブル名をS_ORDERに修正、顧客テーブルをS_CUSTOMERと仮定して結合★
-    $query = 'SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME FROM S_ORDER o JOIN S_CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID';
-    
-    // 検索条件があればWHERE句を追加
-    if (count($conditions) > 0) {
-        $query .= ' WHERE ' . implode(' AND ', $conditions);
+    // キーワードが入力されている場合、WHERE句を追加して絞り込み
+    if (!empty($keyword)) {
+        // SQLインジェクションを防ぐため、プリペアドステートメントを使用
+        $sql .= " WHERE o.ORDER_ID LIKE :keyword OR c.NAME LIKE :keyword OR o.STATUS LIKE :keyword";
     }
-    
+
     // 注文日時が新しい順に並べ替え
-    $query .= ' ORDER BY o.ORDER_DATETIME DESC';
+    $sql .= " ORDER BY o.ORDER_DATETIME DESC";
 
-    // プリペアドステートメントの準備と実行
-    $stmt = $PDO->prepare($query);
-    foreach ($params as $param => $value) {
-        $stmt->bindValue($param, $value);
+    // プリペアドステートメントの準備
+    $stmt = $PDO->prepare($sql);
+
+    // キーワードが入力されている場合、プレースホルダーに値をバインド
+    if (!empty($keyword)) {
+        // 部分一致検索のために%を追加
+        $stmt->bindValue(':keyword', '%' . $keyword . '%', PDO::PARAM_STR);
     }
+    
+    // SQLクエリを実行
     $stmt->execute();
     
     // 結果を連想配列としてすべて取得
@@ -65,3 +55,4 @@ try {
     ]);
     exit;
 }
+?>

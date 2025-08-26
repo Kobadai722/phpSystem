@@ -4,9 +4,6 @@ $page_title = "売上高一覧";
 $current_page = "graph"; // サイドバーのハイライト用
 require_once __DIR__ . '/../a_header.php';
 
-// ----- 部品の読み込み -----
-// パスは実際のファイル配置に合わせて調整してください
-require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 
 // ----- データ処理 -----
@@ -41,11 +38,8 @@ try {
     die("データベースエラー: " . $e->getMessage());
 }
 
-// a_header.phpをここで読み込む
-require_once __DIR__ . '/../a_header.php';
 ?>
 
-<body>
 
     <!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
     <button class="btn btn-light shadow-sm hamburger-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">

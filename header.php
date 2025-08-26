@@ -38,7 +38,7 @@
                             会計管理
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/../accounting/siwake_hyo/output_siwakehyo">Action</a></li>
+                            <li><a class="dropdown-item" href="/../accounting/siwake_hyo/output_siwakehyo">仕訳一覧表</a></li>
                             <li><a class="dropdown-item" href="/../accounting/siwake_hyo/input_siwakehyo.php">仕訳入力フォーム</a></li>
                         </ul>
                     </li>

@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html lang="ja">
 <head>
     <?php session_start();?>
     <meta charset="UTF-8">
@@ -19,7 +21,6 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
-    <!-- === ▼ 独自のCSSのパスを<base>タグからの相対パスに修正 ▼ === -->
     <link rel="stylesheet" href="accounting/css/siwake.css">
     <link rel="stylesheet" href="accounting/css/sidebar.css">
     
