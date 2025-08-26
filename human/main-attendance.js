@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
-        fetch('human/api/attendance_api.php?action=getHistory')
+        fetch('human/attendance_api.php?action=getHistory')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
@@ -53,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockInBtn) {
         clockInBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            fetch('human/api/attendance_api.php', {
+            fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockIn'
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockOutBtn) {
         clockOutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            fetch('human/api/attendance_api.php', {
+            fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockOut'
