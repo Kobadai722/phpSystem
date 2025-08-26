@@ -19,12 +19,12 @@ $current_page = 'home';
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
-<?php
-        require_once __DIR__ . '/../header.php';
-        require_once __DIR__ . '/../config.php';
-
-    ?>
 <body>
+    <?php
+        require_once __DIR__ . '/../config.php';
+        require_once __DIR__ . '/../header.php';
+        
+    ?>
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <?php

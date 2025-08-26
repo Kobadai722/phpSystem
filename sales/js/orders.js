@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
             orderId: document.getElementById('orderId').value,
             customerName: document.getElementById('customerName').value,
             paymentStatus: document.getElementById('paymentStatus').value,
-            deliveryStatus: document.getElementById('deliveryStatus').value
         };
         fetchOrders(params);
     });

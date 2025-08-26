@@ -34,7 +34,7 @@ $current_page = $current_page ?? '';
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link <?php echo ($current_page === 'graph') ? 'active' : ''; ?>" href="/sales/sales_list.php">
+                <a class="nav-link <?php echo ($current_page === 'graph') ? 'active' : ''; ?>" href="/accounting/graph/sale_list.php">
                     <i class="bi bi-bar-chart-line-fill"></i>
                     <span>売上高一覧</span>
                 </a>
