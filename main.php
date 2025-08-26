@@ -7,26 +7,7 @@ if (!isset($_SESSION['employee_id'])) {
     exit;
 }
 
-$employee_id = $_SESSION['employee_id'];
-$employee_name = "ゲスト";
-$attendance_record = null;
-
-try {
-    $stmt = $PDO->prepare("SELECT NAME FROM EMPLOYEE WHERE EMPLOYEE_ID = ?");
-    $stmt->execute([$employee_id]);
-    $employee = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($employee) {
-        $employee_name = htmlspecialchars($employee['NAME']);
-    }
-
-    $today = date("Y-m-d");
-    $stmt = $PDO->prepare("SELECT * FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
-    $stmt->execute([$employee_id, $today]);
-    $attendance_record = $stmt->fetch(PDO::FETCH_ASSOC);
-
-} catch (PDOException $e) {
-    // エラーハンドリング
-}
+$employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -62,17 +43,14 @@ try {
                 <p class="time-display" id="realtime-time">14:29</p>
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
-                    <?php if (!$attendance_record) : ?>
-                        <div class="punch-in-button">
-                            <a href="human/attendance_in.php">出勤</a>
-                        </div>
-                    <?php endif; ?>
-                    <?php if ($attendance_record && !$attendance_record['CLOCK_OUT_TIME']) : ?>
-                        <div class="punch-out-button">
-                            <a href="human/attendance_out.php">退勤</a>
-                        </div>
-                    <?php endif; ?>
+                    <div class="punch-in-button">
+                        <a href="#" id="mainClockInBtn">出勤</a>
+                    </div>
+                    <div class="punch-out-button">
+                        <a href="#" id="mainClockOutBtn">退勤</a>
+                    </div>
                 </div>
+                <div id="statusMessage" class="mt-3"></div>
             </div>
             <div class="weather-area">
                 <p class="weather-title">今日の札幌市の天気</p>
@@ -148,10 +126,11 @@ try {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
+    <script src="human/main-attendance.js"></script>
     <script>
         // リアルタイムで時刻を更新するJavaScript
         function updateTime() {
@@ -169,4 +148,5 @@ try {
         setInterval(updateTime, 1000);
     </script>
 </body>
+
 </html>
