@@ -44,10 +44,10 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
-                        <a href="#" id="mainClockInBtn">出勤</a>
+                        <a href="/human/attendance_in.php">出勤</a>
                     </div>
                     <div class="punch-out-button">
-                        <a href="#" id="mainClockOutBtn">退勤</a>
+                        <a href="/human/attendance_out.php">退勤</a>
                     </div>
                 </div>
                 <div id="statusMessage" class="mt-3"></div>

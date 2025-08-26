@@ -1,35 +1,29 @@
 <?php
 session_start();
-require_once '../config.php';
-
-if (!isset($_SESSION['employee_id'])) {
-    $_SESSION['error_message'] = "ログインが必要です。";
+$db_host = 'localhost';
+$db_name = 'your_database';
+$db_user = 'your_username';
+$db_pass = 'your_password';
+if (!isset($_SESSION['uid'])) {
     header('Location: ../login.php');
-    exit;
+    exit();
 }
-
-$employee_id = $_SESSION['employee_id'];
-$date = date("Y-m-d");
-$time = date("H:i:s");
-
+$uid = $_SESSION['uid'];
 try {
-    $stmt = $PDO->prepare("SELECT ATTENDANCE_ID FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
-    $stmt->execute([$employee_id, $date]);
-    if ($stmt->fetch()) {
-        $_SESSION['error_message'] = "本日はすでに出勤済みです。";
-        header('Location: ../main.php');
-        exit;
+    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM ATTENDANCE WHERE UID = :uid AND DATE(ATTENDANCE_DATE) = CURDATE()");
+    $stmt->execute(['uid' => $uid]);
+    $count = $stmt->fetchColumn();
+    if ($count == 0) {
+        $stmt = $pdo->prepare("INSERT INTO ATTENDANCE (UID, ATTENDANCE_DATE, ATTENDANCE_TIME, STATUS_FLAG) VALUES (:uid, CURDATE(), NOW(), 1)");
+        $stmt->execute(['uid' => $uid]);
+        $_SESSION['message'] = '出勤を記録しました。';
+    } else {
+        $_SESSION['message'] = '既に出勤が記録されています。';
     }
-
-    $stmt = $PDO->prepare("INSERT INTO ATTENDANCE (EMPLOYEE_ID, ATTENDANCE_DATE, CLOCK_IN_TIME) VALUES (?, ?, ?)");
-    $stmt->execute([$employee_id, $date, $time]);
-
-    $_SESSION['success_message'] = "出勤しました。";
-    header('Location: ../main.php');
-    exit;
 } catch (PDOException $e) {
-    $_SESSION['error_message'] = "データベースエラーにより出勤に失敗しました。";
-    header('Location: ../main.php');
-    exit;
+    $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
 }
-?>
+header('Location: ../main.php');
+exit();

@@ -1,42 +1,30 @@
 <?php
 session_start();
-require_once '../config.php';
-
-if (!isset($_SESSION['employee_id'])) {
-    $_SESSION['error_message'] = "ログインが必要です。";
+$db_host = 'localhost';
+$db_name = 'your_database';
+$db_user = 'your_username';
+$db_pass = 'your_password';
+if (!isset($_SESSION['uid'])) {
     header('Location: ../login.php');
-    exit;
+    exit();
 }
-
-$employee_id = $_SESSION['employee_id'];
-$date = date("Y-m-d");
-$time = date("H:i:s");
-
+$uid = $_SESSION['uid'];
 try {
-    $stmt = $PDO->prepare("SELECT CLOCK_OUT_TIME FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
-    $stmt->execute([$employee_id, $date]);
-    $record = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$record) {
-        $_SESSION['error_message'] = "出勤記録がありません。";
-        header('Location: ../main.php');
-        exit;
+    $pdo = new PDO("mysql:host=$db_host;dbname=$db_name;charset=utf8", $db_user, $db_pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM ATTENDANCE WHERE UID = :uid AND DATE(ATTENDANCE_DATE) = CURDATE() AND LEAVE_TIME IS NULL");
+    $stmt->execute(['uid' => $uid]);
+    $count = $stmt->fetchColumn();
+    if ($count > 0) {
+        $stmt = $pdo->prepare("UPDATE ATTENDANCE SET LEAVE_TIME = NOW() WHERE UID = :uid AND DATE(ATTENDANCE_DATE) = CURDATE()");
+        $stmt->execute(['uid' => $uid]);
+        $_SESSION['message'] = '退勤を記録しました。';
+    } else {
+        $_SESSION['message'] = '出勤が記録されていないか、既に退勤が記録されています。';
     }
-    if ($record['CLOCK_OUT_TIME']) {
-        $_SESSION['error_message'] = "本日はすでに退勤済みです。";
-        header('Location: ../main.php');
-        exit;
-    }
-
-    $stmt = $PDO->prepare("UPDATE ATTENDANCE SET CLOCK_OUT_TIME = ? WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
-    $stmt->execute([$time, $employee_id, $date]);
-
-    $_SESSION['success_message'] = "退勤しました。";
-    header('Location: ../main.php');
-    exit;
 } catch (PDOException $e) {
-    $_SESSION['error_message'] = "データベースエラーにより退勤に失敗しました。";
-    header('Location: ../main.php');
-    exit;
+    $_SESSION['message'] = 'エラーが発生しました: ' . $e->getMessage();
 }
+header('Location: ../main.php');
+exit();
 ?>
