@@ -53,7 +53,7 @@ require_once '../config.php';
             <thead>
                 <tr>
                     <th scope="col">顧客ID</th>
-                    <th scope="col">氏名</th>
+                    <th scope="col">企業名</th>
                     <th scope="col">電話番号</th>
                     <th scope="col">メールアドレス</th>
                     <th scope="col">郵便番号</th>

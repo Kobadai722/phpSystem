@@ -6,9 +6,6 @@ body {
     color: #333; /* 基本の文字色 */
     line-height: 1.6;
     overflow-x: hidden; /* 横スクロールバーの抑制 */
-    /* display: flex; /* これを削除 */
-    /* justify-content: center; */ /* これを削除 */
-    /* align-items: center; */ /* これを削除 */
     min-height: 100vh; /* 画面いっぱいに広がるように */
 }
 
