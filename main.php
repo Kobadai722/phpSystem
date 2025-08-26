@@ -26,31 +26,21 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 </head>
 <?php include 'header.php'; ?>
 <body class="bg-image" id="mainBody">
-    <?php
-    if (isset($_SESSION['success_message'])) {
-        echo '<div class="alert alert-success alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['success_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        unset($_SESSION['success_message']);
-    }
-    if (isset($_SESSION['error_message'])) {
-        echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        unset($_SESSION['error_message']);
-    }
-    ?>
     <div class="container-main">
         <div class="left-panel">
             <div class="attendance-system">
-                <p class="current-date">2025年06月17日</p>
-                <p class="time-display" id="realtime-time">14:29</p>
+                <p class="current-date"><?= date('Y年m月d日') ?></p>
+                <p class="time-display" id="realtime-time"></p>
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
-                        <a href="/human/attendance_in.php">出勤</a>
+                        <a href="#" id="mainClockInBtn">出勤</a>
                     </div>
                     <div class="punch-out-button">
-                        <a href="/human/attendance_out.php">退勤</a>
+                        <a href="#" id="mainClockOutBtn">退勤</a>
                     </div>
                 </div>
-                <div id="statusMessage" class="mt-3"></div>
+                <div id="statusMessage" class="mt-3" style="display: none;"></div>
             </div>
             <div class="weather-area">
                 <p class="weather-title">今日の札幌市の天気</p>
@@ -132,7 +122,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     <script src="background_changer.js"></script>
     <script src="human/main-attendance.js"></script>
     <script>
-        // リアルタイムで時刻を更新するJavaScript
         function updateTime() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -141,10 +130,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
             document.getElementById('realtime-time').textContent = timeString;
         }
 
-        // ページロード時に一度時刻を設定
         updateTime();
-
-        // 1秒ごとに時刻を更新
         setInterval(updateTime, 1000);
     </script>
 </body>
