@@ -82,4 +82,3 @@ function search() {
     });
 }
 
-// 削除関連の関数は inventory.js に移動するため、ここから削除
