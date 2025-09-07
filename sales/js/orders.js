@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <td>${escapeHTML(order.STATUS)}</td>
                         <td>${escapeHTML(order.STATUS)}</td>
                         <td class="actions">
-                            <a href="order_detail_view.php?id=${escapeHTML(order.ORDER_ID)}" class="btn btn-secondary btn-sm me-1">詳細</a>
+                            <a href="order_detail_view.php?id=${escapeHTML(order.ORDER_ID)}" class="btn btn-primary btn-sm me-1">詳細</a>
                         </td>
                     `;
                     ordersTableBody.appendChild(row);
