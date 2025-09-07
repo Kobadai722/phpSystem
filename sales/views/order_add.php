@@ -36,6 +36,18 @@
                         <input type="number" class="form-control" id="order_quantity" name="order_quantity" required min="1" step="1">
                         <div class="invalid-feedback" id="order_quantity_error"></div> <div class="form-text text-muted">1以上の整数を入力してください</div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="customer_id" class="form-label">顧客ID <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" required min="1" step="1">
+                        <div class="invalid-feedback" id="customer_id_error"></div> <div class="form-text text-muted">有効な顧客IDを入力してください</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">備考</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="255"></textarea>
+                        <div class="form-text text-muted">最大255文字まで</div>
+                    </div>
                     
                     <div class="d-flex justify-content-between mt-4">
                         <button type="submit" class="btn btn-success btn-lg" id="submitFormBtn"> 
@@ -67,6 +79,14 @@
                         <tr>
                             <th>注文数量</th>
                             <td id="confirm_order_quantity"></td>
+                        </tr>
+                        <tr>
+                            <th>顧客ID</th>
+                            <td id="confirm_customer_id"></td>
+                        </tr>
+                        <tr>
+                            <th>備考</th>
+                            <td id="confirm_notes"></td>
                         </tr>
                     </table>
                 </div>
@@ -116,14 +136,20 @@
 
             const productIdSelect = document.getElementById('product_id');
             const orderQuantityInput = document.getElementById('order_quantity');
+            const customerIdInput = document.getElementById('customer_id');
+            const notesInput = document.getElementById('notes');
+
             const productIdError = document.getElementById('product_id_error');
             const orderQuantityError = document.getElementById('order_quantity_error');
+            const customerIdError = document.getElementById('customer_id_error');
             
             function clearValidationErrors() {
                 productIdSelect.classList.remove('is-invalid');
                 orderQuantityInput.classList.remove('is-invalid');
+                customerIdInput.classList.remove('is-invalid');
                 productIdError.textContent = '';
                 orderQuantityError.textContent = '';
+                customerIdError.textContent = '';
             }
 
             function validateForm() {
@@ -144,6 +170,13 @@
                     isValid = false;
                 }
                 
+                const customerId = customerIdInput.value;
+                if (customerId === '' || isNaN(customerId) || parseInt(customerId) < 1 || !Number.isInteger(parseFloat(customerId))) {
+                    customerIdInput.classList.add('is-invalid');
+                    customerIdError.textContent = '顧客IDは1以上の整数を入力してください。';
+                    isValid = false;
+                }
+                
                 return isValid;
             }
 
@@ -156,6 +189,8 @@
                 const selectedProductName = productIdSelect.options[productIdSelect.selectedIndex].text;
                 document.getElementById('confirm_product_name').textContent = selectedProductName;
                 document.getElementById('confirm_order_quantity').textContent = orderQuantityInput.value;
+                document.getElementById('confirm_customer_id').textContent = customerIdInput.value;
+                document.getElementById('confirm_notes').textContent = notesInput.value;
 
                 confirmModal.show();
             });
