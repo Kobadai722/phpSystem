@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="d-flex justify-content-end mb-3">
-                    <a href="order_detail_edit.php?mode=new" class="btn btn-success" id="newOrderButton">
+                    <a href="order_add.php?mode=new" class="btn btn-success" id="newOrderButton">
                         <i class="bi bi-plus-circle"></i> 新規注文登録
                     </a>
                 </div>
