@@ -25,7 +25,7 @@ html, body {
     margin-bottom: 2rem;
 }
 
-/* カードを並べるコンテナ (Flexboxに変更) */
+/* カードを並べるコンテナ (Flexbox) */
 .dashboard-grid {
     display: flex;
     flex-wrap: wrap;
@@ -34,13 +34,8 @@ html, body {
 
 /* カードのスタイル (Flexアイテムとして) */
 .dashboard-grid > .card {
-    /* * flex-grow: 1 (スペースがあれば伸びる)
-     * flex-shrink: 1 (スペースがなければ縮む)
-     * flex-basis: 420px (基本の幅を広く設定)
-     */
-    /* === ▼ カードの基本幅を広く調整 ▼ === */
+    /* 基本幅は420px、スペースがあれば伸び、足りなければ縮む */
     flex: 1 1 420px;
-    /* === ▲ ここまで修正 ▲ === */
     
     background-color: #fff;
     border: 1px solid #e9ecef;
@@ -88,11 +83,11 @@ html, body {
 .gauge-chart {
     width: 100%;
     max-width: 280px;
-    aspect-ratio: 2 / 1;
+    aspect-ratio: 2 / 1; /* 横:縦 の比率を2:1に保つ */
     margin: 1rem auto;
     position: relative;
-    clip-path: inset(0 0 35% 0);
-    margin-bottom: -35%;
+    clip-path: inset(0 0 35% 0); /* 下35%を切り取る */
+    margin-bottom: -35%; /* 切り取った分の高さを詰める */
 
     background: conic-gradient(
         from -120deg,
@@ -101,19 +96,22 @@ html, body {
         transparent 66.6% 100%
     );
 }
+
+/* ドーナツの穴 */
 .gauge-chart::before {
     content: '';
     position: absolute;
     background: #fff;
     width: 80%;
-    height: 80%;
+    /* 親要素の高さ(H=W/2)に対して160%の高さを設定し、正円にする */
+    height: 160%;
     border-radius: 50%;
     left: 10%;
-    top: 10%;
+    top: 20%;
 }
 
 
-/* === ▼ レスポンシブ対応 ▼ === */
+/* === レスポンシブ対応 === */
 
 /* サイドバー開閉時のメインコンテンツの余白 */
 .main-content {
@@ -138,3 +136,4 @@ body.sidebar-collapsed .main-content {
         font-size: 2rem;
     }
 }
+
