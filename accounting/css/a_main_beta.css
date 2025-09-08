@@ -79,21 +79,22 @@ html, body {
     color: #6c757d;
 }
 
-/* === ゲージグラフ === */
+/* === ▼ ゲージグラフのスタイルを半円に修正 ▼ === */
 .gauge-chart {
     width: 100%;
     max-width: 280px;
-    aspect-ratio: 2 / 1; /* 横:縦 の比率を2:1に保つ */
-    margin: 1rem auto;
+    height: 140px; /* widthの半分で半円を作る */
     position: relative;
-    clip-path: inset(0 0 35% 0); /* 下35%を切り取る */
-    margin-bottom: -35%; /* 切り取った分の高さを詰める */
+    border-radius: 280px 280px 0 0; /* 上半分だけ角丸にする */
+    overflow: hidden; /* はみ出した部分を隠す */
+    margin: 1rem auto; /* 中央寄せ */
 
+    /* グラデーションで180度の半円を描画 */
     background: conic-gradient(
-        from -120deg,
-        #dc3545 0% calc(var(--percentage) * 0.666%), 
-        #ffc107 calc(var(--percentage) * 0.666%) 66.6%, 
-        transparent 66.6% 100%
+        from -90deg, /* 左端(-90deg)から開始 */
+        #dc3545 0% calc(var(--percentage) * 0.5%),      /* 満たされている部分(赤) */
+        #ffc107 calc(var(--percentage) * 0.5%) 50%,     /* 満たされていない部分(黄) */
+        transparent 50% 100%                           /* 下半分は透明 */
     );
 }
 
@@ -101,14 +102,14 @@ html, body {
 .gauge-chart::before {
     content: '';
     position: absolute;
-    background: #fff;
+    background: #fff; /* カードの背景色と同じ */
     width: 80%;
-    /* 親要素の高さ(H=W/2)に対して160%の高さを設定し、正円にする */
-    height: 160%;
+    height: 160%; /* 親要素の高さの160%で正円を作る */
     border-radius: 50%;
     left: 10%;
-    top: 20%;
+    top: 20%; /* 位置を調整 */
 }
+/* === ▲ ここまで修正 ▲ === */
 
 
 /* === レスポンシブ対応 === */
@@ -119,6 +120,20 @@ html, body {
 }
 body.sidebar-collapsed .main-content {
     padding-left: 80px; /* 閉じているときの幅 */
+}
+
+
+/* タブレットサイズなど、中くらいの画面で適用 */
+@media (max-width: 992px) {
+    /* フォームの要素を縦並びにする */
+    .card-body form .row {
+        flex-direction: column;
+        gap: 0.5rem; /* 縦並びになった際の余白 */
+    }
+    .card-body form .col-sm,
+    .card-body form .col-sm-auto {
+        width: 100%;
+    }
 }
 
 
