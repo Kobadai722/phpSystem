@@ -91,7 +91,7 @@ html, body {
     /* 下部分を切り取って円弧に見せる */
     clip-path: inset(0 0 34% 0);
     /* 切り取った分の高さを詰める */
-    margin-bottom: -34%;
+    margin-bottom: -10%;
 
     /* 240度の円弧を描画するグラデーション */
     background: conic-gradient(
