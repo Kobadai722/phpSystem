@@ -79,7 +79,7 @@ html, body {
     color: #6c757d;
 }
 
-/* === ▼ ゲージグラフのスタイルを240度の円弧に修正 ▼ === */
+/* === ゲージグラフのスタイル === */
 .gauge-chart {
     width: 100%;
     max-width: 280px;
@@ -113,7 +113,6 @@ html, body {
     left: 10%;
     top: 10%;
 }
-/* === ▲ ここまで修正 ▲ === */
 
 
 /* === レスポンシブ対応 === */
@@ -138,6 +137,15 @@ body.sidebar-collapsed .main-content {
     .card-body form .col-sm-auto {
         width: 100%;
     }
+
+    /* === ▼ 追加：グラフ下のサマリー表示を縦並びに変更 ▼ === */
+    .card-body .d-flex.justify-content-around {
+        flex-direction: column; /* 縦積みに変更 */
+        align-items: center;   /* 中央揃え */
+        gap: 1rem;             /* 要素間の余白を追加 */
+        text-align: center;    /* テキストも中央揃えに */
+    }
+    /* === ▲ ここまで追加 ▲ === */
 }
 
 
