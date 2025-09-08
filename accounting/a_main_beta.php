@@ -69,7 +69,7 @@ $current_page = 'home';
 
         // --- 4. 各種数値を計算 ---
         // 達成率
-        $achievement_rate = ($target_goal > 0) ? ($sales_for_month / ($target_goal * 1000)) * 100 : 0;
+        $achievement_rate = ($target_goal > 0) ? ($sales_for_month / ($target_goal * 10000)) * 100 : 0;
         // 目標までの残額
         $remaining_amount = $target_goal - $sales_for_month;
     } catch (PDOException $e) {
