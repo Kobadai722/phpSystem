@@ -79,22 +79,26 @@ html, body {
     color: #6c757d;
 }
 
-/* === ▼ ゲージグラフのスタイルを半円に修正 ▼ === */
+/* === ▼ ゲージグラフのスタイルを240度の円弧に修正 ▼ === */
 .gauge-chart {
     width: 100%;
     max-width: 280px;
-    height: 140px; /* widthの半分で半円を作る */
+    aspect-ratio: 1 / 1; /* 常に正円を保つ */
+    border-radius: 50%;
     position: relative;
-    border-radius: 280px 280px 0 0; /* 上半分だけ角丸にする */
-    overflow: hidden; /* はみ出した部分を隠す */
-    margin: 1rem auto; /* 中央寄せ */
+    margin: 0 auto; /* 中央寄せ */
 
-    /* グラデーションで180度の半円を描画 */
+    /* 下部分を切り取って円弧に見せる */
+    clip-path: inset(0 0 34% 0);
+    /* 切り取った分の高さを詰める */
+    margin-bottom: -34%;
+
+    /* 240度の円弧を描画するグラデーション */
     background: conic-gradient(
-        from -90deg, /* 左端(-90deg)から開始 */
-        #dc3545 0% calc(var(--percentage) * 0.5%),      /* 満たされている部分(赤) */
-        #ffc107 calc(var(--percentage) * 0.5%) 50%,     /* 満たされていない部分(黄) */
-        transparent 50% 100%                           /* 下半分は透明 */
+        from -120deg,
+        #dc3545 0% calc(var(--percentage) * 0.667%),
+        #ffc107 calc(var(--percentage) * 0.667%) 66.7%,
+        transparent 66.7% 100%
     );
 }
 
@@ -102,12 +106,12 @@ html, body {
 .gauge-chart::before {
     content: '';
     position: absolute;
-    background: #fff; /* カードの背景色と同じ */
+    background: #fff;
     width: 80%;
-    height: 160%; /* 親要素の高さの160%で正円を作る */
+    height: 80%;
     border-radius: 50%;
     left: 10%;
-    top: 20%; /* 位置を調整 */
+    top: 10%;
 }
 /* === ▲ ここまで修正 ▲ === */
 
