@@ -15,7 +15,7 @@ $current_page = 'home';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- 独自のCSS -->
-    <link rel="stylesheet" href="css/a_main.css">
+    <link rel="stylesheet" href="css/a_main_beta.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
