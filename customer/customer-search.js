@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             削除
                         </button>
                         <a href="sales-memo.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-info btn-sm">商談</a>
+                        <a href="inquiry-history.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-success btn-sm">問合せ</a>
 
                     </td>
                 </tr>

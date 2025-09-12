@@ -38,6 +38,18 @@ $customers = $PDO->query("SELECT CUSTOMER_ID, NAME FROM CUSTOMER ORDER BY NAME")
         </div>
         
         <div class="mb-3">
+            <label for="channel" class="form-label">対応チャネル <span class="text-danger">*</span></label>
+            <select name="channel" id="channel" class="form-select" required>
+                <option value="">選択してください</option>
+                <option value="電話">電話</option>
+                <option value="メール">メール</option>
+                <option value="Webフォーム">Webフォーム</option>
+                <option value="訪問">訪問</option>
+                <option value="その他">その他</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="inquiry_detail" class="form-label">問い合わせ内容</label>
             <textarea class="form-control" id="inquiry_detail" name="inquiry_detail" rows="5" required></textarea>
         </div>

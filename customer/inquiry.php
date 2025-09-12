@@ -84,6 +84,7 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <tr>
                 <th>企業名</th>
                 <th>問合せ日時</th>
+                <th>対応チャネル</th>
                 <th>内容</th>
                 <th>対応状況</th>
                 <th>操作</th>
@@ -91,9 +92,18 @@ $inquiries = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </thead>
         <tbody>
             <?php foreach ($inquiries as $inquiry) : ?>
-                <tr>
+                <?php
+                $row_class = '';
+                if ($inquiry['STATUS'] == '未対応') {
+                    $row_class = 'table-danger';
+                } elseif ($inquiry['STATUS'] == '対応中') {
+                    $row_class = 'table-warning';
+                }
+                ?>
+                <tr class="<?= $row_class ?>">
                     <td><?= htmlspecialchars($inquiry['customer_name']) ?></td>
                     <td><?= htmlspecialchars(date('Y-m-d H:i', strtotime($inquiry['INQUIRY_DATETIME']))) ?></td>
+                    <td><?= htmlspecialchars($inquiry['CHANNEL']) ?></td>
                     <td style="white-space: pre-wrap;"><?= htmlspecialchars($inquiry['INQUIRY_DETAIL']) ?></td>
                     <td>
                         <form action="inquiry-process.php" method="post" class="d-inline">

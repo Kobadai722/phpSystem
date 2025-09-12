@@ -12,14 +12,14 @@ $action = $_POST['action'] ?? '';
 try {
     switch ($action) {
         case 'register':
-            $stmt = $PDO->prepare("INSERT INTO INQUIRY_DETAIL (CUSTOMER_ID, INQUIRY_DATETIME, INQUIRY_DETAIL) VALUES (?, ?, ?)");
-            $stmt->execute([$_POST['customer_id'], $_POST['inquiry_datetime'], $_POST['inquiry_detail']]);
+            $stmt = $PDO->prepare("INSERT INTO INQUIRY_DETAIL (CUSTOMER_ID, INQUIRY_DATETIME, CHANNEL, INQUIRY_DETAIL) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$_POST['customer_id'], $_POST['inquiry_datetime'], $_POST['channel'], $_POST['inquiry_detail']]);
             $_SESSION['success_message'] = '新しい問い合わせを登録しました。';
             break;
 
         case 'edit':
-            $stmt = $PDO->prepare("UPDATE INQUIRY_DETAIL SET INQUIRY_DATETIME = ?, INQUIRY_DETAIL = ?, STATUS = ? WHERE INQUIRY_DETAIL_ID = ?");
-            $stmt->execute([$_POST['inquiry_datetime'], $_POST['inquiry_detail'], $_POST['status'], $_POST['inquiry_detail_id']]);
+            $stmt = $PDO->prepare("UPDATE INQUIRY_DETAIL SET INQUIRY_DATETIME = ?, CHANNEL = ?, INQUIRY_DETAIL = ?, STATUS = ? WHERE INQUIRY_DETAIL_ID = ?");
+            $stmt->execute([$_POST['inquiry_datetime'], $_POST['channel'], $_POST['inquiry_detail'], $_POST['status'], $_POST['inquiry_detail_id']]);
             $_SESSION['success_message'] = '問い合わせを更新しました。';
             break;
             
@@ -41,3 +41,4 @@ try {
 
 header("Location: inquiry.php");
 exit;
+}
