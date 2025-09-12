@@ -16,6 +16,15 @@ require_once '../config.php';
         .table tbody { display: block; height: 720px; overflow-y: auto; }
         .table thead, .table tbody tr { display: table; width: 100%; table-layout: fixed; }
         .table td { word-wrap: break-word; word-break: break-all; }
+        
+        /* 各列の幅を定義 */
+        .col-id { width: 8%; }
+        .col-name { width: 18%; }
+        .col-tel { width: 12%; }
+        .col-mail { width: 20%; }
+        .col-post { width: 9%; }
+        .col-address { width: 18%; }
+        .col-actions { width: 15%; }
     </style>
 </head>
 <?php include '../header.php'; ?>
@@ -52,13 +61,13 @@ require_once '../config.php';
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">顧客ID</th>
-                    <th scope="col">企業名</th>
-                    <th scope="col">電話番号</th>
-                    <th scope="col">メールアドレス</th>
-                    <th scope="col">郵便番号</th>
-                    <th scope="col">住所</th>
-                    <th scope="col">操作</th>
+                    <th scope="col" class="col-id">顧客ID</th>
+                    <th scope="col" class="col-name">企業名</th>
+                    <th scope="col" class="col-tel">電話番号</th>
+                    <th scope="col" class="col-mail">メールアドレス</th>
+                    <th scope="col" class="col-post">郵便番号</th>
+                    <th scope="col" class="col-address">住所</th>
+                    <th scope="col" class="col-actions">操作</th>
                 </tr>
             </thead>
             <tbody id="customerTableBody">

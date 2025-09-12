@@ -44,20 +44,21 @@ document.addEventListener('DOMContentLoaded', function() {
         customers.forEach(customer => {
             let row = `
                 <tr>
-                    <td scope="row">${escapeHtml(customer.CUSTOMER_ID)}</td>
-                    <td>${escapeHtml(customer.NAME)}</td>
-                    <td>${escapeHtml(customer.CELL_NUMBER)}</td>
-                    <td>${escapeHtml(customer.MAIL)}</td>
-                    <td>${escapeHtml(customer.POST_CODE)}</td>
-                    <td>${escapeHtml(customer.ADDRESS)}</td>
-                    <td>
-                        <a href="customer-edit.php?id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-primary btn-sm">編集</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${escapeHtml(customer.CUSTOMER_ID)}" data-name="${escapeHtml(customer.NAME)}">
-                            削除
-                        </button>
-                        <a href="sales-memo.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-info btn-sm">商談</a>
-                        <a href="inquiry-history.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-success btn-sm">問合せ</a>
-
+                    <td class="col-id" scope="row">${escapeHtml(customer.CUSTOMER_ID)}</td>
+                    <td class="col-name">${escapeHtml(customer.NAME)}</td>
+                    <td class="col-tel">${escapeHtml(customer.CELL_NUMBER)}</td>
+                    <td class="col-mail">${escapeHtml(customer.MAIL)}</td>
+                    <td class="col-post">${escapeHtml(customer.POST_CODE)}</td>
+                    <td class="col-address">${escapeHtml(customer.ADDRESS)}</td>
+                    <td class="col-actions">
+                        <div class="d-flex flex-wrap gap-1">
+                            <a href="customer-edit.php?id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-primary btn-sm">編集</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${escapeHtml(customer.CUSTOMER_ID)}" data-name="${escapeHtml(customer.NAME)}">
+                                削除
+                            </button>
+                            <a href="sales-memo.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-info btn-sm">商談</a>
+                            <a href="inquiry-history.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-success btn-sm">問合せ</a>
+                        </div>
                     </td>
                 </tr>
             `;
