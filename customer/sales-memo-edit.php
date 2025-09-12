@@ -23,7 +23,7 @@ if (!$nego) {
 }
 
 // 担当者リスト（社員リスト）を取得
-$employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE WHERE IS_DELETED = 0 ORDER BY NAME")->fetchAll(PDO::FETCH_ASSOC);
+$employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY NAME")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
