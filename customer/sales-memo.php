@@ -2,32 +2,44 @@
 session_start();
 require_once '../config.php';
 
+// --- エラーを画面に表示する設定 ---
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 if (!isset($_GET['customer_id']) || !is_numeric($_GET['customer_id'])) {
     header('Location: customer.php');
     exit;
 }
 
-// GETで受け取ったcustomer_idを「数値(integer)」に変換
+// GETパラメータを強制的に整数に変換
 $customer_id = (int)$_GET['customer_id'];
 
-// 顧客情報を取得
+// --- 顧客情報の取得 ---
 $stmt_customer = $PDO->prepare("SELECT NAME FROM CUSTOMER WHERE CUSTOMER_ID = ?");
 $stmt_customer->execute([$customer_id]);
 $customer = $stmt_customer->fetch(PDO::FETCH_ASSOC);
 
 if (!$customer) {
-    header('Location: customer.php');
+    // 顧客が存在しない場合は安全に終了
+    echo "指定された顧客IDは存在しません。";
     exit;
 }
 
-// 商談情報を取得
-$stmt_negotiation = $PDO->prepare(
-    "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = ? ORDER BY CREATED_AT DESC"
-);
-$stmt_negotiation->execute([$customer_id]);
-$negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
+// --- 商談情報の取得（診断で成功した直接的なクエリ実行方法に変更） ---
+$negotiations = []; // 変数を初期化
+try {
+    $sql = "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = " . $customer_id . " ORDER BY CREATED_AT DESC";
+    $stmt_negotiation = $PDO->query($sql);
+    if ($stmt_negotiation) {
+        $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
+    }
+} catch (PDOException $e) {
+    // もしエラーが出た場合に備える
+    die("データベースエラー: " . $e->getMessage());
+}
 
-// 全社員の情報を一度に取得し、[社員ID => 社員名] の形の配列を作成
+
+// --- 社員情報の取得 ---
 $employee_stmt = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE");
 $employees = $employee_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
