@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>${escapeHtml(customer.ADDRESS)}</td>
                     <td>
                         <a href="customer-edit.php?id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-primary btn-sm">編集</a>
+                        <a href="sales-memo.php?customer_id=${escapeHtml(customer.CUSTOMER_ID)}" class="btn btn-info btn-sm">メモ</a>
                         <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="${escapeHtml(customer.CUSTOMER_ID)}" data-name="${escapeHtml(customer.NAME)}">
                             削除
                         </button>
