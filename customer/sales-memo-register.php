@@ -33,7 +33,12 @@ $employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY NAME")
     <form action="sales-memo-process.php" method="post">
         <input type="hidden" name="action" value="register">
         <input type="hidden" name="customer_id" value="<?= $customer_id ?>">
-        
+
+        <div class="mb-3">
+            <label for="negotiation_date" class="form-label">商談日 <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="negotiation_date" name="negotiation_date" value="<?= date('Y-m-d') ?>" required>
+        </div>
+
         <div class="mb-3">
             <label for="employee_id" class="form-label">担当者 <span class="text-danger">*</span></label>
             <select class="form-select" id="employee_id" name="employee_id" required>
@@ -71,6 +76,11 @@ $employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY NAME")
                 <option value="受注">受注</option>
                 <option value="失注">失注</option>
             </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="memo" class="form-label">メモ</label>
+            <textarea class="form-control" id="memo" name="memo" rows="5"></textarea>
         </div>
         
         <button type="submit" class="btn btn-primary">登録</button>

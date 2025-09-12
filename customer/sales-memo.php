@@ -28,9 +28,9 @@ if (!$customer) {
 // --- 商談情報の取得 ---
 $negotiations = []; // 変数を初期化
 try {
-    // 【修正箇所】プリペアドステートメントを使用し、ORDER BY句を存在するカラム (NEGOTIATION_ID) に修正
+    // 【修正箇所】プリペアドステートメントを使用し、ORDER BY句を新しい日付カラム (NEGOTIATION_DATE) に修正
     $stmt_negotiation = $PDO->prepare(
-        "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = ? ORDER BY NEGOTIATION_ID DESC"
+        "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = ? ORDER BY NEGOTIATION_DATE DESC"
     );
     $stmt_negotiation->execute([$customer_id]);
     $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
@@ -77,21 +77,24 @@ $employees = $employee_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
     <table class="table table-hover mt-4">
         <thead>
             <tr>
+                <th>商談日</th>
                 <th>担当者</th>
                 <th>取引金額</th>
                 <th>受注確度</th>
                 <th>商談フェーズ</th>
+                <th>メモ</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <?php if (empty($negotiations)): ?>
                 <tr>
-                    <td colspan="5" class="text-center">この顧客の商談データはまだありません。</td>
+                    <td colspan="7" class="text-center">この顧客の商談データはまだありません。</td>
                 </tr>
             <?php else: ?>
                 <?php foreach ($negotiations as $nego) : ?>
                     <tr>
+                        <td><?= htmlspecialchars($nego['NEGOTIATION_DATE']) ?></td>
                         <?php
                             $employee_name = $employees[$nego['EMPLOYEE_ID']] ?? '不明';
                         ?>
@@ -99,6 +102,7 @@ $employees = $employee_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
                         <td><?= $nego['TRADING_AMOUNT'] !== null ? '¥' . number_format($nego['TRADING_AMOUNT']) : 'N/A' ?></td>
                         <td><?= $nego['ORDER_ACCURACY'] !== null ? htmlspecialchars($nego['ORDER_ACCURACY']) . '%' : 'N/A' ?></td>
                         <td><?= htmlspecialchars($nego['NEGOTIATION_PHASE']) ?></td>
+                        <td style="white-space: pre-wrap;"><?= htmlspecialchars($nego['MEMO']) ?></td>
                         <td>
                             <a href="sales-memo-edit.php?negotiation_id=<?= $nego['NEGOTIATION_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= $nego['NEGOTIATION_ID'] ?>">

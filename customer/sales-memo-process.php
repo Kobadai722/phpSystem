@@ -13,27 +13,32 @@ $customer_id = $_POST['customer_id'] ?? null;
 // 空の値をNULLに変換
 $trading_amount = !empty($_POST['trading_amount']) ? $_POST['trading_amount'] : null;
 $order_accuracy = !empty($_POST['order_accuracy']) ? $_POST['order_accuracy'] : null;
+$memo = !empty($_POST['memo']) ? $_POST['memo'] : null;
+$negotiation_date = !empty($_POST['negotiation_date']) ? $_POST['negotiation_date'] : null;
+
 
 try {
     switch ($action) {
         case 'register':
             $stmt = $PDO->prepare(
-                "INSERT INTO NEGOTIATION_MANAGEMENT (CUSTOMER_ID, EMPLOYEE_ID, TRADING_AMOUNT, ORDER_ACCURACY, NEGOTIATION_PHASE) 
-                 VALUES (?, ?, ?, ?, ?)"
+                "INSERT INTO NEGOTIATION_MANAGEMENT (CUSTOMER_ID, EMPLOYEE_ID, TRADING_AMOUNT, ORDER_ACCURACY, NEGOTIATION_PHASE, NEGOTIATION_DATE, MEMO) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)"
             );
             $stmt->execute([
                 $_POST['customer_id'], 
                 $_POST['employee_id'], 
                 $trading_amount, 
                 $order_accuracy, 
-                $_POST['negotiation_phase']
+                $_POST['negotiation_phase'],
+                $negotiation_date,
+                $memo
             ]);
             $_SESSION['success_message'] = '新しい商談を登録しました。';
             break;
 
         case 'edit':
             $stmt = $PDO->prepare(
-                "UPDATE NEGOTIATION_MANAGEMENT SET EMPLOYEE_ID = ?, TRADING_AMOUNT = ?, ORDER_ACCURACY = ?, NEGOTIATION_PHASE = ? 
+                "UPDATE NEGOTIATION_MANAGEMENT SET EMPLOYEE_ID = ?, TRADING_AMOUNT = ?, ORDER_ACCURACY = ?, NEGOTIATION_PHASE = ?, NEGOTIATION_DATE = ?, MEMO = ?
                  WHERE NEGOTIATION_ID = ?"
             );
             $stmt->execute([
@@ -41,6 +46,8 @@ try {
                 $trading_amount, 
                 $order_accuracy, 
                 $_POST['negotiation_phase'], 
+                $negotiation_date,
+                $memo,
                 $_POST['negotiation_id']
             ]);
             $_SESSION['success_message'] = '商談情報を更新しました。';

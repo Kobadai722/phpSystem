@@ -45,6 +45,11 @@ $employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY NAME")
         <input type="hidden" name="customer_id" value="<?= $nego['CUSTOMER_ID'] ?>">
         
         <div class="mb-3">
+            <label for="negotiation_date" class="form-label">商談日 <span class="text-danger">*</span></label>
+            <input type="date" class="form-control" id="negotiation_date" name="negotiation_date" value="<?= htmlspecialchars($nego['NEGOTIATION_DATE']) ?>" required>
+        </div>
+
+        <div class="mb-3">
             <label for="employee_id" class="form-label">担当者 <span class="text-danger">*</span></label>
             <select class="form-select" id="employee_id" name="employee_id" required>
                 <?php foreach ($employees as $employee): ?>
@@ -81,6 +86,11 @@ $employees = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY NAME")
                 <option value="受注" <?= $nego['NEGOTIATION_PHASE'] == '受注' ? 'selected' : '' ?>>受注</option>
                 <option value="失注" <?= $nego['NEGOTIATION_PHASE'] == '失注' ? 'selected' : '' ?>>失注</option>
             </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="memo" class="form-label">メモ</label>
+            <textarea class="form-control" id="memo" name="memo" rows="5"><?= htmlspecialchars($nego['MEMO']) ?></textarea>
         </div>
         
         <button type="submit" class="btn btn-primary">更新</button>
