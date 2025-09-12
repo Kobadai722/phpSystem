@@ -50,6 +50,7 @@
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/../customer/customer.php">顧客一覧</a></li>
                             <li><a class="dropdown-item" href="/../customer/inquiry.php">問い合わせ一覧</a></li>
+                            <li><a class="dropdown-item" href="/../customer/sales-memo.php">問い合わせ一覧</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
