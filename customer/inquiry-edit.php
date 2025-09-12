@@ -42,6 +42,17 @@ if (!$inquiry) {
         </div>
         
         <div class="mb-3">
+            <label for="channel" class="form-label">対応チャネル <span class="text-danger">*</span></label>
+            <select name="channel" id="channel" class="form-select" required>
+                <option value="電話" <?= $inquiry['CHANNEL'] == '電話' ? 'selected' : '' ?>>電話</option>
+                <option value="メール" <?= $inquiry['CHANNEL'] == 'メール' ? 'selected' : '' ?>>メール</option>
+                <option value="Webフォーム" <?= $inquiry['CHANNEL'] == 'Webフォーム' ? 'selected' : '' ?>>Webフォーム</option>
+                <option value="訪問" <?= $inquiry['CHANNEL'] == '訪問' ? 'selected' : '' ?>>訪問</option>
+                <option value="その他" <?= $inquiry['CHANNEL'] == 'その他' ? 'selected' : '' ?>>その他</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
             <label for="inquiry_detail" class="form-label">問い合わせ内容</label>
             <textarea class="form-control" id="inquiry_detail" name="inquiry_detail" rows="5" required><?= htmlspecialchars($inquiry['INQUIRY_DETAIL']) ?></textarea>
         </div>

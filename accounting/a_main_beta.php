@@ -15,7 +15,7 @@ $current_page = 'home';
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- 独自のCSS -->
-    <link rel="stylesheet" href="css/a_main.css">
+    <link rel="stylesheet" href="css/a_main_beta.css">
     <link rel="stylesheet" href="css/sidebar.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
@@ -32,7 +32,7 @@ $current_page = 'home';
         // --- 1. ユーザーが選択した値を取得 ---
         $selected_year = $_GET['year'] ?? null;
         $selected_month = $_GET['month'] ?? null;
-        $target_goal = $_GET['target_goal'] ?? 1500000; // デフォルト目標を150万円に設定
+        $target_goal = $_GET['target_goal'] ?? 150; // デフォルト目標を150万円に設定
 
         // --- 2. 表示する年月を決定 ---
         if (!empty($selected_year) && !empty($selected_month)) {
@@ -69,7 +69,7 @@ $current_page = 'home';
 
         // --- 4. 各種数値を計算 ---
         // 達成率
-        $achievement_rate = ($target_goal > 0) ? ($sales_for_month / $target_goal) * 100 : 0;
+        $achievement_rate = ($target_goal > 0) ? ($sales_for_month / ($target_goal * 10000)) * 100 : 0;
         // 目標までの残額
         $remaining_amount = $target_goal - $sales_for_month;
     } catch (PDOException $e) {
@@ -107,9 +107,9 @@ $current_page = 'home';
                             <div class="col-sm">
                                 <label for="target_goal" class="form-label small">目標金額</label>
                                 <select name="target_goal" id="target_goal" class="form-select">
-                                    <?php for ($goal = 2000000; $goal >= 500000; $goal -= 100000): ?>
+                                    <?php for ($goal = 200; $goal >= 50; $goal -= 10): ?>
                                         <option value="<?php echo $goal; ?>" <?php if ($goal == $target_goal) echo 'selected'; ?>>
-                                            <?php echo number_format($goal); ?>円
+                                            <?php echo number_format($goal); ?>万円
                                         </option>
                                     <?php endfor; ?>
                                 </select>

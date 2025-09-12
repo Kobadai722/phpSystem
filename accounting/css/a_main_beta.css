@@ -1,77 +1,77 @@
-/* =================================================
-   ページ全体のレイアウト
-   ================================================= */
+/* === 全体レイアウト === */
 html, body {
-    height: 100%; /* HTMLとBODYの高さを画面いっぱいに広げる */
+    height: 100%;
     margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* 横方向のはみ出しを禁止 */
+    font-family: sans-serif;
+    background-color: #f8f9fa;
+    overflow-x: hidden; /* 横スクロール防止 */
 }
 
 .page-container {
-    display: flex; /* Flexboxレイアウトを有効化 */
-    flex-direction: column; /* 子要素を縦に並べる */
-    min-height: 100vh; /* コンテナの高さを最低でも画面の高さ100%にする */
+    display: flex;
+    min-height: 100vh;
 }
 
 .main-content {
-    flex-grow: 1; /* 残りの利用可能なスペースをすべて埋めるように広がる */
-    padding-left: 80px; /* ハンバーガーボタンと重ならないように左に余白を設ける */
-    padding-top: 20px;
-    padding-bottom: 20px;
+    flex-grow: 1; /* 残りのスペースをすべて埋める */
+    padding: 2rem;
     width: 100%;
-    box-sizing: border-box; /* paddingを含めて幅を計算 */
+    box-sizing: border-box;
+    transition: padding-left 0.3s ease-in-out;
 }
 
-/* =================================================
-   ダッシュボードのスタイル
-   ================================================= */
+/* === ダッシュボード === */
 .dashboard-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 2rem;
 }
 
+/* カードを並べるコンテナ (Flexbox) */
 .dashboard-grid {
-    display: grid;
-    /* 画面幅に応じて列数を自動調整。各カードの最小幅は320px */
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem; /* カード間の余白 */
 }
 
-.card {
+/* カードのスタイル (Flexアイテムとして) */
+.dashboard-grid > .card {
+    /* 基本幅は420px、スペースがあれば伸び、足りなければ縮む */
+    flex: 1 1 420px;
+    
     background-color: #fff;
     border: 1px solid #e9ecef;
     border-radius: 8px;
-    padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
 }
 
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     border-bottom: 1px solid #f0f0f0;
-    padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    padding: 1rem 1.5rem;
 }
-
 .card-header h3 {
     margin: 0;
     font-size: 1rem;
     font-weight: 600;
 }
-
-.card-header a {
-    font-size: 0.8rem;
-    text-decoration: none;
+.card-body {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+/* フォームのスタイル */
+.form-label.small {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+/* 結果表示エリア */
 .metric-value {
     font-size: 2.5rem;
     font-weight: bold;
-    margin: 0;
 }
 .metric-value small {
     font-size: 1rem;
@@ -79,36 +79,21 @@ html, body {
     color: #6c757d;
 }
 
-.comparison {
-    font-size: 0.9rem;
-    color: #6c757d;
-}
-.comparison .up {
-    color: #198754; /* 緑色 */
-}
-.comparison .down {
-    color: #dc3545; /* 赤色 */
-}
-
-.chart-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-/* === ▼ ゲージグラフのスタイルを修正 ▼ === */
+/* === ゲージグラフのスタイル === */
 .gauge-chart {
     width: 100%;
     max-width: 280px;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1 / 1; /* 常に正円を保つ */
     border-radius: 50%;
     position: relative;
-    
-    /* 下部分の切り抜き量を調整して、はみ出しをなくす */
-    clip-path: inset(0 0 34% 0);
-    margin-bottom: -34%;
+    margin: 0 auto; /* 中央寄せ */
 
+    /* 下部分を切り取って円弧に見せる */
+    clip-path: inset(0 0 34% 0);
+    /* 切り取った分の高さを詰める */
+    margin-bottom: -10%;
+
+    /* 240度の円弧を描画するグラデーション */
     background: conic-gradient(
         from -120deg,
         #dc3545 0% calc(var(--percentage) * 0.667%),
@@ -117,6 +102,7 @@ html, body {
     );
 }
 
+/* ドーナツの穴 */
 .gauge-chart::before {
     content: '';
     position: absolute;
@@ -127,20 +113,61 @@ html, body {
     left: 10%;
     top: 10%;
 }
-/* === ▲ ここまで修正 ▲ === */
 
 
-.legend {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.9rem;
+/* === レスポンシブ対応 === */
+
+/* サイドバー開閉時のメインコンテンツの余白 */
+.main-content {
+    padding-left: 280px; /* 開いているときの幅 */
 }
-.color-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
+body.sidebar-collapsed .main-content {
+    padding-left: 80px; /* 閉じているときの幅 */
 }
-.color-dot.red { background-color: #dc3545; }
-.color-dot.yellow { background-color: #ffc107; }
+
+
+/* タブレットサイズなど、中くらいの画面で適用 */
+@media (max-width: 992px) {
+    /* フォームの要素を縦並びにする */
+    .card-body form .row {
+        flex-direction: column;
+        gap: 0.5rem; /* 縦並びになった際の余白 */
+    }
+    .card-body form .col-sm,
+    .card-body form .col-sm-auto {
+        width: 100%;
+    }
+
+    /* === ▼ 追加：グラフ下のサマリー表示を縦並びに変更 ▼ === */
+    .card-body .d-flex.justify-content-around {
+        flex-direction: column; /* 縦積みに変更 */
+        align-items: center;   /* 中央揃え */
+        gap: 1rem;             /* 要素間の余白を追加 */
+        text-align: center;    /* テキストも中央揃えに */
+    }
+    /* === ▲ ここまで追加 ▲ === */
+}
+
+
+/* スマートフォンサイズ */
+@media (max-width: 576px) {
+    .main-content {
+        padding: 1rem;
+        padding-left: 80px; /* 閉じているときの幅を維持 */
+    }
+    body.sidebar-collapsed .main-content {
+        padding-left: 2rem; /* さらに狭く */
+    }
+
+    .metric-value {
+        font-size: 2rem;
+    }
+}
+
+
+.up{
+    color: lightgreen;
+}
+.down{
+    color: red;
+}
