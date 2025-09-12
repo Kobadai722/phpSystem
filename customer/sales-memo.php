@@ -1,5 +1,9 @@
 <?php
 session_start();
+// エラーを画面に表示するための設定
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 require_once '../config.php';
 
 if (!isset($_GET['customer_id']) || !is_numeric($_GET['customer_id'])) {
@@ -47,6 +51,16 @@ $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
     <h2 class="my-4">商談管理一覧</h2>
     <h5 class="mb-4">顧客名: <?= htmlspecialchars($customer['NAME']) ?></h5>
 
+    <div class="alert alert-info">
+        <strong>デバッグ情報:</strong><br>
+        指定された顧客ID: <strong><?= htmlspecialchars($customer_id) ?></strong><br>
+        データベースから取得した商談データの件数: <strong><?= count($negotiations) ?></strong> 件<br>
+        <?php if (empty($negotiations)): ?>
+            <span class="text-danger">→ データが取得できていないため、テーブルは表示されません。</span>
+        <?php else: ?>
+            <span class="text-success">→ データを正常に取得できています。</span>
+        <?php endif; ?>
+    </div>
     <div class="text-end mb-3">
         <a href="sales-memo-register.php?customer_id=<?= $customer_id ?>" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新規登録</a>
         <a href="customer.php" class="btn btn-secondary">顧客一覧へ戻る</a>
@@ -70,20 +84,26 @@ $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($negotiations as $nego) : ?>
+            <?php if (empty($negotiations)): ?>
                 <tr>
-                    <td><?= htmlspecialchars($nego['employee_name']) ?></td>
-                    <td>¥<?= number_format($nego['TRADING_AMOUNT']) ?></td>
-                    <td><?= htmlspecialchars($nego['ORDER_ACCURACY']) ?>%</td>
-                    <td><?= htmlspecialchars($nego['NEGOTIATION_PHASE']) ?></td>
-                    <td>
-                        <a href="sales-memo-edit.php?negotiation_id=<?= $nego['NEGOTIATION_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= $nego['NEGOTIATION_ID'] ?>">
-                            削除
-                        </button>
-                    </td>
+                    <td colspan="5" class="text-center">この顧客の商談データはまだありません。</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php else: ?>
+                <?php foreach ($negotiations as $nego) : ?>
+                    <tr>
+                        <td><?= htmlspecialchars($nego['employee_name']) ?></td>
+                        <td>¥<?= number_format($nego['TRADING_AMOUNT']) ?></td>
+                        <td><?= htmlspecialchars($nego['ORDER_ACCURACY']) ?>%</td>
+                        <td><?= htmlspecialchars($nego['NEGOTIATION_PHASE']) ?></td>
+                        <td>
+                            <a href="sales-memo-edit.php?negotiation_id=<?= $nego['NEGOTIATION_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= $nego['NEGOTIATION_ID'] ?>">
+                                削除
+                            </button>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </main>
