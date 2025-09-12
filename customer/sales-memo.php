@@ -22,16 +22,16 @@ if (!$customer) {
     exit;
 }
 
-// 商談情報を取得（LEFT JOIN に変更）
+// 商談情報を取得 (JOINを削除し、PHPで処理するように変更)
 $stmt_negotiation = $PDO->prepare(
-    "SELECT nm.*, e.NAME as employee_name 
-     FROM NEGOTIATION_MANAGEMENT nm
-     LEFT JOIN EMPLOYEE e ON nm.EMPLOYEE_ID = e.EMPLOYEE_ID 
-     WHERE nm.CUSTOMER_ID = ? 
-     ORDER BY nm.CREATED_AT DESC"
+    "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = ? ORDER BY CREATED_AT DESC"
 );
 $stmt_negotiation->execute([$customer_id]);
 $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
+
+// 社員情報を一度に取得して連想配列に格納
+$employee_stmt = $PDO->query("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE");
+$employees = $employee_stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
 ?>
 <!DOCTYPE html>
@@ -80,7 +80,11 @@ $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
                 <?php foreach ($negotiations as $nego) : ?>
                     <tr>
-                        <td><?= htmlspecialchars($nego['employee_name'] ?? '不明') ?></td>
+                        <?php
+                            // PHP側で社員IDに対応する名前を探す
+                            $employee_name = $employees[$nego['EMPLOYEE_ID']] ?? '不明';
+                        ?>
+                        <td><?= htmlspecialchars($employee_name) ?></td>
                         <td><?= $nego['TRADING_AMOUNT'] ? '¥' . number_format($nego['TRADING_AMOUNT']) : 'N/A' ?></td>
                         <td><?= $nego['ORDER_ACCURACY'] ? htmlspecialchars($nego['ORDER_ACCURACY']) . '%' : 'N/A' ?></td>
                         <td><?= htmlspecialchars($nego['NEGOTIATION_PHASE']) ?></td>
