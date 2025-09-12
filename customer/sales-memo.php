@@ -1,6 +1,5 @@
 <?php
 session_start();
-// エラーを画面に表示するための設定
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
@@ -23,11 +22,11 @@ if (!$customer) {
     exit;
 }
 
-// 商談情報を取得
+// 商談情報を取得（LEFT JOIN に変更）
 $stmt_negotiation = $PDO->prepare(
     "SELECT nm.*, e.NAME as employee_name 
      FROM NEGOTIATION_MANAGEMENT nm
-     JOIN EMPLOYEE e ON nm.EMPLOYEE_ID = e.EMPLOYEE_ID 
+     LEFT JOIN EMPLOYEE e ON nm.EMPLOYEE_ID = e.EMPLOYEE_ID 
      WHERE nm.CUSTOMER_ID = ? 
      ORDER BY nm.CREATED_AT DESC"
 );
@@ -51,16 +50,6 @@ $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
     <h2 class="my-4">商談管理一覧</h2>
     <h5 class="mb-4">顧客名: <?= htmlspecialchars($customer['NAME']) ?></h5>
 
-    <div class="alert alert-info">
-        <strong>デバッグ情報:</strong><br>
-        指定された顧客ID: <strong><?= htmlspecialchars($customer_id) ?></strong><br>
-        データベースから取得した商談データの件数: <strong><?= count($negotiations) ?></strong> 件<br>
-        <?php if (empty($negotiations)): ?>
-            <span class="text-danger">→ データが取得できていないため、テーブルは表示されません。</span>
-        <?php else: ?>
-            <span class="text-success">→ データを正常に取得できています。</span>
-        <?php endif; ?>
-    </div>
     <div class="text-end mb-3">
         <a href="sales-memo-register.php?customer_id=<?= $customer_id ?>" class="btn btn-primary"><i class="bi bi-plus-lg"></i> 新規登録</a>
         <a href="customer.php" class="btn btn-secondary">顧客一覧へ戻る</a>
@@ -91,9 +80,9 @@ $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
             <?php else: ?>
                 <?php foreach ($negotiations as $nego) : ?>
                     <tr>
-                        <td><?= htmlspecialchars($nego['employee_name']) ?></td>
-                        <td>¥<?= number_format($nego['TRADING_AMOUNT']) ?></td>
-                        <td><?= htmlspecialchars($nego['ORDER_ACCURACY']) ?>%</td>
+                        <td><?= htmlspecialchars($nego['employee_name'] ?? '不明') ?></td>
+                        <td><?= $nego['TRADING_AMOUNT'] ? '¥' . number_format($nego['TRADING_AMOUNT']) : 'N/A' ?></td>
+                        <td><?= $nego['ORDER_ACCURACY'] ? htmlspecialchars($nego['ORDER_ACCURACY']) . '%' : 'N/A' ?></td>
                         <td><?= htmlspecialchars($nego['NEGOTIATION_PHASE']) ?></td>
                         <td>
                             <a href="sales-memo-edit.php?negotiation_id=<?= $nego['NEGOTIATION_ID'] ?>" class="btn btn-primary btn-sm">編集</a>
