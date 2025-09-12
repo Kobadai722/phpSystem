@@ -25,14 +25,16 @@ if (!$customer) {
     exit;
 }
 
-// --- 商談情報の取得（診断で成功した直接的なクエリ実行方法に変更） ---
+// --- 商談情報の取得 ---
 $negotiations = []; // 変数を初期化
 try {
-    $sql = "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = " . $customer_id . " ORDER BY CREATED_AT DESC";
-    $stmt_negotiation = $PDO->query($sql);
-    if ($stmt_negotiation) {
-        $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
-    }
+    // 【修正箇所】プリペアドステートメントを使用し、ORDER BY句を存在するカラム (NEGOTIATION_ID) に修正
+    $stmt_negotiation = $PDO->prepare(
+        "SELECT * FROM NEGOTIATION_MANAGEMENT WHERE CUSTOMER_ID = ? ORDER BY NEGOTIATION_ID DESC"
+    );
+    $stmt_negotiation->execute([$customer_id]);
+    $negotiations = $stmt_negotiation->fetchAll(PDO::FETCH_ASSOC);
+
 } catch (PDOException $e) {
     // もしエラーが出た場合に備える
     die("データベースエラー: " . $e->getMessage());
