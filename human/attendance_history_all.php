@@ -13,8 +13,8 @@ try {
     // 全従業員の勤怠履歴を結合して取得
     $stmt = $PDO->prepare("
         SELECT 
-            E.EMPLOYEE_ID, 
-            E.EMPLOYEE_NAME, 
+            E.EMPLOYEE_ID AS employee_id, 
+            E.NAME AS employee_name, 
             A.ATTENDANCE_DATE AS date, 
             A.CLOCK_IN_TIME AS clock_in_time, 
             A.CLOCK_OUT_TIME AS clock_out_time
