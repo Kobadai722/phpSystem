@@ -7,10 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
         statusMessage.textContent = message;
         statusMessage.className = `mt-3 alert alert-${type} text-center fw-bold fs-5`;
         statusMessage.style.display = 'block';
-
-        setTimeout(() => {
-            statusMessage.style.display = 'none';
-        }, 3000);
     }
 
     function updateUI(record) {
@@ -31,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
+        showStatusMessage('ステータスを更新中...', 'secondary'); // 新しい通信の前にメッセージを表示
         // main.phpからの相対パスを指定
         fetch('human/attendance_api.php?action=getHistory')
             .then(response => {
@@ -57,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockInBtn) {
         clockInBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            showStatusMessage('出勤処理中...', 'info');
             // main.phpからの相対パスを指定
             fetch('human/attendance_api.php', {
                 method: 'POST',
@@ -76,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockOutBtn) {
         clockOutBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            showStatusMessage('退勤処理中...', 'info');
             // main.phpからの相対パスを指定
             fetch('human/attendance_api.php', {
                 method: 'POST',
