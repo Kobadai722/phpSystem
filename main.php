@@ -1,31 +1,13 @@
 <?php
 session_start();
+require_once 'config.php';
 
-// リクエストがPOSTで、かつアクションが指定されているかチェック
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    header('Content-Type: application/json');
-
-    $action = $_POST['action'];
-    $employee_id = $_SESSION['id'];
-    $timestamp = date('Y-m-d H:i:s');
-    $status = '';
-
-    if ($action === 'check_in') {
-        $status = '出勤';
-    } elseif ($action === 'check_out') {
-        $status = '退勤';
-    } else {
-        echo json_encode(['status' => 'error', 'message' => '無効なアクションです。']);
-        exit;
-    }
-
-    // データベースに記録する代わりに、ダミーの成功レスポンスを返す
-    // 実際のデータベース接続コードは必要に応じてここに追加
-    echo json_encode(['status' => 'success', 'message' => $status . 'が記録されました。']);
-
+if (!isset($_SESSION['employee_id'])) {
+    header('Location: login.php');
     exit;
 }
 
+$employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -36,98 +18,116 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <title>TOPページ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <style>
-        .attendance-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            margin-top: 50px;
-        }
-
-        .attendance-btn {
-            width: 200px;
-            margin: 10px;
-        }
-
-        #status-message {
-            margin-top: 20px;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
 </head>
-
-<body>
-    <?php include 'header.php'; ?>
-    <h2>ようこそ
-        <?php
-        echo $_SESSION['dname'];
-        ?> さん
-    </h2>
-
-    <div class="attendance-container">
-        <h3>出勤・退勤</h3>
-        <button id="checkInBtn" class="btn btn-primary attendance-btn">出勤</button>
-        <button id="checkOutBtn" class="btn btn-danger attendance-btn">退勤</button>
-        <div id="status-message" class="text-danger">通信エラーが発生しました</div>
+<?php include 'header.php'; ?>
+<body class="bg-image" id="mainBody">
+    <div class="container-main">
+        <div class="left-panel">
+            <div class="attendance-system">
+                <p class="current-date"><?= date('Y年m月d日') ?></p>
+                <p class="time-display" id="realtime-time"></p>
+                <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
+                <div class="button-container">
+                    <div class="punch-in-button">
+                        <a href="#" id="mainClockInBtn">出勤</a>
+                    </div>
+                    <div class="punch-out-button">
+                        <a href="#" id="mainClockOutBtn">退勤</a>
+                    </div>
+                </div>
+                <div id="statusMessage" class="mt-3" style="display: none;"></div>
+            </div>
+            <div class="weather-area">
+                <p class="weather-title">今日の札幌市の天気</p>
+                <div id="weather-info">
+                    <p>天気情報を読み込み中...</p>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="info-area">
+                <div style="display: flex; align-items: center;">
+                    <i class="bi bi-info-circle info-icon"></i>
+                    <p class="info-text">熱中症対策に注意！こまめに水分補給を！</p>
+                </div>
+            </div>
+            <div class="service-menu">
+                <a href="/sales/stock.php">
+                    <i class="bi bi-truck">販売管理</i>
+                </a>
+                <a href="/accounting/a_main.php">
+                    <i class="bi bi-cash-coin">会計管理</i>
+                </a>
+                <a href="/human/main.php">
+                    <i class="bi bi-people">人事管理</i>
+                </a>
+                <a href="/customer/customer.php">
+                    <i class="bi bi-file-person">顧客管理</i>
+                </a>
+            </div>
+            <div class="room-ava">
+                <p class="booth_status_title"><i class="bi bi-hourglass-split"></i>ブース空き状況</p>
+                <div class="room-container">
+                    <div class="room-card">
+                        <div class="room-name">大会議室</div>
+                        <div class="status used">
+                            利用中
+                        </div>
+                        <div class="details">
+                            <div class="time">15:00-16:00</div>
+                            <div class="meeting-type">戦略会議</div>
+                        </div>
+                    </div>
+                    <div class="room-card">
+                        <div class="room-name">小会議室 A</div>
+                        <div class="status available">
+                            空室
+                        </div>
+                        <div class="details">
+                            <div class="time">17:00-18:00</div>
+                            <div class="meeting-type">定例MTG</div>
+                        </div>
+                    </div>
+                    <div class="room-card">
+                        <div class="room-name">小会議室 B</div>
+                        <div class="status available">
+                            空室
+                        </div>
+                        <div class="details">
+                            <div class="time">16:00-17:00</div>
+                            <div class="meeting-type">打ち合わせ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="customize-area">
+                <p class="customize_title"><i class="bi bi-image"></i>背景をカスタマイズする</p>
+                <input type="file" name="test" accept="image/png, image/jpeg" id="backgroundInput">
+            </div>
+        </div>
     </div>
-    
-    <h1><a href="./../accounting/siwake_hyo/siwakehyo_output.html">仕訳機能プロトタイプ</a></h1>
-    <a href="./../sales/stock.php">在庫管理システムDemo</a>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
+    <script src="weather.js"></script>
+    <script src="background_changer.js"></script>
+    <script src="human/main-attendance.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkInBtn = document.getElementById('checkInBtn');
-            const checkOutBtn = document.getElementById('checkOutBtn');
-            const statusMessage = document.getElementById('status-message');
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
+            document.getElementById('realtime-time').textContent = timeString;
+        }
 
-            statusMessage.style.display = 'none';
-
-            async function sendRequest(action) {
-                statusMessage.style.display = 'block';
-                statusMessage.textContent = '通信中...';
-                statusMessage.className = 'text-info';
-
-                try {
-                    const response = await fetch('main.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'action=' + action
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('サーバーエラー');
-                    }
-
-                    const result = await response.json();
-
-                    if (result.status === 'success') {
-                        statusMessage.textContent = result.message;
-                        statusMessage.className = 'text-success';
-                    } else {
-                        throw new Error(result.message);
-                    }
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                    statusMessage.textContent = '通信エラーが発生しました: ' + error.message;
-                    statusMessage.className = 'text-danger';
-                }
-            }
-
-            checkInBtn.addEventListener('click', () => {
-                sendRequest('check_in');
-            });
-
-            checkOutBtn.addEventListener('click', () => {
-                sendRequest('check_out');
-            });
-        });
+        updateTime();
+        setInterval(updateTime, 1000);
     </script>
 </body>
 
