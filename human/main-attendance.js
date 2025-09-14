@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
-        // パスを絶対パスに修正
-        fetch('/human/attendance_api.php?action=getHistory')
+        // main.phpからの相対パスを指定
+        fetch('human/attendance_api.php?action=getHistory')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockInBtn) {
         clockInBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // パスを絶対パスに修正
-            fetch('/human/attendance_api.php', {
+            // main.phpからの相対パスを指定
+            fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockIn'
@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockOutBtn) {
         clockOutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // パスを絶対パスに修正
-            fetch('/human/attendance_api.php', {
+            // main.phpからの相対パスを指定
+            fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockOut'
@@ -91,5 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
     fetchCurrentStatus();
 });
