@@ -11,6 +11,7 @@ if (!isset($_SESSION['employee_id'])) {
 
 try {
     // 全従業員の勤怠履歴を結合して取得
+    // ORDER BY句で日付と従業員IDをソートすることで、見やすい表になります
     $stmt = $PDO->prepare("
         SELECT 
             E.EMPLOYEE_ID AS employee_id, 
@@ -30,6 +31,12 @@ try {
 
     echo json_encode(['success' => true, 'history' => $records]);
 } catch (PDOException $e) {
+    // デバッグ情報として、より詳細なエラーを返すように変更
     error_log("Error fetching all attendance history: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => '全勤怠履歴の取得中にデータベースエラーが発生しました。']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'データベースエラーが発生しました。システム管理者に連絡してください。',
+        'debug' => $e->getMessage()
+    ]);
 }
+?>
