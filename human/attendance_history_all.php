@@ -23,7 +23,7 @@ try {
         LEFT JOIN 
             ATTENDANCE AS A ON E.EMPLOYEE_ID = A.EMPLOYEE_ID
         ORDER BY 
-            E.EMPLOYEE_ID, A.ATTENDANCE_DATE DESC
+            A.ATTENDANCE_DATE DESC, E.EMPLOYEE_ID
     ");
     $stmt->execute();
     $records = $stmt->fetchAll(PDO::FETCH_ASSOC);
