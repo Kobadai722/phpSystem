@@ -91,7 +91,11 @@
         <tbody id="employeeTableBody">
             </tbody>
     </table>
+    
     <div class="mb-3 p-3 border rounded">
+        <div class="d-grid gap-2 mb-3">
+            <a href="attendance_history.php" class="btn btn-primary">勤怠履歴を確認する</a>
+        </div>
         <form>
             <div class="row g-3 align-items-center">
                 <div class="col-auto">
