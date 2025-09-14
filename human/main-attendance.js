@@ -3,13 +3,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const clockOutBtn = document.getElementById('mainClockOutBtn');
     const statusMessage = document.getElementById('statusMessage');
 
-    // メッセージを表示する関数
     function showStatusMessage(message, type) {
         statusMessage.textContent = message;
         statusMessage.className = `mt-3 alert alert-${type} text-center fw-bold fs-5`;
         statusMessage.style.display = 'block';
 
-        // 3秒後にメッセージを非表示にする
         setTimeout(() => {
             statusMessage.style.display = 'none';
         }, 3000);
@@ -33,8 +31,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
+        // パスを修正
         fetch('human/attendance_api.php?action=getHistory')
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     const today = new Date().toISOString().slice(0, 10);
@@ -53,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockInBtn) {
         clockInBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            // パスを修正
             fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -71,6 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockOutBtn) {
         clockOutBtn.addEventListener('click', function(e) {
             e.preventDefault();
+            // パスを修正
             fetch('human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -85,6 +91,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
-
     fetchCurrentStatus();
 });

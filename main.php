@@ -47,7 +47,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 <div id="weather-info">
                     <p>天気情報を読み込み中...</p>
                 </div>
-
             </div>
         </div>
         <div class="right-panel">
@@ -84,7 +83,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                             <div class="meeting-type">戦略会議</div>
                         </div>
                     </div>
-
                     <div class="room-card">
                         <div class="room-name">小会議室 A</div>
                         <div class="status available">
@@ -95,7 +93,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                             <div class="meeting-type">定例MTG</div>
                         </div>
                     </div>
-
                     <div class="room-card">
                         <div class="room-name">小会議室 B</div>
                         <div class="status available">
@@ -114,7 +111,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
