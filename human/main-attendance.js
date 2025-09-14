@@ -31,8 +31,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCurrentStatus() {
-        // パスを修正
-        fetch('human/attendance_api.php?action=getHistory')
+        // パスを絶対パスに修正
+        fetch('/human/attendance_api.php?action=getHistory')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockInBtn) {
         clockInBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // パスを修正
-            fetch('human/attendance_api.php', {
+            // パスを絶対パスに修正
+            fetch('/human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockIn'
@@ -76,8 +76,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (clockOutBtn) {
         clockOutBtn.addEventListener('click', function(e) {
             e.preventDefault();
-            // パスを修正
-            fetch('human/attendance_api.php', {
+            // パスを絶対パスに修正
+            fetch('/human/attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockOut'
