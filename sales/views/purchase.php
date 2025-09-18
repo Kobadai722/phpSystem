@@ -27,7 +27,7 @@
                             </div>
                             <div class="col-md-3">
                                 <label for="customerName" class="form-label">顧客名</label>
-                                <input type="text" class="form-control" id="customerName" placeholder="例: 山田太郎">
+                                <input type="text" class="form-control" id="customerName" placeholder="例: 株式会社一二三">
                             </div>
                             <div class="col-md-3">
                                 <label for="paymentStatus" class="form-label">支払い状況</label>

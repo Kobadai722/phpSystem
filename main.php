@@ -7,6 +7,37 @@ if (!isset($_SESSION['employee_id'])) {
     exit;
 }
 
+// === ▼ 出勤・退勤処理のPHPコードを追加 ▼ ===
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    header('Content-Type: application/json');
+
+    $action = $_POST['action'];
+    $employee_id = $_SESSION['employee_id'];
+    $timestamp = date('Y-m-d H:i:s');
+    $status = '';
+
+    if ($action === 'check_in') {
+        $status = '出勤';
+    } elseif ($action === 'check_out') {
+        $status = '退勤';
+    } else {
+        echo json_encode(['status' => 'error', 'message' => '無効なアクションです。']);
+        exit;
+    }
+
+    try {
+        // データベースに記録する（`config.php`に`$PDO`が定義されている前提）
+        $stmt = $PDO->prepare('INSERT INTO ATTENDANCE (EMPLOYEE_ID, TIMESTAMP, STATUS) VALUES (?, ?, ?)');
+        $stmt->execute([$employee_id, $timestamp, $status]);
+        echo json_encode(['status' => 'success', 'message' => $status . 'を記録しました。']);
+    } catch (PDOException $e) {
+        echo json_encode(['status' => 'error', 'message' => 'データベースエラー: ' . $e->getMessage()]);
+    }
+
+    exit;
+}
+// === ▲ 出勤・退勤処理のPHPコードを追加 ▲ ===
+
 $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 ?>
 <!DOCTYPE html>
@@ -34,20 +65,19 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
-                        <a href="#" id="mainClockInBtn">出勤</a>
+                        <a href="#" id="checkInBtn">出勤</a>
                     </div>
                     <div class="punch-out-button">
-                        <a href="#" id="mainClockOutBtn">退勤</a>
+                        <a href="#" id="checkOutBtn">退勤</a>
                     </div>
-                </div>
-                <div id="statusMessage" class="mt-3" style="display: none;"></div>
+                    </div>
+                <div id="statusMessage" class="mt-3 text-center fw-bold fs-5" style="display: none;"></div>
             </div>
             <div class="weather-area">
                 <p class="weather-title">今日の札幌市の天気</p>
                 <div id="weather-info">
                     <p>天気情報を読み込み中...</p>
                 </div>
-
             </div>
         </div>
         <div class="right-panel">
@@ -84,7 +114,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                             <div class="meeting-type">戦略会議</div>
                         </div>
                     </div>
-
                     <div class="room-card">
                         <div class="room-name">小会議室 A</div>
                         <div class="status available">
@@ -95,7 +124,6 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                             <div class="meeting-type">定例MTG</div>
                         </div>
                     </div>
-
                     <div class="room-card">
                         <div class="room-name">小会議室 B</div>
                         <div class="status available">
@@ -114,13 +142,11 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
             </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
-    <script src="human/main-attendance.js"></script>
     <script>
         function updateTime() {
             const now = new Date();
@@ -132,6 +158,65 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 
         updateTime();
         setInterval(updateTime, 1000);
+
+        // === ▼ 出勤・退勤機能のJavaScriptを追加 ▼ ===
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkInBtn = document.getElementById('checkInBtn');
+            const checkOutBtn = document.getElementById('checkOutBtn');
+            const statusMessage = document.getElementById('statusMessage');
+
+            function showStatusMessage(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = `mt-3 alert alert-${type} text-center fw-bold fs-5`;
+                statusMessage.style.display = 'block';
+                setTimeout(() => {
+                    statusMessage.style.display = 'none';
+                }, 5000); // 5秒後に非表示
+            }
+
+            async function sendRequest(action) {
+                showStatusMessage('通信中...', 'info');
+
+                try {
+                    const response = await fetch('main.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'action=' + action
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('サーバーエラーが発生しました。');
+                    }
+
+                    const result = await response.json();
+
+                    if (result.status === 'success') {
+                        showStatusMessage(result.message, 'success');
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    console.error('Fetch error:', error);
+                    showStatusMessage(`通信エラーが発生しました: ${error.message}`, 'danger');
+                }
+            }
+
+            checkInBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                sendRequest('check_in');
+            });
+
+            checkOutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                sendRequest('check_out');
+            });
+
+            // 初期状態ではメッセージを非表示にする
+            statusMessage.style.display = 'none';
+        });
+        // === ▲ 出勤・退勤機能のJavaScriptを追加 ▲ ===
     </script>
 </body>
 

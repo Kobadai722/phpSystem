@@ -29,16 +29,6 @@ session_start();
         echo '<div class="alert alert-danger alert-dismissible fade show m-3" role="alert">' . htmlspecialchars($_SESSION['error_message']) . '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
         unset($_SESSION['error_message']);
     }
-    /* デバッグ情報の表示
-    if (isset($_SESSION['debug_messages']) && !empty($_SESSION['debug_messages'])) {
-        echo '<div class="alert alert-info alert-dismissible fade show m-3" role="alert"><strong>デバッグ情報:</strong><pre>';
-        foreach ($_SESSION['debug_messages'] as $msg) {
-            echo htmlspecialchars($msg) . "\n";
-        }
-        echo '</pre><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-        unset($_SESSION['debug_messages']); /
-    }
-    */
     ?>
     <h1>人事管理表-編集者モード</h1>
     <?php
@@ -109,6 +99,27 @@ session_start();
             </tbody>
         </table>
 
+    <hr>
+    
+    <div class="container mt-5">
+        <h3>全従業員の勤怠状況</h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>従業員番号</th>
+                        <th>氏名</th>
+                        <th>日付</th>
+                        <th>出勤時刻</th>
+                        <th>退勤時刻</th>
+                    </tr>
+                </thead>
+                <tbody id="allAttendanceTableBody">
+                    <tr><td colspan="5" class="text-center">データを読み込み中...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 align-items-center">
@@ -128,8 +139,47 @@ session_start();
         </form>
     </div>
 
-    </body>
+</body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
-<script src="live_search.js"></script> </html>
+<script src="live_search.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const allAttendanceTableBody = document.getElementById('allAttendanceTableBody');
+
+        async function fetchAllAttendance() {
+            try {
+                const response = await fetch('attendance_history_all.php'); // 新しいAPIエンドポイント
+                if (!response.ok) {
+                    throw new Error('ネットワークエラー');
+                }
+                const data = await response.json();
+                
+                allAttendanceTableBody.innerHTML = '';
+
+                if (data.success && data.history.length > 0) {
+                    data.history.forEach(record => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${record.employee_id}</td>
+                            <td>${record.employee_name}</td>
+                            <td>${record.date}</td>
+                            <td>${record.clock_in_time || '未記録'}</td>
+                            <td>${record.clock_out_time || '未記録'}</td>
+                        `;
+                        allAttendanceTableBody.appendChild(row);
+                    });
+                } else {
+                    allAttendanceTableBody.innerHTML = `<tr><td colspan="5" class="text-center">勤怠記録がありません。</td></tr>`;
+                }
+            } catch (error) {
+                console.error('エラー:', error);
+                allAttendanceTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">データの取得に失敗しました。</td></tr>`;
+            }
+        }
+
+        fetchAllAttendance();
+    });
+</script>
+</html>
