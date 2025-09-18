@@ -41,4 +41,3 @@ try {
 
 header("Location: inquiry.php");
 exit;
-}
