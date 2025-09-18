@@ -71,7 +71,7 @@ $current_page = 'home';
         // 達成率
         $achievement_rate = ($target_goal > 0) ? ($sales_for_month / ($target_goal * 10000)) * 100 : 0;
         // 目標までの残額
-        $remaining_amount = $target_goal - ($sales_for_month * 10000);
+        $remaining_amount = $target_goal * 10000 - $sales_for_month;
     } catch (PDOException $e) {
         die("データベースエラー: " . $e->getMessage());
     }
