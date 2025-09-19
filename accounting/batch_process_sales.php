@@ -53,7 +53,7 @@ function runSalesBatchProcess(PDO $pdo)
                 $sql_insert->execute();
             }
             $pdo->commit();
-            return "バッチ処理が正常に完了しました。" . count($results) . "件のデータを登録しました。";
+            return "バッチ処理が正常に完了しました。" . count($results) . "件のデータを登録・すべての売上を集計完了。";
         } else {
             return "処理対象の売上データがありませんでした。";
         }

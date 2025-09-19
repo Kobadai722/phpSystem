@@ -203,7 +203,7 @@ $current_page = 'home';
                 </div>
                 <div class="card-body">
                     <p class="metric-value">2,345,678<small>円</small></p>
-                     <div class="comparison">
+                    <div class="comparison">
                         <span class="up">▲ 前月比 0.5%</span>
                     </div>
                 </div>

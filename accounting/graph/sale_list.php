@@ -39,8 +39,6 @@ try {
 }
 
 ?>
-
-
     <!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
     <button class="btn btn-light shadow-sm hamburger-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
         <i class="bi bi-list fs-4"></i>
