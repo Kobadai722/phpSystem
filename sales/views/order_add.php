@@ -21,7 +21,7 @@
                 <form id="orderAddForm" method="POST"> 
                     
                     <div class="mb-3">
-                        <label for="product_id" class="form-label">商品名 (PRODUCT_ID)</label>
+                        <label for="product_id" class="form-label">商品名</label>
                         <select class="form-select" id="product_id" name="product_id" required>
                             <option value="">選択してください</option>
                             <option value="1">商品A (金額: )</option>
