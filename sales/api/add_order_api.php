@@ -60,10 +60,10 @@ try {
     // 挿入された注文のORDER_IDを取得
     $newOrderId = $PDO->lastInsertId();
 
-    // 3. S_ORDER_DETAILテーブルに注文明細情報を挿入 (S_ORDER_DETAILテーブルが存在すると仮定)
-    // S_ORDER_DETAIL (ORDER_ID, PRODUCT_ID, ORDER_QUANTITY, UNIT_PRICE)
+    // 3. S_ORDERテーブルに注文明細情報を挿入 
+    // S_ORDER (ORDER_ID, PRODUCT_ID, ORDER_QUANTITY, UNIT_PRICE)
     $stmtOrderDetail = $PDO->prepare(
-        "INSERT INTO S_ORDER_DETAIL (ORDER_ID, PRODUCT_ID, ORDER_QUANTITY, UNIT_PRICE)
+        "INSERT INTO S_ORDER (ORDER_ID, PRODUCT_ID, ORDER_QUANTITY, UNIT_PRICE)
         VALUES (:order_id, :product_id, :order_quantity, :unit_price)"
     );
     $stmtOrderDetail->bindParam(':order_id', $newOrderId, PDO::PARAM_INT);
