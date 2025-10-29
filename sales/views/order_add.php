@@ -1,3 +1,14 @@
+<?php
+// config.phpの読み込み（D
+require_once '../../config.php'; 
+
+// 商品リスト取得処理の追加 
+$products = [];
+    // 必要な情報（ID, 名称, 単価）をPRODUCTテーブルから取得
+    $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -24,10 +35,17 @@
                         <label for="product_id" class="form-label">商品名 (PRODUCT_ID)</label>
                         <select class="form-select" id="product_id" name="product_id" required>
                             <option value="">選択してください</option>
-                            <option value="1">商品A (ID: 1)</option>
-                            <option value="2">商品B (ID: 2)</option>
-                            <option value="3">商品C (ID: 3)</option>
-                        </select>
+                            <?php foreach ($products as $product): ?>
+                            <option 
+                                value="<?php echo htmlspecialchars($product['PRODUCT_ID']); ?>"
+                                data-price="<?php echo htmlspecialchars($product['UNIT_SELLING_PRICE']); ?>"
+                            >
+                                <?php echo htmlspecialchars($product['PRODUCT_NAME']); ?> 
+                                (ID: <?php echo htmlspecialchars($product['PRODUCT_ID']); ?>, 
+                                単価: <?php echo number_format($product['UNIT_SELLING_PRICE']); ?>円)
+                            </option>
+                            <?php endforeach; ?>
+                            </select>
                     </div>
                     
                     <div class="mb-3">
@@ -73,7 +91,8 @@
                 </div>
                 <div class="modal-body">
                     <p>この内容で注文を登録してもよろしいですか？</p>
-                    </div>
+                    <p>※確認内容はJavaScriptで実装できますが、今回は最低限のため省略します。</p>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
                     <button type="button" class="btn btn-primary" id="confirmOrderBtn">注文を確定</button>
@@ -81,6 +100,7 @@
             </div>
         </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
     </script>
@@ -90,25 +110,20 @@
             const submitBtn = document.getElementById('submitFormBtn');
             const confirmBtn = document.getElementById('confirmOrderBtn');
             const modalElement = document.getElementById('confirmModal');
-            // BootstrapのModalインスタンスを取得
             const confirmModal = new bootstrap.Modal(modalElement);
             
-            // 1. フォーム送信（submit）時は、ブラウザバリデーションのみ行い、モーダル表示をキャンセル（Bootstrapのdata-bs-toggleで処理されるため）
+            // 1. フォーム送信（submit）時は、ブラウザバリデーションのみ行い、モーダル表示をキャンセル
             form.addEventListener('submit', function(event) {
-                // HTML5の必須入力チェック
                 if (!form.checkValidity()) {
-                    event.preventDefault(); // バリデーションエラーならモーダルを出さない
+                    event.preventDefault(); 
                     event.stopPropagation();
                     form.classList.add('was-validated');
-                } else {
-                    // バリデーションOKの場合、JavaScriptのsubmitイベントをキャンセル
-                    // Bootstrapのdata-bs-toggleがモーダル表示を処理するため、ここでは何もせず
                 }
+                // バリデーションOKの場合、event.preventDefault()はBootstrapのdata-bs-toggleに任せる
             });
 
             // 2. モーダル内の「注文を確定」ボタンが押された時の処理（API実行）
             confirmBtn.addEventListener('click', async function() {
-                // API実行中のUI制御
                 confirmBtn.disabled = true;
                 confirmBtn.innerHTML = '処理中...';
 
@@ -122,7 +137,7 @@
                     alert('成功: ' + data.message);
                     form.reset();
                     form.classList.remove('was-validated');
-                    confirmModal.hide(); // 成功したらモーダルを閉じる
+                    confirmModal.hide(); 
                 } else {
                     alert('失敗: ' + data.message);
                 }
@@ -132,7 +147,7 @@
                 confirmBtn.innerHTML = '注文を確定';
             });
             
-            // モーダルが閉じられた時に送信ボタンのテキストをリセットする（念のため）
+            // モーダルが閉じられた時に送信ボタンのテキストをリセットする
             modalElement.addEventListener('hidden.bs.modal', function () {
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-cart-plus me-2"></i>注文を登録する';
