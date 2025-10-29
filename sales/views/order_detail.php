@@ -1,39 +1,42 @@
 <?php
-header("Content-Type: text/html; charset=UTF-8");
-mb_internal_encoding("UTF-8");
 
-// ✅ config.phpを読み込む（既存の構成と同じに）
-require_once '../../config.php';
+// DB接続設定
+require_once __DIR__ . '/../../db_connect.php';
 
-// GETパラメータで注文ID取得
-$order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
-
-if ($order_id <= 0) {
-    die('注文IDが指定されていません。');
+// クエリパラメータの確認
+if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+    echo "<p style='color:red; text-align:center; margin-top:20px;'>注文IDが指定されていません。</p>";
+    exit;
 }
 
-// 注文情報取得
-$stmt = $PDO->prepare("
+$order_id = intval($_GET['id']);
+
+// 注文情報の取得
+$sql_order = "
     SELECT 
         o.ORDER_ID,
-        o.CUSTOMER_ID,
-        c.NAME AS CUSTOMER_NAME,
-        o.ORDER_DATETIME AS ORDER_DATE,
+        o.ORDER_DATETIME,
         o.TOTAL_AMOUNT,
-        o.STATUS AS PAYMENT_STATUS
-    FROM S_ORDER o
-    JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID
+        o.STATUS,
+        c.CUSTOMER_NAME
+    FROM S_ORDERS o
+    INNER JOIN CUSTOMERS c ON o.CUSTOMER_ID = c.CUSTOMER_ID
     WHERE o.ORDER_ID = ?
-");
-$stmt->execute([$order_id]);
-$order = $stmt->fetch(PDO::FETCH_ASSOC);
+";
+$stmt = $conn->prepare($sql_order);
+$stmt->bind_param("i", $order_id);
+$stmt->execute();
+$result_order = $stmt->get_result();
 
-if (!$order) {
-    die('指定された注文は存在しません。');
+if ($result_order->num_rows === 0) {
+    echo "<p style='color:red; text-align:center; margin-top:20px;'>注文が見つかりません。</p>";
+    exit;
 }
 
-// 注文明細取得
-$stmtItems = $PDO->prepare("
+$order = $result_order->fetch_assoc();
+
+// 注文詳細（商品ごと）の取得
+$sql_items = "
     SELECT 
         i.ORDER_ITEM_ID,
         p.PRODUCT_NAME,
@@ -41,92 +44,74 @@ $stmtItems = $PDO->prepare("
         i.QUANTITY,
         i.SUBTOTAL
     FROM S_ORDER_ITEMS i
-    JOIN PRODUCT p ON i.PRODUCT_ID = p.PRODUCT_ID
+    INNER JOIN PRODUCT p ON i.PRODUCT_ID = p.PRODUCT_ID
     WHERE i.ORDER_ID = ?
-");
-$stmtItems->execute([$order_id]);
-$orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
+";
+$stmt_items = $conn->prepare($sql_items);
+$stmt_items->bind_param("i", $order_id);
+$stmt_items->execute();
+$result_items = $stmt_items->get_result();
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注文詳細 - 注文管理システム</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="../css/styles.css">
+    <title>注文詳細 - 注文番号 <?php echo htmlspecialchars($order['ORDER_ID']); ?></title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 </head>
-<body>
-    <?php include '../../header.php'; ?>
+<body class="bg-light">
+<div class="container mt-5">
+    <h2 class="mb-4">注文詳細</h2>
 
-    <main>
-        <?php include '../includes/localNavigation.php'; ?>
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            注文情報
+        </div>
+        <div class="card-body">
+            <p><strong>注文ID:</strong> <?php echo htmlspecialchars($order['ORDER_ID']); ?></p>
+            <p><strong>顧客名:</strong> <?php echo htmlspecialchars($order['CUSTOMER_NAME']); ?></p>
+            <p><strong>注文日時:</strong> <?php echo htmlspecialchars($order['ORDER_DATETIME']); ?></p>
+            <p><strong>合計金額:</strong> ¥<?php echo number_format($order['TOTAL_AMOUNT']); ?></p>
+            <p><strong>ステータス:</strong> <?php echo htmlspecialchars($order['STATUS']); ?></p>
+        </div>
+    </div>
 
-        <section class="content">
-            <div class="container-fluid">
-                <h1 class="mb-4">注文詳細（注文ID：<?= htmlspecialchars($order['ORDER_ID']) ?>）</h1>
+    <div class="card">
+        <div class="card-header bg-secondary text-white">
+            注文商品一覧
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>商品名</th>
+                        <th>単価</th>
+                        <th>数量</th>
+                        <th>小計</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if ($result_items->num_rows > 0): ?>
+                    <?php while ($item = $result_items->fetch_assoc()): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($item['PRODUCT_NAME']); ?></td>
+                            <td>¥<?php echo number_format($item['UNIT_PRICE']); ?></td>
+                            <td><?php echo htmlspecialchars($item['QUANTITY']); ?></td>
+                            <td>¥<?php echo number_format($item['SUBTOTAL']); ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <tr><td colspan="4" class="text-center">商品が登録されていません。</td></tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-                <!-- 注文情報 -->
-                <div class="card mb-4 shadow-sm">
-                    <div class="card-header bg-primary text-white fw-bold">注文情報</div>
-                    <div class="card-body">
-                        <div class="row mb-2">
-                            <div class="col-md-6"><strong>顧客名：</strong> <?= htmlspecialchars($order['CUSTOMER_NAME']) ?></div>
-                            <div class="col-md-6"><strong>注文日：</strong> <?= htmlspecialchars($order['ORDER_DATE']) ?></div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-md-6"><strong>支払い状況：</strong> <?= htmlspecialchars($order['PAYMENT_STATUS'] ?? '未設定') ?></div>
-                            <div class="col-md-6"><strong>合計金額：</strong> ¥<?= number_format($order['TOTAL_AMOUNT']) ?></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 注文明細 -->
-                <div class="card shadow-sm">
-                    <div class="card-header bg-success text-white fw-bold">注文明細</div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-hover align-middle text-center">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>商品名</th>
-                                        <th>単価</th>
-                                        <th>数量</th>
-                                        <th>小計</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php if (count($orderItems) > 0): ?>
-                                        <?php foreach ($orderItems as $item): ?>
-                                            <tr>
-                                                <td><?= htmlspecialchars($item['PRODUCT_NAME']) ?></td>
-                                                <td>¥<?= number_format($item['UNIT_PRICE']) ?></td>
-                                                <td><?= htmlspecialchars($item['QUANTITY']) ?></td>
-                                                <td>¥<?= number_format($item['SUBTOTAL']) ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <tr>
-                                            <td colspan="4" class="text-muted">この注文には明細がありません。</td>
-                                        </tr>
-                                    <?php endif; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mt-4 d-flex justify-content-between">
-                    <a href="order_list.php" class="btn btn-secondary">
-                        <i class="bi bi-arrow-left-circle"></i> 注文一覧へ戻る
-                    </a>
-                    <a href="order_item_add.php?order_id=<?= $order_id ?>" class="btn btn-success">
-                        <i class="bi bi-plus-circle"></i> 明細を追加
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
+    <div class="text-end mt-3">
+        <a href="orders.php" class="btn btn-outline-secondary">注文一覧に戻る</a>
+    </div>
+</div>
 </body>
 </html>
