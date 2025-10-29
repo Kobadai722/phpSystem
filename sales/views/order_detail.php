@@ -1,10 +1,9 @@
 <?php
-// order_detail.php
 header("Content-Type: text/html; charset=UTF-8");
 mb_internal_encoding("UTF-8");
 
-// DB接続（共通化ファイルを使用している場合はそれを include）
-require_once '../../db_connect.php'; // ← 既存構成に合わせて変更してください
+// ✅ config.phpを読み込む（既存の構成と同じに）
+require_once '../../config.php';
 
 // GETパラメータで注文ID取得
 $order_id = isset($_GET['order_id']) ? intval($_GET['order_id']) : 0;
@@ -14,15 +13,14 @@ if ($order_id <= 0) {
 }
 
 // 注文情報取得
-$stmt = $pdo->prepare("
+$stmt = $PDO->prepare("
     SELECT 
         o.ORDER_ID,
         o.CUSTOMER_ID,
-        c.CUSTOMER_NAME,
-        o.ORDER_DATE,
+        c.NAME AS CUSTOMER_NAME,
+        o.ORDER_DATETIME AS ORDER_DATE,
         o.TOTAL_AMOUNT,
-        o.PAYMENT_STATUS,
-        o.DELIVERY_STATUS
+        o.STATUS AS PAYMENT_STATUS
     FROM S_ORDER o
     JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID
     WHERE o.ORDER_ID = ?
@@ -35,7 +33,7 @@ if (!$order) {
 }
 
 // 注文明細取得
-$stmtItems = $pdo->prepare("
+$stmtItems = $PDO->prepare("
     SELECT 
         i.ORDER_ITEM_ID,
         p.PRODUCT_NAME,
@@ -49,14 +47,13 @@ $stmtItems = $pdo->prepare("
 $stmtItems->execute([$order_id]);
 $orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>注文詳細 - 注文管理システム</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
@@ -70,7 +67,7 @@ $orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
             <div class="container-fluid">
                 <h1 class="mb-4">注文詳細（注文ID：<?= htmlspecialchars($order['ORDER_ID']) ?>）</h1>
 
-                <!-- 注文情報カード -->
+                <!-- 注文情報 -->
                 <div class="card mb-4 shadow-sm">
                     <div class="card-header bg-primary text-white fw-bold">注文情報</div>
                     <div class="card-body">
@@ -80,15 +77,12 @@ $orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="row mb-2">
                             <div class="col-md-6"><strong>支払い状況：</strong> <?= htmlspecialchars($order['PAYMENT_STATUS'] ?? '未設定') ?></div>
-                            <div class="col-md-6"><strong>配送状況：</strong> <?= htmlspecialchars($order['DELIVERY_STATUS'] ?? '未設定') ?></div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-6"><strong>合計金額：</strong> ¥<?= number_format($order['TOTAL_AMOUNT']) ?></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 注文明細カード -->
+                <!-- 注文明細 -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-success text-white fw-bold">注文明細</div>
                     <div class="card-body">
@@ -127,7 +121,6 @@ $orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
                     <a href="order_list.php" class="btn btn-secondary">
                         <i class="bi bi-arrow-left-circle"></i> 注文一覧へ戻る
                     </a>
-
                     <a href="order_item_add.php?order_id=<?= $order_id ?>" class="btn btn-success">
                         <i class="bi bi-plus-circle"></i> 明細を追加
                     </a>
@@ -135,7 +128,5 @@ $orderItems = $stmtItems->fetchAll(PDO::FETCH_ASSOC);
             </div>
         </section>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 </body>
 </html>
