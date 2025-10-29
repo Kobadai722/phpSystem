@@ -1,13 +1,11 @@
 <?php
-// config.phpの読み込み（D
 require_once '../../config.php'; 
 
-// 商品リスト取得処理の追加 
+// 商品リスト取得処理
 $products = [];
-    // 必要な情報（ID, 名称, 単価）をPRODUCTテーブルから取得
-    $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
-    $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -32,12 +30,13 @@ $products = [];
                 <form id="orderAddForm" method="POST"> 
                     
                     <div class="mb-3">
-                        <label for="product_id" class="form-label">商品名 (PRODUCT_ID)</label>
+                        <label for="product_id" class="form-label">商品</label>
                         <select class="form-select" id="product_id" name="product_id" required>
                             <option value="">選択してください</option>
                             <?php foreach ($products as $product): ?>
                             <option 
                                 value="<?php echo htmlspecialchars($product['PRODUCT_ID']); ?>"
+                                data-name="<?php echo htmlspecialchars($product['PRODUCT_NAME']); ?>"
                                 data-price="<?php echo htmlspecialchars($product['UNIT_SELLING_PRICE']); ?>"
                             >
                                 <?php echo htmlspecialchars($product['PRODUCT_NAME']); ?> 
@@ -45,28 +44,24 @@ $products = [];
                                 単価: <?php echo number_format($product['UNIT_SELLING_PRICE']); ?>円)
                             </option>
                             <?php endforeach; ?>
-                            </select>
+                        </select>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="order_quantity" class="form-label">注文数量 (ORDER_QUANTITY)</label>
+                        <label for="order_quantity" class="form-label">注文数量</label>
                         <input type="number" class="form-control" id="order_quantity" name="order_quantity" required min="1" step="1" value="1">
                     </div>
 
                     <div class="mb-3">
-                        <label for="customer_id" class="form-label">顧客ID (CUSTOMER_ID)</label>
+                        <label for="customer_id" class="form-label">顧客ID</label>
                         <input type="number" class="form-control" id="customer_id" name="customer_id" required min="1" step="1" value="1">
                         <div class="form-text text-muted">有効な顧客IDを入力してください。</div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="notes" class="form-label">備考 (NOTES)</label>
+                        <label for="notes" class="form-label">備考</label>
                         <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="255"></textarea>
                         <div class="form-text text-muted">最大255文字まで</div>
-                    </div>
-                    
-                    <div class="alert alert-info small mt-4">
-                        <p class="mb-1">以下の項目はサーバー側で自動設定されます: ORDER\_DATETIME, TOTAL\_AMOUNT, STATUS, CREATED\_AT, UPDATED\_AT</p>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
@@ -82,6 +77,7 @@ $products = [];
         </section>
     </main>
     
+    <!-- ✅ 確認モーダル（注文内容を表示） -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -90,8 +86,17 @@ $products = [];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>この内容で注文を登録してもよろしいですか？</p>
-                    <p>※確認内容はJavaScriptで実装できますが、今回は最低限のため省略します。</p>
+                    <p>以下の内容で注文を登録します。ご確認ください。</p>
+
+                    <!-- ✅ 確認テーブル -->
+                    <table class="table table-bordered">
+                        <tr><th>商品名</th><td id="confirmProductName"></td></tr>
+                        <tr><th>単価</th><td id="confirmProductPrice"></td></tr>
+                        <tr><th>数量</th><td id="confirmQuantity"></td></tr>
+                        <tr><th>小計</th><td id="confirmSubtotal"></td></tr>
+                        <tr><th>顧客ID</th><td id="confirmCustomerId"></td></tr>
+                        <tr><th>備考</th><td id="confirmNotes"></td></tr>
+                    </table>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
@@ -111,25 +116,46 @@ $products = [];
             const confirmBtn = document.getElementById('confirmOrderBtn');
             const modalElement = document.getElementById('confirmModal');
             const confirmModal = new bootstrap.Modal(modalElement);
-            
-            // 1. フォーム送信（submit）時は、ブラウザバリデーションのみ行い、モーダル表示をキャンセル
+
+            // ✅ モーダルに値をセットする要素
+            const confirmProductName = document.getElementById('confirmProductName');
+            const confirmProductPrice = document.getElementById('confirmProductPrice');
+            const confirmQuantity = document.getElementById('confirmQuantity');
+            const confirmSubtotal = document.getElementById('confirmSubtotal');
+            const confirmCustomerId = document.getElementById('confirmCustomerId');
+            const confirmNotes = document.getElementById('confirmNotes');
+
+            // モーダル表示直前に入力内容を反映
+            modalElement.addEventListener('show.bs.modal', function () {
+                const selectedOption = document.querySelector('#product_id option:checked');
+                const productName = selectedOption.dataset.name || '';
+                const price = parseFloat(selectedOption.dataset.price || 0);
+                const quantity = parseInt(document.getElementById('order_quantity').value || 0);
+                const subtotal = price * quantity;
+
+                confirmProductName.textContent = productName;
+                confirmProductPrice.textContent = price.toLocaleString() + ' 円';
+                confirmQuantity.textContent = quantity + ' 個';
+                confirmSubtotal.textContent = subtotal.toLocaleString() + ' 円';
+                confirmCustomerId.textContent = document.getElementById('customer_id').value;
+                confirmNotes.textContent = document.getElementById('notes').value || '（なし）';
+            });
+
+            // フォーム送信時の処理
             form.addEventListener('submit', function(event) {
                 if (!form.checkValidity()) {
                     event.preventDefault(); 
                     event.stopPropagation();
                     form.classList.add('was-validated');
                 }
-                // バリデーションOKの場合、event.preventDefault()はBootstrapのdata-bs-toggleに任せる
             });
 
-            // 2. モーダル内の「注文を確定」ボタンが押された時の処理（API実行）
+            // 注文確定ボタン
             confirmBtn.addEventListener('click', async function() {
                 confirmBtn.disabled = true;
                 confirmBtn.innerHTML = '処理中...';
 
                 const formData = new FormData(form);
-
-                // APIコール（try/catchなしの最小限処理）
                 const response = await fetch('../api/add_order_api.php', { method: 'POST', body: formData });
                 const data = await response.json();
 
@@ -142,16 +168,9 @@ $products = [];
                     alert('失敗: ' + data.message);
                 }
 
-                // 終了処理
                 confirmBtn.disabled = false;
                 confirmBtn.innerHTML = '注文を確定';
             });
-            
-            // モーダルが閉じられた時に送信ボタンのテキストをリセットする
-            modalElement.addEventListener('hidden.bs.modal', function () {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="bi bi-cart-plus me-2"></i>注文を登録する';
-            })
         });
     </script>
 </body>
