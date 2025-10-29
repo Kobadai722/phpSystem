@@ -24,9 +24,9 @@
                         <label for="product_id" class="form-label">商品名 (PRODUCT_ID)</label>
                         <select class="form-select" id="product_id" name="product_id" required>
                             <option value="">選択してください</option>
-                            <option value="1">商品A (ID: 1)</option>
-                            <option value="2">商品B (ID: 2)</option>
-                            <option value="3">商品C (ID: 3)</option>
+                            <option value="1">商品A (金額: )</option>
+                            <option value="2">商品B (金額: )</option>
+                            <option value="3">商品C (金額: )</option>
                         </select>
                     </div>
                     
