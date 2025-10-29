@@ -3,91 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注文管理システム - 注文詳細</title>
+    <title>注文詳細 - <?php echo htmlspecialchars($order['ORDER_ID'] ?? 'エラー'); ?></title> 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-<?php include '../../header.php'; ?>
-<main>
-    <?php include '../includes/localNavigation.php'; ?>
+    <?php
+    // DB接続とデータ取得、エラー処理はHTML出力の前に完了させる
+    require_once '../../config.php';
+    $order_id = $_GET['id'] ?? '';
 
-    <section class="content">
-        <div class="container-fluid">
+    if (empty($order_id)) {
+        echo '<p class="text-danger text-center mt-5">注文IDが指定されていません。</p>';
+        exit;
+    }
+
+    try {
+        // 注文情報取得SQL
+        $sql = "SELECT 
+                    o.ORDER_ID,
+                    o.ORDER_DATETIME,
+                    o.TOTAL_AMOUNT,
+                    o.STATUS,
+                    c.NAME AS CUSTOMER_NAME
+                FROM S_ORDER o
+                LEFT JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID
+                WHERE o.ORDER_ID = :order_id";
+
+        $stmt = $PDO->prepare($sql);
+        $stmt->bindValue(':order_id', $order_id, PDO::PARAM_STR);
+        $stmt->execute();
+        $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$order) {
+            echo '<p class="text-danger text-center mt-5">指定された注文が見つかりません。</p>';
+            exit;
+        }
+    } catch (PDOException $e) {
+        echo '<p class="text-danger text-center mt-5">データベースエラー: ' . htmlspecialchars($e->getMessage()) . '</p>';
+        exit;
+    }
+    ?>
+    <?php include '../../header.php'; ?>
+    <main>
+        <?php include '../includes/localNavigation.php'; ?>
+
+        <section class="content container mt-4">
             <h1 class="mb-4">注文詳細</h1>
 
-            <?php
-            require_once '../../config.php';
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>注文ID</th>
+                    <td><?php echo htmlspecialchars($order['ORDER_ID']); ?></td>
+                </tr>
+                <tr>
+                    <th>注文日時</th>
+                    <td><?php echo htmlspecialchars($order['ORDER_DATETIME']); ?></td>
+                </tr>
+                <tr>
+                    <th>顧客名</th>
+                    <td><?php echo htmlspecialchars($order['CUSTOMER_NAME']); ?></td>
+                </tr>
+                <tr>
+                    <th>合計金額</th>
+                    <td>¥<?php echo number_format($order['TOTAL_AMOUNT']); ?></td>
+                </tr>
+                <tr>
+                    <th>支払い状況</th>
+                    <td><?php echo htmlspecialchars($order['STATUS']); ?></td>
+                </tr>
+            </table>
 
-            if (!isset($_GET['id']) || empty($_GET['id'])) {
-                echo '<div class="alert alert-danger">注文IDが指定されていません。</div>';
-                exit;
-            }
-
-            $order_id = intval($_GET['id']);
-
-            try {
-                $stmt = $pdo->prepare("
-                    SELECT o.id, o.order_date, c.name AS customer_name, o.total_amount, o.payment_status
-                    FROM orders o
-                    JOIN customers c ON o.customer_id = c.id
-                    WHERE o.id = :id
-                ");
-                $stmt->bindValue(':id', $order_id, PDO::PARAM_INT);
-                $stmt->execute();
-                $order = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                if (!$order) {
-                    echo '<div class="alert alert-warning">指定された注文が見つかりません。</div>';
-                    exit;
-                }
-            } catch (PDOException $e) {
-                echo '<div class="alert alert-danger">データベースエラー: ' . htmlspecialchars($e->getMessage()) . '</div>';
-                exit;
-            }
-            ?>
-
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <tr>
-                            <th>注文ID</th>
-                            <td><?= htmlspecialchars($order['id']) ?></td>
-                        </tr>
-                        <tr>
-                            <th>注文日時</th>
-                            <td><?= htmlspecialchars($order['order_date']) ?></td>
-                        </tr>
-                        <tr>
-                            <th>顧客名</th>
-                            <td><?= htmlspecialchars($order['customer_name']) ?></td>
-                        </tr>
-                        <tr>
-                            <th>合計金額</th>
-                            <td>¥<?= number_format($order['total_amount']) ?></td>
-                        </tr>
-                        <tr>
-                            <th>支払い状況</th>
-                            <td><?= htmlspecialchars($order['payment_status']) ?></td>
-                        </tr>
-                    </table>
-
-                    <div class="mt-3">
-                        <a href="order_list.php" class="btn btn-secondary">
-                            <i class="bi bi-arrow-left"></i> 注文一覧に戻る
-                        </a>
-                        <a href="order_edit.php?id=<?= htmlspecialchars($order['id']) ?>" class="btn btn-primary">
-                            <i class="bi bi-pencil"></i> 編集
-                        </a>
-                    </div>
-                </div>
+            <div class="mt-4">
+                <a href="order_list.php" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> 注文一覧に戻る
+                </a>
+                <a href="order_edit.php?id=<?php echo urlencode($order['ORDER_ID']); ?>" class="btn btn-primary">
+                    <i class="bi bi-pencil-square"></i> 編集
+                </a>
             </div>
-
-        </div>
-    </section>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        </section>
+    </main>
 </body>
 </html>
