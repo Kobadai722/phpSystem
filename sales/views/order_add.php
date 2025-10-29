@@ -27,7 +27,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <div class="container">
                 <h2 class="mb-4">新しい注文の追加</h2>
                 
-                <form id="orderAddForm" method="POST"> 
+                <form id="orderAddForm" method="POST" novalidate> 
                     
                     <div class="mb-3">
                         <label for="product_id" class="form-label">商品</label>
@@ -45,17 +45,20 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             </option>
                             <?php endforeach; ?>
                         </select>
+                        <div class="invalid-feedback">商品を選択してください。</div>
                     </div>
                     
                     <div class="mb-3">
                         <label for="order_quantity" class="form-label">注文数量</label>
                         <input type="number" class="form-control" id="order_quantity" name="order_quantity" required min="1" step="1" value="1">
+                        <div class="invalid-feedback">注文数量を入力してください。</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="customer_id" class="form-label">顧客ID</label>
                         <input type="number" class="form-control" id="customer_id" name="customer_id" required min="1" step="1" value="1">
                         <div class="form-text text-muted">有効な顧客IDを入力してください。</div>
+                        <div class="invalid-feedback">顧客IDを入力してください。</div>
                     </div>
 
                     <div class="mb-3">
@@ -65,7 +68,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-                        <button type="submit" class="btn btn-success btn-lg" id="submitFormBtn" data-bs-toggle="modal" data-bs-target="#confirmModal"> 
+                        <button type="submit" class="btn btn-success btn-lg" id="submitFormBtn"> 
                             <i class="bi bi-cart-plus me-2"></i>注文を登録する
                         </button>
                         <a href="order_management.php" class="btn btn-secondary btn-lg">
@@ -77,7 +80,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </section>
     </main>
     
-    <!-- ✅ 確認モーダル（注文内容を表示） -->
+    <!--  確認モーダル -->
     <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -88,7 +91,6 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-body">
                     <p>以下の内容で注文を登録します。ご確認ください。</p>
 
-                    <!-- ✅ 確認テーブル -->
                     <table class="table table-bordered">
                         <tr><th>商品名</th><td id="confirmProductName"></td></tr>
                         <tr><th>単価</th><td id="confirmProductPrice"></td></tr>
@@ -112,12 +114,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('orderAddForm');
-            const submitBtn = document.getElementById('submitFormBtn');
             const confirmBtn = document.getElementById('confirmOrderBtn');
             const modalElement = document.getElementById('confirmModal');
             const confirmModal = new bootstrap.Modal(modalElement);
 
-            // ✅ モーダルに値をセットする要素
+            //  モーダル内の各要素取得
             const confirmProductName = document.getElementById('confirmProductName');
             const confirmProductPrice = document.getElementById('confirmProductPrice');
             const confirmQuantity = document.getElementById('confirmQuantity');
@@ -125,32 +126,33 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const confirmCustomerId = document.getElementById('confirmCustomerId');
             const confirmNotes = document.getElementById('confirmNotes');
 
-            // モーダル表示直前に入力内容を反映
-            modalElement.addEventListener('show.bs.modal', function () {
-                const selectedOption = document.querySelector('#product_id option:checked');
-                const productName = selectedOption.dataset.name || '';
-                const price = parseFloat(selectedOption.dataset.price || 0);
-                const quantity = parseInt(document.getElementById('order_quantity').value || 0);
-                const subtotal = price * quantity;
-
-                confirmProductName.textContent = productName;
-                confirmProductPrice.textContent = price.toLocaleString() + ' 円';
-                confirmQuantity.textContent = quantity + ' 個';
-                confirmSubtotal.textContent = subtotal.toLocaleString() + ' 円';
-                confirmCustomerId.textContent = document.getElementById('customer_id').value;
-                confirmNotes.textContent = document.getElementById('notes').value || '（なし）';
-            });
-
-            // フォーム送信時の処理
+            //  submitボタン押下時の処理
             form.addEventListener('submit', function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault(); 
-                    event.stopPropagation();
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (form.checkValidity()) {
+                    //  バリデーションOK時のみモーダルを表示
+                    const selectedOption = document.querySelector('#product_id option:checked');
+                    const productName = selectedOption.dataset.name || '';
+                    const price = parseFloat(selectedOption.dataset.price || 0);
+                    const quantity = parseInt(document.getElementById('order_quantity').value || 0);
+                    const subtotal = price * quantity;
+
+                    confirmProductName.textContent = productName;
+                    confirmProductPrice.textContent = price.toLocaleString() + ' 円';
+                    confirmQuantity.textContent = quantity + ' 個';
+                    confirmSubtotal.textContent = subtotal.toLocaleString() + ' 円';
+                    confirmCustomerId.textContent = document.getElementById('customer_id').value;
+                    confirmNotes.textContent = document.getElementById('notes').value || '（なし）';
+
+                    confirmModal.show();
+                } else {
                     form.classList.add('was-validated');
                 }
             });
 
-            // 注文確定ボタン
+            //  注文確定ボタン押下
             confirmBtn.addEventListener('click', async function() {
                 confirmBtn.disabled = true;
                 confirmBtn.innerHTML = '処理中...';
