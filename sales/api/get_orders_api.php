@@ -45,7 +45,7 @@ try {
     }
     
     // 注文日時が新しい順に並べ替え
-    $sql .= " ORDER BY o.ORDER_DATETIME ";
+    $sql .= " ORDER BY o.ORDER_DATETIME DESC";
 
     // プリペアドステートメントの準備
     $stmt = $PDO->prepare($sql);
