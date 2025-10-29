@@ -18,7 +18,7 @@ $product = $stmtProduct->fetch(PDO::FETCH_ASSOC);
 
 if (!$product) {
     $PDO->rollBack();
-    echo json_encode(['success' => false, 'message' => '商品が見つかりませんでした。']);
+    echo json_encode(['success' => false, 'message' => '指定された商品IDが見つかりませんでした。']);
     exit;
 }
 
