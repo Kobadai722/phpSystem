@@ -92,7 +92,7 @@ try {
                 </div>
 
                 <div class="d-flex justify-content-start mt-4 mb-4">
-                    <a href="order_list.php" class="btn btn-secondary">
+                    <a href="purchase.php" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> 注文一覧に戻る
                     </a>
                     <a href="order_edit.php?id=<?php echo urlencode($order['ORDER_ID']); ?>" class="btn btn-primary ms-2">
