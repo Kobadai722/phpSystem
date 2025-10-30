@@ -28,7 +28,7 @@ $currentDateTime = date('Y-m-d H:i:s');
 
 $stmtOrder = $PDO->prepare(
     "INSERT INTO S_ORDER (ORDER_DATETIME, CUSTOMER_ID, TOTAL_AMOUNT, STATUS, NOTES, CREATED_AT, UPDATED_AT) 
-    VALUES (:order_datetime, :customer_id, :total_amount, '注文受付', :notes, :created_at, :updated_at)"
+    VALUES (:order_datetime, :customer_id, :total_amount, '未払い', :notes, :created_at, :updated_at)"
 );
 
 $stmtOrder->bindParam(':order_datetime', $currentDateTime);
