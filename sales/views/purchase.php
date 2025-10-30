@@ -36,7 +36,7 @@
                                     <option value="未払い">未払い</option>
                                     <option value="支払い済み">支払い済み</option>
                                     <option value="発送済み">発送済み</option>
-                                    <option value="注文済み">注文済み</option>
+                                    <option value="注文済み">注文受付</option>
                                     
                                 </select>
                             </div>
