@@ -7,36 +7,6 @@ if (!isset($_SESSION['employee_id'])) {
     exit;
 }
 
-// === ▼ 出勤・退勤処理のPHPコードを追加 ▼ ===
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    header('Content-Type: application/json');
-
-    $action = $_POST['action'];
-    $employee_id = $_SESSION['employee_id'];
-    $timestamp = date('Y-m-d H:i:s');
-    $status = '';
-
-    if ($action === 'check_in') {
-        $status = '出勤';
-    } elseif ($action === 'check_out') {
-        $status = '退勤';
-    } else {
-        echo json_encode(['status' => 'error', 'message' => '無効なアクションです。']);
-        exit;
-    }
-
-    try {
-        // データベースに記録する（`config.php`に`$PDO`が定義されている前提）
-        $stmt = $PDO->prepare('INSERT INTO ATTENDANCE (EMPLOYEE_ID, TIMESTAMP, STATUS) VALUES (?, ?, ?)');
-        $stmt->execute([$employee_id, $timestamp, $status]);
-        echo json_encode(['status' => 'success', 'message' => $status . 'を記録しました。']);
-    } catch (PDOException $e) {
-        echo json_encode(['status' => 'error', 'message' => 'データベースエラー: ' . $e->getMessage()]);
-    }
-
-    exit;
-}
-// === ▲ 出勤・退勤処理のPHPコードを追加 ▲ ===
 
 $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 ?>
@@ -159,7 +129,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
         updateTime();
         setInterval(updateTime, 1000);
 
-        // === ▼ 出勤・退勤機能のJavaScriptを追加 ▼ ===
+        // === ▼ 出勤・退勤機能のJavaScript▼ ===
         document.addEventListener('DOMContentLoaded', () => {
             const checkInBtn = document.getElementById('checkInBtn');
             const checkOutBtn = document.getElementById('checkOutBtn');
@@ -171,19 +141,23 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 statusMessage.style.display = 'block';
                 setTimeout(() => {
                     statusMessage.style.display = 'none';
-                }, 5000); // 5秒後に非表示
+                }, 5000); // 
             }
 
             async function sendRequest(action) {
                 showStatusMessage('通信中...', 'info');
 
                 try {
-                    const response = await fetch('main.php', {
+                    // 修正1: APIのパスを human/attendance_api.php に変更
+                    const apiUrl = 'human/attendance_api.php'; // main.phpから見た相対パス
+                    
+                    const response = await fetch(apiUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/x-www-form-urlencoded',
                         },
-                        body: 'action=' + action
+                        // 修正2: APIが期待する action 名 (clockIn/clockOut) に変換
+                        body: 'action=' + (action === 'check_in' ? 'clockIn' : 'clockOut')
                     });
 
                     if (!response.ok) {
@@ -192,7 +166,8 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
 
                     const result = await response.json();
 
-                    if (result.status === 'success') {
+                    // 修正3: APIのレスポンス形式 (successキー) に合わせる
+                    if (result.success) {
                         showStatusMessage(result.message, 'success');
                     } else {
                         throw new Error(result.message);
@@ -216,8 +191,8 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
             // 初期状態ではメッセージを非表示にする
             statusMessage.style.display = 'none';
         });
-        // === ▲ 出勤・退勤機能のJavaScriptを追加 ▲ ===
-    </script>
+        // === ▲ 出勤・退勤機能のJavaScriptを修正しました ▲ ===
+</script>
 </body>
 
 </html>
