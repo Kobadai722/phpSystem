@@ -117,6 +117,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
+    <script src="human/main-attendance.js"></script> 
     <script>
         function updateTime() {
             const now = new Date();
