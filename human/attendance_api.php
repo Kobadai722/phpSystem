@@ -31,7 +31,8 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'message' => '出勤しました。', 'clockInTime' => $time]);
     } catch (PDOException $e) {
         error_log("出勤処理エラー: " . $e->getMessage());
-        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。']);
+        // 一時的に具体的なエラー内容をクライアントに返すように変更
+        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました: ' . $e->getMessage()]);
     }
 
 } elseif ($action === 'clockOut') {
