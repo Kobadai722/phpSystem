@@ -8,8 +8,9 @@ header('Content-Type: application/json');
 $productId = $_POST['product_id'] ?? 0;
 $orderQuantity = $_POST['order_quantity'] ?? 0;
 $customerId = $_POST['customer_id'] ?? 0;
-$notes = $_POST['notes'] ?? '';
-$employeeId = $_POST['employee_id'] ?? 0; // 担当者ID
+// $notesはORDERテーブルにカラムがないため、ここでは使用しないが、変数として取得しておく
+// $notes = $_POST['notes'] ?? ''; 
+$employeeId = $_POST['employee_id'] ?? 0; // EMPLOYEE_IDを取得
 
 // 必須入力チェック
 if ($productId <= 0 || $orderQuantity <= 0 || $customerId <= 0 || $employeeId <= 0) {
@@ -18,12 +19,11 @@ if ($productId <= 0 || $orderQuantity <= 0 || $customerId <= 0 || $employeeId <=
 }
 
 try {
-    // トランザクション開始
+    // トランザクション開始: 注文ヘッダー、明細、在庫更新は一連の処理として実行
     $PDO->beginTransaction();
     $currentDateTime = date('Y-m-d H:i:s');
 
-    // 1. 商品情報の取得と単価・在庫の確認
-    // FOR UPDATEでレコードをロックし、同時注文による在庫不足を防ぐ
+    // 1. 商品情報の取得と単価・在庫の確認 (FOR UPDATEでロック)
     $stmtProduct = $PDO->prepare("SELECT UNIT_SELLING_PRICE, STOCK_QUANTITY FROM PRODUCT WHERE PRODUCT_ID = :product_id FOR UPDATE"); 
     $stmtProduct->bindParam(':product_id', $productId, PDO::PARAM_INT);
     $stmtProduct->execute();
@@ -35,32 +35,38 @@ try {
 
     $unitPrice = $product['UNIT_SELLING_PRICE']; 
     $stockQuantity = $product['STOCK_QUANTITY'];
-    $totalAmount = $unitPrice * $orderQuantity; 
+    $totalAmount = $unitPrice * $orderQuantity; // 注文の合計金額
 
     // 2. 在庫チェック
     if ($stockQuantity < $orderQuantity) {
         throw new Exception('在庫が不足しています。（現在在庫: ' . $stockQuantity . '個）');
     }
+    
+    // 3. 担当者IDの存在チェック (FOREIGN KEY制約をより安全にするため)
+    $stmtEmployeeCheck = $PDO->prepare("SELECT EMPLOYEE_ID FROM EMPLOYEE WHERE EMPLOYEE_ID = :employee_id");
+    $stmtEmployeeCheck->bindParam(':employee_id', $employeeId, PDO::PARAM_INT);
+    $stmtEmployeeCheck->execute();
+    if ($stmtEmployeeCheck->rowCount() === 0) {
+        throw new Exception('指定された担当者IDが見つかりませんでした。');
+    }
 
-    // 3. 注文ヘッダーの登録 (法人/S_ORDER テーブルを使用。個人用ORDERテーブルも同様に処理可能)
+
+    //  4. 注文ヘッダーの登録 (ORDER テーブルを使用) 
     $stmtOrder = $PDO->prepare(
-        "INSERT INTO S_ORDER (ORDER_DATETIME, CUSTOMER_ID, TOTAL_AMOUNT, EMPLOYEE_ID, STATUS, NOTES, CREATED_AT, UPDATED_AT) 
-        VALUES (:order_datetime, :customer_id, :total_amount, :employee_id, '未払い', :notes, :created_at, :updated_at)"
+        "INSERT INTO `ORDER` (PURCHASE_ORDER_DATE, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID)
+        VALUES (:order_date, :target_id, 1, :price, :employee_id)"
     );
 
-    $stmtOrder->bindParam(':order_datetime', $currentDateTime);
-    $stmtOrder->bindParam(':customer_id', $customerId, PDO::PARAM_INT);
-    $stmtOrder->bindParam(':total_amount', $totalAmount);
+    $stmtOrder->bindParam(':order_date', $currentDateTime);
+    $stmtOrder->bindParam(':target_id', $customerId, PDO::PARAM_INT); // ORDER_TARGET_ID = 顧客ID
+    $stmtOrder->bindParam(':price', $totalAmount); // PRICE = 合計金額
     $stmtOrder->bindParam(':employee_id', $employeeId, PDO::PARAM_INT);
-    $stmtOrder->bindParam(':notes', $notes);
-    $stmtOrder->bindParam(':created_at', $currentDateTime);
-    $stmtOrder->bindParam(':updated_at', $currentDateTime);
 
     $stmtOrder->execute();
-    $newOrderId = $PDO->lastInsertId(); // 注文ヘッダーIDを取得
+    $newOrderId = $PDO->lastInsertId(); // 注文ヘッダーID (ORDER_ID) を取得
 
-    // 4. 注文明細 (ORDER_ITEMS) の登録
-    // ORDER_HEADER_IDにS_ORDERのIDを格納する
+    //  5. 注文明細 (ORDER_ITEMS) の登録 
+    // ORDER_HEADER_IDにORDER_IDを格納する
     $stmtItems = $PDO->prepare(
         "INSERT INTO ORDER_ITEMS (ORDER_HEADER_ID, PRODUCT_ID, UNIT_PRICE, QUANTITY, SUBTOTAL, CREATED_AT, UPDATED_AT) 
         VALUES (:order_id, :product_id, :unit_price, :quantity, :subtotal, :created_at, :updated_at)"
@@ -76,7 +82,7 @@ try {
 
     $stmtItems->execute();
 
-    // 5. 在庫の更新（数量の減算）
+    // 6. 在庫の更新（数量の減算）
     $stmtStockUpdate = $PDO->prepare(
         "UPDATE PRODUCT SET STOCK_QUANTITY = STOCK_QUANTITY - :quantity WHERE PRODUCT_ID = :product_id"
     );
@@ -85,7 +91,7 @@ try {
     $stmtStockUpdate->execute();
 
 
-    // 6. トランザクション完了
+    // 7. トランザクション完了
     $PDO->commit();
     echo json_encode([
         'success' => true, 

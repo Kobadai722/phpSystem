@@ -2,11 +2,17 @@
 require_once '../../config.php'; 
 
 // 商品リスト取得処理
-// 在庫管理システム内で使用する商品マスタからデータを取得
 $products = [];
 $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
 $stmt->execute();
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// 担当者リスト取得処理
+$employees = [];
+$stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
+$stmtEmployee->execute();
+$employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -63,12 +69,17 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
 
                     <div class="mb-3">
-                        <label for="employee_id" class="form-label">担当者ID</label>
-                        <input type="number" class="form-control" id="employee_id" name="employee_id" required min="1" step="1" value="100">
-                        <div class="form-text text-muted">この注文を担当する社員IDを入力してください。</div>
-                        <div class="invalid-feedback">担当者IDを入力してください。</div>
+                        <label for="employee_id" class="form-label">担当者</label>
+                        <select class="form-select" id="employee_id" name="employee_id" required>
+                            <option value="">選択してください</option>
+                            <?php foreach ($employees as $employee): ?>
+                            <option value="<?php echo htmlspecialchars($employee['EMPLOYEE_ID']); ?>">
+                                <?php echo htmlspecialchars($employee['NAME']); ?> (ID: <?php echo htmlspecialchars($employee['EMPLOYEE_ID']); ?>)
+                            </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <div class="invalid-feedback">担当者を選択してください。</div>
                     </div>
-
                     <div class="mb-3">
                         <label for="notes" class="form-label">備考</label>
                         <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="255"></textarea>
@@ -104,8 +115,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <tr><th>数量</th><td id="confirmQuantity"></td></tr>
                         <tr><th>小計</th><td id="confirmSubtotal"></td></tr>
                         <tr><th>顧客ID</th><td id="confirmCustomerId"></td></tr>
-                        <tr><th>担当者ID</th><td id="confirmEmployeeId"></td></tr>
-                        <tr><th>備考</th><td id="confirmNotes"></td></tr>
+                        <tr><th>担当者</th><td id="confirmEmployeeName"></td></tr> <tr><th>備考</th><td id="confirmNotes"></td></tr>
                     </table>
                 </div>
                 <div class="modal-footer">
@@ -132,7 +142,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
             const confirmQuantity = document.getElementById('confirmQuantity');
             const confirmSubtotal = document.getElementById('confirmSubtotal');
             const confirmCustomerId = document.getElementById('confirmCustomerId');
-            const confirmEmployeeId = document.getElementById('confirmEmployeeId');
+            const confirmEmployeeName = document.getElementById('confirmEmployeeName'); // ⭐ 修正 ⭐
             const confirmNotes = document.getElementById('confirmNotes');
 
             //  submitボタン押下時の処理
@@ -142,18 +152,19 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 if (form.checkValidity()) {
                     //  バリデーションOK時のみモーダルを表示
-                    const selectedOption = document.querySelector('#product_id option:checked');
-                    const productName = selectedOption.dataset.name || '';
-                    const price = parseFloat(selectedOption.dataset.price || 0);
+                    const selectedProductOption = document.querySelector('#product_id option:checked');
+                    const productName = selectedProductOption.dataset.name || '';
+                    const price = parseFloat(selectedProductOption.dataset.price || 0);
                     const quantity = parseInt(document.getElementById('order_quantity').value || 0);
                     const subtotal = price * quantity;
+                    const selectedEmployeeOption = document.querySelector('#employee_id option:checked'); // ⭐ 新規追加 ⭐
 
                     confirmProductName.textContent = productName;
                     confirmProductPrice.textContent = price.toLocaleString() + ' 円';
                     confirmQuantity.textContent = quantity + ' 個';
                     confirmSubtotal.textContent = subtotal.toLocaleString() + ' 円';
                     confirmCustomerId.textContent = document.getElementById('customer_id').value;
-                    confirmEmployeeId.textContent = document.getElementById('employee_id').value;
+                    confirmEmployeeName.textContent = selectedEmployeeOption ? selectedEmployeeOption.textContent : ''; // ⭐ 修正 ⭐
                     confirmNotes.textContent = document.getElementById('notes').value || '（なし）';
 
                     confirmModal.show();
@@ -162,12 +173,11 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 }
             });
 
-            //  注文確定ボタン押下
+            //  注文確定ボタン押下 (order_store.phpへ送信)
             confirmBtn.addEventListener('click', async function() {
                 confirmBtn.disabled = true;
                 confirmBtn.innerHTML = '処理中...';
 
-                // ⭐ 修正ポイント: フォーム送信先を order_store.php に変更 ⭐
                 const formData = new FormData(form);
                 const response = await fetch('../actions/order_store.php', { method: 'POST', body: formData });
                 const data = await response.json();
