@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../config.php';
+require_once '../config.php';
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['employee_id'])) {
