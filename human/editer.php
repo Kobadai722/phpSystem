@@ -150,7 +150,7 @@ session_start();
 
         async function fetchAllAttendance() {
             try {
-                const response = await fetch('attendance_history_all.php'); // 新しいAPIエンドポイント
+                const response = await fetch('attendance_history_all.php');
                 if (!response.ok) {
                     throw new Error('ネットワークエラー');
                 }
