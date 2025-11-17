@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../config.php';
+require_once '../config.php';
 
 header('Content-Type: application/json');
 
@@ -11,7 +11,6 @@ if (!isset($_SESSION['employee_id'])) {
 
 try {
     // 全従業員の勤怠履歴を結合して取得
-    // ORDER BY句で日付と従業員IDをソートすることで、見やすい表になります
     $stmt = $PDO->prepare("
         SELECT 
             E.EMPLOYEE_ID AS employee_id, 
