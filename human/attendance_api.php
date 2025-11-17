@@ -1,9 +1,7 @@
 <?php
-ini_set('display_errors', 'On');
-error_reporting(E_ALL);
 session_start();
-require_once '../config.php'; // パス修正済み
 
+require_once __DIR__ . '/../config.php';
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['employee_id'])) {
