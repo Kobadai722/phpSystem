@@ -115,7 +115,14 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
-    <script src="human/main-attendance.js"></script> <script>
+
+    <script>
+        const API_BASE_URL = 'human/attendance_api.php';
+    </script>
+
+    <script src="human/main-attendance.js"></script> 
+    
+    <script>
         function updateTime() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');

@@ -4,6 +4,8 @@ session_start();
 require_once '../config.php';
 header('Content-Type: application/json');
 
+global $PDO;//お試し
+
 if (!isset($_SESSION['employee_id'])) {
     echo json_encode(['success' => false, 'message' => 'ログインが必要です。']);
     exit;
