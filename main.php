@@ -35,11 +35,9 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
                 <p class="greeting">こんにちは、<span id="employeeName"><?= $employee_name ?></span>さん</p>
                 <div class="button-container">
                     <div class="punch-in-button">
-                        <a href="#" id="checkInBtn">出勤</a>
-                    </div>
+                        <a href="#" id="mainClockInBtn">出勤</a> </div>
                     <div class="punch-out-button">
-                        <a href="#" id="checkOutBtn">退勤</a>
-                    </div>
+                        <a href="#" id="mainClockOutBtn">退勤</a> </div>
                     </div>
                 <div id="statusMessage" class="mt-3 text-center fw-bold fs-5" style="display: none;"></div>
             </div>
@@ -117,7 +115,7 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     </script>
     <script src="weather.js"></script>
     <script src="background_changer.js"></script>
-    <script>
+    <script src="human/main-attendance.js"></script> <script>
         function updateTime() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -129,70 +127,9 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
         updateTime();
         setInterval(updateTime, 1000);
 
-        // === ▼ 出勤・退勤機能のJavaScript▼ ===
-        document.addEventListener('DOMContentLoaded', () => {
-            const checkInBtn = document.getElementById('checkInBtn');
-            const checkOutBtn = document.getElementById('checkOutBtn');
-            const statusMessage = document.getElementById('statusMessage');
-
-            function showStatusMessage(message, type) {
-                statusMessage.textContent = message;
-                statusMessage.className = `mt-3 alert alert-${type} text-center fw-bold fs-5`;
-                statusMessage.style.display = 'block';
-                setTimeout(() => {
-                    statusMessage.style.display = 'none';
-                }, 5000); // 
-            }
-
-            async function sendRequest(action) {
-                showStatusMessage('通信中...', 'info');
-
-                try {
-                    // 修正1: APIのパスを human/attendance_api.php に変更
-                    const apiUrl = 'human/attendance_api.php'; // main.phpから見た相対パス
-                    
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        // 修正2: APIが期待する action 名 (clockIn/clockOut) に変換
-                        body: 'action=' + (action === 'check_in' ? 'clockIn' : 'clockOut')
-                    });
-
-                    if (!response.ok) {
-                        throw new Error('サーバーエラーが発生しました。');
-                    }
-
-                    const result = await response.json();
-
-                    // 修正3: APIのレスポンス形式 (successキー) に合わせる
-                    if (result.success) {
-                        showStatusMessage(result.message, 'success');
-                    } else {
-                        throw new Error(result.message);
-                    }
-                } catch (error) {
-                    console.error('Fetch error:', error);
-                    showStatusMessage(`通信エラーが発生しました: ${error.message}`, 'danger');
-                }
-            }
-
-            checkInBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                sendRequest('check_in');
-            });
-
-            checkOutBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                sendRequest('check_out');
-            });
-
-            // 初期状態ではメッセージを非表示にする
-            statusMessage.style.display = 'none';
-        });
-        // === ▲ 出勤・退勤機能のJavaScriptを修正しました ▲ ===
-</script>
+        // 以前の出勤・退勤機能のJavaScriptロジック（sendRequest関数など）は、
+        // main-attendance.jsと機能が重複するため、このブロックから削除されました。
+    </script>
 </body>
 
 </html>

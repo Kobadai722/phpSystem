@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../config.php'; // パスの修正はそのまま
+require_once '../config.php'; // パス修正済み
 
 header('Content-Type: application/json');
 
@@ -30,7 +30,7 @@ if ($action === 'clockIn') {
 
         echo json_encode(['success' => true, 'message' => '出勤しました。', 'clockInTime' => $time]);
     } catch (PDOException $e) {
-        error_log("出勤処理エラー: " . $e->getMessage());
+        // 修正: error_logを削除し、純粋なJSONを返す
         echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。']);
     }
 
@@ -57,7 +57,7 @@ if ($action === 'clockIn') {
 
         echo json_encode(['success' => true, 'message' => '退勤しました。', 'clockOutTime' => $time]);
     } catch (PDOException $e) {
-        error_log("退勤処理エラー: " . $e->getMessage());
+        // 修正: error_logを削除し、純粋なJSONを返す
         echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。']);
     }
 
@@ -69,7 +69,7 @@ if ($action === 'clockIn') {
         $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['success' => true, 'history' => $history]);
     } catch (PDOException $e) {
-        error_log("履歴取得エラー: " . $e->getMessage());
+        // 修正: error_logを削除し、純粋なJSONを返す
         echo json_encode(['success' => false, 'message' => '履歴の取得中にエラーが発生しました。']);
     }
 } else {

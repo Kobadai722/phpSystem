@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchCurrentStatus() {
         showStatusMessage('ステータスを更新中...', 'secondary'); // 新しい通信の前にメッセージを表示
-        // main.phpからの相対パスを指定
+
         fetch('human/attendance_api.php?action=getHistory')
             .then(response => {
                 if (!response.ok) {
