@@ -71,7 +71,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <button type="submit" class="btn btn-success btn-lg" id="submitFormBtn"> 
                             <i class="bi bi-cart-plus me-2"></i>注文を登録する
                         </button>
-                        <a href="order_management.php" class="btn btn-secondary btn-lg">
+                        <a href="purchase.php" class="btn btn-secondary btn-lg">
                             <i class="bi bi-x-circle me-2"></i>キャンセル
                         </a>
                     </div>
