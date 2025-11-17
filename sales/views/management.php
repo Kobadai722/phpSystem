@@ -46,6 +46,11 @@ $top_products = [
                 <h1 class="mb-4"><i class="bi bi-graph-up"></i> 売上管理ダッシュボード</h1>
 
                 <div class="d-flex mb-5 gap-2 flex-wrap">
+
+
+                    <a href="order_create.php" class="btn btn-success">
+                        <i class="bi bi-plus-circle"></i> 新規注文作成
+                    </a>
                     <a href="product_management.php" class="btn btn-outline-secondary">
                         <i class="bi bi-box"></i> 商品・在庫管理
                     </a>
