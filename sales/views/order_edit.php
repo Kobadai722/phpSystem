@@ -139,7 +139,7 @@ if (!empty($errors)) {
 
         <section class="content">
             <div class="container-fluid">
-                <h1 class="mb-4">注文編集: <?php echo htmlspecialchars($order['ORDER_ID']); ?></h1>
+                <h1 class="mb-4">注文編集商品ID: <?php echo htmlspecialchars($order['ORDER_ID']); ?></h1>
                 
                 <?php echo $error_html; // エラーメッセージの表示 ?>
 
@@ -154,7 +154,7 @@ if (!empty($errors)) {
                             <tbody>
                                 <tr>
                                     <th class="col-md-3">注文ID</th>
-                                    <td><?php echo htmlspecialchars($order['ORDER_ID']); ?> (変更不可)</td>
+                                    <td><?php echo htmlspecialchars($order['ORDER_ID']); ?> </td>
                                 </tr>
                                 <tr>
                                     <th>注文日時</th>
