@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchCurrentStatus() {
         showStatusMessage('ステータスを更新中...', 'secondary'); // 新しい通信の前にメッセージを表示
-        // main.phpからの相対パスを指定
-        fetch('human/attendance_api.php?action=getHistory')
+
+        fetch('attendance_api.php?action=getHistory')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             showStatusMessage('出勤処理中...', 'info');
             // main.phpからの相対パスを指定
-            fetch('human/attendance_api.php', {
+            fetch('attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockIn'
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             showStatusMessage('退勤処理中...', 'info');
             // main.phpからの相対パスを指定
-            fetch('human/attendance_api.php', {
+            fetch('attendance_api.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: 'action=clockOut'
