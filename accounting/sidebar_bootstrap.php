@@ -39,6 +39,12 @@ $current_page = $current_page ?? '';
                     <span>売上高一覧</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" <?php echo ($current_page === 'graph') ? 'active' : ''; ?> href="/accounting/graph/sale_graph.php">
+                    <i class="bi bi-bar-chart-line-fill"></i>
+                    <span>売上推移グラフ</span>
+                </a>
+            </li>
         </ul>
     </div>
 </div>

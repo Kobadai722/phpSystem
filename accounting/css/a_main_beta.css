@@ -138,14 +138,13 @@ body.sidebar-collapsed .main-content {
         width: 100%;
     }
 
-    /* === ▼ 追加：グラフ下のサマリー表示を縦並びに変更 ▼ === */
+    /*グラフ下のサマリー表示 */
     .card-body .d-flex.justify-content-around {
         flex-direction: column; /* 縦積みに変更 */
         align-items: center;   /* 中央揃え */
         gap: 1rem;             /* 要素間の余白を追加 */
         text-align: center;    /* テキストも中央揃えに */
     }
-    /* === ▲ ここまで追加 ▲ === */
 }
 
 
