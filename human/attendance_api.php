@@ -33,7 +33,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'message' => '出勤しました。', 'clockInTime' => $time]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
     }
 
 } elseif ($action === 'clockOut') {
@@ -60,7 +60,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'message' => '退勤しました。', 'clockOutTime' => $time]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
     }
 
 } elseif ($action === 'getHistory') {
