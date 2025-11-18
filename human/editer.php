@@ -114,6 +114,7 @@ session_start();
                         <th>出勤時刻</th>
                         <th>退勤時刻</th>
                         <th>ステータス</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody id="allAttendanceTableBody">
@@ -184,16 +185,22 @@ session_start();
                             <td>${record.clock_in_time || '未記録'}</td>
                             <td>${record.clock_out_time || '未記録'}</td>
                             <td>${displayStatus}</td>
+                            <td>
+                                ${record.attendance_id ? 
+                                    `<a href="attendance_edit.php?id=${record.attendance_id}" class="btn btn-sm btn-primary">編集</a>` : 
+                                    '-'
+                                }
+                            </td>
                         `;
                         allAttendanceTableBody.appendChild(row);
                     });
                 } else {
                     // 列数(colspan)を合わせる
-                    allAttendanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center">勤怠記録がありません。</td></tr>`;
+                    allAttendanceTableBody.innerHTML = `<tr><td colspan="8" class="text-center">勤怠記録がありません。</td></tr>`;
                 }
             } catch (error) {
                 console.error('エラー:', error);
-                allAttendanceTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得に失敗しました。</td></tr>`;
+                allAttendanceTableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">データの取得に失敗しました。</td></tr>`;
             }
         }
 
