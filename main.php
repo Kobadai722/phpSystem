@@ -112,31 +112,28 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous">
-    </script>
-    <script src="weather.js"></script>
-    <script src="background_changer.js"></script>
+        </script>
+        script src="weather.js"></script>
+        <script src="background_changer.js"></script>
 
-    <script>
-        const API_BASE_URL = 'human/attendance_api.php';
-    </script>
+        <script>
+            const API_BASE_URL = 'human/attendance_api.php';
+        </script>
 
-    <script src="human/main-attendance.js"></script> 
-    
-    <script>
-        function updateTime() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const timeString = `${hours}:${minutes}`;
-            document.getElementById('realtime-time').textContent = timeString;
-        }
+        <script src="human/main-attendance.js"></script> 
+        
+        <script>
+            function updateTime() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const timeString = `${hours}:${minutes}`;
+                document.getElementById('realtime-time').textContent = timeString;
+            }
 
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        // 以前の出勤・退勤機能のJavaScriptロジック（sendRequest関数など）は、
-        // main-attendance.jsと機能が重複するため、このブロックから削除されました。
-    </script>
+            updateTime();
+            setInterval(updateTime, 1000);
+        </script>
 </body>
 
 </html>
