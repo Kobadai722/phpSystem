@@ -72,7 +72,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'history' => $history]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '履歴の取得中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => 'DBエラー: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => '無効なアクションです。']);

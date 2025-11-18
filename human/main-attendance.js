@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const todayRecord = data.history.find(record => record.ATTENDANCE_DATE === today);
                     updateUI(todayRecord);
                 } else {
-                    showStatusMessage('ステータス情報の取得に失敗しました。', 'danger');
+                    showStatusMessage(data.message || 'ステータス情報の取得に失敗しました。', 'danger');
                 }
             })
             .catch(error => {
