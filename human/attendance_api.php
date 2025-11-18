@@ -12,7 +12,7 @@ if (!isset($_SESSION['employee_id'])) {
 }
 
 $employee_id = $_SESSION['employee_id'];
-$action = $_POST['action'] ?? '';
+$action = $_REQUEST['action'] ?? '';
 $date = date("Y-m-d");
 $time = date("H:i:s");
 
