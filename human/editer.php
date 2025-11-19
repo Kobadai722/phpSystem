@@ -76,17 +76,6 @@ session_start();
                             </option>
                         <?php endforeach; ?>
                     </select>
-
-                <div class="col-auto">
-                    <select id="division_id" name="division_id" class="form-select">
-                    </select>
-                </div>
-                
-                <div class="col-auto">
-                        <button type="button" class="btn btn-warning text-dark" data-bs-toggle="modal" data-bs-target="#applicationModal">
-                        <i class="fas fa-paper-plane"></i> 申請
-                        </button>
-                </div>
                 </div>
             </form>
         
@@ -154,45 +143,6 @@ session_start();
     </div>
 
 </body>
-<!--申請用モーダル-->
-<div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="applicationModalLabel">各種申請</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="application_process.php" method="post">
-                        <div class="mb-3">
-                            <label for="applicationType" class="form-label">申請種別 <span class="text-danger">*</span></label>
-                            <select class="form-select" id="applicationType" name="type" required>
-                                <option value="" selected disabled>選択してください</option>
-                                <option value="paid_leave">有給休暇</option>
-                                <option value="attendance_correction">打刻修正</option>
-                                <option value="overtime">残業申請</option>
-                                <option value="other">その他</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="targetDate" class="form-label">対象日 <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="targetDate" name="target_date" value="<?php echo date('Y-m-d'); ?>" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reason" class="form-label">申請理由・備考</label>
-                            <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="例：私用のため、打刻忘れのため 等"></textarea>
-                        </div>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                            <button type="submit" class="btn btn-primary">申請する</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    </body>
-    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
 <script src="human.js"></script>
