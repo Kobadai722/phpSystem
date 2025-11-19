@@ -30,7 +30,6 @@
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
     $divisions = $stmt_divisions->fetchAll(PDO::FETCH_ASSOC);
     ?>
-    
 
     <div>
         <form id="searchForm" class="mb-3 p-3 border rounded">
@@ -73,9 +72,10 @@
                     </select>
                 </div>
 
-                <div class="col-auto ms-auto"> <button type="button" class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#applicationModal">
-                    <i class="fas fa-paper-plane me-1"></i> 各種申請
-                </button>
+                <div class="col-auto ms-auto">
+                    <button type="button" class="btn btn-warning text-dark fw-bold" data-bs-toggle="modal" data-bs-target="#applicationModal">
+                        <i class="fas fa-paper-plane me-1"></i> 各種申請
+                    </button>
                 </div>
             </div>
         </form>
@@ -93,8 +93,9 @@
             </tr>
         </thead>
         <tbody id="employeeTableBody">
-            </tbody>
+        </tbody>
     </table>
+
     <div class="mb-3 p-3 border rounded">
         <form>
             <div class="row g-3 align-items-center">
@@ -102,14 +103,15 @@
                     <label for="display_mode_select" class="col-form-label">表示モード：</label>
                 </div>
                 <div class="col-auto">
-                <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
+                    <select id="display_mode_select" name="edit" class="form-select" onchange="location = this.value;">
                         <option value="main.php" selected>一般画面</option>
                         <option value="editer.php">編集者画面</option>
-                </select>
+                    </select>
                 </div>
             </div>
         </form>
     </div>
+
     <div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -148,10 +150,11 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+    <script src="human.js"></script>
+    <script src="live_search.js"></script>
 </body>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
-<script src="human.js"></script>
-<script src="live_search.js"></script>
 </html>
