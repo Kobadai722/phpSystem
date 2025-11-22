@@ -4,13 +4,16 @@ require_once '../../config.php';
 
 // 担当者IDを仮定。ここでは固定値 '1' を設定します。
 $loggedInEmployeeId = 1; 
+
+// 今日の日付を取得 (YYYY-MM-DD形式)
+$today = date('Y-m-d');
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新しい売上の直接登録</title>
+    <title>新しい売上の直接登録 (ORDER)</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
@@ -47,13 +50,20 @@ $loggedInEmployeeId = 1;
                 <!-- ORDER表に直接登録するシンプルなフォームであることを明記 -->
                 <h2 class="mb-4">新しい売上の直接登録 (ORDERヘッダー向け)</h2>
                 
-                <div class="card p-4 shadow-lg" style="max-width: 600px; border-radius: 0.75rem;">
+                <div class="card p-4 shadow-lg mx-auto" style="max-width: 600px; border-radius: 0.75rem;">
                     <form id="saleForm" class="needs-validation" novalidate>
                         
+                        <!-- 注文日 (DB: ORDER.PURCHASE_ORDER_DATE) -->
+                        <div class="mb-3">
+                            <label for="purchase_order_date" class="form-label fw-bold">注文日 (PURCHASE_ORDER_DATE)</label>
+                            <input type="date" class="form-control" id="purchase_order_date" name="PURCHASE_ORDER_DATE" 
+                                value="<?= htmlspecialchars($today) ?>" required style="border-radius: 0.5rem;">
+                            <div class="invalid-feedback">注文日を選択してください。</div>
+                        </div>
+
                         <!-- 顧客ID (DB: ORDER.ORDER_TARGET_ID) -->
                         <div class="mb-3">
                             <label for="order_target_id" class="form-label fw-bold">顧客ID (ORDER_TARGET_ID)</label>
-                            <!-- API側が期待する名前（ORDER_TARGET_ID）を使用 -->
                             <input type="number" class="form-control" id="order_target_id" name="ORDER_TARGET_ID" 
                                 required min="1" placeholder="顧客のIDを入力してください" style="border-radius: 0.5rem;">
                             <div class="invalid-feedback">顧客IDを入力してください。</div>
@@ -62,19 +72,27 @@ $loggedInEmployeeId = 1;
                         <!-- 合計金額 (DB: ORDER.PRICE) -->
                         <div class="mb-3">
                             <label for="price" class="form-label fw-bold">合計金額 (PRICE)</label>
-                            <!-- API側が期待する名前（PRICE）を使用 -->
                             <div class="input-group">
                                 <input type="number" class="form-control" id="price" name="PRICE" 
                                     required min="1" placeholder="合計金額を整数で入力してください" style="border-radius: 0.5rem 0 0 0.5rem;">
                                 <span class="input-group-text" style="border-radius: 0 0.5rem 0.5rem 0;">円</span>
                             </div>
-                            <div class="invalid-feedback">1円以上の合計金額を入力してください。</div>
+                            <div class="invalid-feedback">1円以上の合計金額を整数で入力してください。</div>
+                        </div>
+                        
+                        <!-- 注文フラグ (DB: ORDER.ORDER_FLAG) -->
+                        <div class="mb-3">
+                            <label for="order_flag" class="form-label fw-bold">注文フラグ (ORDER_FLAG)</label>
+                            <select class="form-select" id="order_flag" name="ORDER_FLAG" style="border-radius: 0.5rem;">
+                                <option value="1" selected>1: 確定</option>
+                                <option value="0">0: 仮予約</option>
+                            </select>
+                            <small class="form-text text-muted">※ 注文のステータスを設定します。</small>
                         </div>
 
                         <!-- 担当者ID (DB: ORDER.EMPLOYEE_ID) -->
                         <div class="mb-3">
                             <label for="employee_id" class="form-label fw-bold">担当者ID (EMPLOYEE_ID)</label>
-                            <!-- API側が期待する名前（EMPLOYEE_ID）を使用 -->
                             <input type="number" class="form-control" id="employee_id" name="EMPLOYEE_ID" 
                                 required min="1" value="<?= htmlspecialchars($loggedInEmployeeId) ?>" 
                                 style="border-radius: 0.5rem;">
@@ -105,7 +123,7 @@ $loggedInEmployeeId = 1;
             const submitButton = document.getElementById('submitButton'); 
             const messageContainer = document.getElementById('messageContainer');
             
-            // APIのファイルパスを想定（以前の order_store.php に合わせる）
+            // APIのファイルパスを想定（ORDER表への直接登録処理）
             const API_ENDPOINT = '../actions/order_store.php';
 
             /**
@@ -147,6 +165,10 @@ $loggedInEmployeeId = 1;
 
                 const formData = new FormData(form);
                 
+                // ORDERテーブルのPRICEはINT(11)型なので、小数点以下を切り捨てて送信する
+                const priceValue = parseFloat(document.getElementById('price').value);
+                formData.set('PRICE', Math.floor(priceValue)); 
+
                 // try/catchを削除し、fetchを実行
                 const response = await fetch(API_ENDPOINT, { 
                     method: 'POST', 
@@ -160,6 +182,9 @@ $loggedInEmployeeId = 1;
                 if (data.success) {
                     showMessage('success', data.message);
                     form.reset();
+                    // フォームリセット後、日付と担当者IDを再設定
+                    document.getElementById('purchase_order_date').value = '<?= htmlspecialchars($today) ?>';
+                    document.getElementById('employee_id').value = '<?= htmlspecialchars($loggedInEmployeeId) ?>';
                 } else {
                     // APIから返されたエラーメッセージを表示
                     showMessage('danger', data.message);
