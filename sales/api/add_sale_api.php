@@ -1,37 +1,34 @@
 <?php
 
-// データベース設定ファイルの読み込み
-require_once '../../../config.php'; 
+require_once '../../config.php'; 
 
-// JSONレスポンスを設定
 header('Content-Type: application/json');
 
-// POSTデータの取得
-// フォームからの名前 'product_id' を使用
-$productId = $_POST['product_id'] ?? 0; 
-// フォームからの名前 'sale_quantity' を使用
-$saleQuantity = $_POST['sale_quantity'] ?? 0; 
-// フォームからの名前 'customer_id' を使用 (ORDER_TARGET_ID として使用)
-$orderTargetId = $_POST['customer_id'] ?? 0; 
-// フォームからの名前 'notes' を使用
-$notes = $_POST['notes'] ?? ''; 
+// --- データの取得と整形 ---
+$productId = $_POST['product_id'] ?? 0;         // どの商品か
+$orderQuantity = $_POST['order_quantity'] ?? 0; // 数量
+$customerId = $_POST['customer_id'] ?? 0;       // 顧客ID (ORDER_TARGET_ID として使用)
+// $notes = $_POST['notes'] ?? '';            // ★ スキーマにNOTESカラムがないため削除
 
-// 新規に追加するデータ（ここでは固定値またはログインユーザーIDを想定）
-// 担当者ID (EMPLOYEE_ID) は、ここでは仮に 1 を設定します。
-// 実際のシステムでは、ログインしているユーザーのIDを使用する必要があります。
+// 担当者ID (EMPLOYEE_ID) - ログインユーザーのIDを想定し、ここでは仮に 1 を設定
 $employeeId = 1; 
 
-// 入力値の基本チェック
-if (empty($productId) || empty($saleQuantity) || empty($orderTargetId) || $saleQuantity <= 0 || $orderTargetId <= 0) {
-    echo json_encode(['success' => false, 'message' => '商品、数量、顧客IDが不正です。全て入力されているか、数値が正しく設定されているか確認してください。']);
+// --- 入力値の基本チェックと数値型への変換 ---
+$productId = filter_var($productId, FILTER_VALIDATE_INT);
+$orderQuantity = filter_var($orderQuantity, FILTER_VALIDATE_INT);
+$customerId = filter_var($customerId, FILTER_VALIDATE_INT);
+$employeeId = filter_var($employeeId, FILTER_VALIDATE_INT); 
+
+if ($productId === false || $orderQuantity === false || $customerId === false || $employeeId === false || 
+    $productId <= 0 || $orderQuantity <= 0 || $customerId <= 0 || $employeeId <= 0) {
+    echo json_encode(['success' => false, 'message' => '商品ID、数量、顧客ID、担当者IDのいずれかが不正です。全て1以上の整数を入力してください。']);
     exit;
 }
 
-// トランザクション開始
 $PDO->beginTransaction();
 
 try {
-    // 1. 商品の単価を取得 (UNIT_SELLING_PRICE: 売上単価)
+    // 1. 商品の単価を取得 (合計金額算出のため)
     $stmtProduct = $PDO->prepare("SELECT UNIT_SELLING_PRICE FROM PRODUCT WHERE PRODUCT_ID = :product_id");
     $stmtProduct->bindParam(':product_id', $productId, PDO::PARAM_INT);
     $stmtProduct->execute();
@@ -44,79 +41,57 @@ try {
     }
 
     $unitPrice = $product['UNIT_SELLING_PRICE']; 
-    // 合計金額の計算（ORDERテーブルのPRICEカラムに対応）
-    $totalAmount = $unitPrice * $saleQuantity; 
+    // 合計金額の計算
+    $totalAmount = $unitPrice * $orderQuantity; 
     $currentDateTime = date('Y-m-d H:i:s');
 
-    // 2. 売り上げを ORDER テーブルに挿入
-    // ORDER_FLAG=1 を「売上」として登録
-    // ORDER_TARGET_ID には顧客ID ($orderTargetId) を使用
-    // PRICE には合計金額 ($totalAmount) を使用
+    // 2. 売り上げを ORDER テーブルに挿入 (ORDER_FLAG=1)
+    // ★ ORDERテーブルのスキーマに合わせて、NOTES、CREATED_AT, UPDATED_ATを削除
     $stmtOrder = $PDO->prepare(
         "INSERT INTO `ORDER` (
             PURCHASE_ORDER_DATE, 
             ORDER_TARGET_ID, 
             ORDER_FLAG, 
             PRICE, 
-            EMPLOYEE_ID,
-            NOTES
+            EMPLOYEE_ID
         ) 
         VALUES (
             :order_date, 
             :target_id, 
             1, 
             :price, 
-            :employee_id,
-            :notes
+            :employee_id
         )"
     );
 
+    // バインド処理: データ型を明示的に指定
     $stmtOrder->bindParam(':order_date', $currentDateTime);
-    $stmtOrder->bindParam(':target_id', $orderTargetId, PDO::PARAM_INT); // 顧客ID
-    $stmtOrder->bindParam(':price', $totalAmount, PDO::PARAM_INT);      // 合計金額
-    $stmtOrder->bindParam(':employee_id', $employeeId, PDO::PARAM_INT); // 担当者ID
-    $stmtOrder->bindParam(':notes', $notes);                            // 備考
+    $stmtOrder->bindParam(':target_id', $customerId, PDO::PARAM_INT);       // ORDER_TARGET_ID (int(11))
+    $stmtOrder->bindParam(':price', $totalAmount, PDO::PARAM_INT);          // PRICE (int(11))
+    $stmtOrder->bindParam(':employee_id', $employeeId, PDO::PARAM_INT);     // EMPLOYEE_ID (bigint(20))
 
     $stmtOrder->execute();
     
-    // 挿入された ORDER_ID (売上ID) を取得
     $orderId = $PDO->lastInsertId();
-
-    // 3. 注文明細 (S_ORDER_DETAIL) の挿入
-    // ※ 提示されたスキーマにはS_ORDER_DETAILに相当するテーブルの構造がないため、
-    // 前回の実装に基づいて S_ORDER_DETAIL に挿入するロジックを保持します。
-    // スキーマが不明なため、このテーブル名は S_ORDER_DETAIL のままにしておきます。
-    /*
-    $stmtDetail = $PDO->prepare(
-        "INSERT INTO S_ORDER_DETAIL (ORDER_ID, PRODUCT_ID, QUANTITY, UNIT_PRICE, CREATED_AT, UPDATED_AT)
-        VALUES (:order_id, :product_id, :quantity, :unit_price, :created_at, :updated_at)"
-    );
-
-    $stmtDetail->bindParam(':order_id', $orderId, PDO::PARAM_INT);
-    $stmtDetail->bindParam(':product_id', $productId, PDO::PARAM_INT);
-    $stmtDetail->bindParam(':quantity', $saleQuantity, PDO::PARAM_INT);
-    $stmtDetail->bindParam(':unit_price', $unitPrice, PDO::PARAM_INT);
-    $stmtDetail->bindParam(':created_at', $currentDateTime);
-    $stmtDetail->bindParam(':updated_at', $currentDateTime);
     
-    $stmtDetail->execute();
-    */
-
-    // 在庫更新などの追加処理は省略（必要に応じて追加してください）
-    
-    // 全て成功したらコミット
+    // コミット
     $PDO->commit();
 
-    // メッセージを修正
-    echo json_encode(['success' => true, 'message' => '売上データ（ORDER_ID: ' . $orderId . '）が正常に登録されました。（ORDERテーブルに格納）']);
+    // 成功レスポンスを返す
+    echo json_encode(['success' => true, 'message' => '注文データ（ORDER_ID: ' . $orderId . '）が正常に登録されました。']);
 
 } catch (PDOException $e) {
     // エラーが発生したらロールバック
-    $PDO->rollBack();
-    error_log("売上登録エラー: " . $e->getMessage());
-    echo json_encode(['success' => false, 'message' => '売上の登録中にデータベースエラーが発生しました。（詳細: ' . $e->getMessage() . '）']);
+    if ($PDO->inTransaction()) {
+        $PDO->rollBack();
+    }
+    error_log("注文登録エラー: " . $e->getMessage());
+    // データベースエラーが発生した場合、詳細を返す
+    echo json_encode(['success' => false, 'message' => 'データベースエラーが発生しました。SQLエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
-    $PDO->rollBack();
+    if ($PDO->inTransaction()) {
+        $PDO->rollBack();
+    }
     error_log("システムエラー: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => '予期せぬシステムエラーが発生しました。']);
 }
