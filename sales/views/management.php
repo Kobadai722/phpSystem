@@ -54,7 +54,7 @@ $top_products = [
                     <a href="stock_management.php" class="btn btn-outline-secondary">
                         <i class="bi bi-box"></i> 商品・在庫管理
                     </a>
-                    <a href="../customer/customer.php" class="btn btn-outline-secondary">
+                    <a href="../../customer/customer.php" class="btn btn-outline-secondary">
                         <i class="bi bi-person-lines-fill"></i> 顧客・取引先管理
                     </a>
                     <a href="report_analysis.php" class="btn btn-outline-secondary">
