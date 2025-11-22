@@ -37,8 +37,8 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="orderDropdown">
                 <li><a class="dropdown-item" href="/../sales/views/purchase.php">注文履歴</a></li>
-                <li><a class="dropdown-item" href="/../sales/views/order_detail.php"></a>注文詳細</li>
-                <li><a class="dropdown-item" href="/../sales/views/order_add.php"></a>注文追加</li>
+                <li><a class="dropdown-item" href="/../sales/views/order_detail.php">注文詳細</a></li>
+                <li><a class="dropdown-item" href="/../sales/views/order_add.php">注文追加</a></li>
             </ul>
         </li>
     </ul>

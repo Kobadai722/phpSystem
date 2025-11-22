@@ -51,10 +51,10 @@ $top_products = [
                     <a href="order_create.php" class="btn btn-success">
                         <i class="bi bi-plus-circle"></i> 新規注文作成
                     </a>
-                    <a href="product_management.php" class="btn btn-outline-secondary">
+                    <a href="stock_management.php" class="btn btn-outline-secondary">
                         <i class="bi bi-box"></i> 商品・在庫管理
                     </a>
-                    <a href="customer_management.php" class="btn btn-outline-secondary">
+                    <a href="customer.php" class="btn btn-outline-secondary">
                         <i class="bi bi-person-lines-fill"></i> 顧客・取引先管理
                     </a>
                     <a href="report_analysis.php" class="btn btn-outline-secondary">
