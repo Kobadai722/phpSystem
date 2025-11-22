@@ -23,8 +23,8 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="stockDropdown">
                 <li><a class="dropdown-item" href="/../sales/views/management.php">ダッシュボード</a></li>
-                <li><a class="dropdown-item" href="/../sales/views/stock-register.php"></a></li>
-                <li><a class="dropdown-item" href="#">在庫履歴</a></li>
+                <li><a class="dropdown-item" href="#"></a></li>
+                <li><a class="dropdown-item" href="#"></a></li>
             </ul>
         </li>
 
