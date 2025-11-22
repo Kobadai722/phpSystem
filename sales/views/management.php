@@ -1,29 +1,26 @@
 <?php
 // DB接続とデータ取得、エラー処理
-// 実際の環境に合わせてパスを修正してください。
 require_once '../../config.php';
 
-// ***************************************************************
-// TODO: ここに実際のデータを取得するPHPロジックを記述してください
-// ***************************************************************
+// PHP側ではデータ取得を行わず、全てJavaScriptでAPIから取得するように修正
+$stock_alerts_count = 2; // JavaScriptで取得するまでの仮の件数、またはPHPで最低限の件数だけ取得する
 
-// === 仮のデータ（表示確認用） ==================================
-$current_month_sales = 15000000;
-$sales_target = 20000000;
-$last_month_ratio = 12.5; // 前月比
-$aov = 8500; // 平均顧客単価
-$target_ratio = ($current_month_sales / $sales_target) * 100;
+// 仮のデータ構造を維持しつつ、値は空または0で初期化
+$current_month_sales = 0;
+$sales_target = 0;
+$last_month_ratio = 0;
+$aov = 0;
+$target_ratio = 0;
 
 $stock_alerts = [
-    ['product_name' => '商品A (予測不足)', 'reason' => '予測販売数超過', 'current_stock' => 300, 'forecast' => 500],
-    ['product_name' => '商品B (過剰在庫)', 'reason' => '在庫滞留リスク', 'current_stock' => 1200, 'forecast' => 50]
+    // アラートは複雑なため、APIの結果を取得するまで空の配列にするか、ここでは最低限の構造のみ残す
+    ['product_name' => 'データ取得中...', 'reason' => 'データ取得中...', 'current_stock' => 0, 'forecast' => 0],
 ];
 $top_products = [
-    ['name' => '商品X', 'sales' => 5200000],
-    ['name' => '商品Y', 'sales' => 3100000],
-    ['name' => '商品Z', 'sales' => 2800000],
+    ['name' => 'データ取得中...', 'sales' => 0],
+    ['name' => 'データ取得中...', 'sales' => 0],
+    ['name' => 'データ取得中...', 'sales' => 0],
 ];
-// ===============================================================
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -46,8 +43,7 @@ $top_products = [
                 <h1 class="mb-4"><i class="bi bi-graph-up"></i> 売上管理ダッシュボード</h1>
 
                 <div class="d-flex mb-5 gap-2 flex-wrap">
-
-
+                    <!-- アクションボタン群 -->
                     <a href="order_create.php" class="btn btn-success">
                         <i class="bi bi-plus-circle"></i> 新規注文作成
                     </a>
@@ -66,18 +62,19 @@ $top_products = [
                 </div>
                 
                 <hr>
-
-                <div class="row mb-5">
+                
+                <!-- KPIカード群 -->
+                <div class="row mb-5" id="kpi-cards-section">
                     
                     <div class="col-lg-3 col-md-6 mb-3">
                         <div class="card shadow-sm border-primary">
                             <div class="card-body">
                                 <h6 class="card-title text-primary"><i class="bi bi-calendar-check"></i> 今月売上 (目標達成率)</h6>
-                                <p class="card-text fs-4 fw-bold">¥<?php echo number_format($current_month_sales); ?></p>
+                                <p class="card-text fs-4 fw-bold" id="current_month_sales">¥---</p>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: <?php echo $target_ratio; ?>%;" aria-valuenow="<?php echo $target_ratio; ?>" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" role="progressbar" id="target_progress_bar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
-                                <small class="text-muted">目標: ¥<?php echo number_format($sales_target); ?> (<?php echo round($target_ratio); ?>%)</small>
+                                <small class="text-muted">目標: <span id="sales_target">¥---</span> (<span id="target_ratio">0</span>%)</small>
                             </div>
                         </div>
                     </div>
@@ -86,9 +83,7 @@ $top_products = [
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="bi bi-arrow-up-right-square"></i> 前月比成長率</h6>
-                                <p class="card-text fs-4 fw-bold <?php echo $last_month_ratio >= 0 ? 'text-success' : 'text-danger'; ?>">
-                                    <?php echo $last_month_ratio > 0 ? '+' : ''; ?><?php echo htmlspecialchars($last_month_ratio); ?>%
-                                </p>
+                                <p class="card-text fs-4 fw-bold" id="last_month_ratio">---</p>
                                 <small class="text-muted">前月同期間との比較</small>
                             </div>
                         </div>
@@ -98,7 +93,7 @@ $top_products = [
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="bi bi-person-up"></i> 平均顧客単価 (AOV)</h6>
-                                <p class="card-text fs-4 fw-bold">¥<?php echo number_format($aov); ?></p>
+                                <p class="card-text fs-4 fw-bold" id="aov">¥---</p>
                                 <small class="text-muted">直近の平均購入額</small>
                             </div>
                         </div>
@@ -108,22 +103,23 @@ $top_products = [
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="bi bi-cash-stack"></i> 翌月売上予測</h6>
-                                <p class="card-text fs-4 fw-bold text-info">¥<?php echo number_format(18500000); // TODO: 予測DBから取得 ?></p>
-                                <small class="text-muted">予測信頼度: 88%</small>
+                                <p class="card-text fs-4 fw-bold text-info" id="next_month_forecast">¥---</p>
+                                <small class="text-muted">予測信頼度: <span id="forecast_confidence">---</span></small>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- グラフとランキング -->
                 <div class="row mb-5">
                     <div class="col-lg-8 mb-4">
                         <div class="card shadow-sm">
                             <div class="card-header bg-light">
-                                <h5 class="mb-0">総合売上・利益推移 (チャネル別)</h5>
+                                <h5 class="mb-0">総合売上推移 (過去12ヶ月)</h5>
                             </div>
                             <div class="card-body">
                                 <canvas id="salesChart" style="max-height: 300px;"></canvas>
-                                <p class="text-center text-muted mt-3">※ 法人(B2B)と個人(B2C)の売上を合算</p>
+                                <p class="text-center text-muted mt-3">※ データは`get_sales_trend_api.php`から取得</p>
                             </div>
                         </div>
                     </div>
@@ -131,63 +127,28 @@ $top_products = [
                     <div class="col-lg-4 mb-4">
                         <div class="card shadow-sm h-100">
                             <div class="card-header bg-light">
-                                <h5 class="mb-0">商品別貢献度ランキング</h5>
+                                <h5 class="mb-0">商品別貢献度ランキング (今月)</h5>
                             </div>
                             <div class="card-body p-0">
-                                <ul class="list-group list-group-flush">
-                                    <?php 
-                                    $rank = 1;
-                                    foreach ($top_products as $product): ?>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="badge bg-secondary me-2"><?php echo $rank++; ?></span>
-                                            <?php echo htmlspecialchars($product['name']); ?>
-                                        </div>
-                                        <span class="fw-bold">¥<?php echo number_format($product['sales']); ?></span>
-                                    </li>
-                                    <?php endforeach; ?>
+                                <ul class="list-group list-group-flush" id="top-products-list">
+                                    <li class="list-group-item text-center text-muted">データ取得中...</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- 在庫アラート -->
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="card shadow-sm border-danger">
                             <div class="card-header bg-danger text-white">
-                                <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> 予測在庫アラート (要対応: <?php echo count($stock_alerts); ?>件)</h5>
+                                <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> 予測在庫アラート (<span id="alert-count">---</span>件)</h5>
                             </div>
                             <div class="card-body">
-                                <?php if (!empty($stock_alerts)): ?>
-                                    <table class="table table-sm mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>商品名</th>
-                                                <th>アラート内容</th>
-                                                <th>現在の在庫</th>
-                                                <th>予測販売数 (来月)</th>
-                                                <th>対応</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($stock_alerts as $alert): 
-                                                $alert_class = ($alert['reason'] === '予測販売数超過') ? 'table-warning' : 'table-info';
-                                                $action_text = ($alert['reason'] === '予測販売数超過') ? '緊急発注検討' : '在庫状況確認';
-                                            ?>
-                                            <tr class="<?php echo $alert_class; ?>">
-                                                <td><?php echo htmlspecialchars($alert['product_name']); ?></td>
-                                                <td><?php echo htmlspecialchars($alert['reason']); ?></td>
-                                                <td><?php echo number_format($alert['current_stock']); ?></td>
-                                                <td><?php echo number_format($alert['forecast']); ?></td>
-                                                <td><a href="#" class="btn btn-sm btn-outline-secondary"><?php echo $action_text; ?></a></td>
-                                            </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
-                                    </table>
-                                <?php else: ?>
-                                    <p class="text-success mb-0">現在、予測に基づく在庫アラートはありません。</p>
-                                <?php endif; ?>
+                                <div id="stock-alerts-area">
+                                    <p class="text-center text-muted mb-0">データ取得中...</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -199,39 +160,235 @@ $top_products = [
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script>
-        // グラフ描画ロジック (Chart.jsを使用)
-        const ctx = document.getElementById('salesChart');
+        // グローバル変数
+        let salesChart;
 
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+        document.addEventListener('DOMContentLoaded', function() {
+            // ページロード時に全データを取得
+            fetchDashboardData();
+        });
+
+        // 通貨フォーマットヘルパー
+        function formatCurrency(amount) {
+            return '¥' + parseInt(amount).toLocaleString();
+        }
+
+        // 全てのダッシュボードデータをAPIから取得し、表示を更新するメイン関数
+        async function fetchDashboardData() {
+            // ローディング状態の表示は、各セクションの初期HTMLで対応済み
+
+            // ----------------------------------------
+            // 1. KPI & トップ商品データ取得
+            // ----------------------------------------
+            try {
+                const kpiResponse = await fetch('../actions/get_dashboard_kpis_api.php', { method: 'POST' });
+                const kpiResult = await kpiResponse.json();
+
+                if (kpiResult.success) {
+                    updateKpiCards(kpiResult.kpis);
+                    updateTopProducts(kpiResult.top_products);
+                    updateStockAlerts(kpiResult.stock_alerts);
+                } else {
+                    console.error("KPIデータ取得エラー:", kpiResult.message);
+                    // エラー表示を分かりやすくする
+                    document.getElementById('current_month_sales').textContent = 'エラー';
+                }
+            } catch (error) {
+                console.error('KPI Fetch error:', error);
+            }
+
+            // ----------------------------------------
+            // 2. 売上推移グラフデータ取得
+            // ----------------------------------------
+            try {
+                // デフォルトで過去12ヶ月の月次データを取得
+                const trendResponse = await fetch('../actions/get_sales_trend_api.php', { method: 'POST' });
+                const trendResult = await trendResponse.json();
+
+                if (trendResult.success) {
+                    updateSalesChart(trendResult.data);
+                } else {
+                    console.error("売上推移データ取得エラー:", trendResult.message);
+                }
+            } catch (error) {
+                console.error('Trend Fetch error:', error);
+            }
+        }
+
+        // KPIカードを更新する関数
+        function updateKpiCards(kpis) {
+            document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
+            document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
+            
+            const targetRatio = Math.round(kpis.target_ratio);
+            document.getElementById('target_ratio').textContent = targetRatio;
+
+            const progressBar = document.getElementById('target_progress_bar');
+            progressBar.style.width = Math.min(targetRatio, 100) + '%';
+            progressBar.setAttribute('aria-valuenow', targetRatio);
+
+            const ratioElement = document.getElementById('last_month_ratio');
+            const ratioValue = kpis.last_month_ratio;
+            ratioElement.textContent = (ratioValue > 0 ? '+' : '') + ratioValue.toFixed(1) + '%';
+            ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
+
+            document.getElementById('aov').textContent = formatCurrency(kpis.aov);
+            document.getElementById('next_month_forecast').textContent = formatCurrency(kpis.next_month_forecast);
+            document.getElementById('forecast_confidence').textContent = kpis.forecast_confidence;
+        }
+
+        // トップ商品ランキングを更新する関数
+        function updateTopProducts(products) {
+            const list = document.getElementById('top-products-list');
+            list.innerHTML = ''; 
+
+            if (products.length === 0) {
+                list.innerHTML = '<li class="list-group-item text-center text-muted">今月の売上データがありません。</li>';
+                return;
+            }
+
+            products.forEach((product, index) => {
+                const rank = index + 1;
+                const sales = formatCurrency(product.sales);
+
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.innerHTML = `
+                    <div>
+                        <span class="badge bg-secondary me-2">${rank}</span>
+                        ${product.name}
+                    </div>
+                    <span class="fw-bold">${sales}</span>
+                `;
+                list.appendChild(listItem);
+            });
+        }
+
+        // 在庫アラートセクションを更新する関数
+        function updateStockAlerts(alerts) {
+            const alertArea = document.getElementById('stock-alerts-area');
+            document.getElementById('alert-count').textContent = alerts.length;
+
+            if (alerts.length === 0) {
+                alertArea.innerHTML = '<p class="text-success mb-0">現在、予測に基づく在庫アラートはありません。</p>';
+                return;
+            }
+
+            // テーブル構造を動的に生成
+            let tableHtml = `
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>アラート内容</th>
+                            <th>現在の在庫</th>
+                            <th>予測販売数 (来月)</th>
+                            <th>対応</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            alerts.forEach(alert => {
+                const alertClass = (alert.reason === '予測販売数超過') ? 'table-warning' : 'table-info';
+                const actionText = (alert.reason === '予測販売数超過') ? '緊急発注検討' : '在庫状況確認';
+                
+                tableHtml += `
+                    <tr class="${alertClass}">
+                        <td>${alert.product_name}</td>
+                        <td>${alert.reason}</td>
+                        <td>${parseInt(alert.current_stock).toLocaleString()}</td>
+                        <td>${parseInt(alert.forecast).toLocaleString()}</td>
+                        <td><a href="stock_management.php?product=${encodeURIComponent(alert.product_name)}" class="btn btn-sm btn-outline-secondary">${actionText}</a></td>
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `
+                    </tbody>
+                </table>`;
+            
+            alertArea.innerHTML = tableHtml;
+        }
+
+
+        // 売上推移グラフを更新する関数
+        function updateSalesChart(data) {
+            const labels = data.map(item => item.period);
+            const sales = data.map(item => parseFloat(item.total_sales));
+
+            // Chart.js データ構造
+            const chartData = {
+                labels: labels,
                 datasets: [{
-                    label: '法人 (B2B) 売上',
-                    data: [30, 40, 35, 50, 45, 60, 55, 65, 70, 75, 80, 85], // 単位は万など
+                    label: '総合売上高 (円)',
+                    data: sales,
                     borderColor: 'rgba(54, 162, 235, 1)',
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    fill: false,
-                    tension: 0.1
-                }, {
-                    label: '個人 (B2C) 売上',
-                    data: [15, 20, 18, 25, 22, 30, 28, 32, 35, 38, 40, 42],
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    fill: false,
-                    tension: 0.1
+                    borderWidth: 2,
+                    fill: 'origin', // 領域を塗りつぶす
+                    tension: 0.2 
                 }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    y: {
-                        beginAtZero: true
+            };
+
+            const ctx = document.getElementById('salesChart').getContext('2d');
+            
+            // 既存のチャートがあれば破棄
+            if (salesChart) {
+                salesChart.destroy();
+            }
+
+            // 新しいチャートを作成
+            salesChart = new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y.toLocaleString() + ' 円';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '期間'
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '合計売上高 (円)'
+                            },
+                            ticks: {
+                                // Y軸の表示を整形
+                                callback: function(value) {
+                                    if (value >= 1000000) return (value / 1000000).toLocaleString() + 'M';
+                                    if (value >= 1000) return (value / 1000).toLocaleString() + 'K';
+                                    return value.toLocaleString();
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     </script>
 </body>
 </html>
