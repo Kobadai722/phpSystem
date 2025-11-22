@@ -59,6 +59,9 @@ $top_products = [
                     <a href="order_list.php" class="btn btn-outline-secondary">
                         <i class="bi bi-list-columns-reverse"></i> 統合注文一覧
                     </a>
+                    <a href="sale_add.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-cash-stack"></i> 売上データ登録用フォーム
+                    </a>
                 </div>
                 
                 <hr>
