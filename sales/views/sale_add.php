@@ -101,6 +101,7 @@ try {
                             <i class="bi bi-cart-fill me-2"></i>売り上げ内容を確認
                         </button>
                     </form>
+                    <input type="hidden" name="employee_id" value="<?= htmlspecialchars($loggedInEmployeeId) ?>">
                 </div>
             </div>
         </section>
