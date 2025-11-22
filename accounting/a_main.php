@@ -105,11 +105,11 @@ $current_page = 'home';
                     <form action="a_main_beta.php" method="GET" class="mb-3">
                         <div class="row g-2 align-items-end">
                             <div class="col-sm">
-                                <label for="target_goal" class="form-label small">目標金額</label>
+                                <label for="target_goal" class="form-label small">目標金額（万円）</label>
                                 <select name="target_goal" id="target_goal" class="form-select">
                                     <?php for ($goal = 200; $goal >= 50; $goal -= 10): ?>
                                         <option value="<?php echo $goal; ?>" <?php if ($goal == $target_goal) echo 'selected'; ?>>
-                                            <?php echo number_format($goal); ?>万円
+                                            <?php echo number_format($goal); ?>
                                         </option>
                                     <?php endfor; ?>
                                 </select>

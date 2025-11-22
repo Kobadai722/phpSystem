@@ -80,8 +80,10 @@ session_start();
             </form>
         
         <form>
-            <div class="mt-2">
-                <a href="human-insert.php" class="btn btn-success">社員情報を登録する</a>
+            <div class="mt-2 d-flex gap-2"> <a href="human-insert.php" class="btn btn-success">社員情報を登録する</a>
+                <a href="application_list.php" class="btn btn-primary">
+                    <i class="fas fa-list-check"></i> 申請一覧を確認する
+                </a>
             </div>
         </form>
     </div>
@@ -107,15 +109,18 @@ session_start();
             <table class="table table-striped table-bordered">
                 <thead class="table-dark">
                     <tr>
+                        <th>勤怠ID</th>
                         <th>従業員番号</th>
                         <th>氏名</th>
                         <th>日付</th>
                         <th>出勤時刻</th>
                         <th>退勤時刻</th>
+                        <th>ステータス</th>
+                        <th>操作</th>
                     </tr>
                 </thead>
                 <tbody id="allAttendanceTableBody">
-                    <tr><td colspan="5" class="text-center">データを読み込み中...</td></tr>
+                    <tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>
                 </tbody>
             </table>
         </div>
@@ -161,21 +166,43 @@ session_start();
                 if (data.success && data.history.length > 0) {
                     data.history.forEach(record => {
                         const row = document.createElement('tr');
+                        // 修正: 勤怠IDとステータスを表示するように変更
+                        // ステータスが空の場合は自動判定して表示するロジックも追加可能です
+                        let displayStatus = record.status;
+                        if (!displayStatus) {
+                            if (record.clock_in_time && !record.clock_out_time) {
+                                displayStatus = '勤務中';
+                            } else if (record.clock_in_time && record.clock_out_time) {
+                                displayStatus = '退勤済';
+                            } else {
+                                displayStatus = '-';
+                            }
+                        }
+
                         row.innerHTML = `
+                            <td>${record.attendance_id || '-'}</td>
                             <td>${record.employee_id}</td>
                             <td>${record.employee_name}</td>
-                            <td>${record.date}</td>
+                            <td>${record.date || '-'}</td>
                             <td>${record.clock_in_time || '未記録'}</td>
                             <td>${record.clock_out_time || '未記録'}</td>
+                            <td>${displayStatus}</td>
+                            <td>
+                                ${record.attendance_id ? 
+                                    `<a href="attendance_edit.php?id=${record.attendance_id}" class="btn btn-sm btn-primary">編集</a>` : 
+                                    '-'
+                                }
+                            </td>
                         `;
                         allAttendanceTableBody.appendChild(row);
                     });
                 } else {
-                    allAttendanceTableBody.innerHTML = `<tr><td colspan="5" class="text-center">勤怠記録がありません。</td></tr>`;
+                    // 列数(colspan)を合わせる
+                    allAttendanceTableBody.innerHTML = `<tr><td colspan="8" class="text-center">勤怠記録がありません。</td></tr>`;
                 }
             } catch (error) {
                 console.error('エラー:', error);
-                allAttendanceTableBody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">データの取得に失敗しました。</td></tr>`;
+                allAttendanceTableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">データの取得に失敗しました。</td></tr>`;
             }
         }
 

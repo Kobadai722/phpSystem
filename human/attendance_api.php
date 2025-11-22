@@ -12,7 +12,7 @@ if (!isset($_SESSION['employee_id'])) {
 }
 
 $employee_id = $_SESSION['employee_id'];
-$action = $_POST['action'] ?? '';
+$action = $_REQUEST['action'] ?? '';
 $date = date("Y-m-d");
 $time = date("H:i:s");
 
@@ -33,7 +33,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'message' => '出勤しました。', 'clockInTime' => $time]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
     }
 
 } elseif ($action === 'clockOut') {
@@ -60,7 +60,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'message' => '退勤しました。', 'clockOutTime' => $time]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
     }
 
 } elseif ($action === 'getHistory') {
@@ -72,7 +72,7 @@ if ($action === 'clockIn') {
         echo json_encode(['success' => true, 'history' => $history]);
     } catch (PDOException $e) {
         // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '履歴の取得中にエラーが発生しました。']);
+        echo json_encode(['success' => false, 'message' => 'DBエラー: ' . $e->getMessage()]);
     }
 } else {
     echo json_encode(['success' => false, 'message' => '無効なアクションです。']);

@@ -11,13 +11,16 @@ if (!isset($_SESSION['employee_id'])) {
 
 try {
     // 全従業員の勤怠履歴を結合して取得
+    // 修正: ATTENDANCE_ID と STATUS を追加
     $stmt = $PDO->prepare("
         SELECT 
             E.EMPLOYEE_ID AS employee_id, 
             E.NAME AS employee_name, 
+            A.ATTENDANCE_ID AS attendance_id,
             A.ATTENDANCE_DATE AS date, 
             A.ATTENDANCE_TIME AS clock_in_time, 
-            A.LEAVE_TIME AS clock_out_time
+            A.LEAVE_TIME AS clock_out_time,
+            A.STATUS AS status
         FROM 
             EMPLOYEE AS E
         LEFT JOIN 
@@ -30,7 +33,6 @@ try {
 
     echo json_encode(['success' => true, 'history' => $records]);
 } catch (PDOException $e) {
-    // デバッグ情報として、より詳細なエラーを返すように変更
     error_log("Error fetching all attendance history: " . $e->getMessage());
     echo json_encode([
         'success' => false,
