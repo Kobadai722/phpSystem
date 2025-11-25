@@ -5,7 +5,7 @@ require_once '../config.php';
 // 権限チェック（必要に応じて追加してください）
 // if (!isset($_SESSION['is_admin'])) { ... }
 
-// 対象年月の取得（デフォルトは今月）
+
 $month_param = $_GET['month'] ?? date('Y-m');
 
 // CSVダウンロード処理
@@ -52,8 +52,26 @@ if (isset($_GET['download'])) {
             $start = new DateTime($row['ATTENDANCE_TIME']);
             $end = new DateTime($row['LEAVE_TIME']);
             $interval = $start->diff($end);
-            // 時間単位（小数点あり）で計算: 例 8時間30分 -> 8.5
-            $duration = $interval->h + ($interval->i / 60);
+            
+            // まず拘束時間（時間単位）を計算
+            $hours = $interval->h + ($interval->i / 60);
+            
+            
+            $break_time = 0;
+            if ($hours > 8) {
+                $break_time = 1.0;
+            } elseif ($hours > 6) {
+                $break_time = 0.75;
+            }
+            
+            // 実働時間 = 拘束時間 - 休憩時間
+            $duration = $hours - $break_time;
+            
+            // 計算結果がマイナスにならないように調整
+            if ($duration < 0) {
+                $duration = 0;
+            }
+
             $duration = round($duration, 2); // 小数点第2位まで
         }
 
@@ -105,7 +123,7 @@ if (isset($_GET['download'])) {
                 </form>
                 <p class="mt-3 text-muted">
                     ※ 選択した月の全社員の勤怠データをCSV形式で出力します。<br>
-                    ※ 実働時間は「退勤時刻 - 出勤時刻」で簡易計算されます（休憩時間は考慮されていません）。
+                    ※ 実働時間は「退勤時刻 - 出勤時刻」から休憩時間（6時間超で45分、8時間超で1時間）を自動控除して算出されます。
                 </p>
             </div>
         </div>
