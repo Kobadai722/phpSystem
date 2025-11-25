@@ -30,7 +30,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>新規注文作成</title>
+    <title>新規売上作成</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -43,7 +43,7 @@ try {
         
         <section class="content py-4">
             <div class="container">
-                <h2 class="mb-4">新しい注文の作成</h2>
+                <h2 class="mb-4">新しい売上の作成</h2>
 
                                 <form id="orderAddForm" method="POST" novalidate>
 
@@ -62,6 +62,8 @@ try {
                                     単価: <?php echo number_format($product['UNIT_SELLING_PRICE']); ?>円)
                                 </option>
                             <?php endforeach; ?>
+                        </select>
+                        <div class="invalid-feedback">商品を選択してください。</div>
                     </div>
 
                                         <div class="mb-3">
@@ -199,7 +201,7 @@ try {
         const formData = new FormData(form);
 
         try {
-            // ★ 修正: fetch先を add_sale_api.php に変更
+            // fetch先は「add_sale_api.php」のまま
             const response = await fetch("add_sale_api.php", {
                 method: "POST",
                 body: formData
