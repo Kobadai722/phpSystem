@@ -80,11 +80,15 @@ session_start();
             </form>
         
         <form>
-            <div class="mt-2 d-flex gap-2"> <a href="human-insert.php" class="btn btn-success">社員情報を登録する</a>
+            <div class="mt-2 d-flex gap-2">
+                <a href="human-insert.php" class="btn btn-success">社員情報を登録する</a>
                 <a href="application_list.php" class="btn btn-primary">
                     <i class="fas fa-list-check"></i> 申請一覧を確認する
                 </a>
-            </div>
+                <a href="payroll_csv.php" class="btn btn-dark">
+                    <i class="fas fa-file-invoice-dollar"></i> 給与データ出力
+                </a>
+                </div>
         </form>
     </div>
 
