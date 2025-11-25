@@ -1,41 +1,40 @@
 <?php
+// add_sale_api.php
+
 require_once '../../config.php';
 header("Content-Type: application/json; charset=utf-8");
 
 // POSTパラメータ取得
-$productId   = $_POST['product_id'] ?? null;
-$quantity    = $_POST['order_quantity'] ?? null;  // sale_add.php の name に合わせる
-$customerId  = $_POST['customer_id'] ?? null;
-$employeeId  = $_POST['employee_id'] ?? null;
-$notes       = $_POST['notes'] ?? "";
-
-// バリデーション
-if (!$productId || !$quantity || !$customerId || !$employeeId) {
-    echo json_encode([
-        "success" => false,
-        "message" => "必要な項目が入力されていません。"
-    ]);
-    exit;
-}
-
-if (!is_numeric($quantity) || $quantity <= 0) {
-    echo json_encode([
-        "success" => false,
-        "message" => "数量が不正です。"
-    ]);
-    exit;
-}
+$productId   = $_POST['product_id'] ?? null;
+$quantity    = $_POST['order_quantity'] ?? null;  
+$customerId  = $_POST['customer_id'] ?? null;
+$employeeId  = $_POST['employee_id'] ?? null;
+$notes       = $_POST['notes'] ?? "";
 
 try {
+    // 必須項目のバリデーション
+    if (!$productId || !$quantity || !$customerId || !$employeeId) {
+        throw new Exception("必須項目が不足しています。");
+    }
+
+    // 数量の数値チェックと正の値であることの確認
+    // $quantity を強制的に整数型に変換
+    if (!is_numeric($quantity) || (int)$quantity <= 0) {
+        throw new Exception("数量が不正です。正の数値を入力してください。");
+    }
+    
+    $quantity = (int)$quantity;
+
     // トランザクション開始
     $PDO->beginTransaction();
 
-    // 商品の在庫確認
+    // 1. 商品の在庫と単価を取得（排他ロックをかける！）
     $stmt = $PDO->prepare("
         SELECT s.STOCK_QTY, p.UNIT_SELLING_PRICE
         FROM STOCK s
         JOIN PRODUCT p ON s.PRODUCT_ID = p.PRODUCT_ID
         WHERE s.PRODUCT_ID = ?
+        FOR UPDATE
     ");
     $stmt->execute([$productId]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -47,21 +46,22 @@ try {
     $stockQty = (int)$row['STOCK_QTY'];
     $unitPrice = (int)$row['UNIT_SELLING_PRICE'];
 
+    // 2. 在庫チェック
     if ($stockQty < $quantity) {
-        throw new Exception("在庫が不足しています。");
+        throw new Exception("在庫が不足しています。注文数量: {$quantity}、現在の在庫: {$stockQty}");
     }
 
-    // 在庫更新
+    // 3. 在庫更新
     $newStock = $stockQty - $quantity;
     $updateStock = $PDO->prepare("
         UPDATE STOCK SET STOCK_QTY = ? WHERE PRODUCT_ID = ?
     ");
     $updateStock->execute([$newStock, $productId]);
 
-    // 販売価格計算
+    // 4. 販売価格計算
     $totalPrice = $unitPrice * $quantity;
 
-    // SALEテーブルへ登録
+    // 5. SALEテーブルへ登録
     $insertSale = $PDO->prepare("
         INSERT INTO SALE (
             PRODUCT_ID,
@@ -100,10 +100,14 @@ try {
     if ($PDO->inTransaction()) {
         $PDO->rollBack();
     }
+    
+    // 開発者向けエラーログ
+    error_log("販売登録エラー: " . $e->getMessage() . " / POSTデータ: " . print_r($_POST, true));
 
+    // ユーザーへのフィードバック
     echo json_encode([
         "success" => false,
-        "message" => $e->getMessage()
+        "message" => "登録に失敗しました: " . $e->getMessage()
     ]);
     exit;
 }
