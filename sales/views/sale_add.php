@@ -1,5 +1,4 @@
 <?php
-
 require_once '../../config.php';
 
 // 商品リスト取得処理
