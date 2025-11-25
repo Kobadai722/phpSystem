@@ -1,16 +1,13 @@
 <?php
-
 require_once '../../config.php';
 header("Content-Type: application/json; charset=utf-8");
 
-// POSTパラメータ取得
 $productId  = $_POST['product_id'] ?? null;
 $quantity   = $_POST['order_quantity'] ?? null;
 $customerId = $_POST['customer_id'] ?? null;
 $employeeId = $_POST['employee_id'] ?? null;
 
 try {
-    // 必須項目チェック
     if (!$productId || !$quantity || !$customerId || !$employeeId) {
         throw new Exception("必須項目が不足しています。");
     }
@@ -20,10 +17,9 @@ try {
     }
     $quantity = (int)$quantity;
 
-    // トランザクション開始
     $PDO->beginTransaction();
 
-    // 在庫と単価を取得（排他ロック）
+    // 在庫取得（排他ロック）
     $stmt = $PDO->prepare("
         SELECT s.STOCK_QUANTITY, p.UNIT_SELLING_PRICE
         FROM STOCK s
@@ -33,33 +29,32 @@ try {
     ");
     $stmt->execute([$productId]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if (!$row) throw new Exception("該当する商品が存在しません。");
+    if (!$row) throw new Exception("該当商品が存在しません。");
 
     $stockQty  = (int)$row['STOCK_QUANTITY'];
     $unitPrice = (int)$row['UNIT_SELLING_PRICE'];
 
     if ($stockQty < $quantity) {
-        throw new Exception("在庫が不足しています。現在の在庫: {$stockQty}");
+        throw new Exception("在庫不足。現在の在庫: {$stockQty}");
     }
 
     // 在庫減算
     $newStock = $stockQty - $quantity;
     $updateStock = $PDO->prepare("UPDATE STOCK SET STOCK_QUANTITY = ? WHERE PRODUCT_ID = ?");
-    $updateStock->execute([$newStock, $productId]);
+    if (!$updateStock->execute([$newStock, $productId])) {
+        throw new Exception("在庫更新失敗");
+    }
 
-    // ORDER表に登録
+    // ORDER登録（予約語対策）
     $totalPrice = $unitPrice * $quantity;
     $insertOrder = $PDO->prepare("
-        INSERT INTO `ORDER` (
-            PURCHASE_ORDER_DATE,
-            ORDER_TARGET_ID,
-            ORDER_FLAG,
-            PRICE,
-            EMPLOYEE_ID
-        ) VALUES (NOW(), ?, 0, ?, ?)
+        INSERT INTO `ORDER` 
+        (PURCHASE_ORDER_DATE, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID) 
+        VALUES (NOW(), ?, 0, ?, ?)
     ");
-    $insertOrder->execute([$customerId, $totalPrice, $employeeId]);
+    if (!$insertOrder->execute([$customerId, $totalPrice, $employeeId])) {
+        throw new Exception("ORDER登録失敗");
+    }
 
     $PDO->commit();
 
