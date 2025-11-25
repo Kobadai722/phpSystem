@@ -22,20 +22,40 @@ try {
     }
     $quantity = (int)$quantity;
 
-    // 商品単価取得
-    $stmt = $PDO->prepare("SELECT UNIT_SELLING_PRICE FROM PRODUCT WHERE PRODUCT_ID = ?");
+    // トランザクション開始
+    $PDO->beginTransaction();
+
+    // 1. 商品単価と在庫取得（排他ロック）
+    $stmt = $PDO->prepare("
+        SELECT s.STOCK_QUANTITY, p.UNIT_SELLING_PRICE
+        FROM STOCK s
+        JOIN PRODUCT p ON s.PRODUCT_ID = p.PRODUCT_ID
+        WHERE s.PRODUCT_ID = ?
+        FOR UPDATE
+    ");
     $stmt->execute([$productId]);
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if (!$row) {
         throw new Exception("該当する商品が存在しません。");
     }
+
+    $stockQty = (int)$row['STOCK_QUANTITY'];
     $unitPrice = (int)$row['UNIT_SELLING_PRICE'];
     $totalPrice = $unitPrice * $quantity;
 
-    // トランザクション開始
-    $PDO->beginTransaction();
+    // 在庫チェック
+    if ($stockQty < $quantity) {
+        throw new Exception("在庫が不足しています。注文数量: {$quantity}、現在の在庫: {$stockQty}");
+    }
 
-    // 1. ORDER表に登録
+    // 2. STOCK表更新
+    $newStock = $stockQty - $quantity;
+    $updateStock = $PDO->prepare("
+        UPDATE STOCK SET STOCK_QUANTITY = ? WHERE PRODUCT_ID = ?
+    ");
+    $updateStock->execute([$newStock, $productId]);
+
+    // 3. ORDER表登録
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER` (
             PURCHASE_ORDER_DATE,
@@ -51,7 +71,7 @@ try {
         $employeeId
     ]);
 
-    // 2. SALE表に登録（必要であれば）
+    // 4. SALE表登録
     $insertSale = $PDO->prepare("
         INSERT INTO SALE (
             PRODUCT_ID,
@@ -77,6 +97,7 @@ try {
     echo json_encode([
         "success" => true,
         "message" => "注文を登録しました。",
+        "new_stock" => $newStock,
         "total_price" => $totalPrice
     ]);
     exit;
