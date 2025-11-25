@@ -1,17 +1,16 @@
 <?php
-// sale_add.php
 
 require_once '../../config.php'; 
 
 // 商品リスト取得処理
 $products = [];
 try {
-    $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
-    $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
+    $stmt->execute();
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $products = [];
-    error_log("商品リスト取得エラー: " . $e->getMessage());
+    $products = [];
+    error_log("商品リスト取得エラー: " . $e->getMessage());
 }
 
 // 担当者リスト取得処理
