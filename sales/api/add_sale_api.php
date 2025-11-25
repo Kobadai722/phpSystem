@@ -60,9 +60,9 @@ try {
     // 4. 販売価格計算
     $totalPrice = $unitPrice * $quantity;
 
-    // 5. SALEテーブルへ登録
+    // 5. ORDERテーブルへ登録
     $insertSale = $PDO->prepare("
-        INSERT INTO SALE (
+        INSERT INTO `ORDER` (
             PRODUCT_ID,
             SALE_QTY,
             CUSTOMER_ID,
