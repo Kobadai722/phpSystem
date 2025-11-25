@@ -13,16 +13,17 @@ try {
     error_log("商品リスト取得エラー: " . $e->getMessage());
 }
 
-// 担当者リスト取得処理
+/// 担当者リスト取得処理
 $employees = [];
 try {
-    $stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
-    $stmtEmployee->execute();
-    $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
+    $stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
+    $stmtEmployee->execute();
+    $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    $employees = [];
-    error_log("担当者リスト取得エラー: " . $e->getMessage());
+    $employees = [];
+    error_log("担当者リスト取得エラー: " . $e->getMessage());
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
