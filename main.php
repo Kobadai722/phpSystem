@@ -123,8 +123,15 @@ $employee_name = $_SESSION['employee_name'] ?? "ゲスト";
         <script src="human/main-attendance.js"></script> 
         
         <script>
+            let loadedDate = new Date().getDate();
+
             function updateTime() {
                 const now = new Date();
+                
+                if (now.getDate() !== loadedDate) {
+                    location.reload();
+                }
+
                 const hours = String(now.getHours()).padStart(2, '0');
                 const minutes = String(now.getMinutes()).padStart(2, '0');
                 const timeString = `${hours}:${minutes}`;
