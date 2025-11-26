@@ -81,17 +81,31 @@ session_start();
         
         <form>
             <div class="mt-2 d-flex gap-2">
-                <a href="human-insert.php" class="btn btn-success">社員情報を登録する</a>
+                <a href="human-insert.php" class="btn btn-success">
+                    <i class="bi bi-person-plus-fill me-1"></i> 社員情報を登録する
+                </a>
                 <a href="application_list.php" class="btn btn-primary">
-                    <i class="fas fa-list-check"></i> 申請一覧を確認する
+                    <i class="bi bi-card-checklist me-1"></i> 申請一覧を確認する
                 </a>
-                <a href="payroll_csv.php" class="btn btn-dark">
-                    <i class="fas fa-file-invoice-dollar"></i> 給与データ出力
-                </a>
-                <a href="paid_leave_register.php" class="btn btn-info text-white">
-                    <i class="fas fa-gift"></i> 有給付与
-                </a>
+
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="managementMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-gear-fill me-1"></i> 管理メニュー
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="managementMenuButton">
+                        <li>
+                            <a class="dropdown-item" href="payroll_csv.php">
+                                <i class="bi bi-file-earmark-spreadsheet-fill me-2 text-success"></i>給与データ出力
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="paid_leave_register.php">
+                                <i class="bi bi-gift-fill me-2 text-warning"></i>有給付与
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+            </div>
         </form>
     </div>
 
