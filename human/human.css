@@ -34,13 +34,15 @@ td span i{
 }
 
 .dropdown-menu.show {
-    animation: slideDown 0.3s ease forwards;
+    /* アニメーションの定義：名前 時間 進行度合い */
+    animation: slideDownFade 0.3s ease forwards;
+    display: block;
 }
 
-@keyframes slideDown {
+@keyframes slideDownFade {
     from {
         opacity: 0;
-        margin-top: -15px;
+        margin-top: -15px; /* 上から降りてくる距離 */
     }
     to {
         opacity: 1;
