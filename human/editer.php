@@ -90,7 +90,7 @@ session_start();
                 </a>
 
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="managementMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="managementMenuButton" data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
                         <i class="bi bi-gear-fill me-1"></i> 管理メニュー
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="managementMenuButton">
