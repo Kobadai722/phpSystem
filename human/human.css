@@ -33,7 +33,7 @@ td span i{
     transform: scale(1); /* クリック時に元のサイズに戻す（任意） */
 }
 
-.dropdown-menu.show {
+.dropdown.show {
     animation: slideDown 0.3s ease forwards;
     transform-origin: top center;
 }
