@@ -33,23 +33,19 @@ td span i{
     transform: scale(1); /* クリック時に元のサイズに戻す（任意） */
 }
 
-/* human.css に上書き */
 .dropdown-menu.show {
-    animation: clipWipe 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: elegantSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     display: block;
+    transform-origin: top center;
 }
 
-@keyframes clipWipe {
+@keyframes elegantSlide {
     0% {
         opacity: 0;
-        /* 上端以外を切り取った状態から開始 */
-        clip-path: inset(0 0 100% 0); 
-        transform: translateY(-5px);
+        transform: translateY(-8px) scale(0.97);
     }
     100% {
         opacity: 1;
-        /* 全体を表示 */
-        clip-path: inset(0 0 0 0);
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
