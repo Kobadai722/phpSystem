@@ -88,6 +88,9 @@ session_start();
                 <a href="payroll_csv.php" class="btn btn-dark">
                     <i class="fas fa-file-invoice-dollar"></i> 給与データ出力
                 </a>
+                <a href="paid_leave_register.php" class="btn btn-info text-white">
+                    <i class="fas fa-gift"></i> 有給付与
+                </a>
                 </div>
         </form>
     </div>

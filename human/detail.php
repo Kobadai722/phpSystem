@@ -6,12 +6,13 @@ $page_h1_title = "人事詳細";
 $page_title_tag = "人事管理表 - 詳細";
 $employee_data = null;
 $error_message_for_table = null;
+$remaining_leaves = 0; // 残日数の初期化
 
 // 社員IDの取得
 $employee_id = $_GET['id'] ?? null;
 
 if (isset($employee_id) && is_numeric($employee_id)) {
-    // IS_DELETED = FALSE の条件を削除し、削除済み社員も表示できるように修正
+    // 社員情報の取得
     $stmt = $PDO->prepare("
         SELECT e.*, d.DIVISION_NAME, j.JOB_POSITION_NAME
         FROM EMPLOYEE e
@@ -26,8 +27,19 @@ if (isset($employee_id) && is_numeric($employee_id)) {
         $employee_name = htmlspecialchars($employee_data['NAME']);
         $page_h1_title = $employee_name . "さんの詳細";
         $page_title_tag = $employee_name . "さんの詳細 - 人事管理表";
+
+        //有給残日数の計算 (有効期限内で未消化のもの）
+        $today = date('Y-m-d');
+        $stmt_leave = $PDO->prepare("
+            SELECT SUM(DAYS_GRANTED - DAYS_USED) 
+            FROM PAID_LEAVES 
+            WHERE EMPLOYEE_ID = ? AND EXPIRATION_DATE >= ?
+        ");
+        $stmt_leave->execute([$employee_id, $today]);
+        $remaining_leaves = $stmt_leave->fetchColumn() ?: 0;
+
     } else {
-        $error_message_for_table = "該当社員が見つかりません。"; // メッセージを修正
+        $error_message_for_table = "該当社員が見つかりません。";
         $page_h1_title = "エラー";
         $page_title_tag = "該当社員なし - 人事管理表";
     }
@@ -76,6 +88,13 @@ if (isset($employee_id) && is_numeric($employee_id)) {
                     </div>
                 </div>
             </form>
+
+            <?php if (isset($_SESSION['employee_id']) && $_SESSION['employee_id'] == $employee_id): ?>
+                <div class="mt-3 ps-2 border-start border-4 border-success">
+                    <span class="fw-bold text-secondary">現在の有給休暇残日数:</span>
+                    <span class="fs-5 fw-bold text-success ms-2"><?= htmlspecialchars($remaining_leaves) ?> 日</span>
+                </div>
+            <?php endif; ?>
             <div class="text-end mt-2">
                 <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
             </div>
