@@ -35,20 +35,20 @@ td span i{
 
 /* human.css に上書き */
 .dropdown-menu.show {
-    /* 少し時間をかけて、ふんわりと表示 */
-    animation: blurFadeIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    /* cubic-bezier で「最初は速く、最後は極めてゆっくり」にする */
+    animation: elegantSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     display: block;
+    transform-origin: top center;
 }
 
-@keyframes blurFadeIn {
+@keyframes elegantSlide {
     0% {
         opacity: 0;
-        filter: blur(10px); /* ぼかしを入れる */
-        transform: translateY(-10px) scale(0.98);
+        /* ほんの少しだけ上から、少しだけ縮小して開始 */
+        transform: translateY(-8px) scale(0.97);
     }
     100% {
         opacity: 1;
-        filter: blur(0);
         transform: translateY(0) scale(1);
     }
 }
