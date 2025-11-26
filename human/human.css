@@ -35,20 +35,21 @@ td span i{
 
 /* human.css に上書き */
 .dropdown-menu.show {
-    /* cubic-bezier で「最初は速く、最後は極めてゆっくり」にする */
-    animation: elegantSlide 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: clipWipe 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     display: block;
-    transform-origin: top center;
 }
 
-@keyframes elegantSlide {
+@keyframes clipWipe {
     0% {
         opacity: 0;
-        /* ほんの少しだけ上から、少しだけ縮小して開始 */
-        transform: translateY(-8px) scale(0.97);
+        /* 上端以外を切り取った状態から開始 */
+        clip-path: inset(0 0 100% 0); 
+        transform: translateY(-5px);
     }
     100% {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        /* 全体を表示 */
+        clip-path: inset(0 0 0 0);
+        transform: translateY(0);
     }
 }
