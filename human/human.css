@@ -33,19 +33,22 @@ td span i{
     transform: scale(1); /* クリック時に元のサイズに戻す（任意） */
 }
 
+/* human.css に上書き */
 .dropdown-menu.show {
-    /* アニメーションの定義：名前 時間 進行度合い */
-    animation: slideDownFade 0.3s ease forwards;
+    /* 少し時間をかけて、ふんわりと表示 */
+    animation: blurFadeIn 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     display: block;
 }
 
-@keyframes slideDownFade {
-    from {
+@keyframes blurFadeIn {
+    0% {
         opacity: 0;
-        margin-top: -15px; /* 上から降りてくる距離 */
+        filter: blur(10px); /* ぼかしを入れる */
+        transform: translateY(-10px) scale(0.98);
     }
-    to {
+    100% {
         opacity: 1;
-        margin-top: 0;
+        filter: blur(0);
+        transform: translateY(0) scale(1);
     }
 }
