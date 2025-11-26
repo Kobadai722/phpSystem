@@ -32,3 +32,16 @@ td span i{
     color: #212529; /* クリック時の色 (さらに濃く) */
     transform: scale(1); /* クリック時に元のサイズに戻す（任意） */
 }
+
+.dropdown-menu.show {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
