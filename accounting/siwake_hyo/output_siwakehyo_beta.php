@@ -1,12 +1,10 @@
 <?php
-// ----- ページ設定と部品の読み込み -----
 $page_title = '仕訳一覧表示';
 $current_page = 'list';
-
-// パスは環境に合わせて調整してください
+require_once __DIR__ . '/../a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
-require_once __DIR__ . '/../a_header.php';
+
 
 // =================================================================
 // 1. 検索条件の取得
