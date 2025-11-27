@@ -167,7 +167,7 @@ $top_products = [
         let salesChart;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // ページロード時に全データを取得
+        // ページロード時に全データを取得
             fetchDashboardData();
         });
 
@@ -178,16 +178,15 @@ $top_products = [
 
         // 全てのダッシュボードデータをAPIから取得し、表示を更新するメイン関数
         async function fetchDashboardData() {
-            // ローディング状態の表示は、各セクションの初期HTMLで対応済み
+        // ローディング状態の表示は、各セクションの初期HTMLで対応済み
 
-            // ----------------------------------------
-            // 1. KPI & トップ商品データ取得
-            // ----------------------------------------
+        // 1. KPI & トップ商品データ取得
             try {
-                const kpiResponse = await fetch('../actions/get_dashboard_kpis_api.php', { method: 'POST' });
+            // ここを修正: actions から api に変更
+                const kpiResponse = await fetch('../api/get_dashboard_kpis_api.php', { method: 'POST' });
                 const kpiResult = await kpiResponse.json();
 
-                if (kpiResult.success) {
+            if (kpiResult.success) {
                     updateKpiCards(kpiResult.kpis);
                     updateTopProducts(kpiResult.top_products);
                     updateStockAlerts(kpiResult.stock_alerts);
@@ -195,17 +194,15 @@ $top_products = [
                     console.error("KPIデータ取得エラー:", kpiResult.message);
                     // エラー表示を分かりやすくする
                     document.getElementById('current_month_sales').textContent = 'エラー';
-                }
+            }
             } catch (error) {
                 console.error('KPI Fetch error:', error);
             }
 
-            // ----------------------------------------
             // 2. 売上推移グラフデータ取得
-            // ----------------------------------------
             try {
-                // デフォルトで過去12ヶ月の月次データを取得
-                const trendResponse = await fetch('../actions/get_sales_trend_api.php', { method: 'POST' });
+            // ここを修正: actions から api に変更  
+            // const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
                 const trendResult = await trendResponse.json();
 
                 if (trendResult.success) {
