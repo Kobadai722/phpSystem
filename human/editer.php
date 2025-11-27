@@ -4,6 +4,9 @@ ini_set('display_startup_errors', 'On');
 error_reporting(E_ALL);
 
 session_start();
+require_once '../config.php';
+$stmt_pending = $PDO->query("SELECT COUNT(*) FROM APPLICATIONS WHERE STATUS = 'pending'");
+$pending_count = $stmt_pending->fetchColumn();
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -85,8 +88,14 @@ session_start();
                 <a href="human-insert.php" class="btn btn-success">
                     <i class="bi bi-person-plus-fill me-1"></i> 社員情報を登録する
                 </a>
-                <a href="application_list.php" class="btn btn-primary">
+                <a href="application_list.php" class="btn btn-primary position-relative">
                     <i class="bi bi-card-checklist me-1"></i> 申請一覧を確認する
+                    <?php if ($pending_count > 0): ?>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?= $pending_count ?>
+                            <span class="visually-hidden">未承認の申請</span>
+                        </span>
+                    <?php endif; ?>
                 </a>
 
                 <div class="dropdown">
@@ -102,6 +111,11 @@ session_start();
                         <li>
                             <a class="dropdown-item" href="paid_leave_register.php">
                                 <i class="bi bi-gift-fill me-2 text-warning"></i>有給付与
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="master_division.php">
+                                <i class="bi bi-building me-2 text-primary"></i>部署マスタ管理
                             </a>
                         </li>
                     </ul>
