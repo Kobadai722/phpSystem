@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 row = `
                     <tr>
                         <td scope="row">${escapeHtml(employee.EMPLOYEE_ID)}</td>
-                        <td><a href="detail.php?id=${escapeHtml(employee.EMPLOYEE_ID)}">${escapeHtml(employee.NAME)}</a></td>
+                        <td><a href="detail.php?id=${escapeHtml(employee.EMPLOYEE_ID)}&from=${fromParam}">${escapeHtml(employee.NAME)}</a></td>
                         <td>${escapeHtml(employee.DIVISION_NAME)}</td>
                         <td>${escapeHtml(employee.JOB_POSITION_NAME)}</td>
                     </tr>
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 row = `
                     <tr>
                         <td scope="row">${escapeHtml(employee.EMPLOYEE_ID)}</td>
-                        <td><a href="detail.php?id=${escapeHtml(employee.EMPLOYEE_ID)}">${escapeHtml(employee.NAME)}</a></td>
+                        <td><a href="detail.php?id=${escapeHtml(employee.EMPLOYEE_ID)}&from=${fromParam}">${escapeHtml(employee.NAME)}</a></td>
                         <td>${escapeHtml(employee.DIVISION_NAME)}</td>
                         <td>${escapeHtml(employee.JOB_POSITION_NAME)}</td>
                         <td>${escapeHtml(employee.JOINING_DATE)}</td>
