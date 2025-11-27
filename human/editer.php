@@ -118,6 +118,11 @@ $pending_count = $stmt_pending->fetchColumn();
                                 <i class="bi bi-building me-2 text-primary"></i>部署マスタ管理
                             </a>
                         </li>
+                        <li>
+                            <a class="dropdown-item" href="master_job_position.php">
+                                <i class="bi bi-person-badge me-2 text-info"></i>役職マスタ管理
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
