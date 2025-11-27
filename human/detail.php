@@ -11,6 +11,20 @@ $remaining_leaves = 0; // 残日数の初期化
 // 社員IDの取得
 $employee_id = $_GET['id'] ?? null;
 
+// ▼▼▼ 追加: 遷移元情報の取得と戻るリンクの設定 ▼▼▼
+$from = $_GET['from'] ?? 'main'; // 指定がなければ main とする
+
+// $from の値に応じてリンク先とテキストを決定
+if ($from === 'editer') {
+    $back_url = 'editer.php';
+    $back_text = '編集者ページへ戻る';
+} else {
+    // default (main)
+    $back_url = 'main.php';
+    $back_text = 'メインページへ戻る';
+}
+// ▲▲▲ 追加ここまで ▲▲▲
+
 if (isset($employee_id) && is_numeric($employee_id)) {
     // 社員情報の取得
     $stmt = $PDO->prepare("
@@ -28,7 +42,7 @@ if (isset($employee_id) && is_numeric($employee_id)) {
         $page_h1_title = $employee_name . "さんの詳細";
         $page_title_tag = $employee_name . "さんの詳細 - 人事管理表";
 
-        //有給残日数の計算 (有効期限内で未消化のもの）
+        // 有給残日数の計算 (有効期限内で未消化のもの)
         $today = date('Y-m-d');
         $stmt_leave = $PDO->prepare("
             SELECT SUM(DAYS_GRANTED - DAYS_USED) 
@@ -82,9 +96,9 @@ if (isset($employee_id) && is_numeric($employee_id)) {
                     </div>
                     <div class="col-auto">
                         <select id="display_mode_select" name="edit_mode_select" class="form-select" onchange="location = this.value;">
-                            <option value="detail.php?id=<?= htmlspecialchars($employee_id ?? '') ?>" selected>表示モード</option>
-                            <option value="detail_edit.php?id=<?= htmlspecialchars($employee_id ?? '') ?>">編集モード</option>
-                        </select>
+                            <option value="detail.php?id=<?= htmlspecialchars($employee_id ?? '') ?>&from=<?= htmlspecialchars($from) ?>" selected>表示モード</option>
+                            <option value="detail_edit.php?id=<?= htmlspecialchars($employee_id ?? '') ?>&from=<?= htmlspecialchars($from) ?>">編集モード</option>
+                            </select>
                     </div>
                 </div>
             </form>
@@ -95,9 +109,10 @@ if (isset($employee_id) && is_numeric($employee_id)) {
                     <span class="fs-5 fw-bold text-success ms-2"><?= htmlspecialchars($remaining_leaves) ?> 日</span>
                 </div>
             <?php endif; ?>
+
             <div class="text-end mt-2">
-                <a href="main.php" class="btn btn-outline-secondary">メインページへ戻る</a>
-            </div>
+                <a href="<?= htmlspecialchars($back_url) ?>" class="btn btn-outline-secondary"><?= htmlspecialchars($back_text) ?></a>
+                </div>
         </div>
 
         <?php if ($error_message_for_table): ?>

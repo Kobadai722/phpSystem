@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         employees.forEach(employee => {
+            const fromParam = isEditerPage ? 'editer' : 'main';
             let row;
             if (isEditerPage) {
                 row = `
