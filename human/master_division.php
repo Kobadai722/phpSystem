@@ -2,43 +2,25 @@
 session_start();
 require_once '../config.php';
 
-// エラーを画面に表示する設定
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 $msg = '';
 $msg_type = '';
 
-// --- 1. DB構造の確認用デバッグ表示 ---
-echo "<div style='background:#f8f9fa; padding:10px; border-bottom:1px solid #ccc;'>";
-echo "<strong>▼ デバッグ情報 (確認後、削除してください) ▼</strong><br>";
-try {
-    // テーブルのカラム情報を取得して表示
-    $columns = $PDO->query("SHOW COLUMNS FROM DIVISION")->fetchAll(PDO::FETCH_ASSOC);
-    echo "<strong>DIVISIONテーブルのカラム構造:</strong><pre>";
-    print_r($columns);
-    echo "</pre>";
-} catch (Exception $e) {
-    echo "カラム情報の取得失敗: " . $e->getMessage() . "<br>";
-}
-echo "</div>";
-// -------------------------------------
-
-// --- POST処理 ---
+// --- POST処理（追加・編集・削除） ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = $_POST['action'];
     
     try {
         if ($action === 'add') {
+            // 追加
             $name = $_POST['division_name'];
             if (!empty($name)) {
-                // INSERT実行
                 $stmt = $PDO->prepare("INSERT INTO DIVISION (DIVISION_NAME) VALUES (?)");
                 $stmt->execute([$name]);
-                $msg = "部署「" . htmlspecialchars($name) . "」を追加しました。ID: " . $PDO->lastInsertId();
+                $msg = "部署「" . htmlspecialchars($name) . "」を追加しました。";
                 $msg_type = 'success';
             }
         } elseif ($action === 'edit') {
+            // 編集
             $id = $_POST['division_id'];
             $name = $_POST['division_name'];
             if (!empty($id) && !empty($name)) {
@@ -48,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $msg_type = 'success';
             }
         } elseif ($action === 'delete') {
+            // 削除
             $id = $_POST['division_id'];
             if (!empty($id)) {
                 $stmt = $PDO->prepare("DELETE FROM DIVISION WHERE DIVISION_ID = ?");
@@ -57,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } catch (PDOException $e) {
+        // エラーハンドリング
         if ($e->getCode() == '23000') {
             $msg = "エラー: この部署には社員が所属しているため削除できません。";
         } else {
-            $msg = "DBエラー: " . $e->getMessage();
+            $msg = "データベースエラー: " . $e->getMessage();
         }
         $msg_type = 'danger';
     }
@@ -68,11 +52,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // --- データ一覧取得 ---
 try {
-    // SQL実行
-    $sql = "SELECT * FROM DIVISION ORDER BY DIVISION_ID"; // ここでエラーが出ている可能性があります
-    $divisions = $PDO->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+    $divisions = $PDO->query("SELECT * FROM DIVISION ORDER BY DIVISION_ID")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    echo "<div class='alert alert-danger'>データ取得エラー: " . $e->getMessage() . "</div>";
+    $msg = "データの取得に失敗しました。";
+    $msg_type = 'danger';
     $divisions = [];
 }
 ?>
@@ -121,15 +104,8 @@ try {
         <div class="card">
             <div class="card-header">
                 <i class="bi bi-list"></i> 登録済み部署一覧
-                <small class="text-muted ms-3">取得件数: <?= count($divisions) ?> 件</small>
             </div>
             <div class="card-body p-0">
-                <?php if(!empty($divisions)): ?>
-                    <div class="p-2 bg-light border-bottom">
-                        <small>取得データのキー確認: <?= implode(', ', array_keys($divisions[0])) ?></small>
-                    </div>
-                <?php endif; ?>
-
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
@@ -141,19 +117,19 @@ try {
                     <tbody>
                         <?php foreach ($divisions as $div): ?>
                             <tr>
-                                <td><?= htmlspecialchars($div['DIVISION_ID'] ?? $div['ID'] ?? '不明') ?></td>
+                                <td><?= htmlspecialchars($div['DIVISION_ID']) ?></td>
                                 <td>
                                     <form method="post" class="d-flex gap-2">
                                         <input type="hidden" name="action" value="edit">
-                                        <input type="hidden" name="division_id" value="<?= $div['DIVISION_ID'] ?? $div['ID'] ?? '' ?>">
-                                        <input type="text" name="division_name" class="form-control form-control-sm" value="<?= htmlspecialchars($div['DIVISION_NAME'] ?? $div['NAME'] ?? '') ?>" required>
+                                        <input type="hidden" name="division_id" value="<?= $div['DIVISION_ID'] ?>">
+                                        <input type="text" name="division_name" class="form-control form-control-sm" value="<?= htmlspecialchars($div['DIVISION_NAME']) ?>" required>
                                         <button type="submit" class="btn btn-sm btn-primary text-nowrap"><i class="bi bi-save"></i> 保存</button>
                                     </form>
                                 </td>
                                 <td>
-                                    <form method="post" onsubmit="return confirm('本当に削除しますか？');">
+                                    <form method="post" onsubmit="return confirm('本当に「<?= htmlspecialchars($div['DIVISION_NAME']) ?>」を削除しますか？\n※所属社員がいる場合は削除できません。');">
                                         <input type="hidden" name="action" value="delete">
-                                        <input type="hidden" name="division_id" value="<?= $div['DIVISION_ID'] ?? $div['ID'] ?? '' ?>">
+                                        <input type="hidden" name="division_id" value="<?= $div['DIVISION_ID'] ?>">
                                         <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i> 削除</button>
                                     </form>
                                 </td>
