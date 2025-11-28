@@ -88,7 +88,7 @@ try {
         <i class="bi bi-list fs-4"></i>
     </button>
 
-    <?php require_once __DIR__ . '/../sidebar_bootstrap.php'; ?>
+    <?php require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; ?>
 
     <!-- ページ全体を囲むコンテナ -->
     <div class="page-container">

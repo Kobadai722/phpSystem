@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../header.php';
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
     <!-- 左側: サイドバー -->
-    <?php require_once __DIR__ . '/../sidebar_bootstrap.php'; ?>
+    <?php require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; ?>
 
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
