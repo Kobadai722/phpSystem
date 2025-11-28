@@ -38,7 +38,7 @@ try {
             
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1><i class="bi bi-pencil-square"></i> 仕訳入力</h1>
-                <a href="output_siwakehyo.php" class="btn btn-outline-secondary">
+                <a href="/accounting/siwake_hyo/output_siwakehyo.php" class="btn btn-outline-secondary">
                     <i class="bi bi-list-ul"></i> 一覧へ戻る
                 </a>
             </div>
@@ -49,7 +49,7 @@ try {
                     <h5 class="mb-0">新規取引の登録</h5>
                 </div>
                 <div class="card-body">
-                    <form action="/accounting/submit_siwake.php" method="post" id="journalForm" class="needs-validation" novalidate>
+                    <form action="/accounting/siwake_hyo/submit_siwake.php" method="post" id="journalForm" class="needs-validation" novalidate>
                         
                         <!-- 1. 基本情報 -->
                         <div class="row g-3 mb-4">
