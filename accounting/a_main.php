@@ -10,7 +10,6 @@ $current_page = 'home';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($page_title, ENT_QUOTES, 'UTF-8'); ?></title>
 
-    <!-- Bootstrap (integrity属性のタイポを修正) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -83,7 +82,6 @@ $current_page = 'home';
     </button>
 
     <?php
-    // === ▼ Bootstrap版のサイドバー部品を読み込むように変更 ▼ ===
     require_once __DIR__ . '/sidebar_bootstrap.php';
     ?>
 
@@ -204,7 +202,7 @@ $current_page = 'home';
                 <div class="card-body">
                     <p class="metric-value">2,345,678<small>円</small></p>
                     <div class="comparison">
-                        <span class="up">▲ 前月比 0.5%</span>
+                        <span class="down">▼ 前月比 0.5%</span>
                     </div>
                 </div>
             </section>

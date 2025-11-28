@@ -5,7 +5,7 @@ $current_page = 'graph'; // サイドバーで「グラフ」がアクティブ�
 
 // ----- 必要な部品を読み込み -----
 // パスは実際のファイル配置に合わせて調整してください
-require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../includes/a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 

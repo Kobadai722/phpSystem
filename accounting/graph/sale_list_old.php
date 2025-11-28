@@ -3,7 +3,7 @@
 $page_title = "売上高一覧";
 $current_page = "graph";
 
-require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../includes/a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 
@@ -59,7 +59,7 @@ try {
 
 ?>
 <div class="page-container">
-    <?php require_once __DIR__ . "/../sidebar.php"; ?>
+    <?php require_once __DIR__ . "/../includes/sidebar_bootstrap.php"; ?>
     <main class="main-content">
         <h1><?php echo htmlspecialchars($page_title); ?></h1>
 
