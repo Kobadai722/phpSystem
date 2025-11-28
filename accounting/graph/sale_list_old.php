@@ -59,7 +59,7 @@ try {
 
 ?>
 <div class="page-container">
-    <?php require_once __DIR__ . "/../sidebar.php"; ?>
+    <?php require_once __DIR__ . "/../includes/sidebar_bootstrap.php"; ?>
     <main class="main-content">
         <h1><?php echo htmlspecialchars($page_title); ?></h1>
 
