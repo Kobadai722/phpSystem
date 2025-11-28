@@ -1,7 +1,7 @@
 <?php
 $page_title = '仕訳登録画面';
 $current_page = 'submit';
-require_once __DIR__ . '/../../includes/a_header.php';
+require_once __DIR__ . '/../includes/a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 
