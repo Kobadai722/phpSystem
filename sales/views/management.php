@@ -201,7 +201,6 @@ $top_products = [
 
             // 2. 売上推移グラフデータ取得
             try {
-            // ★修正ポイント: コメントアウトを解除し、正しく変数に代入
                 const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
                 
                 // 応答がHTMLではなくJSONであることを確認
@@ -209,7 +208,7 @@ $top_products = [
                     throw new Error(`HTTP error! status: ${trendResponse.status}`);
                 }
                 
-                // ★修正ポイント: trendResponseが定義されたため、JSON解析が可能に
+                //trendResponseが定義されたため、JSON解析が可能に
                 const trendResult = await trendResponse.json(); 
 
                 if (trendResult.success) {
