@@ -1,6 +1,8 @@
 <?php
-// add_sale_api.php (最終決定版 - BIGINT対応済み)
-require_once '../../config.php';
+// add_sale_api.php: 新しい売上を登録し、在庫を減らすAPI
+
+// 必須: '../../config.php' がデータベース接続の $PDO インスタンスを提供していること
+require_once '../../config.php'; 
 header("Content-Type: application/json; charset=utf-8");
 
 // POSTパラメータ取得
@@ -15,7 +17,7 @@ try {
         throw new Exception("必須項目が不足しています。");
     }
 
-    // 数量は必ず整数として扱う
+    // 数量チェック
     $quantity = (int)$quantity;
     if ($quantity <= 0) {
         throw new Exception("数量が不正です。");
@@ -24,8 +26,7 @@ try {
     // トランザクション開始
     $PDO->beginTransaction();
 
-    // 1. 在庫確認と同時に、単価を取得 (FOR UPDATEでロックをかける)
-    // P.UNIT_SELLING_PRICEがint型の場合も、計算のため文字列として取得
+    // 1. 在庫確認と単価取得 (FOR UPDATEで排他ロック)
     $stmt = $PDO->prepare("
         SELECT S.STOCK_QUANTITY, P.UNIT_SELLING_PRICE 
         FROM STOCK S
@@ -40,26 +41,19 @@ try {
     }
 
     $stockQty = (int)$dataRow['STOCK_QUANTITY'];
+    $unitPrice = $dataRow['UNIT_SELLING_PRICE']; // BIGINT対応のためintキャストなし
     
-    // 単価を文字列/数値で取得し、巨大な数値でもPHP内で正確に扱う
-    // ※ PHP 7.1以降のint型は64bit環境でBIGINTに対応していますが、
-    // 確実な計算のため、必要に応じてBC Mathライブラリを使用するのが理想です。
-    // ここでは、int型にキャストせずに取得し、PHPの内部処理に任せます。
-    $unitPrice = $dataRow['UNIT_SELLING_PRICE']; 
-    
+    // 在庫不足チェック
     if ($stockQty < $quantity) {
         throw new Exception("在庫不足です。現在の在庫: {$stockQty}");
     }
     
-    // 2. 合計金額を計算する
-    // PHPは大きな数値も自動でfloat/stringとして処理しようとしますが、
-    // データベースのカラムをBIGINTにすることで、数値の整合性を高めます。
+    // 2. 合計金額の計算
     $totalPrice = $unitPrice * $quantity; 
-    
-    $orderFlag  = 1; // 通常注文
+    $orderFlag  = 1; // 注文ステータス
 
-    // 3. ORDER登録
-    // ORDERテーブルのPRICEカラムはBIGINT(20)に修正済みを前提
+    // 3. ORDERテーブルに売上情報を登録
+    // 注意: ORDERテーブルのPRICEカラムはBIGINTである必要があります
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER` 
             (PURCHASE_ORDER_DATE, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID)
@@ -67,15 +61,14 @@ try {
             (NOW(), ?, ?, ?, ?)
     ");
     
-    // バインド変数: $customerId, $orderFlag, $totalPrice, $employeeId
+    // バインド: $customerId, $orderFlag, $totalPrice, $employeeId
     if (!$insertOrder->execute([$customerId, $orderFlag, $totalPrice, $employeeId])) {
         $error = $insertOrder->errorInfo();
-        // 外部キー制約、データ型不一致など、より詳細なエラーをログに残す
-        error_log("ORDER INSERT FAILED SQLSTATE: " . $error[0] . ", ERROR CODE: " . $error[1] . ", MESSAGE: " . $error[2]);
+        error_log("ORDER INSERT FAILED: " . $error[2]);
         throw new Exception("ORDER登録失敗: データベースエラーが発生しました。");
     }
     
-    // 4. STOCK更新
+    // 4. STOCKテーブルの在庫数を更新（減少させる）
     $newStock = $stockQty - $quantity;
     $updateStock = $PDO->prepare("UPDATE STOCK SET STOCK_QUANTITY = ?, LAST_UPDATING_TIME = NOW() WHERE PRODUCT_ID = ?");
     if (!$updateStock->execute([$newStock, $productId])) {
@@ -83,9 +76,10 @@ try {
         throw new Exception("在庫更新失敗: " . implode(", ", $error));
     }
 
-    // コミット
+    // 全て成功したらコミット
     $PDO->commit();
 
+    // 成功レスポンス（JSON）
     echo json_encode([
         "success" => true,
         "message" => "注文を登録しました。",
@@ -95,14 +89,19 @@ try {
     exit;
 
 } catch (Exception $e) {
-    if ($PDO->inTransaction()) $PDO->rollBack();
-    // エラー発生時のPOSTデータは既にerror_logで記録されているため、ここではメッセージのみ
+    // エラー時はロールバック
+    if (isset($PDO) && $PDO->inTransaction()) {
+        $PDO->rollBack();
+    }
+    
     $logMessage = "注文登録エラー: " . $e->getMessage() . " / POSTデータ: " . print_r($_POST,true);
     error_log($logMessage);
 
+    // 失敗レスポンス（JSON）
     echo json_encode([
         "success" => false,
         "message" => "登録に失敗しました: " . $e->getMessage()
     ]);
     exit;
 }
+// ファイルの末尾に余計な改行やタグがないことを確認
