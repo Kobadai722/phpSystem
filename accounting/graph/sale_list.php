@@ -46,7 +46,7 @@ try {
 
     <?php
     // Bootstrap版のサイドバー部品を読み込む
-    require_once __DIR__ . '/../sidebar_bootstrap.php';
+    require_once __DIR__ . '/../includes/sidebar_bootstrap.php';
     ?>
 
     <!-- メインコンテンツ -->
