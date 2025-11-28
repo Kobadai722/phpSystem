@@ -108,7 +108,7 @@ try {
 
     <?php 
     // Bootstrap版サイドバーを読み込み
-    require_once __DIR__ . '/../sidebar_bootstrap.php'; 
+    require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; 
     ?>
 
     <!-- ページ全体を囲むコンテナ -->
@@ -120,7 +120,7 @@ try {
             
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>📘 <?php echo htmlspecialchars($page_title); ?></h1>
-                <a href="input_siwakehyo.php" class="btn btn-success">
+                <a href="/accounting/siwake_hyo/input_siwakehyo.php" class="btn btn-success">
                     <i class="bi bi-plus-circle"></i> 新規登録
                 </a>
             </div>
