@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <link rel="stylesheet" href="accounting/css/siwake.css">
-    <link rel="stylesheet" href="accounting/css/sidebar.css">
+    <link rel="stylesheet" href="accounting/css/sidebar_bootstrap.css">
     
 
 </head>
