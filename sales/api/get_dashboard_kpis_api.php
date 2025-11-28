@@ -11,7 +11,7 @@ try {
     
     // 前月同期間の計算用
     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
-    // 先月全体ではなく、「先月同日」までの期間を設定
+    // 修正点：先月全体ではなく、「先月同日」までの期間を設定
     $lastMonthSameDay = date('Y-m-d H:i:s', strtotime('-1 month'));
     
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
