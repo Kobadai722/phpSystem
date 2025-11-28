@@ -1,11 +1,11 @@
 <?php
-// add_sale_api.php
+// add_sale_api.php (最終修正版 - UNIT_SELLING_PRICE対応)
 require_once '../../config.php';
 header("Content-Type: application/json; charset=utf-8");
 
 // POSTパラメータ取得
-$productId  = $_POST['product_id'] ?? null;
-$quantity   = $_POST['order_quantity'] ?? null;
+$productId  = $_POST['product_id'] ?? null;
+$quantity   = $_POST['order_quantity'] ?? null;
 $customerId = $_POST['customer_id'] ?? null;
 $employeeId = $_POST['employee_id'] ?? null;
 
@@ -23,35 +23,47 @@ try {
     // トランザクション開始
     $PDO->beginTransaction();
 
-    // 1. 在庫確認
-    $stmt = $PDO->prepare("SELECT STOCK_QUANTITY FROM STOCK WHERE PRODUCT_ID = ? FOR UPDATE");
+    // 1. 在庫確認と同時に、単価を取得 (FOR UPDATEでロックをかける)
+    // ★修正点: カラム名をP.UNIT_SELLING_PRICEに変更
+    $stmt = $PDO->prepare("
+        SELECT S.STOCK_QUANTITY, P.UNIT_SELLING_PRICE 
+        FROM STOCK S
+        JOIN PRODUCT P ON S.PRODUCT_ID = P.PRODUCT_ID 
+        WHERE S.PRODUCT_ID = ? FOR UPDATE
+    ");
     $stmt->execute([$productId]);
-    $stockRow = $stmt->fetch(PDO::FETCH_ASSOC);
-    if (!$stockRow) {
-        throw new Exception("該当する商品在庫が存在しません。");
+    $dataRow = $stmt->fetch(PDO::FETCH_ASSOC); 
+
+    if (!$dataRow) {
+        throw new Exception("該当する商品または在庫が存在しません。");
     }
 
-    $stockQty = (int)$stockRow['STOCK_QUANTITY'];
+    $stockQty = (int)$dataRow['STOCK_QUANTITY'];
+    // ★修正点: フェッチするキーをUNIT_SELLING_PRICEに変更
+    $unitPrice = (int)$dataRow['UNIT_SELLING_PRICE']; 
+    
     if ($stockQty < $quantity) {
         throw new Exception("在庫不足です。現在の在庫: {$stockQty}");
     }
+    
+    // 2. 合計金額を計算する
+    $totalPrice = $unitPrice * $quantity; 
+    $orderFlag  = 1; // 通常注文
 
-    // 2. ORDER登録
-    $totalPrice = 0; // 今回は単価がわからなければ0でもOK
-    $orderFlag  = 1; // 通常注文
-
+    // 3. ORDER登録
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER` 
             (PURCHASE_ORDER_DATE, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID)
         VALUES
             (NOW(), ?, ?, ?, ?)
     ");
+    // バインド変数: $customerId, $orderFlag, $totalPrice, $employeeId
     if (!$insertOrder->execute([$customerId, $orderFlag, $totalPrice, $employeeId])) {
         $error = $insertOrder->errorInfo();
         throw new Exception("ORDER登録失敗: " . implode(", ", $error));
     }
-
-    // 3. STOCK更新
+    
+    // 4. STOCK更新
     $newStock = $stockQty - $quantity;
     $updateStock = $PDO->prepare("UPDATE STOCK SET STOCK_QUANTITY = ?, LAST_UPDATING_TIME = NOW() WHERE PRODUCT_ID = ?");
     if (!$updateStock->execute([$newStock, $productId])) {
@@ -65,6 +77,7 @@ try {
     echo json_encode([
         "success" => true,
         "message" => "注文を登録しました。",
+        "total_price" => $totalPrice, 
         "new_stock" => $newStock
     ]);
     exit;
