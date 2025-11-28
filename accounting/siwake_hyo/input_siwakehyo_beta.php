@@ -49,7 +49,7 @@ try {
                     <h5 class="mb-0">新規取引の登録</h5>
                 </div>
                 <div class="card-body">
-                    <form action="submit_siwake.php" method="post" id="journalForm" class="needs-validation" novalidate>
+                    <form action="/accounting/submit_siwake.php" method="post" id="journalForm" class="needs-validation" novalidate>
                         
                         <!-- 1. 基本情報 -->
                         <div class="row g-3 mb-4">
