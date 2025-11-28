@@ -13,7 +13,6 @@ $aov = 0;
 $target_ratio = 0;
 
 $stock_alerts = [
-    // アラートは複雑なため、APIの結果を取得するまで空の配列にするか、ここでは最低限の構造のみ残す
     ['product_name' => 'データ取得中...', 'reason' => 'データ取得中...', 'current_stock' => 0, 'forecast' => 0],
 ];
 $top_products = [
@@ -43,7 +42,6 @@ $top_products = [
                 <h1 class="mb-4"><i class="bi bi-graph-up"></i> 売上管理ダッシュボード</h1>
 
                 <div class="d-flex mb-5 gap-2 flex-wrap">
-                    <!-- アクションボタン群 -->
                     <a href="order_create.php" class="btn btn-success">
                         <i class="bi bi-plus-circle"></i> 新規注文作成
                     </a>
@@ -66,7 +64,6 @@ $top_products = [
                 
                 <hr>
                 
-                <!-- KPIカード群 -->
                 <div class="row mb-5" id="kpi-cards-section">
                     
                     <div class="col-lg-3 col-md-6 mb-3">
@@ -113,7 +110,6 @@ $top_products = [
                     </div>
                 </div>
 
-                <!-- グラフとランキング -->
                 <div class="row mb-5">
                     <div class="col-lg-8 mb-4">
                         <div class="card shadow-sm">
@@ -141,7 +137,6 @@ $top_products = [
                     </div>
                 </div>
 
-                <!-- 在庫アラート -->
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="card shadow-sm border-danger">
@@ -182,28 +177,40 @@ $top_products = [
 
         // 1. KPI & トップ商品データ取得
             try {
-            // ここを修正: actions から api に変更
+                // KPI APIの呼び出し
                 const kpiResponse = await fetch('../api/get_dashboard_kpis_api.php', { method: 'POST' });
+                // 応答がHTMLではなくJSONであることを確認
+                if (!kpiResponse.ok) {
+                    throw new Error(`HTTP error! status: ${kpiResponse.status}`);
+                }
                 const kpiResult = await kpiResponse.json();
 
-            if (kpiResult.success) {
+                if (kpiResult.success) {
                     updateKpiCards(kpiResult.kpis);
                     updateTopProducts(kpiResult.top_products);
                     updateStockAlerts(kpiResult.stock_alerts);
                 } else {
                     console.error("KPIデータ取得エラー:", kpiResult.message);
-                    // エラー表示を分かりやすくする
                     document.getElementById('current_month_sales').textContent = 'エラー';
-            }
+                }
             } catch (error) {
                 console.error('KPI Fetch error:', error);
+                // サーバーから予期せぬ応答（HTMLなど）が返された場合のエラー表示
+                document.getElementById('current_month_sales').textContent = '接続エラー';
             }
 
             // 2. 売上推移グラフデータ取得
             try {
-            // ここを修正: actions から api に変更  
-            // const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
-                const trendResult = await trendResponse.json();
+            // ★修正ポイント: コメントアウトを解除し、正しく変数に代入
+                const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
+                
+                // 応答がHTMLではなくJSONであることを確認
+                if (!trendResponse.ok) {
+                    throw new Error(`HTTP error! status: ${trendResponse.status}`);
+                }
+                
+                // ★修正ポイント: trendResponseが定義されたため、JSON解析が可能に
+                const trendResult = await trendResponse.json(); 
 
                 if (trendResult.success) {
                     updateSalesChart(trendResult.data);
@@ -226,6 +233,7 @@ $top_products = [
             const progressBar = document.getElementById('target_progress_bar');
             progressBar.style.width = Math.min(targetRatio, 100) + '%';
             progressBar.setAttribute('aria-valuenow', targetRatio);
+            progressBar.className = 'progress-bar ' + (targetRatio >= 100 ? 'bg-success' : 'bg-primary');
 
             const ratioElement = document.getElementById('last_month_ratio');
             const ratioValue = kpis.last_month_ratio;

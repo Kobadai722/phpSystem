@@ -1,4 +1,7 @@
 <?php
+// sale_add.php: 新しい売上を作成するためのHTMLフォームを表示
+
+// DB接続とデータ取得、エラー処理
 require_once '../../config.php';
 
 // 商品リスト取得処理
@@ -30,8 +33,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>新規売上作成</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
@@ -125,7 +127,6 @@ try {
 
                 <div class="modal-body">
                     <p>以下の内容で登録します。</p>
-
                     <table class="table table-bordered">
                         <tr><th>商品名</th><td id="confirmProductName"></td></tr>
                         <tr><th>単価</th><td id="confirmProductPrice"></td></tr>
@@ -163,7 +164,7 @@ try {
 
         // 登録ボタン押下 → モーダル表示
         form.addEventListener("submit", (event) => {
-            event.preventDefault(); // 直接送信しない
+            event.preventDefault(); 
 
             if (!form.checkValidity()) {
                 event.stopPropagation();
@@ -173,19 +174,19 @@ try {
 
             const selectedProduct = productSelect.options[productSelect.selectedIndex];
             const productName = selectedProduct.dataset.name;
-            const unitPrice = Number(selectedProduct.dataset.price);
+            const unitPrice = Number(selectedProduct.dataset.price); // 単価取得
             const quantity = Number(quantityInput.value);
-            const subtotal = unitPrice * quantity;
+            const subtotal = unitPrice * quantity; // 小計計算
 
             const selectedEmployee = employeeSelect.options[employeeSelect.selectedIndex];
             const employeeName = selectedEmployee.dataset.name;
-            const employeeId = selectedEmployee.value; // value属性からIDを取得
+            const employeeId = selectedEmployee.value;
 
             // モーダルに値セット
             document.getElementById("confirmProductName").innerText = productName;
             document.getElementById("confirmProductPrice").innerText = unitPrice.toLocaleString() + "円";
             document.getElementById("confirmQuantity").innerText = quantity;
-            document.getElementById("confirmSubtotal").innerText = subtotal.toLocaleString() + "円";
+            document.getElementById("confirmSubtotal").innerText = subtotal.toLocaleString() + "円"; // 日本円表示
             document.getElementById("confirmCustomerId").innerText = customerIdInput.value;
             document.getElementById("confirmEmployeeId").innerText = employeeId;
             document.getElementById("confirmEmployeeName").innerText = employeeName;
@@ -194,28 +195,31 @@ try {
             confirmModal.show();
         });
 
-        // モーダル → 注文確定
+        // モーダル → 注文確定 (API呼び出し)
         confirmBtn.addEventListener("click", async () => {
 
             const formData = new FormData(form);
 
             try {
+                // APIを呼び出し
                 const response = await fetch("../api/add_sale_api.php", {
-                method: "POST",
-                body: formData
-        });
+                    method: "POST",
+                    body: formData
+                });
 
-                const result = await response.json();
+                // JSONとして解析。ここでHTMLが返るとJSON解析エラーになる
+                const result = await response.json(); 
 
                 if (result.success) {
                     alert("注文を登録しました！");
+                    // 登録成功後、管理画面へ遷移
                     window.location.href = "management.php";
                 } else {
                     alert("登録に失敗しました： " + result.message);
                 }
 
             } catch (error) {
-                alert("通信エラーが発生しました。");
+                alert("通信エラーが発生しました。サーバー応答を確認してください。");
                 console.error(error);
             }
         });
