@@ -4,8 +4,8 @@ require_once '../../config.php';
 header("Content-Type: application/json; charset=utf-8");
 
 // POSTパラメータ取得
-$productId  = $_POST['product_id'] ?? null;
-$quantity   = $_POST['order_quantity'] ?? null;
+$productId  = $_POST['product_id'] ?? null;
+$quantity   = $_POST['order_quantity'] ?? null;
 $customerId = $_POST['customer_id'] ?? null;
 $employeeId = $_POST['employee_id'] ?? null;
 
