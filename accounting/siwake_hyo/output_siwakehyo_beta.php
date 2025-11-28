@@ -108,7 +108,7 @@ try {
 
     <?php 
     // Bootstrap版サイドバーを読み込み
-    require_once __DIR__ . '/../sidebar_bootstrap.php'; 
+    require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; 
     ?>
 
     <!-- ページ全体を囲むコンテナ -->
