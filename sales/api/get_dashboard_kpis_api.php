@@ -1,6 +1,6 @@
 <?php
 // DB接続とデータ取得、エラー処理
-require_once '../../../config.php'; 
+require_once '../../config.php'; 
 
 header('Content-Type: application/json');
 
