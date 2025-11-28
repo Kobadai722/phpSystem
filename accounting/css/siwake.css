@@ -4,14 +4,6 @@
     min-height: 100vh; /* 画面の高さいっぱいに広げる */
 }
 
-/* サイドバーのスタイル */
-.sidebar {
-    flex: 0 0 240px; /* サイドバーの幅を240pxで固定 (伸縮しない) */
-    background-color: #f8f9fa; /* Bootstrapの.bg-light相当 */
-    border-right: 1px solid #dee2e6; /* 右側に境界線 */
-    padding: 1rem;
-}
-
 /* メインコンテンツのスタイル */
 .main-content {
     flex-grow: 1; /* 残りの利用可能なスペースをすべて埋める */

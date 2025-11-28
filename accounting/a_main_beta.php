@@ -84,7 +84,7 @@ $current_page = 'home';
 
     <?php
     // === ▼ Bootstrap版のサイドバー部品を読み込むように変更 ▼ ===
-    require_once __DIR__ . '/../includes/sidebar_bootstrap.php';
+    require_once __DIR__ . '/includes/sidebar_bootstrap.php';
     ?>
 
     <!-- メインコンテンツ -->
