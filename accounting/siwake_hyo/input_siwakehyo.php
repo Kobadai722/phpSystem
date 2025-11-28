@@ -1,15 +1,15 @@
 <?php
 $page_title = '仕訳入力フォーム';
 $current_page = 'input';
-require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../includes/a_header.php';
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
 ?>
 
   <!-- ページ全体を囲むコンテナ -->
   <div class="page-container">
-    <!-- 左側: サイドバーbootstrap -->
-    <?php require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; ?>
+    <!-- 左側: サイドバーbootstrp -->
+    <?php require_once __DIR__ . '/../sidebar.php'; ?>
     <!-- 右側: メインコンテンツ -->
     <main class="main-content">
       <div class="table-responsive">

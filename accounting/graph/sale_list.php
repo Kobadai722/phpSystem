@@ -2,7 +2,7 @@
 // ----- ページ設定 -----
 $page_title = "売上高一覧";
 $current_page = "graph"; // サイドバーのハイライト用
-require_once __DIR__ . '/../a_header.php';
+require_once __DIR__ . '/../includes/a_header.php';
 
 require_once __DIR__ . '/../../header.php';
 
