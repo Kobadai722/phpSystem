@@ -48,7 +48,7 @@ try {
     
     // 2. 合計金額の計算
     $totalPrice = $unitPrice * $quantity; 
-    $orderFlag  = 1; // 注文ステータス
+    $orderFlag  = 1; // 注文ステータス
 
     // 3. ORDERテーブルに売上情報を登録
     // 注意: ORDERテーブルのPRICEカラムはBIGINTである必要があります
@@ -102,4 +102,3 @@ try {
     ]);
     exit;
 }
-// ファイルの末尾に余計な改行やタグがないことを確認
