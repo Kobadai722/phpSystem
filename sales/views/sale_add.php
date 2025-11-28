@@ -1,32 +1,20 @@
 <?php
-// sale_add.php: 新しい売上を作成するためのHTMLフォームを表示
-
-// DB接続とデータ取得、エラー処理
-require_once '../../config.php';
+require_once '../../config.php'; 
 
 // 商品リスト取得処理
 $products = [];
-try {
-    $stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
-    $stmt->execute();
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $products = [];
-    error_log("商品リスト取得エラー: " . $e->getMessage());
-}
+$stmt = $PDO->prepare("SELECT PRODUCT_ID, PRODUCT_NAME, UNIT_SELLING_PRICE FROM PRODUCT ORDER BY PRODUCT_ID");
+$stmt->execute();
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // 担当者リスト取得処理
 $employees = [];
-try {
-    $stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
-    $stmtEmployee->execute();
-    $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    $employees = [];
-    error_log("担当者リスト取得エラー: " . $e->getMessage());
-}
+$stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
+$stmtEmployee->execute();
+$employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>

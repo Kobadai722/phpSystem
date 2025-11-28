@@ -1,7 +1,5 @@
 <?php
-// add_sale_api.php: 新しい売上を登録し、在庫を減らすAPI
 
-// 必須: '../../config.php' がデータベース接続の $PDO インスタンスを提供していること
 require_once '../../config.php'; 
 header("Content-Type: application/json; charset=utf-8");
 
