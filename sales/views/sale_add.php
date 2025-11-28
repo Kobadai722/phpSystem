@@ -1,4 +1,5 @@
 <?php
+// DB接続とデータ取得、エラー処理
 require_once '../../config.php';
 
 // 商品リスト取得処理
