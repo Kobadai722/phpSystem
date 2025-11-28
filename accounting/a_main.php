@@ -15,7 +15,7 @@ $current_page = 'home';
 
     <!-- 独自のCSS -->
     <link rel="stylesheet" href="css/a_main_beta.css">
-    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/sidebar_bootstrap.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
 <body>
