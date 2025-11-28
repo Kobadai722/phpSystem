@@ -40,20 +40,21 @@ switch ($groupBy) {
 try {
     // 3. SQLクエリの構築と実行
     
-    // NOTE: MySQL以外の場合 (PostgreSQL/SQLite) は DATE_FORMAT をそれぞれの関数に置き換える必要があります
     $sql = "
-        SELECT 
-            DATE_FORMAT(PURCHASE_ORDER_DATE, :date_format_sql) AS period,
-            SUM(PRICE) AS total_sales
-        FROM 
-            `ORDER`
-        WHERE 
-            PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date_adjusted
-        GROUP BY 
-            period
-        ORDER BY 
-            period ASC
-    ";
+    SELECT 
+        DATE_FORMAT(PURCHASE_ORDER_DATE, '{$dateFormatSql}') AS period,
+        SUM(PRICE) AS total_sales
+    FROM 
+        `ORDER`
+    WHERE 
+        PURCHASE_ORDER_DATE >= :start_date 
+        AND PURCHASE_ORDER_DATE <= :end_date_adjusted
+    GROUP BY 
+        period
+    ORDER BY 
+        period ASC
+";
+
 
     $stmt = $PDO->prepare($sql);
     
