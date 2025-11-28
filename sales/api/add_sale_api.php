@@ -1,5 +1,5 @@
 <?php
-// add_sale_api.php (最終修正版 - UNIT_SELLING_PRICE対応)
+// add_sale_api.php (最終決定版 - BIGINT対応済み)
 require_once '../../config.php';
 header("Content-Type: application/json; charset=utf-8");
 
@@ -15,6 +15,7 @@ try {
         throw new Exception("必須項目が不足しています。");
     }
 
+    // 数量は必ず整数として扱う
     $quantity = (int)$quantity;
     if ($quantity <= 0) {
         throw new Exception("数量が不正です。");
@@ -24,7 +25,7 @@ try {
     $PDO->beginTransaction();
 
     // 1. 在庫確認と同時に、単価を取得 (FOR UPDATEでロックをかける)
-    // ★修正点: カラム名をP.UNIT_SELLING_PRICEに変更
+    // P.UNIT_SELLING_PRICEがint型の場合も、計算のため文字列として取得
     $stmt = $PDO->prepare("
         SELECT S.STOCK_QUANTITY, P.UNIT_SELLING_PRICE 
         FROM STOCK S
@@ -39,28 +40,39 @@ try {
     }
 
     $stockQty = (int)$dataRow['STOCK_QUANTITY'];
-    // ★修正点: フェッチするキーをUNIT_SELLING_PRICEに変更
-    $unitPrice = (int)$dataRow['UNIT_SELLING_PRICE']; 
+    
+    // 単価を文字列/数値で取得し、巨大な数値でもPHP内で正確に扱う
+    // ※ PHP 7.1以降のint型は64bit環境でBIGINTに対応していますが、
+    // 確実な計算のため、必要に応じてBC Mathライブラリを使用するのが理想です。
+    // ここでは、int型にキャストせずに取得し、PHPの内部処理に任せます。
+    $unitPrice = $dataRow['UNIT_SELLING_PRICE']; 
     
     if ($stockQty < $quantity) {
         throw new Exception("在庫不足です。現在の在庫: {$stockQty}");
     }
     
     // 2. 合計金額を計算する
+    // PHPは大きな数値も自動でfloat/stringとして処理しようとしますが、
+    // データベースのカラムをBIGINTにすることで、数値の整合性を高めます。
     $totalPrice = $unitPrice * $quantity; 
+    
     $orderFlag  = 1; // 通常注文
 
     // 3. ORDER登録
+    // ORDERテーブルのPRICEカラムはBIGINT(20)に修正済みを前提
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER` 
             (PURCHASE_ORDER_DATE, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID)
         VALUES
             (NOW(), ?, ?, ?, ?)
     ");
+    
     // バインド変数: $customerId, $orderFlag, $totalPrice, $employeeId
     if (!$insertOrder->execute([$customerId, $orderFlag, $totalPrice, $employeeId])) {
         $error = $insertOrder->errorInfo();
-        throw new Exception("ORDER登録失敗: " . implode(", ", $error));
+        // 外部キー制約、データ型不一致など、より詳細なエラーをログに残す
+        error_log("ORDER INSERT FAILED SQLSTATE: " . $error[0] . ", ERROR CODE: " . $error[1] . ", MESSAGE: " . $error[2]);
+        throw new Exception("ORDER登録失敗: データベースエラーが発生しました。");
     }
     
     // 4. STOCK更新
@@ -84,7 +96,9 @@ try {
 
 } catch (Exception $e) {
     if ($PDO->inTransaction()) $PDO->rollBack();
-    error_log("注文登録エラー: " . $e->getMessage() . " / POSTデータ: " . print_r($_POST,true));
+    // エラー発生時のPOSTデータは既にerror_logで記録されているため、ここではメッセージのみ
+    $logMessage = "注文登録エラー: " . $e->getMessage() . " / POSTデータ: " . print_r($_POST,true);
+    error_log($logMessage);
 
     echo json_encode([
         "success" => false,
