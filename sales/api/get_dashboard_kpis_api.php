@@ -16,7 +16,9 @@ try {
     
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
     
+    // =========================================================
     // 1. 今月売上合計 (ORDERテーブルのPRICEを使用)
+    // =========================================================
     $stmtCurrentSales = $PDO->prepare("
         SELECT SUM(PRICE) AS current_sales
         FROM `ORDER`
@@ -27,7 +29,9 @@ try {
     $stmtCurrentSales->execute();
     $currentSales = $stmtCurrentSales->fetch(PDO::FETCH_COLUMN) ?? 0;
 
+    // =========================================================
     // 2. 先月売上合計 (前月同期間比較)
+    // =========================================================
     $stmtLastSales = $PDO->prepare("
         SELECT SUM(PRICE) AS last_sales
         FROM `ORDER`
@@ -101,3 +105,6 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
+}
+?>
