@@ -3,12 +3,12 @@
 $page_title = '仕訳一覧表示';
 $current_page = 'list';
 
+
+// a_header.phpでCSS等を読み込んでいます
+require_once __DIR__ . '/../includes/a_header.php';
 // パスは環境に合わせて調整してください
 require_once __DIR__ . '/../../config.php';
 require_once __DIR__ . '/../../header.php';
-// a_header.phpでCSS等を読み込んでいます
-require_once __DIR__ . '/../a_header.php';
-
 // =================================================================
 // 1. 検索条件・ソート条件の取得
 // =================================================================
