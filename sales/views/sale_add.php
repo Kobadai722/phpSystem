@@ -12,7 +12,6 @@ $employees = [];
 $stmtEmployee = $PDO->prepare("SELECT EMPLOYEE_ID, NAME FROM EMPLOYEE ORDER BY EMPLOYEE_ID");
 $stmtEmployee->execute();
 $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -36,59 +35,61 @@ $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
 
                 <form id="orderAddForm" method="POST" novalidate>
 
+                    <!-- 商品選択 -->
                     <div class="mb-3">
                         <label for="product_id" class="form-label">商品</label>
                         <select class="form-select" id="product_id" name="product_id" required>
                             <option value="">選択してください</option>
                             <?php foreach ($products as $product): ?>
                                 <option 
-                                    value="<?php echo htmlspecialchars($product['PRODUCT_ID']); ?>"
-                                    data-name="<?php echo htmlspecialchars($product['PRODUCT_NAME']); ?>"
-                                    data-price="<?php echo htmlspecialchars($product['UNIT_SELLING_PRICE']); ?>"
+                                    value="<?= htmlspecialchars($product['PRODUCT_ID']); ?>"
+                                    data-name="<?= htmlspecialchars($product['PRODUCT_NAME']); ?>"
+                                    data-price="<?= htmlspecialchars($product['UNIT_SELLING_PRICE']); ?>"
                                 >
-                                    <?php echo htmlspecialchars($product['PRODUCT_NAME']); ?> 
-                                    (ID: <?php echo htmlspecialchars($product['PRODUCT_ID']); ?>, 
-                                    単価: <?php echo number_format($product['UNIT_SELLING_PRICE']); ?>円)
+                                    <?= htmlspecialchars($product['PRODUCT_NAME']); ?>
+                                    (ID: <?= $product['PRODUCT_ID']; ?> / 単価: <?= number_format($product['UNIT_SELLING_PRICE']); ?>円)
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <div class="invalid-feedback">商品を選択してください。</div>
                     </div>
 
+                    <!-- 数量 -->
                     <div class="mb-3">
                         <label for="order_quantity" class="form-label">注文数量</label>
                         <input type="number" class="form-control" id="order_quantity" name="order_quantity" required min="1" step="1" value="1">
-                        <div class="invalid-feedback">注文数量を入力してください。</div>
+                        <div class="invalid-feedback">数量を入力してください。</div>
                     </div>
 
+                    <!-- 顧客ID -->
                     <div class="mb-3">
                         <label for="customer_id" class="form-label">顧客ID</label>
-                        <input type="number" class="form-control" id="customer_id" name="customer_id" required min="1" step="1">
-                        <div class="form-text text-muted">有効な顧客IDを入力してください。</div>
+                        <input type="number" class="form-control" id="customer_id" name="customer_id" required min="1">
                         <div class="invalid-feedback">顧客IDを入力してください。</div>
                     </div>
 
+                    <!-- 担当者 -->
                     <div class="mb-3">
                         <label for="employee_id" class="form-label">担当者</label>
                         <select class="form-select" id="employee_id" name="employee_id" required>
                             <option value="">選択してください</option>
                             <?php foreach ($employees as $emp): ?>
                                 <option
-                                    value="<?php echo htmlspecialchars($emp['EMPLOYEE_ID']); ?>"
-                                    data-id="<?php echo htmlspecialchars($emp['EMPLOYEE_ID']); ?>"
-                                    data-name="<?php echo htmlspecialchars($emp['NAME']); ?>"
+                                    value="<?= htmlspecialchars($emp['EMPLOYEE_ID']); ?>"
+                                    data-name="<?= htmlspecialchars($emp['NAME']); ?>"
                                 >
-                                    <?php echo htmlspecialchars($emp['NAME']); ?> (ID: <?php echo htmlspecialchars($emp['EMPLOYEE_ID']); ?>)
+                                    <?= htmlspecialchars($emp['NAME']); ?> (ID: <?= htmlspecialchars($emp['EMPLOYEE_ID']); ?>)
                                 </option>
                             <?php endforeach; ?>
                         </select>
                         <div class="invalid-feedback">担当者を選択してください。</div>
                     </div>
 
+                    <!-- 備考 -->
                     <div class="mb-3">
                         <label for="notes" class="form-label">備考</label>
                         <textarea class="form-control" id="notes" name="notes" rows="3" maxlength="255"></textarea>
-                        <div class="form-text text-muted">最大255文字まで</div>
+                        <div class="form-text">最大255文字</div>
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
@@ -104,7 +105,8 @@ $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
         </section>
     </main>
 
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <!-- モーダル -->
+    <div class="modal fade" id="confirmModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -128,91 +130,86 @@ $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-                    <button type="button" class="btn btn-primary" id="confirmOrderBtn">注文を確定</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">戻る</button>
+                    <button type="button" class="btn btn-primary" id="confirmOrderBtn">登録する</button>
                 </div>
 
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-        const form = document.getElementById("orderAddForm");
-        const productSelect = document.getElementById("product_id");
-        const quantityInput = document.getElementById("order_quantity");
-        const customerIdInput = document.getElementById("customer_id");
-        const employeeSelect = document.getElementById("employee_id");
-        const notesInput = document.getElementById("notes");
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
-        const confirmModal = new bootstrap.Modal(document.getElementById("confirmModal"));
-        const confirmBtn = document.getElementById("confirmOrderBtn");
+    const form = document.getElementById("orderAddForm");
+    const productSelect = document.getElementById("product_id");
+    const quantityInput = document.getElementById("order_quantity");
+    const customerIdInput = document.getElementById("customer_id");
+    const employeeSelect = document.getElementById("employee_id");
+    const notesInput = document.getElementById("notes");
 
-        // 登録ボタン押下 → モーダル表示
-        form.addEventListener("submit", (event) => {
-            event.preventDefault(); 
+    const confirmModal = new bootstrap.Modal(document.getElementById("confirmModal"));
+    const confirmBtn = document.getElementById("confirmOrderBtn");
 
-            if (!form.checkValidity()) {
-                event.stopPropagation();
-                form.classList.add("was-validated");
-                return;
-            }
+    // 送信 → モーダル表示
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-            const selectedProduct = productSelect.options[productSelect.selectedIndex];
-            const productName = selectedProduct.dataset.name;
-            const unitPrice = Number(selectedProduct.dataset.price); // 単価取得
-            const quantity = Number(quantityInput.value);
-            const subtotal = unitPrice * quantity; // 小計計算
+        if (!form.checkValidity()) {
+            form.classList.add("was-validated");
+            return;
+        }
 
-            const selectedEmployee = employeeSelect.options[employeeSelect.selectedIndex];
-            const employeeName = selectedEmployee.dataset.name;
-            const employeeId = selectedEmployee.value;
+        const selectedProduct = productSelect.options[productSelect.selectedIndex];
+        const productName = selectedProduct.dataset.name;
+        const price = Number(selectedProduct.dataset.price);
+        const quantity = Number(quantityInput.value);
+        const subtotal = price * quantity;
 
-            // モーダルに値セット
-            document.getElementById("confirmProductName").innerText = productName;
-            document.getElementById("confirmProductPrice").innerText = unitPrice.toLocaleString() + "円";
-            document.getElementById("confirmQuantity").innerText = quantity;
-            document.getElementById("confirmSubtotal").innerText = subtotal.toLocaleString() + "円"; // 日本円表示
-            document.getElementById("confirmCustomerId").innerText = customerIdInput.value;
-            document.getElementById("confirmEmployeeId").innerText = employeeId;
-            document.getElementById("confirmEmployeeName").innerText = employeeName;
-            document.getElementById("confirmNotes").innerText = notesInput.value || "(なし)";
+        const selectedEmployee = employeeSelect.options[employeeSelect.selectedIndex];
 
-            confirmModal.show();
-        });
+        document.getElementById("confirmProductName").innerText = productName;
+        document.getElementById("confirmProductPrice").innerText = price.toLocaleString() + "円";
+        document.getElementById("confirmQuantity").innerText = quantity;
+        document.getElementById("confirmSubtotal").innerText = subtotal.toLocaleString() + "円";
+        document.getElementById("confirmCustomerId").innerText = customerIdInput.value;
+        document.getElementById("confirmEmployeeId").innerText = selectedEmployee.value;
+        document.getElementById("confirmEmployeeName").innerText = selectedEmployee.dataset.name;
+        document.getElementById("confirmNotes").innerText = notesInput.value || "(なし)";
 
-        // モーダル → 注文確定 (API呼び出し)
-        confirmBtn.addEventListener("click", async () => {
-
-            const formData = new FormData(form);
-
-            try {
-                // APIを呼び出し
-                const response = await fetch("../api/add_sale_api.php", {
-                    method: "POST",
-                    body: formData
-                });
-
-                // JSONとして解析。ここでHTMLが返るとJSON解析エラーになる
-                const result = await response.json(); 
-
-                if (result.success) {
-                    alert("注文を登録しました！");
-                    // 登録成功後、管理画面へ遷移
-                    window.location.href = "management.php";
-                } else {
-                    alert("登録に失敗しました： " + result.message);
-                }
-
-            } catch (error) {
-                alert("通信エラーが発生しました。サーバー応答を確認してください。");
-                console.error(error);
-            }
-        });
-
+        confirmModal.show();
     });
-    </script>
+
+    // モーダル → 注文確定
+    confirmBtn.addEventListener("click", async () => {
+
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch("../api/add_sale_api.php", {
+                method: "POST",
+                body: formData
+            });
+
+            const json = await res.json();
+
+            if (json.success) {
+                alert("注文を登録しました！");
+                window.location.href = "management.php";
+            } else {
+                alert("登録に失敗しました：" + json.message);
+            }
+
+        } catch (err) {
+            alert("通信エラーが発生しました。");
+            console.error(err);
+        }
+    });
+
+});
+</script>
+
 </body>
 </html>

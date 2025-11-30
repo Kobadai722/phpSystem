@@ -26,7 +26,9 @@ try {
 
     // 商品の在庫 & 単価取得（FOR UPDATE でロック）
     $stmt = $PDO->prepare("
-        SELECT S.STOCK_QUANTITY, P.UNIT_SELLING_PRICE
+        SELECT 
+            S.STOCK_QUANTITY, 
+            P.UNIT_SELLING_PRICE
         FROM STOCK S
         JOIN PRODUCT P ON S.PRODUCT_ID = P.PRODUCT_ID
         WHERE S.PRODUCT_ID = ?
@@ -39,8 +41,8 @@ try {
         throw new Exception("商品または在庫が存在しません。");
     }
 
-    $stockQty = (int)$row['STOCK_QUANTITY'];
-    $unitPrice = $row['UNIT_SELLING_PRICE'];
+    $stockQty  = (int)$row['STOCK_QUANTITY'];
+    $unitPrice = (int)$row['UNIT_SELLING_PRICE'];
 
     // 在庫不足チェック
     if ($stockQty < $quantity) {
@@ -51,30 +53,29 @@ try {
     $totalPrice = $unitPrice * $quantity;
     $orderFlag = 1;
 
-    // ORDER登録
+    // ORDER登録（QUANTITY を必ず保存！）
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER`
-        (PURCHASE_ORDER_DATE, PRODUCT_ID, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
+            (PURCHASE_ORDER_DATE, PRODUCT_ID, QUANTITY, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
         VALUES
-        (NOW(), ?, ?, ?, ?, ?, ?)
+            (NOW(), ?, ?, ?, ?, ?, ?, ?)
     ");
 
-    if (!$insertOrder->execute([
-        $productId,     // ← 商品IDを正しく登録
-        $customerId,
-        $orderFlag,
-        $totalPrice,
-        $employeeId,
-        $notes
-    ])) {
-        throw new Exception("ORDER登録失敗");
-    }
+    $insertOrder->execute([
+        $productId,     // 商品ID
+        $quantity,      // ← 重要！数量を ORDER に保存
+        $customerId,    // 顧客ID
+        $orderFlag,     // フラグ
+        $totalPrice,    // 合計金額
+        $employeeId,    // 担当者
+        $notes          // 備考
+    ]);
 
     // 在庫更新
     $newStock = $stockQty - $quantity;
     $updateStock = $PDO->prepare("
         UPDATE STOCK 
-        SET STOCK_QUANTITY = ?, LAST_UPDATING_TIME = NOW() 
+        SET STOCK_QUANTITY = ?, LAST_UPDATING_TIME = NOW()
         WHERE PRODUCT_ID = ?
     ");
     $updateStock->execute([$newStock, $productId]);
