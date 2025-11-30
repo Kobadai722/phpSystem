@@ -160,6 +160,8 @@ $top_products = [
     <script>
         // グローバル変数
         let salesChart;
+        // Python APIのエンドポイント（ローカルで動かす場合）
+        const PYTHON_PREDICT_API = 'http://localhost:5000/predict_sales';
 
         document.addEventListener('DOMContentLoaded', function() {
         // ページロード時に全データを取得
@@ -170,12 +172,80 @@ $top_products = [
         function formatCurrency(amount) {
             return '¥' + parseInt(amount).toLocaleString();
         }
+        
+        // --- 予測機能用の追加関数 ---
+
+        // 1. 過去の売上データ取得APIを呼び出す関数
+        async function fetchPastSalesData() {
+            // 実際にはこのAPIがMySQLから過去1～3年分の日次売上データ（ds, y の配列）を取得する
+            const response = await fetch('../api/get_past_sales_data.php', { method: 'POST' });
+            
+            // データが空またはエラーの場合
+            if (!response.ok) {
+                console.error('過去データ取得APIでエラーが発生しました。');
+                return []; 
+            }
+            const data = await response.json();
+            
+            if (data.success && Array.isArray(data.sales_data)) {
+                return data.sales_data;
+            }
+            return [];
+        }
+
+        // 2. Python予測APIを呼び出してKPIを更新する関数
+        async function fetchAndRunPrediction() {
+            try {
+                // PHP APIから過去の日次データを取得
+                const pastSalesData = await fetchPastSalesData(); 
+                
+                if (pastSalesData.length < 365) {
+                    console.warn('予測に必要なデータが不足しています（最低1年分）。');
+                    document.getElementById('next_month_forecast').textContent = 'データ不足';
+                    document.getElementById('forecast_confidence').textContent = '---';
+                    return;
+                }
+
+                // Python APIに過去データをPOSTリクエストで送信
+                const predictResponse = await fetch(PYTHON_PREDICT_API, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(pastSalesData)
+                });
+
+                if (!predictResponse.ok) {
+                    throw new Error(`Python API接続エラー: ステータス ${predictResponse.status}`);
+                }
+                const predictResult = await predictResponse.json(); 
+
+                if (predictResult.success) {
+                    // 予測値を更新
+                    document.getElementById('next_month_forecast').textContent = formatCurrency(predictResult.next_month_forecast);
+                    
+                    // 信頼度を更新
+                    const confidence = predictResult.forecast_confidence;
+                    document.getElementById('forecast_confidence').textContent = confidence;
+                    
+                    // 予測値の文字色を信頼度に応じて調整するなどの応用も可能
+                } else {
+                    console.error("予測API実行エラー:", predictResult.message);
+                    document.getElementById('next_month_forecast').textContent = '予測失敗';
+                    document.getElementById('forecast_confidence').textContent = 'エラー';
+                }
+            } catch (error) {
+                console.error('予測処理エラー:', error);
+                document.getElementById('next_month_forecast').textContent = '接続エラー';
+                document.getElementById('forecast_confidence').textContent = '---';
+            }
+        }
+        
+        // --- メインデータ取得関数 ---
 
         // 全てのダッシュボードデータをAPIから取得し、表示を更新するメイン関数
         async function fetchDashboardData() {
-        // ローディング状態の表示は、各セクションの初期HTMLで対応済み
-
-        // 1. KPI & トップ商品データ取得
+            // 1. KPI & トップ商品データ取得
             try {
                 // KPI APIの呼び出し
                 const kpiResponse = await fetch('../api/get_dashboard_kpis_api.php', { method: 'POST' });
@@ -189,26 +259,30 @@ $top_products = [
                     updateKpiCards(kpiResult.kpis);
                     updateTopProducts(kpiResult.top_products);
                     updateStockAlerts(kpiResult.stock_alerts);
+                    
+                    // Python連携前はここでハードコードされた予測値を更新していたが、
+                    // これを無効化し、下の予測専用関数に処理を委譲する
+                    // document.getElementById('next_month_forecast').textContent = formatCurrency(kpiResult.kpis.next_month_forecast);
+                    // document.getElementById('forecast_confidence').textContent = kpiResult.kpis.forecast_confidence;
+
                 } else {
                     console.error("KPIデータ取得エラー:", kpiResult.message);
                     document.getElementById('current_month_sales').textContent = 'エラー';
                 }
             } catch (error) {
                 console.error('KPI Fetch error:', error);
-                // サーバーから予期せぬ応答（HTMLなど）が返された場合のエラー表示
                 document.getElementById('current_month_sales').textContent = '接続エラー';
             }
+            
+            // ⭐ 追加: 3. Python APIによる予測の実行
+            fetchAndRunPrediction();
 
             // 2. 売上推移グラフデータ取得
             try {
                 const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
-                
-                // 応答がHTMLではなくJSONであることを確認
                 if (!trendResponse.ok) {
                     throw new Error(`HTTP error! status: ${trendResponse.status}`);
                 }
-                
-                //trendResponseが定義されたため、JSON解析が可能に
                 const trendResult = await trendResponse.json(); 
 
                 if (trendResult.success) {
@@ -221,25 +295,21 @@ $top_products = [
             }
         }
 
-        // KPIカードを更新する関数
+        // KPIカードを更新する関数 (目標達成率の修正を含む)
         function updateKpiCards(kpis) {
             document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
             document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
             
-            // ★修正点 1: PHPから受け取った小数点付きの値を使用
+            // 達成率の表示とプログレスバーのロジックを修正
             const targetRatioValue = kpis.target_ratio; 
-            
-            // ★修正点 2: 達成率の表示は小数点第1位まで表示 (例: 0.2, 10.6)
             document.getElementById('target_ratio').textContent = targetRatioValue.toFixed(1);
 
             const progressBar = document.getElementById('target_progress_bar');
             
-            // ★修正点 3: プログレスバーの幅を決定
             let progressWidth = Math.min(targetRatioValue, 100);
             
-            // ★修正点 4: 達成率が0%より大きく、1%未満の場合、目視できるように強制的に1%の幅を確保
             if (targetRatioValue > 0 && targetRatioValue < 1) {
-                progressWidth = 1; 
+                progressWidth = 1; // 0%以上1%未満の場合、視覚的に1%の幅を確保
             }
             
             progressBar.style.width = progressWidth + '%';
@@ -252,11 +322,11 @@ $top_products = [
             ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
 
             document.getElementById('aov').textContent = formatCurrency(kpis.aov);
-            document.getElementById('next_month_forecast').textContent = formatCurrency(kpis.next_month_forecast);
-            document.getElementById('forecast_confidence').textContent = kpis.forecast_confidence;
+            // 予測部分は予測APIの結果で上書きするため、ここでは更新しない（初期値のまま）
         }
 
-        // トップ商品ランキングを更新する関数
+        // トップ商品ランキング、在庫アラート、グラフ更新関数は変更なし
+        
         function updateTopProducts(products) {
             const list = document.getElementById('top-products-list');
             list.innerHTML = ''; 
@@ -283,7 +353,6 @@ $top_products = [
             });
         }
 
-        // 在庫アラートセクションを更新する関数
         function updateStockAlerts(alerts) {
             const alertArea = document.getElementById('stock-alerts-area');
             document.getElementById('alert-count').textContent = alerts.length;
@@ -329,8 +398,6 @@ $top_products = [
             alertArea.innerHTML = tableHtml;
         }
 
-
-        // 売上推移グラフを更新する関数
         function updateSalesChart(data) {
             const labels = data.map(item => item.period);
             const sales = data.map(item => parseFloat(item.total_sales));
