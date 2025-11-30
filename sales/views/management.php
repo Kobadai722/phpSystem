@@ -96,7 +96,7 @@ $top_products = [];
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="bi bi-cash-stack"></i> 翌月売上予測</h6>
-                                <p class="card-text fs-4 fw-bold text-info" id="next_month_forecast">¥---</p>
+                                <p class="card-text fs-4 fw-bold" id="next_month_forecast">¥---</p>
                                 <small class="text-muted">予測信頼度: <span id="forecast_confidence">---</span></small>
                             </div>
                         </div>
@@ -183,6 +183,7 @@ $top_products = [];
         async function fetchDashboardData() {
             // 1. KPI & トップ商品データ取得
             try {
+                // ここでAPIを呼び出す
                 const kpiResponse = await fetch('../api/get_dashboard_kpis_api.php', { method: 'POST' });
                 
                 if (!kpiResponse.ok) {

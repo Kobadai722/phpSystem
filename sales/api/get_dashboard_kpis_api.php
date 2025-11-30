@@ -1,7 +1,8 @@
 <?php
 // DB接続とデータ取得、エラー処理
-require_once '../../config.php'; // 接続情報への正しいパスを設定してください
+require_once '../../config.php'; 
 
+// 実行前にJSONヘッダーを出力
 header('Content-Type: application/json');
 
 try {
@@ -137,7 +138,6 @@ try {
             'target_ratio' => $targetRatio,
             'last_month_ratio' => round($lastMonthRatio, 1),
             'aov' => (int)$aov,
-            // Pythonを使わないため、予測値はダミーデータを維持します
             'next_month_forecast' => 18500000, 
             'forecast_confidence' => '88%',
         ],
@@ -146,11 +146,9 @@ try {
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
-    // データベースエラーが発生した場合
-    http_response_code(500); // 500 Internal Server Errorを返す
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
-    // その他のシステムエラーが発生した場合
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
 }
