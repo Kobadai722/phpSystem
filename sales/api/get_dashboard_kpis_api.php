@@ -101,3 +101,7 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
+    // 予期しないシステムレベルのエラーを処理
+    echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
+}
+?> 
