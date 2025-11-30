@@ -13,7 +13,7 @@ $pending_count = $stmt_pending->fetchColumn();
 
 <head>
     <meta charset="UTF-8">
-    <title>人事管理表</title>
+    <title>人事管理ダッシュボード</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -34,7 +34,7 @@ $pending_count = $stmt_pending->fetchColumn();
         unset($_SESSION['error_message']);
     }
     ?>
-    <h1>人事管理表-編集者モード</h1>
+    <h1 class="mb-4"><i class="bi bi-people-fill"></i> 人事管理ダッシュボード</h1>
     <?php
     require_once '../config.php';
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
