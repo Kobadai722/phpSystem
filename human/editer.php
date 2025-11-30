@@ -34,7 +34,7 @@ $pending_count = $stmt_pending->fetchColumn();
         unset($_SESSION['error_message']);
     }
     ?>
-    <h1 class="mb-4"><i class="bi bi-people-fill"></i> 人事管理ダッシュボード</h1>
+    <h1 class="mb-4"><i class="bi bi-people-fill me-2"></i> 人事管理ダッシュボード</h1>
     <?php
     require_once '../config.php';
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
