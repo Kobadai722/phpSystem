@@ -3,23 +3,16 @@
 require_once '../../config.php';
 
 // PHP側ではデータ取得を行わず、全てJavaScriptでAPIから取得するように修正
-$stock_alerts_count = 2; // JavaScriptで取得するまでの仮の件数、またはPHPで最低限の件数だけ取得する
-
-// 仮のデータ構造を維持しつつ、値は空または0で初期化
+// このブロックはHTML表示前のPHPエラー防止用として残し、値は初期化
+$stock_alerts_count = 0; 
 $current_month_sales = 0;
 $sales_target = 0;
 $last_month_ratio = 0;
 $aov = 0;
 $target_ratio = 0;
 
-$stock_alerts = [
-    ['product_name' => 'データ取得中...', 'reason' => 'データ取得中...', 'current_stock' => 0, 'forecast' => 0],
-];
-$top_products = [
-    ['name' => 'データ取得中...', 'sales' => 0],
-    ['name' => 'データ取得中...', 'sales' => 0],
-    ['name' => 'データ取得中...', 'sales' => 0],
-];
+$stock_alerts = [];
+$top_products = [];
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -160,7 +153,7 @@ $top_products = [
     <script>
         // グローバル変数
         let salesChart;
-        // Python APIのエンドポイント（ローカルで動かす場合）
+        // Python APIのエンドポイントは今回は使用しないため、参照のみ残す
         const PYTHON_PREDICT_API = 'http://localhost:5000/predict_sales';
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -173,72 +166,15 @@ $top_products = [
             return '¥' + parseInt(amount).toLocaleString();
         }
         
-        // --- 予測機能用の追加関数 ---
+        // --- 予測機能用の関数（今回は使用しないため、中身を空にするか、削除します） ---
 
-        // 1. 過去の売上データ取得APIを呼び出す関数
         async function fetchPastSalesData() {
-            // 実際にはこのAPIがMySQLから過去1～3年分の日次売上データ（ds, y の配列）を取得する
-            const response = await fetch('../api/get_past_sales_data.php', { method: 'POST' });
-            
-            // データが空またはエラーの場合
-            if (!response.ok) {
-                console.error('過去データ取得APIでエラーが発生しました。');
-                return []; 
-            }
-            const data = await response.json();
-            
-            if (data.success && Array.isArray(data.sales_data)) {
-                return data.sales_data;
-            }
-            return [];
+             return []; 
         }
 
-        // 2. Python予測APIを呼び出してKPIを更新する関数
         async function fetchAndRunPrediction() {
-            try {
-                // PHP APIから過去の日次データを取得
-                const pastSalesData = await fetchPastSalesData(); 
-                
-                if (pastSalesData.length < 365) {
-                    console.warn('予測に必要なデータが不足しています（最低1年分）。');
-                    document.getElementById('next_month_forecast').textContent = 'データ不足';
-                    document.getElementById('forecast_confidence').textContent = '---';
-                    return;
-                }
-
-                // Python APIに過去データをPOSTリクエストで送信
-                const predictResponse = await fetch(PYTHON_PREDICT_API, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(pastSalesData)
-                });
-
-                if (!predictResponse.ok) {
-                    throw new Error(`Python API接続エラー: ステータス ${predictResponse.status}`);
-                }
-                const predictResult = await predictResponse.json(); 
-
-                if (predictResult.success) {
-                    // 予測値を更新
-                    document.getElementById('next_month_forecast').textContent = formatCurrency(predictResult.next_month_forecast);
-                    
-                    // 信頼度を更新
-                    const confidence = predictResult.forecast_confidence;
-                    document.getElementById('forecast_confidence').textContent = confidence;
-                    
-                    // 予測値の文字色を信頼度に応じて調整するなどの応用も可能
-                } else {
-                    console.error("予測API実行エラー:", predictResult.message);
-                    document.getElementById('next_month_forecast').textContent = '予測失敗';
-                    document.getElementById('forecast_confidence').textContent = 'エラー';
-                }
-            } catch (error) {
-                console.error('予測処理エラー:', error);
-                document.getElementById('next_month_forecast').textContent = '接続エラー';
-                document.getElementById('forecast_confidence').textContent = '---';
-            }
+            // Python予測は無効化し、PHPから返されたダミー値を使用します。
+            console.log('Python予測APIの実行は無効化されています。');
         }
         
         // --- メインデータ取得関数 ---
@@ -247,9 +183,8 @@ $top_products = [
         async function fetchDashboardData() {
             // 1. KPI & トップ商品データ取得
             try {
-                // KPI APIの呼び出し
                 const kpiResponse = await fetch('../api/get_dashboard_kpis_api.php', { method: 'POST' });
-                // 応答がHTMLではなくJSONであることを確認
+                
                 if (!kpiResponse.ok) {
                     throw new Error(`HTTP error! status: ${kpiResponse.status}`);
                 }
@@ -258,12 +193,13 @@ $top_products = [
                 if (kpiResult.success) {
                     updateKpiCards(kpiResult.kpis);
                     updateTopProducts(kpiResult.top_products);
-                    updateStockAlerts(kpiResult.stock_alerts);
                     
-                    // Python連携前はここでハードコードされた予測値を更新していたが、
-                    // これを無効化し、下の予測専用関数に処理を委譲する
-                    // document.getElementById('next_month_forecast').textContent = formatCurrency(kpiResult.kpis.next_month_forecast);
-                    // document.getElementById('forecast_confidence').textContent = kpiResult.kpis.forecast_confidence;
+                    // ⭐ 在庫アラートの更新 (実データを使用) ⭐
+                    updateStockAlerts(kpiResult.stock_alerts); 
+                    
+                    // 予測値の更新（PHPから返されたダミー値/計算結果を使用）
+                    document.getElementById('next_month_forecast').textContent = formatCurrency(kpiResult.kpis.next_month_forecast);
+                    document.getElementById('forecast_confidence').textContent = kpiResult.kpis.forecast_confidence;
 
                 } else {
                     console.error("KPIデータ取得エラー:", kpiResult.message);
@@ -274,9 +210,6 @@ $top_products = [
                 document.getElementById('current_month_sales').textContent = '接続エラー';
             }
             
-            // ⭐ 追加: 3. Python APIによる予測の実行
-            fetchAndRunPrediction();
-
             // 2. 売上推移グラフデータ取得
             try {
                 const trendResponse = await fetch('../api/get_sales_trend_api.php', { method: 'POST' });
@@ -295,7 +228,7 @@ $top_products = [
             }
         }
 
-        // KPIカードを更新する関数 (目標達成率の修正を含む)
+        // KPIカードを更新する関数
         function updateKpiCards(kpis) {
             document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
             document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
@@ -322,11 +255,8 @@ $top_products = [
             ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
 
             document.getElementById('aov').textContent = formatCurrency(kpis.aov);
-            // 予測部分は予測APIの結果で上書きするため、ここでは更新しない（初期値のまま）
         }
 
-        // トップ商品ランキング、在庫アラート、グラフ更新関数は変更なし
-        
         function updateTopProducts(products) {
             const list = document.getElementById('top-products-list');
             list.innerHTML = ''; 
@@ -353,6 +283,7 @@ $top_products = [
             });
         }
 
+        // ⭐ 在庫アラートの表示関数（最終版） ⭐
         function updateStockAlerts(alerts) {
             const alertArea = document.getElementById('stock-alerts-area');
             document.getElementById('alert-count').textContent = alerts.length;
@@ -368,25 +299,25 @@ $top_products = [
                     <thead>
                         <tr>
                             <th>商品名</th>
-                            <th>アラート内容</th>
                             <th>現在の在庫</th>
-                            <th>予測販売数 (来月)</th>
+                            <th>平均販売数 (来月予測)</th>
+                            <th>不足数</th>
                             <th>対応</th>
                         </tr>
                     </thead>
                     <tbody>`;
             
             alerts.forEach(alert => {
-                const alertClass = (alert.reason === '予測販売数超過') ? 'table-warning' : 'table-info';
-                const actionText = (alert.reason === '予測販売数超過') ? '緊急発注検討' : '在庫状況確認';
+                // 不足しているため、警告色を適用
+                const actionText = '発注検討';
                 
                 tableHtml += `
-                    <tr class="${alertClass}">
+                    <tr class="table-warning">
                         <td>${alert.product_name}</td>
-                        <td>${alert.reason}</td>
                         <td>${parseInt(alert.current_stock).toLocaleString()}</td>
                         <td>${parseInt(alert.forecast).toLocaleString()}</td>
-                        <td><a href="stock_management.php?product=${encodeURIComponent(alert.product_name)}" class="btn btn-sm btn-outline-secondary">${actionText}</a></td>
+                        <td class="text-danger fw-bold">${parseInt(alert.shortage).toLocaleString()}</td>
+                        <td><a href="stock_management.php?product=${encodeURIComponent(alert.product_name)}" class="btn btn-sm btn-outline-danger">${actionText}</a></td>
                     </tr>
                 `;
             });

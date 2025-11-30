@@ -1,6 +1,6 @@
 <?php
 // DB接続とデータ取得、エラー処理
-require_once '../../config.php';
+require_once '../../config.php'; // 接続情報への正しいパスを設定してください
 
 header('Content-Type: application/json');
 
@@ -71,36 +71,84 @@ try {
     $stmtTopProducts->execute();
     $topProducts = $stmtTopProducts->fetchAll(PDO::FETCH_ASSOC);
 
-    // 6. 仮のデータ（目標、在庫アラート）
+    // 6. 目標達成率の計算
     $salesTarget = 20000000;
-    // ★修正点: round()を削除し、小数点以下の精度を維持
     $targetRatio = ($currentSales > 0) ? ($currentSales / $salesTarget) * 100 : 0;
     
-    $stockAlerts = [
-        ['product_name' => '商品A (予測不足)', 'reason' => '予測販売数超過', 'current_stock' => 300, 'forecast' => 500],
-        ['product_name' => '商品B (過剰在庫)', 'reason' => '在庫滞留リスク', 'current_stock' => 1200, 'forecast' => 50]
-    ];
     
-    // 7. 結果をJSONで返す
+    // =======================================================
+    // ⭐ 在庫アラートロジックの実装 ⭐
+    // =======================================================
+    
+    // 過去6ヶ月間の月次平均販売数に基づいて、在庫が不足している商品を抽出するSQL
+    $sql_alerts = "
+        SELECT
+            p.NAME AS product_name,
+            s.CURRENT_STOCK,
+            -- 過去6ヶ月間の販売数合計を6で割った「月次平均販売数」を計算
+            (
+                SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
+                FROM `ORDER` o2
+                WHERE o2.PRODUCT_ID = p.PRODUCT_ID
+                  AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            ) AS monthly_avg_sales
+        FROM
+            PRODUCT p
+        JOIN
+            STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+        HAVING
+            -- アラート条件: 現在の在庫 < 月次平均販売数
+            s.CURRENT_STOCK < monthly_avg_sales
+            -- ただし、月次平均販売数が0の場合は除外
+            AND monthly_avg_sales > 0
+        ORDER BY
+            (monthly_avg_sales - s.CURRENT_STOCK) DESC -- 不足量が多い順にソート
+        LIMIT 10 -- アラートが多すぎる場合に備えて上限を設定
+    ";
+
+    $stmt_alerts = $PDO->prepare($sql_alerts);
+    $stmt_alerts->execute();
+    $alerts_raw = $stmt_alerts->fetchAll(PDO::FETCH_ASSOC);
+
+    // アラートデータの構造化
+    $stock_alerts = [];
+    foreach ($alerts_raw as $row) {
+        // 翌月予測販売数（平均ベース）
+        $forecast = round($row['monthly_avg_sales']); 
+        
+        $stock_alerts[] = [
+            'product_name' => $row['product_name'],
+            'current_stock' => (int)$row['CURRENT_STOCK'],
+            // JavaScriptの既存コードに合わせてキー名を'forecast'と'shortage'を設定
+            'forecast' => $forecast, 
+            'shortage' => $forecast - (int)$row['CURRENT_STOCK'], 
+            'reason' => '平均販売数超過予測',
+        ];
+    }
+    
+    // =======================================================
+    // ⭐ JSONで結果を返す ⭐
+    // =======================================================
+    
     echo json_encode([
         'success' => true,
         'kpis' => [
             'current_month_sales' => (int)$currentSales,
             'sales_target' => $salesTarget,
-            'target_ratio' => $targetRatio, // 小数点以下の値がそのままJavaScriptに渡される
+            'target_ratio' => $targetRatio,
             'last_month_ratio' => round($lastMonthRatio, 1),
             'aov' => (int)$aov,
-            'next_month_forecast' => 18500000,
+            // Pythonを使わないため、予測値はダミーデータを維持します
+            'next_month_forecast' => 18500000, 
             'forecast_confidence' => '88%',
         ],
         'top_products' => $topProducts,
-        'stock_alerts' => $stockAlerts
-    ]);
+        'stock_alerts' => $stock_alerts // SQLから取得した実際のアラートデータ
+    ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
-    // 予期しないシステムレベルのエラーを処理
     echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
 }
 ?>
