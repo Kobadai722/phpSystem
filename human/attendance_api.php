@@ -1,10 +1,18 @@
 <?php
+// エラーが出ても画面にHTMLを出力せず、JSON形式を保つための設定
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
 session_start();
-
 require_once '../config.php';
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
-global $PDO;//お試し
+// $PDOがconfig.phpで定義されているか確認
+global $PDO;
+if (!isset($PDO)) {
+    echo json_encode(['success' => false, 'message' => 'データベース接続エラー: config.phpを確認してください。']);
+    exit;
+}
 
 if (!isset($_SESSION['employee_id'])) {
     echo json_encode(['success' => false, 'message' => 'ログインが必要です。']);
@@ -12,12 +20,16 @@ if (!isset($_SESSION['employee_id'])) {
 }
 
 $employee_id = $_SESSION['employee_id'];
+
+// ▼▼▼ 修正: $_POST から $_REQUEST に変更 (GETリクエストに対応) ▼▼▼
 $action = $_REQUEST['action'] ?? '';
+// ▲▲▲ 修正ここまで ▲▲▲
+
 $date = date("Y-m-d");
 $time = date("H:i:s");
 
-if ($action === 'clockIn') {
-    try {
+try {
+    if ($action === 'clockIn') {
         // 今日の出勤記録をチェック
         $stmt = $PDO->prepare("SELECT ATTENDANCE_ID FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
         $stmt->execute([$employee_id, $date]);
@@ -31,13 +43,8 @@ if ($action === 'clockIn') {
         $stmt->execute([$employee_id, $date, $time]);
 
         echo json_encode(['success' => true, 'message' => '出勤しました。', 'clockInTime' => $time]);
-    } catch (PDOException $e) {
-        // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '出勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
-    }
 
-} elseif ($action === 'clockOut') {
-    try {
+    } elseif ($action === 'clockOut') {
         // 今日の出勤記録を取得
         $stmt = $PDO->prepare("SELECT ATTENDANCE_ID, LEAVE_TIME FROM ATTENDANCE WHERE EMPLOYEE_ID = ? AND ATTENDANCE_DATE = ?");
         $stmt->execute([$employee_id, $date]);
@@ -58,23 +65,22 @@ if ($action === 'clockIn') {
         $stmt->execute([$time, $employee_id, $date]);
 
         echo json_encode(['success' => true, 'message' => '退勤しました。', 'clockOutTime' => $time]);
-    } catch (PDOException $e) {
-        // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => '退勤処理中にエラーが発生しました。', 'debug_error' => $e->getMessage()]);
-    }
 
-} elseif ($action === 'getHistory') {
-    try {
+    } elseif ($action === 'getHistory') {
         // 勤怠履歴を取得
         $stmt = $PDO->prepare("SELECT ATTENDANCE_DATE, ATTENDANCE_TIME AS CLOCK_IN_TIME, LEAVE_TIME AS CLOCK_OUT_TIME FROM ATTENDANCE WHERE EMPLOYEE_ID = ? ORDER BY ATTENDANCE_DATE DESC");
         $stmt->execute([$employee_id]);
         $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['success' => true, 'history' => $history]);
-    } catch (PDOException $e) {
-        // 修正: error_logを削除し、純粋なJSONを返す
-        echo json_encode(['success' => false, 'message' => 'DBエラー: ' . $e->getMessage()]);
+
+    } else {
+        echo json_encode(['success' => false, 'message' => '無効なアクションです。']);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => '無効なアクションです。']);
+
+} catch (PDOException $e) {
+    // JSON形式でエラーを返す
+    echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
+} catch (Exception $e) {
+    echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
 }
 ?>
