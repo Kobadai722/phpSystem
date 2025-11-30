@@ -44,7 +44,6 @@ try {
     }
     
     // 4. 平均顧客単価 (AOV) (直近30日間)
-    // ※ データベースのテーブル名とカラム名が不明なため、今回はダミーのS_ORDER/TOTAL_AMOUNTを使用しています。
     $stmtAOV = $PDO->prepare("
         SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID) AS aov
         FROM S_ORDER
@@ -85,7 +84,7 @@ try {
     $sql_alerts = "
         SELECT
             p.NAME AS product_name,
-            s.STOCK_QUANTITY AS current_stock, -- ⚠️ STOCK_QUANTITYを使用し、別名をcurrent_stockに設定
+            s.STOCK_QUANTITY AS current_stock,
             -- 過去6ヶ月間の販売数合計を6で割った「月次平均販売数」を計算
             (
                 SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
@@ -120,7 +119,6 @@ try {
         $stock_alerts[] = [
             'product_name' => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
-            // JavaScriptの既存コードに合わせてキー名を'forecast'と'shortage'を設定
             'forecast' => $forecast, 
             'shortage' => $forecast - (int)$row['current_stock'], 
             'reason' => '平均販売数超過予測',
@@ -144,13 +142,15 @@ try {
             'forecast_confidence' => '88%',
         ],
         'top_products' => $topProducts,
-        'stock_alerts' => $stock_alerts // SQLから取得した実際のアラートデータ
+        'stock_alerts' => $stock_alerts
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
-    // デバッグ目的でエラーメッセージを返す
+    // データベースエラーが発生した場合
+    http_response_code(500); // 500 Internal Server Errorを返す
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
+    // その他のシステムエラーが発生した場合
+    http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
 }
-?>
