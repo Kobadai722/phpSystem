@@ -44,6 +44,7 @@ try {
     }
     
     // 4. 平均顧客単価 (AOV) (直近30日間)
+    // ※ データベースのテーブル名とカラム名が不明なため、今回はダミーのS_ORDER/TOTAL_AMOUNTを使用しています。
     $stmtAOV = $PDO->prepare("
         SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID) AS aov
         FROM S_ORDER
@@ -77,14 +78,14 @@ try {
     
     
     // =======================================================
-    // ⭐ 在庫アラートロジックの実装 ⭐
+    // ⭐ 在庫アラートロジックの実装 (修正版: STOCK_QUANTITYを使用) ⭐
     // =======================================================
     
     // 過去6ヶ月間の月次平均販売数に基づいて、在庫が不足している商品を抽出するSQL
     $sql_alerts = "
         SELECT
             p.NAME AS product_name,
-            s.CURRENT_STOCK,
+            s.STOCK_QUANTITY AS current_stock, -- ⚠️ STOCK_QUANTITYを使用し、別名をcurrent_stockに設定
             -- 過去6ヶ月間の販売数合計を6で割った「月次平均販売数」を計算
             (
                 SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
@@ -98,12 +99,12 @@ try {
             STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
         HAVING
             -- アラート条件: 現在の在庫 < 月次平均販売数
-            s.CURRENT_STOCK < monthly_avg_sales
+            current_stock < monthly_avg_sales 
             -- ただし、月次平均販売数が0の場合は除外
             AND monthly_avg_sales > 0
         ORDER BY
-            (monthly_avg_sales - s.CURRENT_STOCK) DESC -- 不足量が多い順にソート
-        LIMIT 10 -- アラートが多すぎる場合に備えて上限を設定
+            (monthly_avg_sales - current_stock) DESC -- 不足量が多い順にソート
+        LIMIT 10
     ";
 
     $stmt_alerts = $PDO->prepare($sql_alerts);
@@ -118,10 +119,10 @@ try {
         
         $stock_alerts[] = [
             'product_name' => $row['product_name'],
-            'current_stock' => (int)$row['CURRENT_STOCK'],
+            'current_stock' => (int)$row['current_stock'],
             // JavaScriptの既存コードに合わせてキー名を'forecast'と'shortage'を設定
             'forecast' => $forecast, 
-            'shortage' => $forecast - (int)$row['CURRENT_STOCK'], 
+            'shortage' => $forecast - (int)$row['current_stock'], 
             'reason' => '平均販売数超過予測',
         ];
     }
@@ -147,6 +148,7 @@ try {
     ], JSON_UNESCAPED_UNICODE);
 
 } catch (PDOException $e) {
+    // デバッグ目的でエラーメッセージを返す
     echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
