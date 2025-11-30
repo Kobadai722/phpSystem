@@ -5,7 +5,7 @@ require_once '../config.php';
 // 権限チェック（必要に応じて追加してください）
 // if (!isset($_SESSION['is_admin'])) { ... }
 
-
+// 対象年月の取得（デフォルトは今月）
 $month_param = $_GET['month'] ?? date('Y-m');
 
 // CSVダウンロード処理
@@ -22,10 +22,22 @@ if (isset($_GET['download'])) {
     // BOMを出力（Excelでの文字化け対策）
     fwrite($output, "\xEF\xBB\xBF");
     
-    // CSVヘッダー行
-    fputcsv($output, ['社員ID', '氏名', '部署', '日付', '出勤時刻', '退勤時刻', '実働時間(h)', 'ステータス']);
+    // CSVヘッダー行（給与情報を追加）
+    fputcsv($output, [
+        '社員ID', 
+        '氏名', 
+        '部署', 
+        '日付', 
+        '出勤時刻', 
+        '退勤時刻', 
+        '実働時間(h)', 
+        'ステータス',
+        '給与形態',    // 追加
+        '設定金額',    // 追加
+        '概算日給'     // 追加
+    ]);
 
-    // データ取得SQL
+    // データ取得SQL（SALARIESテーブルを結合）
     $sql = "
         SELECT 
             e.EMPLOYEE_ID, 
@@ -34,10 +46,13 @@ if (isset($_GET['download'])) {
             a.ATTENDANCE_DATE, 
             a.ATTENDANCE_TIME, 
             a.LEAVE_TIME, 
-            a.STATUS
+            a.STATUS,
+            s.AMOUNT AS SALARY_AMOUNT,
+            s.TYPE AS SALARY_TYPE
         FROM EMPLOYEE e
         LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
         LEFT JOIN ATTENDANCE a ON e.EMPLOYEE_ID = a.EMPLOYEE_ID
+        LEFT JOIN SALARIES s ON e.EMPLOYEE_ID = s.EMPLOYEE_ID  -- 給与テーブルを結合
         WHERE DATE_FORMAT(a.ATTENDANCE_DATE, '%Y-%m') = :target_month
         ORDER BY e.EMPLOYEE_ID, a.ATTENDANCE_DATE
     ";
@@ -46,17 +61,19 @@ if (isset($_GET['download'])) {
     $stmt->execute(['target_month' => $month_param]);
     
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-        // 実働時間の計算
-        $duration = '';
+        // 実働時間の計算（休憩控除あり）
+        $duration = 0;
+        $daily_pay = 0; // 日給計算用
+
         if (!empty($row['ATTENDANCE_TIME']) && !empty($row['LEAVE_TIME'])) {
             $start = new DateTime($row['ATTENDANCE_TIME']);
             $end = new DateTime($row['LEAVE_TIME']);
             $interval = $start->diff($end);
             
-            // まず拘束時間（時間単位）を計算
+            // 拘束時間（時間単位）
             $hours = $interval->h + ($interval->i / 60);
             
-            
+            // 休憩時間の自動控除
             $break_time = 0;
             if ($hours > 8) {
                 $break_time = 1.0;
@@ -64,16 +81,27 @@ if (isset($_GET['download'])) {
                 $break_time = 0.75;
             }
             
-            // 実働時間 = 拘束時間 - 休憩時間
+            // 実働時間
             $duration = $hours - $break_time;
+            if ($duration < 0) { $duration = 0; }
             
-            // 計算結果がマイナスにならないように調整
-            if ($duration < 0) {
-                $duration = 0;
-            }
+            // 小数点第2位まで丸める
+            $duration = round($duration, 2);
 
-            $duration = round($duration, 2); // 小数点第2位まで
+            // --- 概算日給の計算 ---
+            if ($row['SALARY_TYPE'] === 'hourly' && $row['SALARY_AMOUNT']) {
+                // 時給の場合：実働時間 × 時給
+                $daily_pay = floor($duration * $row['SALARY_AMOUNT']);
+            } elseif ($row['SALARY_TYPE'] === 'monthly') {
+                // 月給の場合：日割り計算せず「-」とするか、0とする（今回は視認性のため文字列で出力）
+                $daily_pay = '-';
+            }
         }
+
+        // 給与形態の日本語化
+        $salary_type_label = '';
+        if ($row['SALARY_TYPE'] === 'monthly') $salary_type_label = '月給';
+        if ($row['SALARY_TYPE'] === 'hourly') $salary_type_label = '時給';
 
         // 行の出力
         fputcsv($output, [
@@ -84,7 +112,10 @@ if (isset($_GET['download'])) {
             $row['ATTENDANCE_TIME'],
             $row['LEAVE_TIME'],
             $duration,
-            $row['STATUS']
+            $row['STATUS'],
+            $salary_type_label,                 // 給与形態
+            $row['SALARY_AMOUNT'],              // 設定金額
+            $daily_pay                          // 概算日給
         ]);
     }
     
@@ -123,7 +154,8 @@ if (isset($_GET['download'])) {
                 </form>
                 <p class="mt-3 text-muted">
                     ※ 選択した月の全社員の勤怠データをCSV形式で出力します。<br>
-                    ※ 実働時間は「退勤時刻 - 出勤時刻」から休憩時間（6時間超で45分、8時間超で1時間）を自動控除して算出されます。
+                    ※ 「時給」設定の社員については、実働時間に基づいた概算日給が出力されます。<br>
+                    ※ 「月給」設定の社員の日給欄は「-」となります。
                 </p>
             </div>
         </div>
