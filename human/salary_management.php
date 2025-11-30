@@ -9,12 +9,13 @@ $msg_type = '';
 // --- POST処理（登録・更新） ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emp_id = $_POST['employee_id'];
-    $amount = $_POST['amount'];
+    // カンマを除去して数値として取得
+    $amount = str_replace(',', '', $_POST['amount']);
     $type = $_POST['type'];
 
     if ($emp_id && $amount !== '') {
         try {
-            // 既存があれば更新、なければ挿入 (ON DUPLICATE KEY UPDATE)
+            // 既存があれば更新、なければ挿入
             $sql = "INSERT INTO SALARIES (EMPLOYEE_ID, AMOUNT, TYPE) VALUES (?, ?, ?)
                     ON DUPLICATE KEY UPDATE AMOUNT = VALUES(AMOUNT), TYPE = VALUES(TYPE)";
             $stmt = $PDO->prepare($sql);
@@ -30,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // --- 社員と給与情報の取得 ---
-// 左結合(LEFT JOIN)で、給与未設定の社員も表示する
 $sql = "
     SELECT e.EMPLOYEE_ID, e.NAME, s.AMOUNT, s.TYPE 
     FROM EMPLOYEE e
@@ -48,6 +48,7 @@ $employees = $PDO->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <?php include '../header.php'; ?>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="human.css">
 </head>
 <body>
     <div class="container py-4">
@@ -139,7 +140,7 @@ $employees = $PDO->query($sql)->fetchAll(PDO::FETCH_ASSOC);
                             <label class="form-label">金額 (円) <span class="text-danger">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text">¥</span>
-                                <input type="number" name="amount" id="modalAmount" class="form-control" min="0" required>
+                                <input type="text" name="amount" id="modalAmount" class="form-control" placeholder="0" required>
                             </div>
                         </div>
 
@@ -154,24 +155,6 @@ $employees = $PDO->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // モーダルにデータを渡す処理
-        const salaryModal = document.getElementById('salaryModal');
-        salaryModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget;
-            
-            // データ属性から値を取得
-            const id = button.getAttribute('data-id');
-            const name = button.getAttribute('data-name');
-            const amount = button.getAttribute('data-amount');
-            const type = button.getAttribute('data-type');
-
-            // モーダル内の入力欄にセット
-            document.getElementById('modalEmpId').value = id;
-            document.getElementById('modalEmpName').value = name;
-            document.getElementById('modalAmount').value = amount;
-            document.getElementById('modalType').value = type;
-        });
-    </script>
+    <script src="salary_management.js"></script>
 </body>
 </html>

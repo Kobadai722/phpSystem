@@ -49,3 +49,11 @@ td span i{
         transform: translateY(0) scale(1);
     }
 }
+
+.input-group .form-control {
+    margin-bottom: 0 !important;
+}
+
+#modalAmount {
+    text-align: right;
+}
