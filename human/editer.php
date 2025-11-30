@@ -114,6 +114,11 @@ $pending_count = $stmt_pending->fetchColumn();
                             </a>
                         </li>
                         <li>
+                            <a class="dropdown-item" href="salary_management.php">
+                                <i class="bi bi-cash-coin me-2 text-dark"></i>給与設定管理
+                            </a>
+                        </li>
+                        <li>
                             <a class="dropdown-item" href="master_division.php">
                                 <i class="bi bi-building me-2 text-primary"></i>部署マスタ管理
                             </a>
