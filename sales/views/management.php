@@ -226,13 +226,25 @@ $top_products = [
             document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
             document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
             
-            const targetRatio = Math.round(kpis.target_ratio);
-            document.getElementById('target_ratio').textContent = targetRatio;
+            // ★修正点 1: PHPから受け取った小数点付きの値を使用
+            const targetRatioValue = kpis.target_ratio; 
+            
+            // ★修正点 2: 達成率の表示は小数点第1位まで表示 (例: 0.2, 10.6)
+            document.getElementById('target_ratio').textContent = targetRatioValue.toFixed(1);
 
             const progressBar = document.getElementById('target_progress_bar');
-            progressBar.style.width = Math.min(targetRatio, 100) + '%';
-            progressBar.setAttribute('aria-valuenow', targetRatio);
-            progressBar.className = 'progress-bar ' + (targetRatio >= 100 ? 'bg-success' : 'bg-primary');
+            
+            // ★修正点 3: プログレスバーの幅を決定
+            let progressWidth = Math.min(targetRatioValue, 100);
+            
+            // ★修正点 4: 達成率が0%より大きく、1%未満の場合、目視できるように強制的に1%の幅を確保
+            if (targetRatioValue > 0 && targetRatioValue < 1) {
+                progressWidth = 1; 
+            }
+            
+            progressBar.style.width = progressWidth + '%';
+            progressBar.setAttribute('aria-valuenow', targetRatioValue);
+            progressBar.className = 'progress-bar ' + (targetRatioValue >= 100 ? 'bg-success' : 'bg-primary');
 
             const ratioElement = document.getElementById('last_month_ratio');
             const ratioValue = kpis.last_month_ratio;

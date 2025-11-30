@@ -11,7 +11,6 @@ try {
     
     // 前月同期間の計算用
     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
-    // 先月全体ではなく、「先月同日」までの期間を設定
     $lastMonthSameDay = date('Y-m-d H:i:s', strtotime('-1 month'));
     
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
@@ -34,7 +33,6 @@ try {
         WHERE PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date
     ");
     $stmtLastSales->bindParam(':start_date', $lastMonthStart);
-    // 修正点：比較期間を先月同日までに変更
     $stmtLastSales->bindParam(':end_date', $lastMonthSameDay);
     $stmtLastSales->execute();
     $lastSales = $stmtLastSales->fetch(PDO::FETCH_COLUMN) ?? 0;
@@ -75,7 +73,8 @@ try {
 
     // 6. 仮のデータ（目標、在庫アラート）
     $salesTarget = 20000000;
-    $targetRatio = ($currentSales > 0) ? round(($currentSales / $salesTarget) * 100, 2) : 0;
+    // ★修正点: round()を削除し、小数点以下の精度を維持
+    $targetRatio = ($currentSales > 0) ? ($currentSales / $salesTarget) * 100 : 0;
     
     $stockAlerts = [
         ['product_name' => '商品A (予測不足)', 'reason' => '予測販売数超過', 'current_stock' => 300, 'forecast' => 500],
@@ -88,7 +87,7 @@ try {
         'kpis' => [
             'current_month_sales' => (int)$currentSales,
             'sales_target' => $salesTarget,
-            'target_ratio' => $targetRatio,
+            'target_ratio' => $targetRatio, // 小数点以下の値がそのままJavaScriptに渡される
             'last_month_ratio' => round($lastMonthRatio, 1),
             'aov' => (int)$aov,
             'next_month_forecast' => 18500000,
@@ -104,4 +103,4 @@ try {
     // 予期しないシステムレベルのエラーを処理
     echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
 }
-?> 
+?>
