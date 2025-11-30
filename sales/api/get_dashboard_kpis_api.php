@@ -17,7 +17,6 @@ try {
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
     
     // 1. 今月売上合計 (ORDERテーブルのPRICEを使用)
-    // NOTE: ORDERテーブルのPRICEは注文全体の金額と仮定し、このKPIはそのまま残します。
     $stmtCurrentSales = $PDO->prepare("
         SELECT SUM(PRICE) AS current_sales
         FROM `ORDER`
@@ -46,7 +45,6 @@ try {
     }
     
     // 4. 平均顧客単価 (AOV) (直近30日間)
-    // NOTE: S_ORDERテーブルを使用しているため、この部分はそのまま残します。
     $stmtAOV = $PDO->prepare("
         SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID) AS aov
         FROM S_ORDER
@@ -58,13 +56,12 @@ try {
     $aov = round($stmtAOV->fetch(PDO::FETCH_COLUMN) ?? 0);
 
     // =======================================================
-    // 🚨 5. 商品別貢献度ランキング - 修正箇所 🚨
-    // ORDER_TARGET_ID ではなく ORDER_ITEMS.PRODUCT_ID を使用
+    // 🚨 5. 商品別貢献度ランキング - 再修正箇所 🚨
+    // ORDER_ITEMSを経由して正しい商品名と売上を取得
     // =======================================================
     $stmtTopProducts = $PDO->prepare("
         SELECT 
-            P.PRODUCT_NAME AS name,
-            -- ORDER_ITEMSに商品ごとの金額(PRICE)があると仮定してSUM
+            P.PRODUCT_NAME AS name, 
             SUM(OITEM.PRICE) AS sales 
         FROM `ORDER` O
         JOIN ORDER_ITEMS OITEM ON O.ORDER_ID = OITEM.ORDER_ID 
@@ -85,19 +82,19 @@ try {
     
     
     // =======================================================
-    // ⭐ 在庫アラートロジックの実装 - 一時テスト版 ⭐
-    // 在庫が10個以下の商品をアラート対象とします
+    // ⭐ 在庫アラートロジックの実装 - 再修正版 (一時テスト用) ⭐
+    // PRODUCT_NAMEを使用し、在庫が10個以下の商品をアラート対象とする
     // =======================================================
     $sql_alerts = "
         SELECT
-            p.PRODUCT_NAME AS product_name, -- PRODUCT.NAME ではなく PRODUCT.PRODUCT_NAME を使用
+            p.PRODUCT_NAME AS product_name, 
             s.STOCK_QUANTITY AS current_stock
         FROM
             PRODUCT p
         JOIN
             STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
         WHERE
-            s.STOCK_QUANTITY <= 10 -- 在庫が10個以下の商品をアラート
+            s.STOCK_QUANTITY <= 10 
         ORDER BY
             s.STOCK_QUANTITY ASC 
         LIMIT 10
@@ -107,7 +104,7 @@ try {
     $stmt_alerts->execute();
     $alerts_raw = $stmt_alerts->fetchAll(PDO::FETCH_ASSOC);
 
-    // アラートデータの構造化（不足数を計算するため、予測値をダミーで設定）
+    // アラートデータの構造化
     $stock_alerts = [];
     $forecast_threshold = 15; // 予測販売数を15個と仮定
     
