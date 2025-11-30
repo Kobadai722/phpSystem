@@ -24,7 +24,7 @@
         unset($_SESSION['error_message']);
     }
     ?>
-    <h1>人事管理表</h1>
+    <h1><i class="bi bi-people-fill me-1 ms-3"></i> 人事管理表</h1>
     <?php
     require_once '../config.php';
     $stmt_divisions = $PDO->query("SELECT DIVISION_ID, DIVISION_NAME FROM DIVISION ORDER BY DIVISION_ID");
