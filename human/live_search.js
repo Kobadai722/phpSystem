@@ -55,6 +55,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         employees.forEach(employee => {
             const fromParam = isEditerPage ? 'editer' : 'main';
+
+            const isDeleted = employee.IS_DELETED == 1;
+            const rowClass = isDeleted ? 'table-secondary' : ''; // 背景をグレーに
+            const badge = isDeleted ? '<span class="badge bg-danger ms-2">削除済</span>' : '';
+            
             let row;
             if (isEditerPage) {
                 row = `
