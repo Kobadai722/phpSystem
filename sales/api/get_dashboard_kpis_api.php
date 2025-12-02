@@ -80,13 +80,14 @@ try {
     // 在庫アラートロジック
     $sql_alerts = "
         SELECT
+            p.PRODUCT_ID AS product_id,
             p.NAME AS product_name,
             s.STOCK_QUANTITY AS current_stock,
             (
                 SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
                 FROM `ORDER` o2
                 WHERE o2.PRODUCT_ID = p.PRODUCT_ID
-                  AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
             ) AS monthly_avg_sales
         FROM
             PRODUCT p
@@ -109,6 +110,7 @@ try {
         $forecast = round($row['monthly_avg_sales']); 
         
         $stock_alerts[] = [
+            'product_id' => $row['product_id'], 
             'product_name' => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
             'forecast' => $forecast, 
