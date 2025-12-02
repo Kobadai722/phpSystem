@@ -61,7 +61,7 @@ try {
 
     if (!$insertOrder->execute([
         $productId,      // 1. PRODUCT_ID
-        **$quantity**,   // 2. **QUANTITY** (ここを追加)
+        $quantity,       // 2. QUANTITY
         $customerId,     // 3. ORDER_TARGET_ID
         $orderFlag,      // 4. ORDER_FLAG
         $totalPrice,     // 5. PRICE
