@@ -51,22 +51,24 @@ try {
     $totalPrice = $unitPrice * $quantity;
     $orderFlag = 1;
 
-    // ORDER登録
+    // ORDER登録 (修正箇所: QUANTITYカラムを追加し、バインドする値を増やす)
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER`
-        (PURCHASE_ORDER_DATE, PRODUCT_ID, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
+        (PURCHASE_ORDER_DATE, PRODUCT_ID, **QUANTITY**, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
         VALUES
-        (NOW(), ?, ?, ?, ?, ?, ?)
+        (NOW(), ?, ?, ?, ?, ?, ?, ?)
     ");
 
     if (!$insertOrder->execute([
-        $productId,     // ← 商品IDを正しく登録
-        $customerId,
-        $orderFlag,
-        $totalPrice,
-        $employeeId,
-        $notes
+        $productId,      // 1. PRODUCT_ID
+        **$quantity**,   // 2. **QUANTITY** (ここを追加)
+        $customerId,     // 3. ORDER_TARGET_ID
+        $orderFlag,      // 4. ORDER_FLAG
+        $totalPrice,     // 5. PRICE
+        $employeeId,     // 6. EMPLOYEE_ID
+        $notes           // 7. NOTES
     ])) {
+        // デバッグ情報を含めて例外を投げることを検討 (例: $insertOrder->errorInfo())
         throw new Exception("ORDER登録失敗");
     }
 
