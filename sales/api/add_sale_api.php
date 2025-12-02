@@ -1,64 +1,65 @@
 <?php
-header("Content-Type: application/json; charset=utf-8");
 require_once '../../config.php';
+header("Content-Type: application/json; charset=utf-8");
 
 try {
-    // パラメータ取得
-    $productId   = $_POST['product_id']        ?? null;
-    $quantity    = $_POST['order_quantity']    ?? null;
-    $customerId  = $_POST['customer_id']       ?? null;
-    $employeeId  = $_POST['employee_id']       ?? null;
-    $orderFlag   = $_POST['order_flag']        ?? null;
-    $totalPrice  = $_POST['total_price']       ?? null;
-    $notes       = $_POST['notes']             ?? null;
+    // POSTパラメータ取得
+    $productId   = $_POST['product_id'] ?? null;
+    $quantity    = $_POST['order_quantity'] ?? null;
+    $customerId  = $_POST['customer_id'] ?? null;
+    $employeeId  = $_POST['employee_id'] ?? null;
+    $notes       = $_POST['notes'] ?? null;  
 
-    // 入力チェック
-    if (!$productId || !$quantity || !$customerId || !$employeeId || !$orderFlag) {
+    // バリデーション
+    if (!$productId || !$quantity || !$customerId || !$employeeId) {
         echo json_encode([
             "success" => false,
-            "message" => "必須項目が入力されていません。"
+            "message" => "必須項目が不足しています。"
         ]);
         exit;
     }
 
-    // INSERT SQL
-    $sql = "
+    // 商品の単価を取得
+    $stmt = $PDO->prepare("SELECT UNIT_SELLING_PRICE FROM PRODUCT WHERE PRODUCT_ID = :pid");
+    $stmt->execute(['pid' => $productId]);
+    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (!$product) {
+        echo json_encode([
+            "success" => false,
+            "message" => "商品が存在しません。"
+        ]);
+        exit;
+    }
+
+    $unitPrice = (int)$product['UNIT_SELLING_PRICE'];
+    $subtotal  = $unitPrice * (int)$quantity;
+
+    // INSERT処理
+    $stmtInsert = $PDO->prepare("
         INSERT INTO `ORDER`
-        (PURCHASE_ORDER_DATE, PRODUCT_ID, QUANTITY, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
+            (PURCHASE_ORDER_DATE, PRODUCT_ID, QUANTITY, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
         VALUES
-        (NOW(), ?, ?, ?, ?, ?, ?, ?)
-    ";
+            (NOW(), :pid, :qty, :cid, 1, :price, :eid, :notes)
+    ");
 
-    $stmt = $PDO->prepare($sql);
-    $result = $stmt->execute([
-        $productId,
-        $quantity,
-        $customerId,
-        $orderFlag,
-        $totalPrice,
-        $employeeId,
-        $notes
+    $stmtInsert->execute([
+        'pid'   => $productId,
+        'qty'   => $quantity,
+        'cid'   => $customerId,
+        'price' => $subtotal,
+        'eid'   => $employeeId,
+        'notes' => $notes     
     ]);
-
-    if (!$result) {
-        $error = $stmt->errorInfo();
-        echo json_encode([
-            "success" => false,
-            "message" => "SQLエラー: " . $error[2]
-        ]);
-        exit;
-    }
 
     echo json_encode([
         "success" => true,
-        "message" => "登録成功"
+        "message" => "登録完了"
     ]);
-    exit;
 
 } catch (Exception $e) {
     echo json_encode([
         "success" => false,
-        "message" => "例外エラー: " . $e->getMessage()
+        "message" => "エラー: " . $e->getMessage()
     ]);
-    exit;
 }
