@@ -135,7 +135,6 @@ $top_products = [];
                         <div class="card shadow-sm border-danger">
                             <div class="card-header bg-danger text-white">
                                 <h5 class="mb-0"><i class="bi bi-exclamation-triangle-fill"></i> 予測在庫アラート (<span id="alert-count">---</span>件)</h5>
-                                <div id="stockAlertArea"></div>
                             </div>
                             <div class="card-body">
                                 <div id="stock-alerts-area">
@@ -170,7 +169,7 @@ $top_products = [];
         // --- 予測機能用の関数（今回は使用しないため、中身を空にするか、削除します） ---
 
         async function fetchPastSalesData() {
-            return []; 
+             return []; 
         }
 
         async function fetchAndRunPrediction() {
@@ -285,52 +284,51 @@ $top_products = [];
             });
         }
 
-       function renderStockAlerts(alerts) {
-    const container = document.getElementById("stockAlertArea");
-    container.innerHTML = "";
+        //  在庫アラートの表示関数 
+        function updateStockAlerts(alerts) {
+            const alertArea = document.getElementById('stock-alerts-area');
+            document.getElementById('alert-count').textContent = alerts.length;
 
-    if (alerts.length === 0) {
-        container.innerHTML =
-            `<div class="alert alert-success">在庫不足の商品はありません。</div>`;
-        return;
-    }
+            if (alerts.length === 0) {
+                alertArea.innerHTML = '<p class="text-success mb-0">現在、予測に基づく在庫アラートはありません。</p>';
+                return;
+            }
 
-    let html = `
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>商品名</th>
-                    <th>現在庫</th>
-                    <th>予測販売数</th>
-                    <th>不足数</th>
-                    <th>理由</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-    `;
-
-    alerts.forEach(a => {
-        html += `
-            <tr class="${a.shortage > 0 ? 'table-danger' : ''}">
-                <td>${a.product_name}</td>
-                <td>${a.current_stock}</td>
-                <td>${a.forecast}</td>
-                <td class="fw-bold text-danger">${a.shortage}</td>
-                <td>${a.reason}</td>
-                <td>
-                    <a href="stock_management.php?product_id=${a.product_id}"
-                        class="btn btn-sm btn-primary">
-                        入荷
-                    </a>
-                </td>
-            </tr>
-        `;
-    });
-
-        html += `</tbody></table>`;
-        container.innerHTML = html;
-}
+            // テーブル構造を動的に生成
+            let tableHtml = `
+                <table class="table table-sm mb-0">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>現在の在庫</th>
+                            <th>平均販売数 (来月予測)</th>
+                            <th>不足数</th>
+                            <th>対応</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+            
+            alerts.forEach(alert => {
+                // 不足しているため、警告色を適用
+                const actionText = '発注検討';
+                
+                tableHtml += `
+                    <tr class="table-warning">
+                        <td>${alert.product_name}</td>
+                        <td>${parseInt(alert.current_stock).toLocaleString()}</td>
+                        <td>${parseInt(alert.forecast).toLocaleString()}</td>
+                        <td class="text-danger fw-bold">${parseInt(alert.shortage).toLocaleString()}</td>
+                        <td><a href="stock_management.php?product=${encodeURIComponent(alert.product_name)}" class="btn btn-sm btn-outline-danger">${actionText}</a></td>
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `
+                    </tbody>
+                </table>`;
+            
+            alertArea.innerHTML = tableHtml;
+        }
 
         function updateSalesChart(data) {
             const labels = data.map(item => item.period);

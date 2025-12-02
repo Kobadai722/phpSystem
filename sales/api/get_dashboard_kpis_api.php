@@ -80,7 +80,6 @@ try {
     // 在庫アラートロジック
     $sql_alerts = "
         SELECT
-            p.PRODUCT_ID AS product_id,
             p.NAME AS product_name,
             s.STOCK_QUANTITY AS current_stock,
             (
@@ -110,7 +109,6 @@ try {
         $forecast = round($row['monthly_avg_sales']); 
         
         $stock_alerts[] = [
-            'product_id' => $row['product_id'], 
             'product_name' => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
             'forecast' => $forecast, 
