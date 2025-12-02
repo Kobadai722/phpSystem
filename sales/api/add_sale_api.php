@@ -54,7 +54,7 @@ try {
     // ORDER登録 (修正箇所: QUANTITYカラムを追加し、バインドする値を増やす)
     $insertOrder = $PDO->prepare("
         INSERT INTO `ORDER`
-        (PURCHASE_ORDER_DATE, PRODUCT_ID, **QUANTITY**, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
+        (PURCHASE_ORDER_DATE, PRODUCT_ID, QUANTITY, ORDER_TARGET_ID, ORDER_FLAG, PRICE, EMPLOYEE_ID, NOTES)
         VALUES
         (NOW(), ?, ?, ?, ?, ?, ?, ?)
     ");
