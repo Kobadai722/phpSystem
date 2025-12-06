@@ -231,35 +231,58 @@ $top_products = [];
 
         // KPIカードを更新する関数
         function updateKpiCards(kpis) {
-    document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
-    document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
+            document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
+            document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
+            
+            // 達成率の表示とプログレスバーのロジックを修正
+            const targetRatioValue = kpis.target_ratio; 
+            document.getElementById('target_ratio').textContent = targetRatioValue.toFixed(1);
 
-    // target ratio
-    const targetRatioValue = kpis.target_ratio || 0;
-    document.getElementById('target_ratio').textContent = (targetRatioValue).toFixed(1);
+            const progressBar = document.getElementById('target_progress_bar');
+            
+            let progressWidth = Math.min(targetRatioValue, 100);
+            
+            if (targetRatioValue > 0 && targetRatioValue < 1) {
+                progressWidth = 1; // 0%以上1%未満の場合、視覚的に1%の幅を確保
+            }
+            
+            progressBar.style.width = progressWidth + '%';
+            progressBar.setAttribute('aria-valuenow', targetRatioValue);
+            progressBar.className = 'progress-bar ' + (targetRatioValue >= 100 ? 'bg-success' : 'bg-primary');
 
-    const progressBar = document.getElementById('target_progress_bar');
-    let progressWidth = Math.min(targetRatioValue, 100);
-    if (targetRatioValue > 0 && targetRatioValue < 1) progressWidth = 1;
-    progressBar.style.width = progressWidth + '%';
-    progressBar.setAttribute('aria-valuenow', targetRatioValue);
-    progressBar.className = 'progress-bar ' + (targetRatioValue >= 100 ? 'bg-success' : 'bg-primary');
+            const ratioElement = document.getElementById('last_month_ratio');
+            const ratioValue = kpis.last_month_ratio;
+            ratioElement.textContent = (ratioValue > 0 ? '+' : '') + ratioValue.toFixed(1) + '%';
+            ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
 
-    // last month ratio: show '—' when null
-    const ratioElement = document.getElementById('last_month_ratio');
-    const ratioValue = kpis.last_month_ratio;
-    if (ratioValue === null || ratioValue === undefined) {
-        ratioElement.textContent = '—';
-        ratioElement.className = 'card-text fs-4 fw-bold text-muted';
-    } else {
-        ratioElement.textContent = (ratioValue > 0 ? '+' : '') + parseFloat(ratioValue).toFixed(1) + '%';
-        ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
-    }
+            document.getElementById('aov').textContent = formatCurrency(kpis.aov);
+        }
 
-    // AOV
-    document.getElementById('aov').textContent = formatCurrency(kpis.aov);
-}
+        function updateTopProducts(products) {
+            const list = document.getElementById('top-products-list');
+            list.innerHTML = ''; 
 
+            if (products.length === 0) {
+                list.innerHTML = '<li class="list-group-item text-center text-muted">今月の売上データがありません。</li>';
+                return;
+            }
+
+            products.forEach((product, index) => {
+                const rank = index + 1;
+                const sales = formatCurrency(product.sales);
+
+                const listItem = document.createElement('li');
+                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
+                listItem.innerHTML = `
+                    <div>
+                        <span class="badge bg-secondary me-2">${rank}</span>
+                        ${product.name}
+                    </div>
+                    <span class="fw-bold">${sales}</span>
+                `;
+                list.appendChild(listItem);
+            });
+        }
 
         //  在庫アラートの表示関数 
         function updateStockAlerts(alerts) {
@@ -387,60 +410,3 @@ $top_products = [];
     </script>
 </body>
 </html>
-<div id="stock-alert-area"></div>
-
-<script>
-// ===== 在庫アラート取得 =====
-function loadStockAlerts() {
-    fetch('../api/get_stock_alerts_api.php')
-        .then(res => res.json())
-        .then(data => {
-            const area = document.getElementById("stock-alert-area");
-            area.innerHTML = "";
-
-            data.forEach(item => {
-                const card = document.createElement("div");
-                card.style.border = "1px solid #e00";
-                card.style.padding = "10px";
-                card.style.margin = "8px 0";
-                card.style.borderRadius = "6px";
-                card.style.background = "#ffe5e5";
-
-                card.innerHTML = `
-                    <strong>${item.PRODUCT_NAME}</strong><br>
-                    現在の在庫：${item.stock_quantity}<br>
-                    <button onclick="addStock(${item.PRODUCT_ID})">
-                        入荷する（+10）
-                    </button>
-                `;
-
-                area.appendChild(card);
-            });
-        })
-        .catch(() => console.error("在庫アラート取得エラー"));
-}
-
-// ===== 在庫追加 =====
-function addStock(productId) {
-    const formData = new FormData();
-    formData.append("product_id", productId);
-    formData.append("add_qty", 10);
-
-    fetch("../api/add_stock_api.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.json())
-    .then(result => {
-        if (result.success) {
-            alert("入荷処理が完了しました");
-            loadStockAlerts();   // 再読み込み
-        } else {
-            alert("入荷処理に失敗しました");
-        }
-    });
-}
-
-// 初期表示
-loadStockAlerts();
-</script>
