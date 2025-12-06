@@ -97,27 +97,28 @@ try {
     $salesTarget = 20000000;
     $targetRatio = ($salesTarget > 0) ? round(($currentSales / $salesTarget) * 100, 1) : 0;
 
-    //7. 在庫アラート
+    //7. 在庫アラート（平均販売数 < 在庫）
 
-$sql_alerts = "
-    SELECT
-        p.PRODUCT_NAME AS product_name,
-        s.STOCK_QUANTITY AS current_stock,
-        (
-            SELECT COALESCE(SUM(o2.QUANTITY), 0) / 3
-            FROM `ORDER` o2
-            WHERE o2.PRODUCT_ID = p.PRODUCT_ID
-            AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-        ) AS monthly_avg_sales
-    FROM PRODUCT p
-    JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
-    HAVING
-        current_stock < monthly_avg_sales
-        AND monthly_avg_sales > 0
-    ORDER BY
-        (monthly_avg_sales - current_stock) DESC
-    LIMIT 10
-";
+
+    $sqlAlerts = "
+        SELECT
+            p.PRODUCT_NAME AS product_name,
+            s.STOCK_QUANTITY AS current_stock,
+            (
+                SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
+                FROM `ORDER` o2
+                WHERE o2.PRODUCT_ID = p.PRODUCT_ID
+                AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            ) AS monthly_avg_sales
+        FROM PRODUCT p
+        JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+        HAVING
+            current_stock < monthly_avg_sales
+            AND monthly_avg_sales > 0
+        ORDER BY
+            (monthly_avg_sales - current_stock) DESC
+        LIMIT 10
+    ";
 
     $stmtAlerts = $PDO->prepare($sqlAlerts);
     $stmtAlerts->execute();
