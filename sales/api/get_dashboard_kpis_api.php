@@ -5,7 +5,7 @@ require_once '../../config.php';
 // JSONヘッダー
 header('Content-Type: application/json');
 
-// デバッグ用（必要なら ON に）
+// デバッグ OFF
 ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
@@ -62,15 +62,15 @@ try {
     ]);
     $aov = round($stmtAOV->fetch(PDO::FETCH_COLUMN) ?? 0);
 
-    // 5. トップ商品（今月）
+    // 5. トップ商品（今月）※修正済み
     $stmtTopProducts = $PDO->prepare("
         SELECT 
             P.PRODUCT_NAME AS name,
             SUM(O.PRICE) AS sales
         FROM `ORDER` O
-        JOIN PRODUCT P ON O.ORDER_TARGET_ID = P.PRODUCT_ID
+        JOIN PRODUCT P ON O.PRODUCT_ID = P.PRODUCT_ID
         WHERE O.PURCHASE_ORDER_DATE BETWEEN :start_date AND :end_date
-        GROUP BY P.PRODUCT_NAME
+        GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME
         ORDER BY sales DESC
         LIMIT 3
     ");
