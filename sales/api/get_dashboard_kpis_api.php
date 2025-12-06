@@ -5,6 +5,8 @@ require_once '../../config.php';
 // JSONヘッダー
 header('Content-Type: application/json');
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 try {
     // 現在の日付
     $currentDate = date('Y-m-d H:i:s');
