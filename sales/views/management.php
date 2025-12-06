@@ -169,7 +169,7 @@ $top_products = [];
         // --- 予測機能用の関数（今回は使用しないため、中身を空にするか、削除します） ---
 
         async function fetchPastSalesData() {
-             return []; 
+            return []; 
         }
 
         async function fetchAndRunPrediction() {
@@ -410,3 +410,60 @@ $top_products = [];
     </script>
 </body>
 </html>
+<div id="stock-alert-area"></div>
+
+<script>
+// ===== 在庫アラート取得 =====
+function loadStockAlerts() {
+    fetch('../api/get_stock_alerts_api.php')
+        .then(res => res.json())
+        .then(data => {
+            const area = document.getElementById("stock-alert-area");
+            area.innerHTML = "";
+
+            data.forEach(item => {
+                const card = document.createElement("div");
+                card.style.border = "1px solid #e00";
+                card.style.padding = "10px";
+                card.style.margin = "8px 0";
+                card.style.borderRadius = "6px";
+                card.style.background = "#ffe5e5";
+
+                card.innerHTML = `
+                    <strong>${item.PRODUCT_NAME}</strong><br>
+                    現在の在庫：${item.stock_quantity}<br>
+                    <button onclick="addStock(${item.PRODUCT_ID})">
+                        入荷する（+10）
+                    </button>
+                `;
+
+                area.appendChild(card);
+            });
+        })
+        .catch(() => console.error("在庫アラート取得エラー"));
+}
+
+// ===== 在庫追加 =====
+function addStock(productId) {
+    const formData = new FormData();
+    formData.append("product_id", productId);
+    formData.append("add_qty", 10);
+
+    fetch("../api/add_stock_api.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.json())
+    .then(result => {
+        if (result.success) {
+            alert("入荷処理が完了しました");
+            loadStockAlerts();   // 再読み込み
+        } else {
+            alert("入荷処理に失敗しました");
+        }
+    });
+}
+
+// 初期表示
+loadStockAlerts();
+</script>

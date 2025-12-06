@@ -2,29 +2,31 @@
 // DB接続とデータ取得、エラー処理
 require_once '../../config.php'; 
 
-// 実行前にJSONヘッダーを出力
+// JSONヘッダー
 header('Content-Type: application/json');
 
 try {
-    // 現在の日付情報
+    // 現在の日付
     $currentDate = date('Y-m-d H:i:s');
     $currentMonthStart = date('Y-m-01 00:00:00');
-    
-    // 前月同期間の計算用
+
+    // 前月同期間
     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
     $lastMonthSameDay = date('Y-m-d H:i:s', strtotime('-1 month'));
-    
+
+    // 過去30日
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
-    
+
     // 1. 今月売上合計
     $stmtCurrentSales = $PDO->prepare("
         SELECT SUM(PRICE) AS current_sales
         FROM `ORDER`
         WHERE PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date
     ");
-    $stmtCurrentSales->bindParam(':start_date', $currentMonthStart);
-    $stmtCurrentSales->bindParam(':end_date', $currentDate);
-    $stmtCurrentSales->execute();
+    $stmtCurrentSales->execute([
+        ':start_date' => $currentMonthStart,
+        ':end_date'   => $currentDate
+    ]);
     $currentSales = $stmtCurrentSales->fetch(PDO::FETCH_COLUMN) ?? 0;
 
     // 2. 先月売上合計
@@ -33,30 +35,30 @@ try {
         FROM `ORDER`
         WHERE PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date
     ");
-    $stmtLastSales->bindParam(':start_date', $lastMonthStart);
-    $stmtLastSales->bindParam(':end_date', $lastMonthSameDay);
-    $stmtLastSales->execute();
+    $stmtLastSales->execute([
+        ':start_date' => $lastMonthStart,
+        ':end_date'   => $lastMonthSameDay
+    ]);
     $lastSales = $stmtLastSales->fetch(PDO::FETCH_COLUMN) ?? 0;
 
-    // 3. 前月比成長率の計算
-    $lastMonthRatio = 0;
-    if ($lastSales > 0) {
-        $lastMonthRatio = (($currentSales - $lastSales) / $lastSales) * 100;
-    }
-    
-    // 4. 平均顧客単価 (AOV) 直近30日間
+    // 3. 前月比成長率
+    $lastMonthRatio = ($lastSales > 0)
+        ? (($currentSales - $lastSales) / $lastSales) * 100
+        : 0;
+
+    // 4. AOV（直近30日）
     $stmtAOV = $PDO->prepare("
         SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID) AS aov
         FROM S_ORDER
         WHERE ORDER_DATETIME >= :start_date AND ORDER_DATETIME <= :end_date
     ");
-    $stmtAOV->bindParam(':start_date', $past30Days);
-    $stmtAOV->bindParam(':end_date', $currentDate);
-    $stmtAOV->execute();
+    $stmtAOV->execute([
+        ':start_date' => $past30Days,
+        ':end_date'   => $currentDate
+    ]);
     $aov = round($stmtAOV->fetch(PDO::FETCH_COLUMN) ?? 0);
 
-    // 5. 商品別貢献度ランキング (今月)
-    // 修正済み：PRODUCT_ID で JOIN
+    // 5. 商品別売上ランキング（今月）
     $stmtTopProducts = $PDO->prepare("
         SELECT 
             P.PRODUCT_NAME AS name,
@@ -68,18 +70,16 @@ try {
         ORDER BY sales DESC
         LIMIT 3
     ");
-    $stmtTopProducts->bindParam(':start_date', $currentMonthStart);
-    $stmtTopProducts->bindParam(':end_date', $currentDate);
-    $stmtTopProducts->execute();
+    $stmtTopProducts->execute([
+        ':start_date' => $currentMonthStart,
+        ':end_date'   => $currentDate
+    ]);
     $topProducts = $stmtTopProducts->fetchAll(PDO::FETCH_ASSOC);
 
-    // 6. 売上目標達成率
-    $salesTarget = 20000000;
-    $targetRatio = ($currentSales > 0) ? ($currentSales / $salesTarget) * 100 : 0;
-
-    // 在庫アラートロジック
+    // 6. 在庫アラート（product_id）
     $sql_alerts = "
         SELECT
+            p.PRODUCT_ID AS product_id,
             p.NAME AS product_name,
             s.STOCK_QUANTITY AS current_stock,
             (
@@ -88,55 +88,49 @@ try {
                 WHERE o2.PRODUCT_ID = p.PRODUCT_ID
                 AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
             ) AS monthly_avg_sales
-        FROM
-            PRODUCT p
-        JOIN
-            STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+        FROM PRODUCT p
+        JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
         HAVING
-            current_stock < monthly_avg_sales 
+            current_stock < monthly_avg_sales
             AND monthly_avg_sales > 0
-        ORDER BY
-            (monthly_avg_sales - current_stock) DESC
+        ORDER BY (monthly_avg_sales - current_stock) DESC
         LIMIT 10
     ";
 
-    $stmt_alerts = $PDO->prepare($sql_alerts);
-    $stmt_alerts->execute();
+    $stmt_alerts = $PDO->query($sql_alerts);
     $alerts_raw = $stmt_alerts->fetchAll(PDO::FETCH_ASSOC);
 
     $stock_alerts = [];
     foreach ($alerts_raw as $row) {
-        $forecast = round($row['monthly_avg_sales']); 
-        
+        $forecast = round($row['monthly_avg_sales']);
+
         $stock_alerts[] = [
-            'product_name' => $row['product_name'],
+            'product_id'    => (int)$row['product_id'],
+            'product_name'  => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
-            'forecast' => $forecast, 
-            'shortage' => $forecast - (int)$row['current_stock'], 
-            'reason' => '平均販売数超過予測',
+            'forecast'      => $forecast,
+            'shortage'      => $forecast - (int)$row['current_stock'],
+            'reason'        => '平均販売数超過予測',
         ];
     }
-    
-    // JSON出力
+
+    // JSON返却
     echo json_encode([
         'success' => true,
         'kpis' => [
             'current_month_sales' => (int)$currentSales,
-            'sales_target' => $salesTarget,
-            'target_ratio' => $targetRatio,
-            'last_month_ratio' => round($lastMonthRatio, 1),
-            'aov' => (int)$aov,
-            'next_month_forecast' => 18500000, 
+            'sales_target'        => 20000000,
+            'target_ratio'        => ($currentSales / 20000000) * 100,
+            'last_month_ratio'    => round($lastMonthRatio, 1),
+            'aov'                 => (int)$aov,
+            'next_month_forecast' => 18500000,
             'forecast_confidence' => '88%',
         ],
         'top_products' => $topProducts,
         'stock_alerts' => $stock_alerts
     ], JSON_UNESCAPED_UNICODE);
 
-} catch (PDOException $e) {
+} catch (Throwable $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'データベースエラー: ' . $e->getMessage()]);
-} catch (Exception $e) {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'システムエラー: ' . $e->getMessage()]);
+    echo json_encode(['success' => false, 'message' => 'エラー: ' . $e->getMessage()]);
 }
