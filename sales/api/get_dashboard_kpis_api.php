@@ -5,41 +5,43 @@ require_once '../../config.php';
 // JSONヘッダー
 header('Content-Type: application/json');
 
-ini_set('display_errors', 1);
+// デバッグ用（必要なら ON に）
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
+
 try {
     // 現在の日付
     $currentDate = date('Y-m-d H:i:s');
     $currentMonthStart = date('Y-m-01 00:00:00');
 
-    // 前月同期間
+    // 前月の同期間
     $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
     $lastMonthSameDay = date('Y-m-d H:i:s', strtotime('-1 month'));
 
     // 過去30日
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
 
-    // 1. 今月売上合計
+    // 1. 今月売上
     $stmtCurrentSales = $PDO->prepare("
         SELECT SUM(PRICE) AS current_sales
         FROM `ORDER`
-        WHERE PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date
+        WHERE PURCHASE_ORDER_DATE BETWEEN :start_date AND :end_date
     ");
     $stmtCurrentSales->execute([
         ':start_date' => $currentMonthStart,
-        ':end_date'   => $currentDate
+        ':end_date' => $currentDate
     ]);
     $currentSales = $stmtCurrentSales->fetch(PDO::FETCH_COLUMN) ?? 0;
 
-    // 2. 先月売上合計
+    // 2. 先月同期間売上
     $stmtLastSales = $PDO->prepare("
         SELECT SUM(PRICE) AS last_sales
         FROM `ORDER`
-        WHERE PURCHASE_ORDER_DATE >= :start_date AND PURCHASE_ORDER_DATE <= :end_date
+        WHERE PURCHASE_ORDER_DATE BETWEEN :start_date AND :end_date
     ");
     $stmtLastSales->execute([
         ':start_date' => $lastMonthStart,
-        ':end_date'   => $lastMonthSameDay
+        ':end_date' => $lastMonthSameDay
     ]);
     $lastSales = $stmtLastSales->fetch(PDO::FETCH_COLUMN) ?? 0;
 
@@ -50,39 +52,42 @@ try {
 
     // 4. AOV（直近30日）
     $stmtAOV = $PDO->prepare("
-        SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID) AS aov
+        SELECT SUM(TOTAL_AMOUNT) / COUNT(ORDER_ID)
         FROM S_ORDER
-        WHERE ORDER_DATETIME >= :start_date AND ORDER_DATETIME <= :end_date
+        WHERE ORDER_DATETIME BETWEEN :start_date AND :end_date
     ");
     $stmtAOV->execute([
         ':start_date' => $past30Days,
-        ':end_date'   => $currentDate
+        ':end_date' => $currentDate
     ]);
     $aov = round($stmtAOV->fetch(PDO::FETCH_COLUMN) ?? 0);
 
-    // 5. 商品別売上ランキング（今月）
+    // 5. トップ商品（今月）
     $stmtTopProducts = $PDO->prepare("
         SELECT 
             P.PRODUCT_NAME AS name,
             SUM(O.PRICE) AS sales
         FROM `ORDER` O
-        JOIN PRODUCT P ON O.PRODUCT_ID = P.PRODUCT_ID
-        WHERE O.PURCHASE_ORDER_DATE >= :start_date AND O.PURCHASE_ORDER_DATE <= :end_date
-        GROUP BY P.PRODUCT_ID, P.PRODUCT_NAME
+        JOIN PRODUCT P ON O.ORDER_TARGET_ID = P.PRODUCT_ID
+        WHERE O.PURCHASE_ORDER_DATE BETWEEN :start_date AND :end_date
+        GROUP BY P.PRODUCT_NAME
         ORDER BY sales DESC
         LIMIT 3
     ");
     $stmtTopProducts->execute([
         ':start_date' => $currentMonthStart,
-        ':end_date'   => $currentDate
+        ':end_date' => $currentDate
     ]);
     $topProducts = $stmtTopProducts->fetchAll(PDO::FETCH_ASSOC);
 
-    // 6. 在庫アラート（product_id）
+    // 6. 目標達成率
+    $salesTarget = 20000000;
+    $targetRatio = ($currentSales / $salesTarget) * 100;
+
+    // 7. 在庫アラート
     $sql_alerts = "
         SELECT
-            p.PRODUCT_ID AS product_id,
-            p.NAME AS product_name,
+            p.PRODUCT_NAME AS product_name,
             s.STOCK_QUANTITY AS current_stock,
             (
                 SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
@@ -95,11 +100,13 @@ try {
         HAVING
             current_stock < monthly_avg_sales
             AND monthly_avg_sales > 0
-        ORDER BY (monthly_avg_sales - current_stock) DESC
+        ORDER BY
+            (monthly_avg_sales - current_stock) DESC
         LIMIT 10
     ";
 
-    $stmt_alerts = $PDO->query($sql_alerts);
+    $stmt_alerts = $PDO->prepare($sql_alerts);
+    $stmt_alerts->execute();
     $alerts_raw = $stmt_alerts->fetchAll(PDO::FETCH_ASSOC);
 
     $stock_alerts = [];
@@ -107,12 +114,11 @@ try {
         $forecast = round($row['monthly_avg_sales']);
 
         $stock_alerts[] = [
-            'product_id'    => (int)$row['product_id'],
             'product_name'  => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
             'forecast'      => $forecast,
             'shortage'      => $forecast - (int)$row['current_stock'],
-            'reason'        => '平均販売数超過予測',
+            'reason'        => '平均販売数超過予測'
         ];
     }
 
@@ -121,10 +127,10 @@ try {
         'success' => true,
         'kpis' => [
             'current_month_sales' => (int)$currentSales,
-            'sales_target'        => 20000000,
-            'target_ratio'        => ($currentSales / 20000000) * 100,
-            'last_month_ratio'    => round($lastMonthRatio, 1),
-            'aov'                 => (int)$aov,
+            'sales_target' => $salesTarget,
+            'target_ratio' => $targetRatio,
+            'last_month_ratio' => round($lastMonthRatio, 1),
+            'aov' => (int)$aov,
             'next_month_forecast' => 18500000,
             'forecast_confidence' => '88%',
         ],
@@ -132,7 +138,10 @@ try {
         'stock_alerts' => $stock_alerts
     ], JSON_UNESCAPED_UNICODE);
 
-} catch (Throwable $e) {
+} catch (Exception $e) {
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'エラー: ' . $e->getMessage()]);
+    echo json_encode([
+        'success' => false,
+        'message' => 'エラー: ' . $e->getMessage()
+    ]);
 }
