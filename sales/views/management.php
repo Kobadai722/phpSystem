@@ -231,58 +231,35 @@ $top_products = [];
 
         // KPIカードを更新する関数
         function updateKpiCards(kpis) {
-            document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
-            document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
-            
-            // 達成率の表示とプログレスバーのロジックを修正
-            const targetRatioValue = kpis.target_ratio; 
-            document.getElementById('target_ratio').textContent = targetRatioValue.toFixed(1);
+    document.getElementById('current_month_sales').textContent = formatCurrency(kpis.current_month_sales);
+    document.getElementById('sales_target').textContent = formatCurrency(kpis.sales_target);
 
-            const progressBar = document.getElementById('target_progress_bar');
-            
-            let progressWidth = Math.min(targetRatioValue, 100);
-            
-            if (targetRatioValue > 0 && targetRatioValue < 1) {
-                progressWidth = 1; // 0%以上1%未満の場合、視覚的に1%の幅を確保
-            }
-            
-            progressBar.style.width = progressWidth + '%';
-            progressBar.setAttribute('aria-valuenow', targetRatioValue);
-            progressBar.className = 'progress-bar ' + (targetRatioValue >= 100 ? 'bg-success' : 'bg-primary');
+    // target ratio
+    const targetRatioValue = kpis.target_ratio || 0;
+    document.getElementById('target_ratio').textContent = (targetRatioValue).toFixed(1);
 
-            const ratioElement = document.getElementById('last_month_ratio');
-            const ratioValue = kpis.last_month_ratio;
-            ratioElement.textContent = (ratioValue > 0 ? '+' : '') + ratioValue.toFixed(1) + '%';
-            ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
+    const progressBar = document.getElementById('target_progress_bar');
+    let progressWidth = Math.min(targetRatioValue, 100);
+    if (targetRatioValue > 0 && targetRatioValue < 1) progressWidth = 1;
+    progressBar.style.width = progressWidth + '%';
+    progressBar.setAttribute('aria-valuenow', targetRatioValue);
+    progressBar.className = 'progress-bar ' + (targetRatioValue >= 100 ? 'bg-success' : 'bg-primary');
 
-            document.getElementById('aov').textContent = formatCurrency(kpis.aov);
-        }
+    // last month ratio: show '—' when null
+    const ratioElement = document.getElementById('last_month_ratio');
+    const ratioValue = kpis.last_month_ratio;
+    if (ratioValue === null || ratioValue === undefined) {
+        ratioElement.textContent = '—';
+        ratioElement.className = 'card-text fs-4 fw-bold text-muted';
+    } else {
+        ratioElement.textContent = (ratioValue > 0 ? '+' : '') + parseFloat(ratioValue).toFixed(1) + '%';
+        ratioElement.className = 'card-text fs-4 fw-bold ' + (ratioValue >= 0 ? 'text-success' : 'text-danger');
+    }
 
-        function updateTopProducts(products) {
-            const list = document.getElementById('top-products-list');
-            list.innerHTML = ''; 
+    // AOV
+    document.getElementById('aov').textContent = formatCurrency(kpis.aov);
+}
 
-            if (products.length === 0) {
-                list.innerHTML = '<li class="list-group-item text-center text-muted">今月の売上データがありません。</li>';
-                return;
-            }
-
-            products.forEach((product, index) => {
-                const rank = index + 1;
-                const sales = formatCurrency(product.sales);
-
-                const listItem = document.createElement('li');
-                listItem.className = 'list-group-item d-flex justify-content-between align-items-center';
-                listItem.innerHTML = `
-                    <div>
-                        <span class="badge bg-secondary me-2">${rank}</span>
-                        ${product.name}
-                    </div>
-                    <span class="fw-bold">${sales}</span>
-                `;
-                list.appendChild(listItem);
-            });
-        }
 
         //  在庫アラートの表示関数 
         function updateStockAlerts(alerts) {
