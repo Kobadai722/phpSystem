@@ -97,7 +97,8 @@ try {
     $salesTarget = 20000000;
     $targetRatio = ($salesTarget > 0) ? round(($currentSales / $salesTarget) * 100, 1) : 0;
 
-    // 7. 在庫アラート
+    //7. 在庫アラート
+
 $sql_alerts = "
     SELECT
         p.PRODUCT_NAME AS product_name,
@@ -117,7 +118,6 @@ $sql_alerts = "
         (monthly_avg_sales - current_stock) DESC
     LIMIT 10
 ";
-
 
     $stmtAlerts = $PDO->prepare($sqlAlerts);
     $stmtAlerts->execute();
