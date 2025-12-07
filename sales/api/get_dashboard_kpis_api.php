@@ -105,10 +105,10 @@ try {
             p.PRODUCT_NAME AS product_name,
             s.STOCK_QUANTITY AS current_stock,
             (
-                SELECT COALESCE(SUM(o2.QUANTITY), 0) / 6
+                SELECT COALESCE(SUM(o2.QUANTITY), 0) / 3
                 FROM `ORDER` o2
                 WHERE o2.PRODUCT_ID = p.PRODUCT_ID
-                AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+                AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
             ) AS monthly_avg_sales
         FROM PRODUCT p
         JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
@@ -128,6 +128,7 @@ try {
     foreach ($alertRows as $row) {
         $forecast = round($row['monthly_avg_sales']);
         $stockAlerts[] = [
+            'product_id'    => $row['product_id'],
             'product_name'  => $row['product_name'],
             'current_stock' => (int)$row['current_stock'],
             'forecast'      => $forecast,

@@ -318,7 +318,13 @@ $top_products = [];
                         <td>${parseInt(alert.current_stock).toLocaleString()}</td>
                         <td>${parseInt(alert.forecast).toLocaleString()}</td>
                         <td class="text-danger fw-bold">${parseInt(alert.shortage).toLocaleString()}</td>
-                        <td><a href="stock_management.php?product=${encodeURIComponent(alert.product_name)}" class="btn btn-sm btn-outline-danger">${actionText}</a></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary"
+                                onclick="addStock(${alert.product_id}, ${alert.shortage})">
+                                追加（${alert.shortage}）
+                            </button>
+                        </td>
+
                     </tr>
                 `;
             });
@@ -407,6 +413,22 @@ $top_products = [];
                 }
             });
         }
+        async function addStock(productId, qty) {
+        if (!confirm(`この商品に ${qty} 個入荷しますか？`)) return;
+            const formData = new FormData();
+                formData.append("product_id", productId);
+                formData.append("add_qty", qty);
+            const response = await fetch("../api/add_stock_api.php", {
+            method: "POST",body: formData
+        });
+            const result = await response.json();
+        if (result.success) {
+            alert("入荷が完了しました！");
+            fetchDashboardData(); // ← 画面を再読み込みせず更新
+        } else {
+            alert("エラーが発生しました");
+        }
+    }
     </script>
 </body>
 </html>
