@@ -101,41 +101,43 @@ try {
 
 
     $sqlAlerts = "
-        SELECT
-            p.PRODUCT_NAME AS product_name,
-            s.STOCK_QUANTITY AS current_stock,
-            (
-                SELECT COALESCE(SUM(o2.QUANTITY), 0) / 3
-                FROM `ORDER` o2
-                WHERE o2.PRODUCT_ID = p.PRODUCT_ID
-                AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
-            ) AS monthly_avg_sales
-        FROM PRODUCT p
-        JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
-        HAVING
-            current_stock < monthly_avg_sales
-            AND monthly_avg_sales > 0
-        ORDER BY
-            (monthly_avg_sales - current_stock) DESC
-        LIMIT 10
-    ";
+    SELECT
+        p.PRODUCT_ID AS product_id,
+        p.PRODUCT_NAME AS product_name,
+        s.STOCK_QUANTITY AS current_stock,
+        (
+            SELECT COALESCE(SUM(o2.QUANTITY), 0) / 3
+            FROM `ORDER` o2
+            WHERE o2.PRODUCT_ID = p.PRODUCT_ID
+            AND o2.PURCHASE_ORDER_DATE >= DATE_SUB(CURDATE(), INTERVAL 3 MONTH)
+        ) AS monthly_avg_sales
+    FROM PRODUCT p
+    JOIN STOCK s ON p.PRODUCT_ID = s.PRODUCT_ID
+    HAVING
+        current_stock < monthly_avg_sales
+        AND monthly_avg_sales > 0
+    ORDER BY
+        (monthly_avg_sales - current_stock) DESC
+    LIMIT 10
+";
 
-    $stmtAlerts = $PDO->prepare($sqlAlerts);
-    $stmtAlerts->execute();
-    $alertRows = $stmtAlerts->fetchAll(PDO::FETCH_ASSOC);
+$stmtAlerts = $PDO->prepare($sqlAlerts);
+$stmtAlerts->execute();
+$alertRows = $stmtAlerts->fetchAll(PDO::FETCH_ASSOC);
 
-    $stockAlerts = [];
-    foreach ($alertRows as $row) {
-        $forecast = round($row['monthly_avg_sales']);
-        $stockAlerts[] = [
-            'product_id'    => $row['product_id'],
-            'product_name'  => $row['product_name'],
-            'current_stock' => (int)$row['current_stock'],
-            'forecast'      => $forecast,
-            'shortage'      => $forecast - (int)$row['current_stock'],
-            'reason'        => '平均販売数超過予測'
-        ];
-    }
+$stockAlerts = [];
+foreach ($alertRows as $row) {
+    $forecast = round($row['monthly_avg_sales']);
+    $stockAlerts[] = [
+        'product_id'    => $row['product_id'],  // ← これが正しく入る
+        'product_name'  => $row['product_name'],
+        'current_stock' => (int)$row['current_stock'],
+        'forecast'      => $forecast,
+        'shortage'      => $forecast - (int)$row['current_stock'],
+        'reason'        => '平均販売数超過予測'
+    ];
+}
+
     //JSON返却
 
     echo json_encode([
