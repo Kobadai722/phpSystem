@@ -1,150 +1,96 @@
-// orders.js
+// orders.js（商品一覧と同じページネーション構造に統一）
 
-document.addEventListener('DOMContentLoaded', () => {
-    const ordersTableBody = document.getElementById('ordersTableBody');
-    const searchForm = document.getElementById('searchForm');
+let currentPage = 1;
+const limit = 10;
 
-    // ▼ ページネーション用DOM
-    let paginationArea = null;
+// 初期読み込み
+document.addEventListener("DOMContentLoaded", () => {
+    search(1);
+});
 
-    // 現在の検索条件
-    let currentSearchParams = {};
+// 検索 & ページネーション本体
+function search(page = 1) {
+    currentPage = page;
 
-    // 現在のページ
-    let currentPage = 1;
-    const limit = 10; // 1ページあたり件数
+    const params = {
+        orderId: document.getElementById("orderId").value,
+        customerName: document.getElementById("customerName").value,
+        paymentStatus: document.getElementById("paymentStatus").value,
+        page: page,
+        limit: limit
+    };
 
-    // 注文データを取得
-    const fetchOrders = async (params = {}) => {
-        currentSearchParams = params;
+    const queryString = new URLSearchParams(params).toString();
 
-        ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
+    fetch(`../api/get_orders_api.php?${queryString}`)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("ordersTableBody");
+            tbody.innerHTML = "";
 
-        try {
-            const finalParams = {
-                ...params,
-                page: currentPage,
-                limit: limit
-            };
-
-            const queryParams = new URLSearchParams(finalParams).toString();
-            const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
-            const data = await response.json();
-
-            ordersTableBody.innerHTML = '';
-
-            if (data.success && data.data.length > 0) {
-                data.data.forEach(order => {
-                    const row = document.createElement('tr');
-
-                    const orderDate = new Date(order.ORDER_DATETIME);
-                    const formattedDate = orderDate.toLocaleDateString('ja-JP');
-                    const formattedAmount = '¥' + Number(order.TOTAL_AMOUNT).toLocaleString();
-
-                    row.innerHTML = `
-                        <td>${escapeHTML(order.ORDER_ID)}</td>
-                        <td>${escapeHTML(formattedDate)}</td>
-                        <td>${escapeHTML(order.CUSTOMER_NAME)}</td>
-                        <td>${escapeHTML(formattedAmount)}</td>
-                        <td>${escapeHTML(order.STATUS)}</td>
-                        <td>${escapeHTML(order.STATUS)}</td>
-                        <td class="actions">
-                            <a href="order_detail.php?id=${escapeHTML(order.ORDER_ID)}" class="btn btn-primary btn-sm me-1">詳細</a>
-                        </td>
-                    `;
-                    ordersTableBody.appendChild(row);
-                });
-
-                // ▼ ページネーション生成
-                renderPagination(data.totalPages);
-
-            } else {
-                ordersTableBody.innerHTML =
-                    '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
+            if (!data.success) {
+                tbody.innerHTML =
+                    `<tr><td colspan="7" class="text-center text-danger">データ取得エラー</td></tr>`;
+                return;
             }
 
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-            ordersTableBody.innerHTML =
-                `<tr><td colspan="7" class="text-center text-danger">データを取得できませんでした: ${escapeHTML(error.message)}</td></tr>`;
-        }
-    };
+            if (data.data.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="7" class="text-center">該当する注文がありません</td></tr>`;
+                return;
+            }
 
-    // ページネーション描画
-    const renderPagination = (totalPages) => {
-        // すでにあれば削除
-        if (paginationArea) paginationArea.remove();
+            data.data.forEach(order => {
+                const date = new Date(order.ORDER_DATETIME)
+                    .toLocaleDateString("ja-JP");
+                const amount = "¥" + Number(order.TOTAL_AMOUNT).toLocaleString();
 
-        paginationArea = document.createElement('div');
-        paginationArea.className = "d-flex justify-content-center mt-3";
-
-        let html = `
-            <ul class="pagination">
-                <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
-                    <button class="page-link" data-page="${currentPage - 1}">前へ</button>
-                </li>
-        `;
-
-        for (let p = 1; p <= totalPages; p++) {
-            html += `
-                <li class="page-item ${p === currentPage ? 'active' : ''}">
-                    <button class="page-link" data-page="${p}">${p}</button>
-                </li>
-            `;
-        }
-
-        html += `
-                <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
-                    <button class="page-link" data-page="${currentPage + 1}">次へ</button>
-                </li>
-            </ul>
-        `;
-
-        paginationArea.innerHTML = html;
-
-        // ▼ tableの下に追加
-        ordersTableBody.parentElement.appendChild(paginationArea);
-
-        // ▼ イベント設定
-        paginationArea.querySelectorAll("button.page-link").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const page = Number(btn.dataset.page);
-                if (!isNaN(page) && page >= 1 && page <= totalPages) {
-                    currentPage = page;
-                    fetchOrders(currentSearchParams);
-                }
+                const tr = `
+                    <tr>
+                        <td>${order.ORDER_ID}</td>
+                        <td>${date}</td>
+                        <td>${order.CUSTOMER_NAME}</td>
+                        <td>${amount}</td>
+                        <td>${order.STATUS}</td>
+                        <td>${order.STATUS}</td>
+                        <td>
+                            <a href="order_detail.php?id=${order.ORDER_ID}" 
+                                class="btn btn-primary btn-sm">詳細</a>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML("beforeend", tr);
             });
+
+            createPagination(data.page, data.totalPages);
+        })
+        .catch(err => {
+            console.error("Error:", err);
         });
-    };
+}
 
-    // HTMLエスケープ関数
-    const escapeHTML = (str) => {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    };
+// ページネーション生成
+function createPagination(current, totalPages) {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
 
-    // 検索フォーム送信
-    searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        currentPage = 1; // 検索時は1ページ目に戻す
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.className =
+            `btn btn-sm ${i === current ? "btn-primary" : "btn-outline-primary"} me-1`;
+        btn.textContent = i;
+        btn.onclick = () => search(i);
+        pagination.appendChild(btn);
+    }
+}
 
-        const params = {
-            orderId: document.getElementById('orderId').value,
-            customerName: document.getElementById('customerName').value,
-            paymentStatus: document.getElementById('paymentStatus').value,
-        };
+// 検索フォームの制御
+document.getElementById("searchForm").addEventListener("submit", e => {
+    e.preventDefault();
+    search(1);
+});
 
-        fetchOrders(params);
-    });
-
-    // リセットボタン
-    document.getElementById('resetButton').addEventListener('click', () => {
-        searchForm.reset();
-        currentPage = 1;
-        fetchOrders({});
-    });
-
-    // 初期表示
-    fetchOrders({});
+document.getElementById("resetButton").addEventListener("click", () => {
+    document.getElementById("searchForm").reset();
+    search(1);
 });
