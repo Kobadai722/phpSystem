@@ -4,7 +4,7 @@ $page_title = '会計システム --Prototype--';
 $current_page = 'home'; 
 ?>
 <!DOCTYPE html>
-<html lang="ja">
+< lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
