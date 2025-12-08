@@ -54,6 +54,7 @@
                         </tbody>
                 </table>
             </div>
+            <div id="pagination" class="mt-3 text-center"></div>
         </section>
     </main>
 

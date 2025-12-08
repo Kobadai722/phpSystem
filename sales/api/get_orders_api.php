@@ -1,75 +1,87 @@
 <?php
-// PHPのエラー表示を有効にする
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// データベース設定ファイルを読み込む
 require_once '../../config.php';
-
-// JSON形式のレスポンスヘッダーを設定
 header('Content-Type: application/json');
 
 try {
-    // orders.jsから送信される個別の検索パラメータを取得
+    // 受け取り
     $orderId = $_GET['orderId'] ?? '';
     $customerName = $_GET['customerName'] ?? '';
     $paymentStatus = $_GET['paymentStatus'] ?? '';
 
-    // SQLクエリを構築
-    $sql = "SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS, c.NAME AS CUSTOMER_NAME 
-            FROM S_ORDER o 
+    // ★ページネーション追加
+    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+    $offset = ($page - 1) * $limit;
+
+    // ベースクエリ
+    $sql = "SELECT o.ORDER_ID, o.ORDER_DATETIME, o.TOTAL_AMOUNT, o.STATUS,
+                    c.NAME AS CUSTOMER_NAME
+            FROM S_ORDER o
             LEFT JOIN CUSTOMER c ON o.CUSTOMER_ID = c.CUSTOMER_ID";
-            
-    // WHERE句とパラメータを格納する配列
-    $whereClauses = [];
+
+    $where = [];
     $params = [];
 
-    // 検索条件を動的に追加
-    if (!empty($orderId)) {
-        $whereClauses[] = "o.ORDER_ID = :orderId";
+    if ($orderId !== '') {
+        $where[] = "o.ORDER_ID = :orderId";
         $params[':orderId'] = $orderId;
     }
-    if (!empty($customerName)) {
-        $whereClauses[] = "c.NAME LIKE :customerName";
-        $params[':customerName'] = '%' . $customerName . '%';
+
+    if ($customerName !== '') {
+        $where[] = "c.NAME LIKE :customerName";
+        $params[':customerName'] = "%$customerName%";
     }
-    if (!empty($paymentStatus)) {
-        $whereClauses[] = "o.STATUS = :paymentStatus";
+
+    if ($paymentStatus !== '') {
+        $where[] = "o.STATUS = :paymentStatus";
         $params[':paymentStatus'] = $paymentStatus;
     }
 
-    // 複数の検索条件がある場合はANDで結合してWHERE句を構築
-    if (count($whereClauses) > 0) {
-        $sql .= " WHERE " . implode(" AND ", $whereClauses);
+    if ($where) {
+        $sql .= " WHERE " . implode(" AND ", $where);
     }
-    
-    // 注文日時が新しい順に並べ替え
+
+    // 並び順
     $sql .= " ORDER BY o.ORDER_DATETIME DESC";
 
-    // プリペアドステートメントの準備
+    // 総件数取得用
+    $countSql = "SELECT COUNT(*) FROM ($sql) AS total_table";
+    $stmtCount = $PDO->prepare($countSql);
+
+    foreach ($params as $k => $v) $stmtCount->bindValue($k, $v);
+    $stmtCount->execute();
+    $totalRows = (int)$stmtCount->fetchColumn();
+
+    // ページネーション付きの本クエリ
+    $sql .= " LIMIT :limit OFFSET :offset";
     $stmt = $PDO->prepare($sql);
 
-    // パラメータをバインド
-    foreach ($params as $key => $value) {
-        $stmt->bindValue($key, $value);
-    }
-    
-    // SQLクエリを実行
+    // 検索パラメータ
+    foreach ($params as $k => $v) $stmt->bindValue($k, $v);
+
+    // ページネーションパラメータ
+    $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
     $stmt->execute();
-    
-    // 結果を連想配列としてすべて取得
     $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // 成功レスポンスとしてJSONデータを返す
-    echo json_encode(['success' => true, 'data' => $orders]);
+    echo json_encode([
+    'success' => true,
+    'data' => $orders,
+    'total' => $totalRows,
+    'page' => $page,
+    'limit' => $limit,
+    'totalPages' => ceil($totalRows / $limit)
+]);
 
-} catch (PDOException $e) {
-    // データベース接続またはクエリ実行エラーが発生した場合
+
+} catch (Exception $e) {
     echo json_encode([
         'success' => false,
-        'error_message' => 'データの取得中にエラーが発生しました: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
-    exit;
 }
-?>

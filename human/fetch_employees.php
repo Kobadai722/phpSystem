@@ -9,8 +9,7 @@ $id_keyword = $_GET['id_keyword'] ?? null;
 $division_id = $_GET['division_id'] ?? null;
 
 // ベースとなるSQLクエリ
-// IS_DELETED カラムの取得を削除
-$sql_query = "SELECT e.EMPLOYEE_ID, e.NAME, d.DIVISION_NAME, j.JOB_POSITION_NAME, e.JOINING_DATE, e.EMERGENCY_CELL_NUMBER
+$sql_query = "SELECT e.EMPLOYEE_ID, e.NAME, d.DIVISION_NAME, j.JOB_POSITION_NAME, e.JOINING_DATE, e.EMERGENCY_CELL_NUMBER, e.IS_DELETED
             FROM EMPLOYEE e
             LEFT JOIN DIVISION d ON e.DIVISION_ID = d.DIVISION_ID
             LEFT JOIN JOB_POSITION j ON e.JOB_POSITION_ID = j.JOB_POSITION_ID";

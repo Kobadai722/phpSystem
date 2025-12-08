@@ -1,84 +1,83 @@
-// search.js
+// 現在のページ番号を保持
+let currentPage = 1;
+const limit = 10;
 
-// ページのロードが完了したときに実行される初期化処理
+// ページ読み込み時に初期表示
 document.addEventListener('DOMContentLoaded', () => {
-    search(); // ページ読み込み時に商品リストを検索・表示
-    // 削除確認モーダル関連のイベントリスナー設定を削除
+    search(1);
 });
 
-// 検索入力フィールドのクリアボタン表示/非表示を切り替える関数
 function toggleClearButton() {
     const searchInput = document.getElementById('searchInput');
     const clearButton = document.getElementById('clearButton');
-    // 入力値があればクリアボタンを表示、なければ非表示
     clearButton.style.display = searchInput.value ? 'block' : 'none';
 }
 
-// 検索入力フィールドをクリアする関数
 function clearSearch() {
-    document.getElementById('searchInput').value = ''; // 入力値を空にする
-    toggleClearButton(); // クリアボタンの状態を更新
-    search(); // クリア後、再度検索を実行して全商品を表示
+    document.getElementById('searchInput').value = '';
+    toggleClearButton();
+    search(1);
 }
 
-// 商品検索処理を行う関数
-function search() {
-    // 入力フォームから検索キーワードを取得
+//  ページネーション対応の検索関数
+function search(page = 1) {
+    currentPage = page;
+
     const keyword = document.getElementById("searchInput").value;
 
-    // PHPのAPIにPOSTリクエストを送信
     fetch("../api/search_api.php", {
         method: "POST",
         headers: {
-            "Content-Type": "application/x-www-form-urlencoded" // フォーム形式で送信
+            "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: "keyword=" + encodeURIComponent(keyword) // キーワードをURLエンコードして送信
+        body: `keyword=${encodeURIComponent(keyword)}&page=${page}&limit=${limit}`
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json(); // レスポンスをJSON形式に変換
-    })
+    .then(res => res.json())
     .then(data => {
-        // テーブルの tbody 要素を取得
         const tbody = document.querySelector("tbody");
-        tbody.innerHTML = ""; // テーブルの内容を一度クリア
+        tbody.innerHTML = "";
 
-        // 検索結果が0件の場合、メッセージを表示
-        if (data.length === 0) {
-            const row = `<tr><td colspan="5" class="text-center">該当する商品がありません</td></tr>`; // colspanを5に変更
-            tbody.insertAdjacentHTML("beforeend", row);
+        if (!data.success) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center text-danger">エラーが発生しました</td></tr>`;
             return;
         }
 
-        // 検索結果がある場合、それぞれのデータをテーブルに表示
-        data.forEach(row => {
-            // 各値が null の場合は空文字に置き換えて表示
-            const productId = row.PRODUCT_ID ?? '';
-            const productName = row.PRODUCT_NAME ?? '';
-            const unitSellingPrice = row.UNIT_SELLING_PRICE ?? '';
-            const stockQuantity = row.STOCK_QUANTITY ?? '';
-            const productKubunName = row.PRODUCT_KUBUN_NAME ?? '';
+        if (data.data.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="text-center">該当する商品がありません</td></tr>`;
+            return;
+        }
 
+        data.data.forEach(row => {
             const tr = `
                 <tr>
-                    <td>${productId}</td>
-                    <td>${productName}</td>
-                    <td>${unitSellingPrice}</td>
-                    <td>${stockQuantity}</td>
-                    <td>${productKubunName}</td>
+                    <td>${row.PRODUCT_ID ?? ''}</td>
+                    <td>${row.PRODUCT_NAME ?? ''}</td>
+                    <td>${row.UNIT_SELLING_PRICE ?? ''}</td>
+                    <td>${row.STOCK_QUANTITY ?? ''}</td>
+                    <td>${row.PRODUCT_KUBUN_NAME ?? ''}</td>
                     <td></td>
-                    </tr>
+                </tr>
             `;
-            // テーブルの末尾に追加
             tbody.insertAdjacentHTML("beforeend", tr);
         });
+
+        createPagination(data.page, Math.ceil(data.total / data.limit));
     })
-    .catch(error => {
-        console.error('検索処理中にエラーが発生しました:', error);
-        const tbody = document.querySelector("tbody");
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">データの取得中にエラーが発生しました。</td></tr>`; // colspanを5に変更
+    .catch(err => {
+        console.error("Error:", err);
     });
 }
 
+//  ページネーション生成
+function createPagination(current, totalPages) {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.className = `btn btn-sm ${i === current ? "btn-primary" : "btn-outline-primary"} me-1`;
+        btn.textContent = i;
+        btn.onclick = () => search(i);
+        pagination.appendChild(btn);
+    }
+}

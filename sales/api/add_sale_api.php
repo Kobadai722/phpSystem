@@ -1,5 +1,8 @@
 <?php
-require_once '../../config.php'; 
+require_once '../../config.php';
+// ★追加: 会計システムの自動仕訳機能を読み込み
+require_once '../../accounting/includes/auto_journal_sales.php'; 
+
 header("Content-Type: application/json; charset=utf-8");
 
 // POSTパラメータ取得
@@ -8,6 +11,11 @@ $quantity   = $_POST['order_quantity'] ?? null;
 $customerId = $_POST['customer_id'] ?? null;
 $employeeId = $_POST['employee_id'] ?? null;
 $notes      = $_POST['notes'] ?? null;
+
+// レスポンス用の変数を初期化
+$totalPrice = 0;
+$newStock = 0;
+$message = "";
 
 try {
 
@@ -21,8 +29,7 @@ try {
         throw new Exception("数量が不正です。");
     }
 
-    // トランザクション開始
-    $PDO->beginTransaction();
+    $PDO->beginTransaction(); // 1つ目のトランザクション開始
 
     // 商品の在庫 & 単価取得（FOR UPDATE でロック）
     $stmt = $PDO->prepare("
@@ -60,7 +67,7 @@ try {
     ");
 
     if (!$insertOrder->execute([
-        $productId,     // ← 商品IDを正しく登録
+        $productId,
         $customerId,
         $orderFlag,
         $totalPrice,
@@ -79,26 +86,59 @@ try {
     ");
     $updateStock->execute([$newStock, $productId]);
 
-    // コミット
+
     $PDO->commit();
 
-    echo json_encode([
-        "success" => true,
-        "message" => "注文を登録しました。",
-        "total_price" => $totalPrice,
-        "new_stock" => $newStock
-    ]);
-
 } catch (Exception $e) {
-
+    // 販売処理自体が失敗した場合はロールバックして終了
     if ($PDO->inTransaction()) {
         $PDO->rollBack();
     }
-
     error_log("注文登録エラー: " . $e->getMessage());
-
     echo json_encode([
         "success" => false,
         "message" => $e->getMessage()
     ]);
+    exit;
 }
+
+//会計データの登録処理（自動仕訳連携）
+
+try {
+    $PDO->beginTransaction(); // 2つ目のトランザクション開始
+
+    // 1. 摘要用に顧客名を取得
+    $stmtCustomer = $PDO->prepare("SELECT NAME FROM CUSTOMER WHERE CUSTOMER_ID = ?");
+    $stmtCustomer->execute([$customerId]);
+    $customerName = $stmtCustomer->fetchColumn();
+    $journalDescription = ($customerName ?: '不明な顧客') . " 売上";
+    
+    $todayDate = date('Y-m-d');
+
+    // 2. 自動仕訳関数の実行（accounting/includes/auto_journal_sales.php）
+    // (引数: PDOオブジェクト, 日付, 金額, 摘要)
+    registerSalesJournal($PDO, $todayDate, $totalPrice, $journalDescription);
+
+    // 会計データを確定
+    $PDO->commit();
+    
+    $message = "注文を登録し、会計仕訳も自動作成しました。";
+
+} catch (Exception $e) {
+    // ★会計連携のみ失敗した場合は、会計側だけロールバックしつつ、成功メッセージ（警告付き）を返す
+    if ($PDO->inTransaction()) {
+        $PDO->rollBack();
+    }
+    error_log("会計連携エラー: " . $e->getMessage());
+    // ユーザーには「注文は成功したが、連携は失敗した」と伝える
+    $message = "注文は完了しましたが、会計データの作成に失敗しました。（エラー: " . $e->getMessage() . "）";
+}
+
+// 最終結果を返す
+echo json_encode([
+    "success" => true,
+    "message" => $message,
+    "total_price" => $totalPrice,
+    "new_stock" => $newStock
+]);
+?>

@@ -1,76 +1,96 @@
-// orders.js
+// orders.js（商品一覧と同じページネーション構造に統一）
 
-document.addEventListener('DOMContentLoaded', () => {
-    const ordersTableBody = document.getElementById('ordersTableBody');
-    const searchForm = document.getElementById('searchForm');
+let currentPage = 1;
+const limit = 10;
 
-    // 注文データをAPIから取得し、テーブルに表示する関数
-    const fetchOrders = async (params = {}) => {
-        ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">データを読み込み中...</td></tr>';
-        try {
-            const queryParams = new URLSearchParams(params).toString();
-            const response = await fetch(`../api/get_orders_api.php?${queryParams}`);
-            const data = await response.json();
+// 初期読み込み
+document.addEventListener("DOMContentLoaded", () => {
+    search(1);
+});
 
-            ordersTableBody.innerHTML = '';
+// 検索 & ページネーション本体
+function search(page = 1) {
+    currentPage = page;
 
-            if (data.success && data.data && data.data.length > 0) {
-                data.data.forEach(order => {
-                    const row = document.createElement('tr');
-                    // 修正: データベースのカラム名に合わせてキー名を変更
-                    const orderDate = new Date(order.ORDER_DATETIME);
-                    const formattedDate = orderDate.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '/');
-                    const formattedAmount = '¥' + Number(order.TOTAL_AMOUNT).toLocaleString();
+    const params = {
+        orderId: document.getElementById("orderId").value,
+        customerName: document.getElementById("customerName").value,
+        paymentStatus: document.getElementById("paymentStatus").value,
+        page: page,
+        limit: limit
+    };
 
-                    row.innerHTML = `
-                        <td>${escapeHTML(order.ORDER_ID)}</td>
-                        <td>${escapeHTML(formattedDate)}</td>
-                        <td>${escapeHTML(order.CUSTOMER_NAME)}</td>
-                        <td>${escapeHTML(formattedAmount)}</td>
-                        <td>${escapeHTML(order.STATUS)}</td>
-                        <td>${escapeHTML(order.STATUS)}</td>
-                        <td class="actions">
-                            <a href="order_detail.php?id=${escapeHTML(order.ORDER_ID)}" class="btn btn-primary btn-sm me-1">詳細</a>
-                        </td>
-                    `;
-                    ordersTableBody.appendChild(row);
-                });
-            } else if (data.success && data.data && data.data.length === 0) {
-                ordersTableBody.innerHTML = '<tr><td colspan="7" class="text-center">表示する注文がありません。</td></tr>';
-            } else {
-                ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データの取得中にエラーが発生しました: ${escapeHTML(data.error_message || '不明なエラー')}</td></tr>`;
+    const queryString = new URLSearchParams(params).toString();
+
+    fetch(`../api/get_orders_api.php?${queryString}`)
+        .then(res => res.json())
+        .then(data => {
+            const tbody = document.getElementById("ordersTableBody");
+            tbody.innerHTML = "";
+
+            if (!data.success) {
+                tbody.innerHTML =
+                    `<tr><td colspan="7" class="text-center text-danger">データ取得エラー</td></tr>`;
+                return;
             }
-        } catch (error) {
-            console.error('Error fetching orders:', error);
-            ordersTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">データを取得できませんでした: ${escapeHTML(error.message)}</td></tr>`;
-        }
-    };
 
-    // HTMLエスケープ関数
-    const escapeHTML = (str) => {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    };
+            if (data.data.length === 0) {
+                tbody.innerHTML =
+                    `<tr><td colspan="7" class="text-center">該当する注文がありません</td></tr>`;
+                return;
+            }
 
-    // 検索フォームの送信イベントリスナー
-    searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const params = {
-            // HTMLのinput idと一致させる
-            orderId: document.getElementById('orderId').value,
-            customerName: document.getElementById('customerName').value,
-            paymentStatus: document.getElementById('paymentStatus').value,
-        };
-        fetchOrders(params);
-    });
+            data.data.forEach(order => {
+                const date = new Date(order.ORDER_DATETIME)
+                    .toLocaleDateString("ja-JP");
+                const amount = "¥" + Number(order.TOTAL_AMOUNT).toLocaleString();
 
-    // リセットボタンのクリックイベントリスナー
-    document.getElementById('resetButton').addEventListener('click', () => {
-        searchForm.reset();
-        fetchOrders();
-    });
+                const tr = `
+                    <tr>
+                        <td>${order.ORDER_ID}</td>
+                        <td>${date}</td>
+                        <td>${order.CUSTOMER_NAME}</td>
+                        <td>${amount}</td>
+                        <td>${order.STATUS}</td>
+                        <td>${order.STATUS}</td>
+                        <td>
+                            <a href="order_detail.php?id=${order.ORDER_ID}" 
+                                class="btn btn-primary btn-sm">詳細</a>
+                        </td>
+                    </tr>
+                `;
+                tbody.insertAdjacentHTML("beforeend", tr);
+            });
 
-    // ページ読み込み時に初期データを取得
-    fetchOrders();
+            createPagination(data.page, data.totalPages);
+        })
+        .catch(err => {
+            console.error("Error:", err);
+        });
+}
+
+// ページネーション生成
+function createPagination(current, totalPages) {
+    const pagination = document.getElementById("pagination");
+    pagination.innerHTML = "";
+
+    for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement("button");
+        btn.className =
+            `btn btn-sm ${i === current ? "btn-primary" : "btn-outline-primary"} me-1`;
+        btn.textContent = i;
+        btn.onclick = () => search(i);
+        pagination.appendChild(btn);
+    }
+}
+
+// 検索フォームの制御
+document.getElementById("searchForm").addEventListener("submit", e => {
+    e.preventDefault();
+    search(1);
+});
+
+document.getElementById("resetButton").addEventListener("click", () => {
+    document.getElementById("searchForm").reset();
+    search(1);
 });
