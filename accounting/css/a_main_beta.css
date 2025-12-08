@@ -6,6 +6,12 @@ html, body {
     background-color: #f8f9fa;
     overflow-x: hidden; /* 横スクロール防止 */
 }
+.clickable-card:hover {
+            cursor: pointer;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            transform: translateY(-2px);
+            transition: all 0.2s ease-in-out;
+        }
 
 .page-container {
     display: flex;
