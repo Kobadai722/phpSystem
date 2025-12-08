@@ -63,13 +63,15 @@ try {
 ?>
 
 <body>
-    <!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
+<!-- ハンバーガーメニュー (Offcanvasを表示させるためのボタン) -->
     <button class="btn btn-light shadow-sm hamburger-button" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
         <i class="bi bi-list fs-4"></i>
     </button>
 
-    <?php require_once __DIR__ . '/../includes/sidebar_bootstrap.php'; ?>
-
+    <?php
+    // Bootstrap版のサイドバー部品を読み込む
+    require_once __DIR__ . '/../includes/sidebar_bootstrap.php';
+    ?>
     <!-- ページ全体のコンテナ -->
     <div class="page-container">
         <!-- メインコンテンツ -->
