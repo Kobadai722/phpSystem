@@ -65,7 +65,6 @@ $current_page = 'home';
         $remaining_amount = $target_amount_yen - $sales_for_month;
 
         // --- 4. [グラフ用] 年間の月別売上推移データを取得 ---
-        // 選択された年（$display_year）の1月～12月のデータを取得
         $sql_graph = "SELECT MONTH(h.ENTRY_DATE) as m, SUM(e.AMOUNT) as total
                       FROM JOURNAL_ENTRIES e
                       JOIN JOURNAL_HEADERS h ON e.HEADER_ID = h.ID
@@ -74,12 +73,10 @@ $current_page = 'home';
         $stmt_graph = $PDO->prepare($sql_graph);
         $stmt_graph->execute([$display_year]);
         
-        // 配列を0で初期化 (1月～12月)
         $monthly_data = array_fill(1, 12, 0);
         while ($row = $stmt_graph->fetch(PDO::FETCH_ASSOC)) {
             $monthly_data[(int)$row['m']] = (int)$row['total'];
         }
-        // JavaScriptに渡すためにJSON化
         $js_chart_data = json_encode(array_values($monthly_data));
 
     } catch (PDOException $e) {
@@ -102,7 +99,7 @@ $current_page = 'home';
 
             <div class="dashboard-grid">
                 
-                <section class="card">
+                <section class="card" style="flex: 1 1 350px;">
                     <div class="card-header">
                         <h3>月間売上目標</h3>
                     </div>
@@ -164,7 +161,7 @@ $current_page = 'home';
                 </section>
 
                 <section class="card clickable-card" 
-                         style="flex-grow: 2; min-width: 500px;" 
+                         style="flex: 10 1 500px;" 
                          onclick="location.href='graph/sale_graph.php?year=<?= $display_year ?>'">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3>売上推移 (<?= $display_year ?>年)</h3>
@@ -180,7 +177,7 @@ $current_page = 'home';
                     </div>
                 </section>
 
-                <section class="card">
+                <section class="card" style="flex: 1 1 45%;">
                     <div class="card-header">
                         <h3>総費用</h3>
                     </div>
@@ -192,7 +189,7 @@ $current_page = 'home';
                     </div>
                 </section>
 
-                <section class="card">
+                <section class="card" style="flex: 1 1 45%;">
                     <div class="card-header">
                         <h3>レポート</h3>
                     </div>
@@ -219,24 +216,24 @@ $current_page = 'home';
             const labels = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
 
             new Chart(ctx, {
-                type: 'line', // 折れ線グラフ
+                type: 'line', 
                 data: {
                     labels: labels,
                     datasets: [{
                         label: '売上高',
                         data: salesData,
-                        borderColor: '#0d6efd', // Bootstrap Primary Color
+                        borderColor: '#0d6efd',
                         backgroundColor: 'rgba(13, 110, 253, 0.1)',
                         borderWidth: 2,
                         fill: true,
-                        tension: 0.3 // 曲線を滑らかに
+                        tension: 0.3
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { display: false } // 凡例はヘッダーにあるので非表示
+                        legend: { display: false } 
                     },
                     scales: {
                         y: {
