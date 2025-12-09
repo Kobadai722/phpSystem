@@ -86,7 +86,7 @@ $top_products = [];
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="col-lg-3 col-md-6 mb-3 d-none">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h6 class="card-title"><i class="bi bi-cash-stack"></i> 翌月売上予測</h6>
