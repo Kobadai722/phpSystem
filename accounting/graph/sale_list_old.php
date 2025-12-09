@@ -45,9 +45,6 @@ if (!empty($where_conditions)) {
 }
 $sql_query .= " ORDER BY SALE_DATE DESC";
 
-// === ▲▲▲ ここまで修正 ▲▲▲ ===
-
-
 // データベースからデータを取得
 try {
     $stmt = $PDO->prepare($sql_query);

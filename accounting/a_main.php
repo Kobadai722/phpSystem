@@ -43,7 +43,7 @@ $current_page = 'home';
             $sql_latest_month = "SELECT MAX(h.ENTRY_DATE) as latest_date 
                                 FROM JOURNAL_ENTRIES e
                                 JOIN JOURNAL_HEADERS h ON e.HEADER_ID = h.ID
-                                WHERE e.ACCOUNT_ID = 8"; // ACCOUNT_ID=8 が「売上高」と仮定
+                                WHERE e.ACCOUNT_ID = 8";
             $latest_date_str = $PDO->query($sql_latest_month)->fetchColumn();
 
             if ($latest_date_str) {
