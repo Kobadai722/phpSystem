@@ -1,159 +1,134 @@
-/* 画面幅が1000px以下のときのスタイル（レスポンシブ対応） */
+/* 画面幅が1250px以下のときのスタイル（レスポンシブ対応） */
 @media screen and (max-width: 1250px) {
     main {
-        flex-direction: column; /* ナビゲーションとコンテンツを縦に並べる */
+        flex-direction: column;
         padding: 0.5rem;
     }
 
     .localNavigation {
-        /* セレクタの誤り：main要素に.localNavigationというクラスは存在しないので、正しくは `.localNavigation` のはず */
         display: flex;
-        width: 100% !important;  /* 幅を全体に広げる */
-        flex-direction: row; /* ナビゲーション内のアイテムを横並びに */
+        width: 100% !important;
+        flex-direction: row;
         padding: 1rem;
-        border-radius: 0; /* 角丸をなくす */
-        align-items: center; /* ナビゲーション内アイテムを縦中央に揃える */
+        border-radius: 0;
+        align-items: center;
         position: relative;
     }
 
     .localNavigation > ul {
-        display: flex; /* 横並びにするため追加 */
+        display: flex;
         flex-direction: row;
-        justify-content: space-around; /* 要素間に均等なスペースをとる */
-        
+        justify-content: space-around;
     }
-    
-    
 
     .content {
-        width: 100%; /* コンテンツを全幅に */
+        width: 100%;
         padding: 1rem;
     }
-    /* ドロップダウンメニューのスタイル */
-.localNavigation .dropdown-menu {
-    background-color: #1c2a39; /* ローカルナビと同じ背景色 */
-    border: none; /* 枠線をなくす */
-    border-radius: 8px; /* 少し角丸 */
-    padding: 0.5rem 0;
-    box-shadow: none; /* シャドウなし */
-    min-width: 180px; /* 幅を少し広めに */
 
-    
+    /* ▼▼ プルダウン（小画面）を紺背景に統一 ▼▼ */
+    .localNavigation .dropdown-menu {
+        background-color: #1c2a39 !important;
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem 0;
+        box-shadow: none;
+        min-width: 180px;
+    }
+
+    .localNavigation .dropdown-item {
+        color: #fff !important;
+        padding: 0.5rem 1rem;
+        transition: background-color 0.3s ease;
+    }
+
+    .localNavigation .dropdown-item:hover {
+        background-color: #2e3b4e !important;
+        color: #fff !important;
+    }
 }
 
-/* ドロップダウン内のリンク */
-.localNavigation .dropdown-item {
-    color: #fff;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease;
-}
 
-/* ホバー時 */
-.localNavigation .dropdown-item:hover {
-    background-color: #2e3b4e;
-    color: #fff;
-}
-
-}
-
-/* 全体のフォントと基本レイアウト */
+/* 全体レイアウトやナビのベース */
 body {
-    font-family: Arial, sans-serif; /* 使用するフォント */
-    margin: 0; /* デフォルトのマージンを削除 */
+    font-family: Arial, sans-serif;
+    margin: 0;
     display: flex;
-    flex-direction: column; /* コンテンツを縦に並べる */
+    flex-direction: column;
 }
 
-
-/* コンテンツ部分のスタイル */
 .content {
-    flex: 1; /* 残りのスペースを占める */
-    background-color: #eee; /* 背景色：薄グレー */
-    padding: 1rem; /* 内側余白 */
-    padding-right: 2rem; /* 右側の余白だけ少し広めに */
+    flex: 1;
+    background-color: #eee;
+    padding: 1rem;
+    padding-right: 2rem;
 }
 
-
-/* mainタグの基本レイアウト */
 main {
-    display: flex; /* 子要素（navやsection）を横に並べる */
-    min-height: 100vh; /* 最小の高さを画面いっぱいにする */
-    margin: 10px 0; /* 上下の外側余白 */
-    padding: 1rem; /* 内側余白 */
+    display: flex;
+    min-height: 100vh;
+    margin: 10px 0;
+    padding: 1rem;
 }
 
-/* ナビゲーション全体のスタイル */
 .localNavigation {
-    background-color: #1c2a39; /* 背景色：ダークネイビー */
-    padding-top: 2rem; /* 上部の余白 */
-    border-radius: 10px; /* 角丸 */
+    background-color: #1c2a39;
+    padding-top: 2rem;
+    border-radius: 10px;
     position: relative;
 }
 
-
-/* ナビゲーションのリスト（ul）の初期化 */
 .localNavigation ul {
-    list-style: none; /* リストマーカーを消す（●など） */
+    list-style: none;
 }
 
-
-/* 各ナビゲーション項目（li）のスタイル */
 .localNavigation .nav-item {
-    margin-bottom: 1.5rem; /* 下に余白を設ける */
-    text-align: center; /* テキストを中央揃えに */
+    margin-bottom: 1.5rem;
+    text-align: center;
 }
 
-
-/* ナビゲーションリンクのスタイル */
 .localNavigation .nav-link {
-    display: flex; /* フレックスで中身を並べる */
-    align-items: center; /* アイコンとテキストを縦中央に */
-    justify-content: center; /* 横中央に揃える */
-    color: #fff; /* テキストカラー：白 */
-    font-weight: bold; /* 太字にする */
-    text-decoration: none; /* 下線をなくす */
-    padding: 0.75rem 1rem; /* 内側余白 */
-    transition: background-color 0.3s ease; /* 背景色変化をなめらかに */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.3s ease;
 }
 
-
-/* ナビゲーションリンクにホバーしたときのスタイル */
 .localNavigation .nav-link:hover {
-    background-color: #2e3b4e; /* ホバー時の背景色 */
-    border-radius: 8px; /* ホバー時に角丸を追加 */
+    background-color: #2e3b4e;
+    border-radius: 8px;
 }
 
-
-/* ドロップダウンメニューのスタイル */
+/* ▼▼ プルダウン（PC時）も紺背景に統一 ▼▼ */
 .localNavigation .dropdown-menu {
-    border: none; /* 枠線をなくす */
-    border-radius: 8px; /* 少し角丸 */
+    background-color: #1c2a39 !important;
+    border: none;
+    border-radius: 8px;
     padding: 0.5rem 0;
-    box-shadow: none; /* シャドウなし */
+    box-shadow: none;
 }
 
-/* ドロップダウン内のリンク */
 .localNavigation .dropdown-item {
     font-weight: bold;
     text-align: center;
+    color: #fff !important;
 }
 
 /* ホバー時 */
 .localNavigation .dropdown-item:hover {
-    background-color: #f2f2f2;
+    background-color: #2e3b4e !important;
+    color: #fff !important;
 }
 
-
-/* アイコンとテキストの間に余白を設ける */
 .nav-link i {
     margin-right: 0.5rem;
 }
 
-
-/* nav内ulの初期化（念のため） */
 nav ul {
     list-style: none;
     padding: 0;
 }
-
-
