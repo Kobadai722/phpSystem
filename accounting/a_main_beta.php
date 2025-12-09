@@ -18,22 +18,6 @@ $current_page = 'home';
     <link rel="stylesheet" href="css/sidebar_bootstrap.css">
     <link rel="stylesheet" href="css/siwake.css">
 </head>
-はい、sale_graph.php と同じロジック（仕組み）を使って全く問題ありません。 むしろ、データの一貫性を保つためにも同じロジックであるべきです。
-
-前回のコードも、実は sale_graph.php の処理をこのダッシュボード用に少し書き換えて組み込んでいましたが、ご指摘の通り**「月間売上目標で選択した年（$display_year）」と連動させる**のが正解です。
-
-これらを踏まえて、コードを整理した最終版 accounting/a_main_beta.php です。
-
-修正のポイント
-ロジックの統一: sale_graph.php で行っている「データベースからその年の売上を集計する処理」をそのまま採用しています。
-
-年の連動: 「月間売上目標」で選択した年（$display_year）を、グラフの集計にも使うようにしました。これでプルダウンを変更して「表示」を押すと、グラフもその年に切り替わります。
-
-レイアウト: ご希望通り、グラフを広く（画面の2/3）、下の2枚を並列に配置しています。
-
-💻 決定版 accounting/a_main_beta.php
-PHP
-
 <?php
 // ----- このページ固有の情報を定義 -----
 $page_title = '会計システム --Prototype--';
