@@ -44,12 +44,6 @@ $top_products = [];
                     <a href="../../customer/customer.php" class="btn btn-outline-secondary">
                         <i class="bi bi-person-lines-fill"></i> 顧客・取引先管理
                     </a>
-                    <a href="report_analysis.php" class="btn btn-outline-secondary">
-                        <i class="bi bi-bar-chart"></i> 詳細レポート・分析
-                    </a>
-                    <a href="order_list.php" class="btn btn-outline-secondary">
-                        <i class="bi bi-list-columns-reverse"></i> 統合注文一覧
-                    </a>
                     <a href="sale_add.php" class="btn btn-outline-secondary">
                         <i class="bi bi-cash-stack"></i> 売上データ登録用フォーム
                     </a>
@@ -88,16 +82,6 @@ $top_products = [];
                                 <h6 class="card-title"><i class="bi bi-person-up"></i> 平均顧客単価 (AOV)</h6>
                                 <p class="card-text fs-4 fw-bold" id="aov">¥---</p>
                                 <small class="text-muted">直近の平均購入額</small>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h6 class="card-title"><i class="bi bi-cash-stack"></i> 翌月売上予測</h6>
-                                <p class="card-text fs-4 fw-bold" id="next_month_forecast">¥---</p>
-                                <small class="text-muted">予測信頼度: <span id="forecast_confidence">---</span></small>
                             </div>
                         </div>
                     </div>
