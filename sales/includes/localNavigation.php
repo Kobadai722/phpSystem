@@ -14,7 +14,6 @@
             <ul class="dropdown-menu" aria-labelledby="stockDropdown">
                 <li><a class="dropdown-item" href="/../sales/views/stock.php">商品一覧</a></li>
                 <li><a class="dropdown-item" href="/../sales/views/stock-register.php">在庫追加</a></li>
-                <li><a class="dropdown-item" href="#">在庫履歴</a></li>
             </ul>
         </li>
 
@@ -25,8 +24,6 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="salesDropdown">
                 <li><a class="dropdown-item" href="/../sales/views/management.php">ダッシュボード</a></li>
-                <li><a class="dropdown-item" href="#"></a></li>
-                <li><a class="dropdown-item" href="#"></a></li>
             </ul>
         </li>
 
@@ -36,7 +33,7 @@
                 <i class="bi bi-box-seam"></i> 注文管理
             </a>
             <ul class="dropdown-menu" aria-labelledby="orderDropdown">
-                <li><a class="dropdown-item" href="/../sales/views/purchase.php">注文履歴</a></li>
+                <li><a class="dropdown-item" href="/../sales/views/purchase.php">注文一覧</a></li>
                 <li><a class="dropdown-item" href="/../sales/views/order_add.php">注文追加</a></li>
             </ul>
         </li>
