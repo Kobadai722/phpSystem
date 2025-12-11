@@ -58,6 +58,7 @@ function registerSalesJournal(PDO $pdo, string $date, int $amount, string $descr
         $stmt_entry->bindValue(':type', '貸方', PDO::PARAM_STR);
         $stmt_entry->execute();
 
+        require_once __DIR__ . '/batch_process_sales.php';
         return true;
 
     } catch (Exception $e) {
