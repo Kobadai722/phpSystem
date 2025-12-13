@@ -7,32 +7,29 @@ ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 try {
+    // 日付定義
+
     // 今日
-$today = new DateTime();
+    $today = new DateTime();
 
-// 今月初日
-$currentMonthStart = (clone $today)->modify('first day of this month')->setTime(0,0,0);
-$currentDate       = (clone $today)->setTime(23,59,59);
+    // 今月
+    $currentMonthStart = (clone $today)->modify('first day of this month')->setTime(0, 0, 0);
+    $currentDate       = (clone $today)->setTime(23, 59, 59);
 
-// 先月初日
-$lastMonthStart = (clone $today)->modify('first day of last month')->setTime(0,0,0);
+    // 先月（1か月分）
+    $lastMonthStart = (clone $today)->modify('first day of last month')->setTime(0, 0, 0);
+    $lastMonthEnd   = (clone $today)->modify('last day of last month')->setTime(23, 59, 59);
 
-// 先月の同日（※月末超え防止）
-$lastMonthSameDay = (clone $lastMonthStart);
-$lastMonthSameDay->modify('+' . ($today->format('d') - 1) . ' days')
-                ->setTime(23,59,59);
-
-// 文字列化
-$currentMonthStart = $currentMonthStart->format('Y-m-d H:i:s');
-$currentDate       = $currentDate->format('Y-m-d H:i:s');
-$lastMonthStart    = $lastMonthStart->format('Y-m-d H:i:s');
-$lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
-
+    // 文字列化
+    $currentMonthStart = $currentMonthStart->format('Y-m-d H:i:s');
+    $currentDate       = $currentDate->format('Y-m-d H:i:s');
+    $lastMonthStart    = $lastMonthStart->format('Y-m-d H:i:s');
+    $lastMonthEnd      = $lastMonthEnd->format('Y-m-d H:i:s');
 
     // 過去30日（AOV用）
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
 
-    //1. 今月売上
+    // 1. 今月売上
 
     $stmtCurrentSales = $PDO->prepare("
         SELECT COALESCE(SUM(PRICE), 0)
@@ -45,7 +42,8 @@ $lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
     ]);
     $currentSales = (int)$stmtCurrentSales->fetch(PDO::FETCH_COLUMN);
 
-    //2. 先月同期間売上
+    // 2. 先月売上（先月1か月分）
+
     $stmtLastSales = $PDO->prepare("
         SELECT COALESCE(SUM(PRICE), 0)
         FROM `ORDER`
@@ -53,16 +51,18 @@ $lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
     ");
     $stmtLastSales->execute([
         ':start' => $lastMonthStart,
-        ':end'   => $lastMonthSameDay
+        ':end'   => $lastMonthEnd
     ]);
     $lastSales = (int)$stmtLastSales->fetch(PDO::FETCH_COLUMN);
 
-    //3. 前月比成長率
+    // 3. 前月比成長率
+
     $lastMonthRatio = ($lastSales > 0)
         ? round((($currentSales - $lastSales) / $lastSales) * 100, 1)
         : 0;
 
-    //4. AOV（平均購入額）
+    // 4. AOV（平均購入額）
+
     $stmtAOV = $PDO->prepare("
         SELECT COALESCE(SUM(PRICE) / NULLIF(COUNT(ORDER_ID), 0), 0)
         FROM `ORDER`
@@ -74,7 +74,8 @@ $lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
     ]);
     $aov = round($stmtAOV->fetch(PDO::FETCH_COLUMN));
 
-    //5. トップ商品（今月）
+    // 5. トップ商品（今月）
+
     $stmtTopProducts = $PDO->prepare("
         SELECT 
             P.PRODUCT_NAME AS name,
@@ -92,13 +93,15 @@ $lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
     ]);
     $topProducts = $stmtTopProducts->fetchAll(PDO::FETCH_ASSOC);
 
-    //6. 目標達成率
+    // 6. 目標達成率
+
     $salesTarget = 20000000;
     $targetRatio = ($salesTarget > 0)
         ? round(($currentSales / $salesTarget) * 100, 1)
         : 0;
 
-    //7. 在庫アラート
+    // 7. 在庫アラート
+
     $sqlAlerts = "
         SELECT
             p.PRODUCT_ID AS product_id,
@@ -137,8 +140,7 @@ $lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
         ];
     }
 
-    //8.JSON返却
-    
+    // 8. JSON返却
 
     echo json_encode([
         'success' => true,
