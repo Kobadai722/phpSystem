@@ -31,7 +31,7 @@ $employees = $stmtEmployee->fetchAll(PDO::FETCH_ASSOC);
 
         <section class="content py-4">
             <div class="container">
-                <h2 class="mb-4">新しい売上の作成</h2>
+                <h2 class="mb-4">新しい注文の作成</h2>
 
                 <form id="orderAddForm" method="POST" novalidate>
 
