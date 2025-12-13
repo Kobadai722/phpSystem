@@ -121,7 +121,8 @@ try {
 
     // 会計データを確定
     $PDO->commit();
-    
+    require_once '../../accounting/includes/batch_process_sales.php';
+    runSalesBatchProcess($PDO);
     $message = "注文を登録し、会計仕訳も自動作成しました。";
 
 } catch (Exception $e) {
