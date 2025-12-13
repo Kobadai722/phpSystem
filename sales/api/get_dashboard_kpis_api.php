@@ -7,19 +7,27 @@ ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
 try {
-    //日付計算
+    // 今日
+$today = new DateTime();
 
-    // 今日（23:59:59 固定）
-    $currentDate = date('Y-m-d 23:59:59');
+// 今月初日
+$currentMonthStart = (clone $today)->modify('first day of this month')->setTime(0,0,0);
+$currentDate       = (clone $today)->setTime(23,59,59);
 
-    // 今月初日
-    $currentMonthStart = date('Y-m-01 00:00:00');
+// 先月初日
+$lastMonthStart = (clone $today)->modify('first day of last month')->setTime(0,0,0);
 
-    // 先月初日
-    $lastMonthStart = date('Y-m-01 00:00:00', strtotime('-1 month'));
+// 先月の同日（※月末超え防止）
+$lastMonthSameDay = (clone $lastMonthStart);
+$lastMonthSameDay->modify('+' . ($today->format('d') - 1) . ' days')
+                ->setTime(23,59,59);
 
-    // 先月の同日（安全に -1 month）
-    $lastMonthSameDay = date('Y-m-d 23:59:59', strtotime('-1 month'));
+// 文字列化
+$currentMonthStart = $currentMonthStart->format('Y-m-d H:i:s');
+$currentDate       = $currentDate->format('Y-m-d H:i:s');
+$lastMonthStart    = $lastMonthStart->format('Y-m-d H:i:s');
+$lastMonthSameDay  = $lastMonthSameDay->format('Y-m-d H:i:s');
+
 
     // 過去30日（AOV用）
     $past30Days = date('Y-m-d 00:00:00', strtotime('-30 days'));
